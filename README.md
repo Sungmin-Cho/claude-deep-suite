@@ -16,27 +16,27 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 
 ## Installation
 
+### Prerequisites
+
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI installed and configured
+
 ### Add the marketplace
 
 ```bash
-claude plugin marketplace add github:Sungmin-Cho/claude-deep-suite
+/plugin marketplace add Sungmin-Cho/claude-deep-suite
 ```
 
 ### Install plugins
 
 ```bash
 # Install all
-claude plugin install deep-work@claude-deep-suite
-claude plugin install deep-wiki@claude-deep-suite
-claude plugin install deep-evolve@claude-deep-suite
+/plugin install deep-work@Sungmin-Cho-claude-deep-suite
+/plugin install deep-wiki@Sungmin-Cho-claude-deep-suite
+/plugin install deep-evolve@Sungmin-Cho-claude-deep-suite
 
 # Or install only what you need
-claude plugin install deep-work@claude-deep-suite
+/plugin install deep-work@Sungmin-Cho-claude-deep-suite
 ```
-
-### Prerequisites
-
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI installed and configured
 
 ---
 

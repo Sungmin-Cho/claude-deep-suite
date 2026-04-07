@@ -16,27 +16,27 @@
 
 ## 설치
 
+### 사전 요구사항
+
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI 설치 및 설정 완료
+
 ### 마켓플레이스 추가
 
 ```bash
-claude plugin marketplace add github:Sungmin-Cho/claude-deep-suite
+/plugin marketplace add Sungmin-Cho/claude-deep-suite
 ```
 
 ### 플러그인 설치
 
 ```bash
 # 전체 설치
-claude plugin install deep-work@claude-deep-suite
-claude plugin install deep-wiki@claude-deep-suite
-claude plugin install deep-evolve@claude-deep-suite
+/plugin install deep-work@Sungmin-Cho-claude-deep-suite
+/plugin install deep-wiki@Sungmin-Cho-claude-deep-suite
+/plugin install deep-evolve@Sungmin-Cho-claude-deep-suite
 
 # 필요한 것만 설치
-claude plugin install deep-work@claude-deep-suite
+/plugin install deep-work@Sungmin-Cho-claude-deep-suite
 ```
-
-### 사전 요구사항
-
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI 설치 및 설정 완료
 
 ---
 
