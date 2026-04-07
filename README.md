@@ -6,11 +6,11 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 
 ## Plugins
 
-| Plugin | Version | Description |
-|--------|---------|-------------|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | v5.6.0 | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | v1.0.1 | LLM-managed markdown wiki |
-| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | v1.0.0 | Autonomous Experimentation Protocol |
+| Plugin | Description |
+|--------|-------------|
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | Evidence-Driven Development Protocol |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | LLM-managed markdown wiki |
+| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | Autonomous Experimentation Protocol |
 
 ---
 
@@ -130,7 +130,7 @@ Inspired by [autoresearch](https://github.com/karpathy/autoresearch) by Andrej K
 ### How It Works
 
 1. **Analyze** — deep 5-stage project analysis (structure, dependencies, code, metrics, confirmation)
-2. **Generate harness** — create a `prepare.py` evaluation script tailored to your project
+2. **Generate harness** — create an evaluation harness (`prepare.py` for CLI or `prepare-protocol.md` for MCP/tool-based) tailored to your project
 3. **Experiment loop** — autonomously modify code, evaluate, keep improvements, discard regressions
 4. **Resume** — crash-safe journal-based state machine, resume across sessions
 5. **Report** — statistics, score progression, key discoveries, lessons learned
@@ -153,12 +153,15 @@ Select Idea → Modify Code → Evaluate → Score improved?
 
 ### Supported Domains
 
-| Domain | Example Metrics |
-|--------|-----------------|
-| ML / Training | val_bpb, loss, accuracy, perplexity |
-| Quantitative Finance | Sharpe ratio, max drawdown, returns |
-| Test Coverage | Pass rate, scenario coverage |
-| Code Quality | Pattern compliance, lint score |
+| Domain | Example Metrics | Eval Mode |
+|--------|-----------------|-----------|
+| ML / Training | val_bpb, loss, accuracy | CLI |
+| Quantitative Finance | Sharpe ratio, max drawdown | CLI |
+| Test Coverage | Pass rate, scenario coverage | CLI |
+| Code Quality | Pattern compliance, lint score | CLI |
+| Game Engines | Replay accuracy, frame time | Protocol (MCP) |
+| GUI Apps | UI state match, accessibility | Protocol |
+| External Systems | API accuracy, pipeline success | Protocol |
 
 [Full documentation →](https://github.com/Sungmin-Cho/claude-deep-evolve)
 
