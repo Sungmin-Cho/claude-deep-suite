@@ -1,0 +1,9 @@
+[submodule "plugins/deep-work"]
+	path = plugins/deep-work
+	url = https://github.com/Sungmin-Cho/claude-deep-work
+[submodule "plugins/deep-wiki"]
+	path = plugins/deep-wiki
+	url = https://github.com/Sungmin-Cho/claude-deep-wiki
+[submodule "plugins/deep-evolve"]
+	path = plugins/deep-evolve
+	url = https://github.com/Sungmin-Cho/claude-deep-evolve
