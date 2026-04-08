@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "claude-deep-suite",
-  "description": "Deep Suite — structured workflow, wiki, and autonomous experimentation plugins",
+  "description": "Deep Suite — structured workflow, wiki, autonomous experimentation, independent code review, and document gardening plugins",
   "owner": {
     "name": "sungmin"
   },

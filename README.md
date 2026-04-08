@@ -2,7 +2,7 @@
 
 # Claude Deep Suite
 
-A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketplace that bundles three complementary plugins for structured development, persistent knowledge management, and autonomous experimentation.
+A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketplace that bundles five complementary plugins for structured development, persistent knowledge management, autonomous experimentation, independent code review, and document gardening.
 
 ## Plugins
 

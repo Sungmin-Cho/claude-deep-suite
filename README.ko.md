@@ -2,7 +2,7 @@
 
 # Claude Deep Suite
 
-[Claude Code](https://docs.anthropic.com/en/docs/claude-code) 플러그인 통합 마켓플레이스. 구조화된 개발, 지식 관리, 자율 실험을 위한 세 가지 플러그인을 하나로 묶어 제공합니다.
+[Claude Code](https://docs.anthropic.com/en/docs/claude-code) 플러그인 통합 마켓플레이스. 구조화된 개발, 지식 관리, 자율 실험, 독립 코드 리뷰, 문서 가드닝을 위한 다섯 가지 플러그인을 하나로 묶어 제공합니다.
 
 ## 플러그인
 
