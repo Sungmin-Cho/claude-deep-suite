@@ -26,6 +26,20 @@
       "version": "1.0.0",
       "source": "./plugins/deep-evolve",
       "category": "productivity"
+    },
+    {
+      "name": "deep-review",
+      "description": "Independent Evaluator for AI coding agents — cross-model code review with Codex integration",
+      "version": "1.0.0",
+      "source": "./plugins/deep-review",
+      "category": "productivity"
+    },
+    {
+      "name": "deep-docs",
+      "description": "Document gardening agent — validates freshness and auto-repairs CLAUDE.md, AGENTS.md, and project docs",
+      "version": "1.0.0",
+      "source": "./plugins/deep-docs",
+      "category": "productivity"
     }
   ]
 }

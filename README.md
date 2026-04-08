@@ -11,6 +11,8 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | Evidence-Driven Development Protocol |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | LLM-managed markdown wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | Autonomous Experimentation Protocol |
+| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | Independent Evaluator with cross-model verification |
+| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | Document gardening agent |
 
 ---
 
@@ -33,6 +35,8 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 /plugin install deep-work@Sungmin-Cho-claude-deep-suite
 /plugin install deep-wiki@Sungmin-Cho-claude-deep-suite
 /plugin install deep-evolve@Sungmin-Cho-claude-deep-suite
+/plugin install deep-review@Sungmin-Cho-claude-deep-suite
+/plugin install deep-docs@Sungmin-Cho-claude-deep-suite
 
 # Or install only what you need
 /plugin install deep-work@Sungmin-Cho-claude-deep-suite
@@ -164,6 +168,70 @@ Select Idea → Modify Code → Evaluate → Score improved?
 | External Systems | API accuracy, pipeline success | Protocol |
 
 [Full documentation →](https://github.com/Sungmin-Cho/claude-deep-evolve)
+
+---
+
+## deep-review
+
+**Independent Evaluator** — AI 코딩 에이전트의 작업을 독립된 Opus 서브에이전트로 리뷰합니다. Codex 플러그인이 설치되어 있으면 3-way 교차 모델 검증을 실행합니다.
+
+### Inspiration
+
+Anthropic의 [Harness Design](https://www.anthropic.com/engineering/harness-design-long-running-apps)에서 영감 — Generator-Evaluator 분리로 자기 승인 편향을 구조적으로 제거합니다.
+
+### Review Pipeline
+
+```
+Collect → Contract Check → Deep Review → Verdict
+                            ├─ Claude Opus (always)
+                            ├─ codex:review (if available)
+                            └─ codex:adversarial-review (if available)
+```
+
+### Key Commands
+
+| Command | Description |
+|---------|-------------|
+| `/deep-review` | Review current changes with independent Opus evaluator |
+| `/deep-review --contract` | Sprint Contract-based verification |
+| `/deep-review --entropy` | Entropy scan (code drift, pattern mismatch) |
+| `/deep-review init` | Initialize project review rules |
+
+### Key Features
+
+- **Independent evaluator** — separate Opus subagent with no Generator context
+- **Cross-model verification** — 3-way parallel review when Codex is installed
+- **Sprint Contract** — structured success criteria verification
+- **Environment adaptation** — works in git/non-git, with/without Codex
+
+[Full documentation →](https://github.com/Sungmin-Cho/claude-deep-review)
+
+---
+
+## deep-docs
+
+**Document Gardening Agent** — CLAUDE.md, AGENTS.md 등 에이전트 지침 문서의 신선도를 검증하고 자동 정비합니다.
+
+### Inspiration
+
+OpenAI의 [Harness Engineering](https://openai.com/index/harness-engineering/)에서 영감 — "doc-gardening 에이전트가 반복 실행되어 오래된 문서를 찾아 수정 PR을 연다."
+
+### Key Commands
+
+| Command | Description |
+|---------|-------------|
+| `/deep-docs scan` | Detect stale references, moved paths, outdated examples |
+| `/deep-docs garden` | Auto-fix with user confirmation |
+| `/deep-docs audit` | Quantitative document health report |
+
+### Key Features
+
+- **Path-scoped freshness** — checks if referenced code paths changed after doc was last updated
+- **Auto-fix / audit-only separation** — mechanical fixes only, subjective checks are audit-only
+- **Durable scan artifact** — `.deep-docs/last-scan.json` with provenance (HEAD SHA, branch)
+- **Scoring** — size, freshness, reference accuracy, duplication
+
+[Full documentation →](https://github.com/Sungmin-Cho/claude-deep-docs)
 
 ---
 

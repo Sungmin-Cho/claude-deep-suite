@@ -7,3 +7,9 @@
 [submodule "plugins/deep-evolve"]
 	path = plugins/deep-evolve
 	url = https://github.com/Sungmin-Cho/claude-deep-evolve
+[submodule "plugins/deep-review"]
+	path = plugins/deep-review
+	url = https://github.com/Sungmin-Cho/claude-deep-review.git
+[submodule "plugins/deep-docs"]
+	path = plugins/deep-docs
+	url = https://github.com/Sungmin-Cho/claude-deep-docs.git
