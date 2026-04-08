@@ -85,6 +85,9 @@ Phase 4  Test          Receipt check, spec compliance, quality gates
 - **Receipt-based evidence** — every slice collects proof of completion
 - **Quality gates** — drift check, SOLID review, insight analysis
 - **Auto-flow** — one command drives the entire workflow
+- **Completeness Policy** — plan quality enforcement with banned placeholder patterns *(v5.8)*
+- **Code sketch tiering** — proportional code detail by slice size (S/M/L) *(v5.8)*
+- **Research traceability** — tagged findings [RF/RA] linking research to plan decisions *(v5.8)*
 
 [Full documentation →](https://github.com/Sungmin-Cho/claude-deep-work)
 

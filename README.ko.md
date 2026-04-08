@@ -85,6 +85,9 @@ Phase 4  Test          영수증 검사, 스펙 준수, 품질 게이트
 - **영수증 기반 증거** — 모든 슬라이스에서 완료 증거 수집
 - **품질 게이트** — 드리프트 체크, SOLID 리뷰, 인사이트 분석
 - **자동 플로우** — 하나의 커맨드로 전체 워크플로우 구동
+- **Completeness Policy** — placeholder 금지 패턴으로 plan 품질 강제 *(v5.8)*
+- **코드 스케치 크기별 완성도** — slice 크기(S/M/L)에 비례한 코드 상세도 *(v5.8)*
+- **Research 추적성** — 태그된 발견사항 [RF/RA]으로 연구→plan 결정 연결 *(v5.8)*
 
 [전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-work)
 
