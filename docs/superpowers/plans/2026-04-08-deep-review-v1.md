@@ -19,8 +19,7 @@
 ├── .claude-plugin/
 │   └── plugin.json              # 플러그인 매니페스트
 ├── commands/
-│   ├── deep-review.md           # 메인 리뷰 커맨드 (환경 감지 + 분기)
-│   └── deep-review-init.md      # 프로젝트별 rules 초기화
+│   └── deep-review.md           # 메인 커맨드 (리뷰 + init 서브커맨드를 인수로 처리)
 ├── skills/
 │   └── deep-review-workflow/
 │       ├── SKILL.md             # 리뷰 워크플로우 스킬 정의
@@ -71,6 +70,7 @@ mkdir -p ~/dev/deep-review/hooks/scripts
     "name": "Sungmin-Cho"
   },
   "license": "MIT",
+  "category": "Productivity",
   "keywords": ["code-review", "evaluator", "harness-engineering", "quality"]
 }
 ```
@@ -155,87 +155,107 @@ git commit -m "chore: scaffold deep-review plugin structure"
 
 - [ ] **Step 1: detect-environment.sh 작성**
 
-이 스크립트는 커맨드에서 호출되어 현재 환경 상태를 JSON으로 출력한다.
+이 스크립트는 커맨드에서 호출되어 현재 환경 상태를 key=value 형식으로 출력한다.
+jq 의존성 없이 순수 bash로 동작한다. 브라우저 도구 감지는 v1.1(App QA)에서 추가 — v1.0에서는 제외하여 hang 방지.
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 결과 JSON 빌드
-result='{}'
+# === 1. Git 리포지터리 여부 ===
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "is_git=false"
+  echo "has_commits=false"
+  echo "change_state=non-git"
+  echo "codex_installed=false"
+  exit 0
+fi
 
-# 1. Git 리포지터리 여부
-if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  result=$(echo "$result" | jq '.is_git = true')
+echo "is_git=true"
 
-  # 커밋 존재 여부
-  if git rev-parse HEAD >/dev/null 2>&1; then
-    result=$(echo "$result" | jq '.has_commits = true')
-
-    # 변경 상태 분류
-    staged=$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')
-    unstaged=$(git diff --name-only 2>/dev/null | wc -l | tr -d ' ')
-    untracked=$(git ls-files --others --exclude-standard 2>/dev/null | wc -l | tr -d ' ')
-
-    result=$(echo "$result" | jq \
-      --argjson staged "$staged" \
-      --argjson unstaged "$unstaged" \
-      --argjson untracked "$untracked" \
-      '.staged = $staged | .unstaged = $unstaged | .untracked = $untracked')
-
-    if [ "$staged" -eq 0 ] && [ "$unstaged" -eq 0 ] && [ "$untracked" -eq 0 ]; then
-      result=$(echo "$result" | jq '.change_state = "clean"')
-    else
-      result=$(echo "$result" | jq '.change_state = "dirty"')
-    fi
-
-    # review base 결정
-    default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "main")
-    merge_base=$(git merge-base HEAD "origin/$default_branch" 2>/dev/null || echo "")
-    if [ -n "$merge_base" ]; then
-      commits_ahead=$(git rev-list --count "$merge_base..HEAD" 2>/dev/null || echo "0")
-      result=$(echo "$result" | jq \
-        --arg base "$merge_base" \
-        --argjson ahead "$commits_ahead" \
-        '.review_base = $base | .commits_ahead = $ahead')
-    else
-      result=$(echo "$result" | jq '.review_base = "HEAD~1" | .review_base_fallback = true')
-    fi
-
-    # shallow clone 여부
-    if [ -f "$(git rev-parse --git-dir)/shallow" ]; then
-      result=$(echo "$result" | jq '.is_shallow = true')
-    else
-      result=$(echo "$result" | jq '.is_shallow = false')
-    fi
+# === 2. 커밋 존재 여부 ===
+if ! git rev-parse HEAD >/dev/null 2>&1; then
+  echo "has_commits=false"
+  echo "change_state=initial"
+  # Codex 감지 후 종료
+  if [ -d "$HOME/.claude/plugins/cache/openai-codex" ]; then
+    echo "codex_installed=true"
   else
-    result=$(echo "$result" | jq '.has_commits = false | .change_state = "initial"')
+    echo "codex_installed=false"
   fi
+  exit 0
+fi
+
+echo "has_commits=true"
+
+# === 3. 변경 상태 세분화 (spec 요구: staged/unstaged/mixed/untracked-only/clean) ===
+staged=$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')
+unstaged=$(git diff --name-only 2>/dev/null | wc -l | tr -d ' ')
+untracked=$(git ls-files --others --exclude-standard 2>/dev/null | wc -l | tr -d ' ')
+
+echo "staged=$staged"
+echo "unstaged=$unstaged"
+echo "untracked=$untracked"
+
+if [ "$staged" -eq 0 ] && [ "$unstaged" -eq 0 ] && [ "$untracked" -eq 0 ]; then
+  echo "change_state=clean"
+elif [ "$staged" -gt 0 ] && [ "$unstaged" -gt 0 ]; then
+  echo "change_state=mixed"
+elif [ "$staged" -gt 0 ]; then
+  echo "change_state=staged"
+elif [ "$unstaged" -gt 0 ]; then
+  echo "change_state=unstaged"
 else
-  result=$(echo "$result" | jq '.is_git = false | .has_commits = false | .change_state = "non-git"')
+  echo "change_state=untracked-only"
 fi
 
-# 2. Codex 플러그인 감지
-if command -v codex >/dev/null 2>&1 || [ -d "$HOME/.claude/plugins/cache/openai-codex" ]; then
-  result=$(echo "$result" | jq '.codex_installed = true')
-  # 인증 상태는 커맨드 레벨에서 확인 (스크립트로는 한계)
-  result=$(echo "$result" | jq '.codex_auth = "unknown"')
+# === 4. review base 결정 (안전한 fallback 체인) ===
+review_base=""
+review_base_method=""
+
+# 시도 1: merge-base with remote default branch
+for remote_ref in "origin/HEAD" "origin/main" "origin/master"; do
+  if git rev-parse --verify "$remote_ref" >/dev/null 2>&1; then
+    candidate=$(git merge-base HEAD "$remote_ref" 2>/dev/null || true)
+    if [ -n "$candidate" ]; then
+      review_base="$candidate"
+      review_base_method="merge-base"
+      break
+    fi
+  fi
+done
+
+# 시도 2: HEAD~1 (커밋이 2개 이상일 때만)
+if [ -z "$review_base" ]; then
+  commit_count=$(git rev-list --count HEAD 2>/dev/null || echo "1")
+  if [ "$commit_count" -gt 1 ]; then
+    review_base="HEAD~1"
+    review_base_method="head-parent"
+  fi
+fi
+
+# 시도 3: root commit (커밋이 1개뿐) — empty tree hash 사용
+if [ -z "$review_base" ]; then
+  review_base="4b825dc642cb6eb9a060e54bf899d69f7cb46617"
+  review_base_method="empty-tree"
+fi
+
+echo "review_base=$review_base"
+echo "review_base_method=$review_base_method"
+
+# shallow clone 여부
+if [ -f "$(git rev-parse --git-dir)/shallow" ]; then
+  echo "is_shallow=true"
 else
-  result=$(echo "$result" | jq '.codex_installed = false | .codex_auth = "none"')
+  echo "is_shallow=false"
 fi
 
-# 3. 브라우저 도구 감지 (Mode 2 준비)
-result=$(echo "$result" | jq '.browser_tools = []')
-# Playwright MCP
-if claude mcp list 2>/dev/null | grep -q "playwright"; then
-  result=$(echo "$result" | jq '.browser_tools += ["playwright"]')
+# === 5. Codex 플러그인 감지 (파일 시스템만, 네트워크 호출 없음) ===
+if [ -d "$HOME/.claude/plugins/cache/openai-codex" ]; then
+  echo "codex_installed=true"
+else
+  echo "codex_installed=false"
 fi
-# Chrome MCP
-if claude mcp list 2>/dev/null | grep -q "claude-in-chrome"; then
-  result=$(echo "$result" | jq '.browser_tools += ["claude-in-chrome"]')
-fi
-
-echo "$result" | jq .
 ```
 
 - [ ] **Step 2: 실행 권한 부여**
@@ -619,11 +639,15 @@ user-invocable: false
 ### Stage 1: Collect (변경 수집)
 
 1. 환경 감지 스크립트 실행: `bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/detect-environment.sh`
-2. 결과에 따라 diff 수집:
-   - `is_git: false` → 사용자에게 리뷰할 파일 목록 요청
-   - `change_state: "initial"` → 모든 파일 대상 리뷰
-   - `change_state: "clean"` → 최근 커밋 기준 diff (`git diff HEAD~1`)
-   - `change_state: "dirty"` → unstaged + staged diff (`git diff HEAD`)
+2. 결과를 key=value 형식으로 파싱
+3. 결과에 따라 diff 수집:
+   - `change_state=non-git` → 사용자에게 리뷰할 파일 목록 요청
+   - `change_state=initial` → 모든 파일 대상 리뷰
+   - `change_state=clean` → `git diff {review_base}..HEAD`
+   - `change_state=staged` → `git diff --cached`
+   - `change_state=unstaged` → `git diff`
+   - `change_state=mixed` → `git diff HEAD` (staged + unstaged 모두)
+   - `change_state=untracked-only` → `git ls-files --others --exclude-standard`로 파일 목록 수집
 3. diff에서 제외: 바이너리, vendor/, node_modules/, *.min.js, *.generated.*
 
 ### Stage 2: Contract Check (계약 검증)
@@ -695,20 +719,38 @@ git commit -m "feat: add deep-review-workflow skill (4-stage pipeline)"
 
 ```markdown
 ---
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Agent, Skill
-description: 현재 변경사항을 독립 에이전트로 리뷰합니다. --contract로 Sprint Contract 기반 검증, --entropy로 엔트로피 스캔.
-argument-hint: "[--contract] [--entropy] [--qa]"
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Agent, Skill, AskUserQuestion
+description: 현재 변경사항을 독립 에이전트로 리뷰합니다. init으로 규칙 초기화, --contract로 Sprint Contract 기반 검증, --entropy로 엔트로피 스캔.
+argument-hint: "[init] [--contract] [--entropy]"
 ---
 
 # /deep-review — Independent Code Review
 
 현재 코드 변경사항을 독립된 Evaluator 에이전트로 리뷰합니다.
 
+## Argument Dispatch
+
+- `init` → "init 모드" 섹션으로 분기 (프로젝트별 규칙 초기화)
+- `--contract` / `--entropy` / 인수 없음 → "리뷰 모드"로 진행
+
 ## Prerequisites
 
 `deep-review-workflow` 스킬을 로드합니다.
 
-## Steps
+## 0. Auto-create .deep-review/ (리뷰 모드, 최초 실행 시)
+
+`.deep-review/` 디렉토리가 없으면 **자동 생성** (init 실행 없이도 동작 보장):
+```bash
+mkdir -p .deep-review/contracts .deep-review/reports .deep-review/journeys
+```
+config.yaml이 없으면 기본값으로 생성:
+```yaml
+review_model: opus
+codex_notified: false
+```
+rules.yaml은 생성하지 않음 (없으면 범용 기본 관점으로 리뷰).
+
+## Steps (리뷰 모드)
 
 ### 1. 환경 감지
 
@@ -716,27 +758,30 @@ argument-hint: "[--contract] [--entropy] [--qa]"
 bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/detect-environment.sh
 ```
 
-결과를 파싱하여 환경 상태를 파악합니다.
+결과를 key=value 형식으로 파싱하여 환경 상태를 파악합니다.
 
 ### 2. 변경사항 수집 (Stage 1: Collect)
 
 환경에 따라 diff를 수집합니다:
 
-**non-git 환경:**
-- 사용자에게 질문: "어떤 파일을 리뷰할까요?"
+**non-git 환경 (change_state=non-git):**
+- AskUserQuestion: "어떤 파일을 리뷰할까요?"
 - 지정된 파일들의 전체 내용을 수집
 
-**git + 커밋 0건:**
-- 모든 tracked 파일을 대상으로 리뷰
+**git + 커밋 0건 (change_state=initial):**
+- 모든 파일 대상 리뷰 (empty tree hash 기준)
 
-**git + clean (변경 없음):**
+**git + clean (change_state=clean):**
 - `git diff {review_base}..HEAD`로 최근 변경 수집
 
-**git + dirty (변경 있음):**
-- `git diff HEAD`로 unstaged+staged 변경 수집
-- WIP 커밋 제안: "Codex 교차 검증을 위해 WIP 커밋을 생성할까요?"
+**git + staged/unstaged/mixed:**
+- 해당 상태에 맞는 diff 수집 (staged: `--cached`, unstaged: `git diff`, mixed: `git diff HEAD`)
+- AskUserQuestion으로 WIP 커밋 제안: "Codex 교차 검증을 위해 WIP 커밋을 생성할까요?"
   - 수락: `git add -A && git commit -m "wip: deep-review checkpoint"`
-  - 거부: diff 기반으로 진행
+  - 거부: diff 기반으로 진행 (Claude Opus + 가능하면 Codex도)
+
+**git + untracked-only:**
+- `git ls-files --others --exclude-standard`로 파일 목록 수집 후 내용 읽기
 
 diff에서 제외: 바이너리, vendor/, node_modules/, *.min.js, *.generated.*, *.lock
 
@@ -801,43 +846,16 @@ focus_text 생성:
 
 ### 7. App QA (--qa) — v1.1에서 구현
 
-현재 v1.0에서는: "App QA는 deep-review v1.1에서 지원됩니다."
-```
-
-- [ ] **Step 2: 커밋**
-
-```bash
-cd ~/dev/deep-review
-git add commands/deep-review.md
-git commit -m "feat: add /deep-review command (Mode 1 code review)"
-```
+현재 v1.0에서는: "App QA는 deep-review v1.1에서 지원 예정입니다."
 
 ---
 
-### Task 7: init 커맨드 — `/deep-review init`
-
-**Files:**
-- Create: `~/dev/deep-review/commands/deep-review-init.md`
-
-- [ ] **Step 1: deep-review-init.md 작성**
-
-```markdown
----
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep
-description: 프로젝트에 deep-review 설정을 초기화합니다. .deep-review/ 디렉토리와 rules.yaml을 생성합니다.
-argument-hint: ""
----
-
-# /deep-review init — Initialize Review Configuration
-
-프로젝트에 `.deep-review/` 디렉토리와 기본 설정 파일을 생성합니다.
-
-## Steps
+## Steps (init 모드 — 인수가 "init"일 때)
 
 ### 1. 기존 설정 확인
 
 `.deep-review/` 디렉토리가 이미 존재하는지 확인합니다.
-- 존재하면: "이미 초기화되어 있습니다. 다시 초기화할까요?" 확인
+- 존재하면: AskUserQuestion "이미 초기화되어 있습니다. 다시 초기화할까요?"
 - 없으면: 진행
 
 ### 2. 디렉토리 생성
@@ -857,9 +875,9 @@ mkdir -p .deep-review/journeys
 3. **기존 린터 규칙**: .eslintrc, .prettierrc, ruff.toml 등에서 스타일 규칙 추출
 4. **네이밍 컨벤션**: 기존 파일/함수의 네이밍 패턴 분석
 
-### 4. 사용자와 대화형 규칙 설정
+### 4. 사용자와 대화형 규칙 설정 (AskUserQuestion)
 
-분석 결과를 바탕으로 사용자에게 질문:
+분석 결과를 바탕으로 AskUserQuestion으로 질문:
 
 "프로젝트를 분석했습니다. 다음 규칙을 적용할까요?"
 
@@ -920,19 +938,22 @@ entropy:
 ### 8. 완료 메시지
 
 "deep-review 초기화 완료. `/deep-review`로 리뷰를 시작하세요."
+
+(이 init 로직은 메인 커맨드 deep-review.md의 "init 모드" 섹션에 포함되어 있음 — 별도 커맨드 파일 없음)
+
 ```
 
 - [ ] **Step 2: 커밋**
 
 ```bash
 cd ~/dev/deep-review
-git add commands/deep-review-init.md
-git commit -m "feat: add /deep-review init command (interactive setup)"
+git add commands/deep-review.md
+git commit -m "feat: add /deep-review command (review + init mode, AskUserQuestion)"
 ```
 
 ---
 
-### Task 8: hooks.json (빈 구조)
+### Task 7: hooks.json (빈 구조)
 
 **Files:**
 - Create: `~/dev/deep-review/hooks/hooks.json`
@@ -958,7 +979,7 @@ git commit -m "chore: add empty hooks.json for future extensibility"
 
 ---
 
-### Task 9: 통합 테스트 — 전체 플러그인 동작 확인
+### Task 8: 통합 테스트 — 전체 플러그인 동작 확인
 
 **Files:**
 - None (수동 테스트)
@@ -1005,3 +1026,19 @@ cd ~/dev/deep-review
 git add -A
 git commit -m "chore: finalize deep-review v1.0 plugin"
 ```
+
+---
+
+## Out of Scope for v1.0
+
+다음 항목은 spec에 정의되어 있으나 v1.0 plan에서는 **명시적으로 제외**:
+
+| 항목 | 이유 | 예정 버전 |
+|------|------|-----------|
+| Mode 2: App QA (--qa) | 브라우저 도구 의존, 별도 설계 필요 | v1.1 |
+| deep-work W1: Sprint Contract 생성 (plan.md → contracts/) | deep-work 플러그인 수정 필요, 별도 plan | 2순위 plan |
+| deep-work W2: Phase 3/4 자동 호출 hook | deep-work 플러그인 수정 필요 | 2순위 plan |
+| deep-wiki K1, K2: 자동 ingest, 리뷰 축적 | deep-wiki 플러그인 수정 필요 | 2순위 plan |
+| deep-evolve E1: deep-review 평가 하네스 | deep-evolve 플러그인 수정 필요 | 3순위 plan |
+
+v1.0은 **deep-review 독립 동작**에 집중한다. Contract 파일은 수동으로 생성하거나, 향후 deep-work W1에서 자동 생성된다.
