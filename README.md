@@ -46,6 +46,106 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 
 ---
 
+## Harness Engineering Architecture
+
+Deep Suite implements the [Harness Engineering](https://martinfowler.com/articles/harness-engineering.html) framework (Böckeler/Fowler, 2026) — the principle that **Agent = Model + Harness**. Each plugin occupies a specific role in the 2×2 matrix of Guides (feedforward) × Sensors (feedback), across Computational (deterministic) and Inferential (LLM-based) control.
+
+### 2×2 Matrix: Where Each Plugin Lives
+
+```
+              ┌───────────────────────────┬────────────────────────────┐
+              │     Computational         │     Inferential            │
+┌─────────────┼───────────────────────────┼────────────────────────────┤
+│             │                           │                            │
+│   Guides    │  deep-work                │  deep-work                 │
+│ (Feedforward│  ├─ Phase Guard hook      │  ├─ research/plan/brainstm │
+│  Control)   │  ├─ TDD state machine     │  └─ Sprint Contract        │
+│             │  └─ Topology templates    │                            │
+│             │     (phase1/3/4 guides)   │  deep-wiki                 │
+│             │                           │  └─ Persistent knowledge   │
+│             │                           │                            │
+│             │                           │  deep-docs                 │
+│             │                           │  └─ Document freshness     │
+│             │                           │     guides                 │
+├─────────────┼───────────────────────────┼────────────────────────────┤
+│             │                           │                            │
+│  Sensors    │  deep-work                │  deep-review               │
+│ (Feedback   │  ├─ Linters + typecheck   │  ├─ Opus code review       │
+│  Control)   │  ├─ Coverage + mutation   │  ├─ 3-way cross-model      │
+│             │  ├─ 4 drift sensors       │  └─ SOLID + entropy scan   │
+│             │  ├─ Fitness rules         │                            │
+│             │  └─ review-check sensor   │  deep-work                 │
+│             │                           │  └─ Drift check (semantic) │
+│             │  deep-docs                │                            │
+│             │  └─ Doc freshness scan    │                            │
+│             │                           │                            │
+│             │  deep-dashboard           │                            │
+│             │  ├─ Harnessability score  │                            │
+│             │  └─ Effectiveness score   │                            │
+└─────────────┴───────────────────────────┴────────────────────────────┘
+```
+
+### Development Lifecycle Flow
+
+```
+Phase 0        Phase 1         Phase 2      Phase 3           Phase 4        Post
+Brainstorm     Research        Plan         Implement         Test           Review
+    │              │              │              │                │              │
+    │         deep-wiki ◄─── knowledge ──► deep-wiki            │              │
+    │              │              │              │                │              │
+    │     deep-dashboard         │              │                │              │
+    │     (harnessability)       │              │                │              │
+    │              │              │              │                │              │
+    │      Health Engine         │     SENSOR_RUN pipeline       │              │
+    │      ├─ drift scan         │     ├─ lint                   │              │
+    │      └─ fitness check      │     ├─ typecheck              │              │
+    │              │              │     └─ review-check           │              │
+    │         topology ─────────────► guides.phase3              │              │
+    │         detection          │              │                │              │
+    │              │              │              │         mutation test         │
+    │              │              │              │         fitness delta         │
+    │              │              │              │                │              │
+    │              │              │              │                │       deep-review
+    │              │              │              │                │       3-way verify
+    │              │              │              │                │              │
+    └──────────────┴──────────────┴──────────────┴────────────────┴──────────────┘
+                                                                          │
+    Continuous: deep-docs (doc scan) ◄──────────────────────────────────┘
+               deep-dashboard (effectiveness + action routing)
+               deep-evolve (autonomous experimentation — independent cycle)
+```
+
+### Plugin Data Flow
+
+```
+deep-work ──── receipts ────► deep-dashboard (collector)
+    │                              │
+    ├── health_report ──────► deep-review (fitness-aware review)
+    │                              │
+    ├── fitness.json ◄──────► deep-review (rule consumption)
+    │                              │
+deep-docs ── last-scan.json ─► deep-dashboard (collector)
+    │                              │
+deep-dashboard                     ▼
+    ├── harnessability ──────► deep-work Phase 1 (research context)
+    └── effectiveness ────────► user (CLI report + optional markdown)
+```
+
+### Framework Coverage: 7.9/10
+
+| Dimension | Score | Key Strength |
+|-----------|-------|-------------|
+| Computational Sensors | 9/10 | 13+ sensors across 5 ecosystems |
+| Self-Correction Loop | 9/10 | Multi-round, multi-sensor state machine |
+| Harnessability | 9/10 | Quantitative diagnostic tool (6 dimensions) |
+| Pre-Integration | 9/10 | Phase Guard + TDD + SENSOR_RUN pipeline |
+| Human Steering | 8/10 | Assumption Engine + Dashboard |
+| Continuous Timing | 6/10 | Strong static analysis, no runtime monitoring |
+
+[Full comparison analysis →](docs/harness-engineering-comparison.md)
+
+---
+
 ## deep-work
 
 **Evidence-Driven Development Protocol** — a single-command auto-flow orchestration that enforces structured, evidence-based software development.
