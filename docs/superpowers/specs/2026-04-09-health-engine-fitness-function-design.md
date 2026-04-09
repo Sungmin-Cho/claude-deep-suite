@@ -10,7 +10,7 @@
 
 ### 해결하는 문제
 
-1. **#3 Continuous Monitoring → 세션 간 드리프트 감지** (High) — 개발 세션 사이에 코드베이스가 어떻게 변했는지 감지하는 센서가 전무. 데드 코드 축적, 커버리지 퇴화, 의존성 취약점 등이 조용히 누적. 범위를 플러그인 경계 내(개발 시점 연속 감시)로 한정. 런타임 피드백(SLO, 에러율)이나 자율 cron은 플러그인 범위를 넘어서므로 제외.
+1. **#3A 세션 간 드리프트 감지** (High) — 개발 세션 사이에 코드베이스가 어떻게 변했는지 감지하는 센서가 전무. 데드 코드 축적, 커버리지 퇴화, 의존성 취약점 등이 조용히 누적. 범위를 플러그인 경계 내(개발 시점 연속 감시)로 한정. 런타임 피드백(SLO, 에러율)이나 자율 cron은 플러그인 범위를 넘어서므로 제외. (roadmap의 #3 Continuous Monitoring 중 session-start subset. 전체 #3은 #3A + #3B(런타임 모니터링, 향후)로 분리.)
 2. **#4 Architecture Fitness Function 부재** (High) — 아키텍처 특성을 선언하고 계산적으로 검증하는 메커니즘이 없음. `rules.yaml`은 LLM이 읽을 뿐 강제하지 않음. (현재 Architecture Fitness Harness: 4/10)
 
 ### 설계 결정 요약
@@ -21,10 +21,13 @@
 | 엔진 위치 | deep-work `health/` 디렉토리 |
 | fitness.yaml 생성 | 없으면 코드베이스 분석 후 자동 제안 → 유저 승인 |
 | fitness.yaml 규칙 | **계산적으로 검증 가능한 것만** (dep-cruiser, 파일 크기, import 패턴 등) |
-| dep-cruiser 미설치 | 설명 + 설치 제안. 거부 시 dependency 규칙 skip (not_applicable). grep fallback 없음 |
+| dep-cruiser 미설치 | 설명 + 설치 제안. 거부 시 required dependency 규칙은 `required_missing` (실패), advisory는 skip. grep fallback 없음 |
 | 재검증 | Phase 4 Test에서 Fitness Delta Gate (Advisory) |
 | deep-review 연동 | fitness.yaml을 리뷰 기준으로 소비 + receipt의 health_report 참조 |
-| #2 인프라 재사용 | 파서 패턴, Required/Advisory/Not_applicable 3단계 정책, receipt 스키마 |
+| #2 인프라 재사용 | 파서 패턴, Required/Advisory/Not_applicable + Required_missing 정책, receipt 스키마 |
+| v1 언어 스코프 | dead-export, stale-config: JS/TS만. dependency 타입: JS/TS만 (dep-cruiser). file-metric, forbidden-pattern, structure: 범용 |
+| custom 타입 | v1에서 제거. 향후 per-command 승인 + allowlist 패턴으로 재도입 |
+| .deep-review/ 소유권 | 프로젝트의 리뷰 설정 디렉토리 (플러그인 전용이 아님). deep-review 미설치 시에도 deep-work가 생성 가능 |
 | 대상 플러그인 | deep-work (Health Engine) + deep-review (fitness 소비) |
 | Session Quality Score | 변경 없음 — Health Check은 세션 시작 시점 진단이므로 별도 가시성 |
 
@@ -66,14 +69,16 @@ deep-review (별도 플러그인):
 
 Phase 1 Research에서 실행되는 4개 드리프트 센서. 모두 계산적(computational) — LLM 추론 없이 결정적 결과 반환.
 
-| 센서 | 감지 대상 | 방법 | Gate 유형 |
-|------|-----------|------|-----------|
-| **dead-export** | 사용되지 않는 export | grep 기반 export/import 교차 참조 | Advisory |
-| **coverage-trend** | 커버리지 퇴화 | 이전 세션 baseline 대비 비교 | Advisory |
-| **dependency-vuln** | 알려진 취약점 | `npm audit --json` / `pip audit` 등 | Required |
-| **stale-config** | 깨진 참조 | config 파일 내 경로/파일 존재 확인 | Advisory |
+| 센서 | 감지 대상 | 방법 | Gate 유형 | v1 스코프 |
+|------|-----------|------|-----------|-----------|
+| **dead-export** | 사용되지 않는 export | grep 기반 export/import 교차 참조 | Advisory | JS/TS만 |
+| **coverage-trend** | 커버리지 퇴화 | 이전 세션 baseline 대비 비교 | Advisory | 범용 (registry 기반) |
+| **dependency-vuln** | 알려진 취약점 | `npm audit --json` / `pip audit` 등 | Required | registry에 audit 정의된 생태계 |
+| **stale-config** | 깨진 참조 | config 파일 내 경로/파일 존재 확인 | Advisory | JS/TS만 (tsconfig, package.json, eslintrc) |
 
-### 3.1 dead-export
+v1 미지원 생태계(Go, Rust, Java 등)에서는 해당 센서가 `not_applicable`로 처리. registry.json에 audit 필드를 추가하면 dependency-vuln은 확장 가능.
+
+### 3.1 dead-export (JS/TS only)
 
 ```
 입력: 프로젝트 소스 파일 목록
@@ -81,8 +86,18 @@ Phase 1 Research에서 실행되는 4개 드리프트 센서. 모두 계산적(c
   1. export 문 수집 (regex: export {name}, export default, module.exports)
   2. import/require 문에서 참조 수집
   3. export되었지만 어디서도 import되지 않은 심볼 목록 생성
-  4. entry point (package.json main/bin, index 파일) 제외
+  4. 제외 목록:
+     - entry point (package.json main/bin/exports, index 파일)
+     - 라이브러리 프로젝트 (package.json에 main/exports 필드 → 외부 소비용 export 전체 제외)
+     - re-export (export { foo } from './bar')
+     - barrel 파일 (index.ts/index.js에서의 export)
+  5. dynamic import (import(), require(variable))는 감지 불가 → false positive 허용
 출력: { deadExports: [{file, name, line}], count: N }
+```
+
+**정확도 기대치**: grep 기반이므로 false positive 발생 가능. Advisory 등급이므로 차단하지 않음. 유저가 `.deep-work/health-ignore.json`에 무시 목록을 추가할 수 있음:
+```json
+{ "dead_export_ignore": ["src/utils/legacy.ts:oldHelper"] }
 ```
 
 ### 3.2 coverage-trend
@@ -128,6 +143,8 @@ Phase 1 Research에서 실행되는 4개 드리프트 센서. 모두 계산적(c
 // .deep-work/health-baseline.json
 {
   "updated_at": "2026-04-09T14:30:00Z",
+  "commit": "abc1234",
+  "branch": "main",
   "coverage": { "line": 85.2, "branch": 72.1 },
   "dead_exports": 3,
   "fitness_violations": 1
@@ -136,7 +153,11 @@ Phase 1 Research에서 실행되는 4개 드리프트 센서. 모두 계산적(c
 
 - Phase 4 Test 통과 후 자동 갱신 (다음 세션의 비교 기준)
 - `.gitignore`에 추가하지 않음 — 팀 공유 가능
-- `updated_at`이 7일 이상이면 "baseline이 오래되었습니다. 새로 기록합니다" 안내 후 현재 상태를 baseline으로 대체
+- **무효화 조건** (어느 하나라도 해당되면 baseline 재기록):
+  - 현재 branch가 baseline의 `branch`와 불일치
+  - baseline의 `commit`이 현재 branch의 ancestor가 아님 (rebase/force-push 감지)
+  - `updated_at`이 7일 이상
+- 무효화 시: "baseline이 현재 상태와 불일치합니다. 새로 기록합니다" 안내 후 현재 상태를 baseline으로 대체
 
 ### 3.6 Health Report 포맷 (research context 주입용)
 
@@ -223,27 +244,22 @@ rules:
     test: "src/**/*.test.ts"
     severity: advisory
 
-  # 5. 커스텀 검증
-  - id: bundle-size
-    type: custom
-    description: "빌드 번들 5MB 이하"
-    cmd: "node scripts/check-bundle-size.js"
-    severity: advisory
 ```
+
+> **`custom` 타입은 v1에서 제거.** fitness.yaml은 git으로 공유되는 프로젝트 파일이므로, 임의 명령 실행은 보안 경계를 넘어선다. 향후 per-command 승인 + allowlist 패턴(예: `node scripts/**`, `npm run *`)을 설계한 후 v2에서 재도입.
 
 ### 4.2 규칙 타입별 검증 엔진
 
-| type | 검증 방법 | 외부 도구 |
-|------|-----------|-----------|
-| `dependency` | dep-cruiser (필수) | dep-cruiser |
-| `file-metric` | `wc -l`, 파일 시스템 직접 읽기 | 없음 |
-| `forbidden-pattern` | grep (ripgrep 또는 내장 regex) | 없음 |
-| `structure` | glob 패턴 매칭 | 없음 |
-| `custom` | 유저 정의 명령 실행 → exit code 판정 | 유저 제공 |
+| type | 검증 방법 | 외부 도구 | v1 스코프 |
+|------|-----------|-----------|-----------|
+| `dependency` | dep-cruiser | dep-cruiser | JS/TS만 |
+| `file-metric` | `wc -l`, 파일 시스템 직접 읽기 | 없음 | 범용 |
+| `forbidden-pattern` | grep (ripgrep 또는 내장 regex) | 없음 | 범용 |
+| `structure` | glob 패턴 매칭 | 없음 | 범용 |
 
-핵심 원칙: `dependency` 외에는 외부 도구 의존 없음.
+핵심 원칙: `dependency` 외에는 외부 도구 의존 없음. `file-metric`, `forbidden-pattern`, `structure`는 언어와 무관하게 동작.
 
-### 4.3 dependency 규칙 검증 정책
+### 4.3 dependency 규칙 검증 정책 (JS/TS only)
 
 ```
 fitness.yaml에 dependency 타입 규칙 존재
@@ -256,9 +272,15 @@ fitness.yaml에 dependency 타입 규칙 존재
             ├── 제안: "npm install --save-dev dependency-cruiser 설치를 진행할까요?"
             └── 유저 선택
                  ├── 승인 → 설치 후 검증
-                 └── 거부 → dependency 규칙 skip (not_applicable)
+                 └── 거부:
+                      ├── severity: required → `required_missing` (실패 상태)
+                      │   "required dependency 규칙을 사용하려면 dep-cruiser가 필요합니다"
+                      │   Phase 4까지 전파 — 유저 acknowledge 요구
+                      └── severity: advisory → `not_applicable` (skip)
                            나머지 규칙(file-metric, forbidden-pattern 등)은 정상 실행
 ```
+
+**severity와 gate behavior 분리**: `required`는 "이 규칙이 중요하다"는 선언이며, 도구 미설치로 검증 불가 시 "검증되지 않은 required 규칙이 있다"는 사실 자체가 실패. `not_applicable`로 조용히 넘어가지 않음.
 
 ### 4.4 자동 생성 로직 (Phase 1 Research)
 
@@ -324,6 +346,13 @@ Delta: +1건 → Advisory 경고 "이번 구현에서 console.log 1건 추가됨
 
 **2) Health Report 소비 (receipt 경유)**
 
+**Receipt 발견 계약:**
+- 경로: `.deep-work/sessions/{session-id}/receipt.json` (deep-work 표준 경로)
+- 선택 순서: 현재 세션의 receipt → 가장 최근 세션의 receipt → 없으면 skip
+- stale 판정: receipt의 `scan_time`이 현재 코드와 무관한 경우 (commit hash 불일치) → skip
+- missing: receipt 없으면 health_report 없이 리뷰 진행 (에러 아님)
+- deep-review Stage 3 prompt 주입: receipt 발견 시 health_report 섹션을 Opus subagent prompt에 추가
+
 deep-work receipt의 `health_report` 필드를 deep-review가 읽으면:
 - 드리프트 이슈를 리뷰 컨텍스트에 포함
 - fitness 위반 delta를 리뷰 포인트로 활용
@@ -353,9 +382,9 @@ fitness.yaml 직접 생성은 deep-work의 책임. deep-review init에서는 안
 
 ## 6. Quality Gate + Receipt 통합
 
-### 6.1 Phase 4 Fitness Delta Gate
+### 6.1 Phase 4 Quality Gates
 
-기존 Quality Gate 체계에 Fitness Delta 추가:
+기존 Quality Gate 체계에 2개 gate 추가:
 
 ```
 Phase 4: Test — Quality Gates
@@ -367,9 +396,17 @@ Phase 4: Test — Quality Gates
 
 신규:
   Fitness Delta   (Advisory)  — 이번 구현이 새 fitness 위반을 추가했는가?
+  Health Required (Required)  — Phase 1의 미해결 required 실패 전파
 ```
 
-Advisory인 이유: fitness 위반이 의도적일 수 있음 (예: 급한 hotfix에서 console.log 임시 추가). 차단보다는 인지시키고 receipt에 기록.
+**Fitness Delta가 Advisory인 이유**: fitness 위반이 의도적일 수 있음 (예: 급한 hotfix에서 console.log 임시 추가). 차단보다는 인지시키고 receipt에 기록.
+
+**Health Required Gate 동작**:
+- Phase 1에서 `required_fail` 또는 `required_missing` 상태인 항목을 Phase 4까지 전파
+- dependency-vuln critical/high 미해결, 또는 required dependency 규칙 도구 미설치 등
+- Phase 4에서 유저에게 acknowledge 요구: "Phase 1에서 발견된 required 이슈가 미해결입니다: [목록]. 이 상태로 완료하시겠습니까?"
+- acknowledge 시: receipt에 `acknowledged_required_issues` 필드 기록 + 진행
+- 거부 시: 세션을 Phase 1로 되돌리거나, 이슈 해결 후 재실행 권장
 
 ### 6.2 Receipt 스키마 확장
 
@@ -438,7 +475,7 @@ Advisory인 이유: fitness 위반이 의도적일 수 있음 (예: 급한 hotfi
 
 ## 7. 파일 구조
 
-### deep-work — 신규 파일 (14개)
+### deep-work — 신규 파일 (13개)
 
 ```
 deep-work/
@@ -446,23 +483,24 @@ deep-work/
     health-check.js                # 통합 Health Engine (진입점)
     health-check.test.js           # Health Engine 테스트
     drift/
-      dead-export.js               # 미사용 export 감지
+      dead-export.js               # 미사용 export 감지 (JS/TS only)
       coverage-trend.js            # 커버리지 퇴화 감지
-      dependency-vuln.js           # 의존성 취약점 감지
-      stale-config.js              # 깨진 참조 감지
+      dependency-vuln.js           # 의존성 취약점 감지 (파싱 로직 내장)
+      stale-config.js              # 깨진 참조 감지 (JS/TS only)
       drift.test.js                # 드리프트 센서 통합 테스트
     fitness/
-      fitness-validator.js         # fitness.yaml 규칙 검증 엔진
+      fitness-validator.js         # fitness.yaml 스키마 검증 + 규칙 검증 엔진
       fitness-generator.js         # fitness.yaml 자동 생성 로직
       rule-checkers/
-        dependency-checker.js      # dep-cruiser 연동 (dependency 타입)
-        file-metric-checker.js     # line-count 등 (file-metric 타입)
-        pattern-checker.js         # forbidden-pattern 타입
-        structure-checker.js       # colocated 등 (structure 타입)
-        custom-checker.js          # 유저 정의 명령 (custom 타입)
+        dependency-checker.js      # dep-cruiser 연동 (dependency 타입, JS/TS only)
+        file-metric-checker.js     # line-count 등 (file-metric 타입, 범용)
+        pattern-checker.js         # forbidden-pattern 타입 (범용)
+        structure-checker.js       # colocated 등 (structure 타입, 범용)
       fitness.test.js              # fitness 검증 통합 테스트
-    health-baseline.js             # baseline 읽기/쓰기
+    health-baseline.js             # baseline 읽기/쓰기 (commit/branch scoping)
 ```
+
+> `custom-checker.js` 제거 (v1에서 custom 타입 미지원). `dependency-vuln.js`에 audit 파싱 로직 내장 (별도 파서 불필요).
 
 ### deep-work — 수정 파일 (6개)
 
@@ -487,18 +525,18 @@ deep-work/
 
 ```
 health-check.js (진입점)
-  ├── drift/dead-export.js
-  ├── drift/coverage-trend.js      ← sensors/detect.js (#2) 재사용
-  ├── drift/dependency-vuln.js     ← sensors/registry.json (#2) 확장
-  ├── drift/stale-config.js
-  ├── fitness/fitness-validator.js
-  │    ├── rule-checkers/dependency-checker.js  ← dep-cruiser (optional)
-  │    ├── rule-checkers/file-metric-checker.js
-  │    ├── rule-checkers/pattern-checker.js
-  │    ├── rule-checkers/structure-checker.js
-  │    └── rule-checkers/custom-checker.js
+  ├── drift/ (dead-export + dependency-vuln + stale-config 병렬 실행)
+  │    ├── dead-export.js               (JS/TS only)
+  │    ├── dependency-vuln.js           ← sensors/registry.json (#2) audit 필드 확장
+  │    └── stale-config.js              (JS/TS only)
+  ├── drift/coverage-trend.js           ← sensors/detect.js (#2) 재사용 (순차)
+  ├── fitness/fitness-validator.js      (순차)
+  │    ├── rule-checkers/dependency-checker.js  ← dep-cruiser (JS/TS only, optional)
+  │    ├── rule-checkers/file-metric-checker.js (범용)
+  │    ├── rule-checkers/pattern-checker.js     (범용)
+  │    └── rule-checkers/structure-checker.js   (범용)
   ├── fitness/fitness-generator.js
-  └── health-baseline.js
+  └── health-baseline.js                ← commit/branch scoping
 ```
 
 ---
@@ -523,17 +561,23 @@ health-check.js (진입점)
 ### 8.2 타임아웃 전략
 
 ```
-Health Check 전체: 120초 (Phase 1 내에서)
-  ├── dead-export: 30초 (대규모 모노레포 고려)
-  ├── coverage-trend: 60초 (#2의 coverage 실행 재사용)
-  ├── dependency-vuln: 30초 (네트워크 의존)
-  ├── stale-config: 10초 (파일 시스템만)
-  └── fitness-validator: 60초
+Health Check 전체: 180초 (Phase 1 내에서)
+  ├── Drift Scan (병렬 실행, 최대 60초):
+  │    ├── dead-export: 30초
+  │    ├── dependency-vuln: 30초 (네트워크 의존)
+  │    └── stale-config: 10초
+  │    (Promise.allSettled — 상호 의존성 없음)
+  ├── coverage-trend: 60초 (#2의 coverage 실행 재사용, 순차)
+  └── fitness-validator: 60초 (순차)
        ├── dep-cruiser: 30초
        └── 나머지 rule-checkers: 각 10초
 ```
 
-센서들은 순차 실행 (개별 타임아웃). 전체 120초를 초과하면 남은 센서를 `timeout`으로 기록하고 진행.
+- dead-export + dependency-vuln + stale-config은 **병렬 실행** (wall-clock ~30초)
+- coverage-trend는 테스트 실행이 필요하므로 순차
+- fitness-validator는 드리프트 센서 이후 순차
+- 예상 wall-clock: ~150초 (병렬 30 + coverage 60 + fitness 60)
+- 전체 180초를 초과하면 남은 센서를 `timeout`으로 기록하고 진행
 
 ### 8.3 엣지 케이스
 
@@ -541,10 +585,12 @@ Health Check 전체: 120초 (Phase 1 내에서)
 |--------|------|
 | 모노레포에서 여러 fitness.yaml | 프로젝트 루트의 `.deep-review/fitness.yaml`만 사용. 하위 패키지별 fitness는 향후 |
 | fitness.yaml 규칙이 0개 | 파일 존재하되 규칙 없음 → `not_applicable` (에러 아님) |
-| `custom` 타입 규칙의 cmd가 위험한 명령 | #2와 동일 — trusted config 정책. 유저가 작성한 스크립트만 실행 |
+| fitness.yaml version이 지원되지 않는 값 | 경고 + fitness 검증 전체 skip (`not_applicable`). Forward-compatibility 정책 — 팀원 간 플러그인 버전 불일치 대응 |
+| fitness.yaml 스키마 오류 (필수 필드 누락, 잘못된 type enum, 중복 id) | 오류 목록 출력 + 해당 규칙 skip. 유효한 규칙만 실행 |
 | deep-work 없이 deep-review에서 fitness.yaml 참조 | 파일이 있으면 Opus prompt에 포함. 계산적 검증은 수행하지 않음 (deep-review의 역할이 아님) |
-| 이전 세션 baseline과 프로젝트 구조가 크게 변경 | baseline의 `updated_at`이 7일 이상이면 안내 후 현재 상태를 baseline으로 대체 |
-| git이 없는 프로젝트 | 모든 센서 동작 (dead-export, stale-config, dependency-vuln, fitness 모두 git 미의존) |
+| 브랜치 전환 후 baseline 불일치 | commit/branch scoping으로 자동 무효화 + 재기록 |
+| git이 없는 프로젝트 | dead-export, stale-config, dependency-vuln, fitness 동작. baseline의 commit/branch 필드는 null — 시간 기반 무효화만 적용 |
+| 비 JS/TS 프로젝트 | dead-export, stale-config: `not_applicable`. dependency 타입 fitness: `required_missing`. file-metric, forbidden-pattern, structure: 정상 동작 |
 
 ---
 
