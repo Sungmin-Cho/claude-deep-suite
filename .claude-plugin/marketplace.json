@@ -1,45 +1,53 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "claude-deep-suite",
-  "description": "Deep Suite — structured workflow, wiki, autonomous experimentation, independent code review, and document gardening plugins",
-  "owner": {
-    "name": "sungmin"
-  },
+  "description": "Deep Suite — structured development, wiki, autonomous experimentation, independent code review, and document gardening plugins for Claude Code",
+  "owner": { "name": "sungmin" },
   "plugins": [
     {
       "name": "deep-work",
-      "description": "Evidence-Driven Development Protocol — auto-flow orchestration with TDD enforcement, slice-based execution, and receipt validation",
+      "description": "Evidence-Driven Development Protocol",
       "version": "5.8.1",
-      "source": "https://github.com/Sungmin-Cho/claude-deep-work",
-      "category": "productivity"
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Sungmin-Cho/claude-deep-work.git"
+      }
     },
     {
       "name": "deep-wiki",
-      "description": "LLM-managed markdown wiki for persistent knowledge accumulation — based on Karpathy's LLM Wiki philosophy",
+      "description": "LLM-managed markdown wiki",
       "version": "1.0.1",
-      "source": "https://github.com/Sungmin-Cho/claude-deep-wiki",
-      "category": "productivity"
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git"
+      }
     },
     {
       "name": "deep-evolve",
-      "description": "Autonomous Experimentation Protocol — goal-driven experiment loops that systematically improve any project",
+      "description": "Autonomous Experimentation Protocol",
       "version": "1.0.0",
-      "source": "https://github.com/Sungmin-Cho/claude-deep-evolve",
-      "category": "productivity"
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Sungmin-Cho/claude-deep-evolve.git"
+      }
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator for AI coding agents — cross-model code review with Codex integration",
+      "description": "Independent Evaluator for AI coding agents",
       "version": "1.0.0",
-      "source": "https://github.com/Sungmin-Cho/claude-deep-review",
-      "category": "productivity"
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Sungmin-Cho/claude-deep-review.git"
+      }
     },
     {
       "name": "deep-docs",
-      "description": "Document gardening agent — validates freshness and auto-repairs CLAUDE.md, AGENTS.md, and project docs",
+      "description": "Document gardening agent",
       "version": "1.0.0",
-      "source": "https://github.com/Sungmin-Cho/claude-deep-docs",
-      "category": "productivity"
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git"
+      }
     }
   ]
 }
