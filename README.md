@@ -53,96 +53,93 @@ Deep Suite implements the [Harness Engineering](https://martinfowler.com/article
 ### 2×2 Matrix: Where Each Plugin Lives
 
 ```
-              ┌───────────────────────────┬────────────────────────────┐
-              │     Computational         │     Inferential            │
-┌─────────────┼───────────────────────────┼────────────────────────────┤
-│             │                           │                            │
-│   Guides    │  deep-work                │  deep-work                 │
-│ (Feedforward│  ├─ Phase Guard hook      │  ├─ research/plan/brainstm │
-│  Control)   │  ├─ TDD state machine     │  └─ Sprint Contract        │
-│             │  └─ Topology templates    │                            │
-│             │     (phase1/3/4 guides)   │  deep-wiki                 │
-│             │                           │  └─ Persistent knowledge   │
-│             │                           │                            │
-│             │                           │  deep-docs                 │
-│             │                           │  └─ Document freshness     │
-│             │                           │     guides                 │
-├─────────────┼───────────────────────────┼────────────────────────────┤
-│             │                           │                            │
-│  Sensors    │  deep-work                │  deep-review               │
-│ (Feedback   │  ├─ Linters + typecheck   │  ├─ Opus code review       │
-│  Control)   │  ├─ Coverage + mutation   │  ├─ 3-way cross-model      │
-│             │  ├─ 4 drift sensors       │  └─ SOLID + entropy scan   │
-│             │  ├─ Fitness rules         │                            │
-│             │  └─ review-check sensor   │  deep-work                 │
-│             │                           │  └─ Drift check (semantic) │
-│             │  deep-docs                │                            │
-│             │  └─ Doc freshness scan    │                            │
-│             │                           │                            │
-│             │  deep-dashboard           │                            │
-│             │  ├─ Harnessability score  │                            │
-│             │  └─ Effectiveness score   │                            │
-└─────────────┴───────────────────────────┴────────────────────────────┘
+                ┌──────────────────────────┬──────────────────────────┐
+                │  Computational           │  Inferential             │
+┌───────────────┼──────────────────────────┼──────────────────────────┤
+│               │                          │                          │
+│  Guides       │  deep-work               │  deep-work               │
+│  (Feedforward │  ├─ Phase Guard hook     │  ├─ research/plan/brain  │
+│   Control)    │  ├─ TDD state machine    │  └─ Sprint Contract      │
+│               │  └─ Topology templates   │                          │
+│               │                          │  deep-wiki               │
+│               │                          │  └─ Persistent knowledge │
+│               │                          │                          │
+│               │                          │  deep-docs               │
+│               │                          │  └─ Document freshness   │
+├───────────────┼──────────────────────────┼──────────────────────────┤
+│               │                          │                          │
+│  Sensors      │  deep-work               │  deep-review             │
+│  (Feedback    │  ├─ Linters + typecheck  │  ├─ Opus code review     │
+│   Control)    │  ├─ Coverage + mutation  │  ├─ 3-way cross-model    │
+│               │  ├─ 4 drift sensors      │  └─ SOLID + entropy      │
+│               │  ├─ Fitness rules        │                          │
+│               │  └─ review-check sensor  │  deep-work               │
+│               │                          │  └─ Drift check          │
+│               │  deep-docs               │                          │
+│               │  └─ Doc freshness scan   │                          │
+│               │                          │                          │
+│               │  deep-dashboard          │                          │
+│               │  ├─ Harnessability       │                          │
+│               │  └─ Effectiveness        │                          │
+└───────────────┴──────────────────────────┴──────────────────────────┘
 ```
 
 ### Development Lifecycle Flow
 
 ```
-Phase 0        Phase 1         Phase 2      Phase 3           Phase 4        Post
-Brainstorm     Research        Plan         Implement         Test           Review
-    │              │              │              │                │              │
-    │         deep-wiki ◄─── knowledge ──► deep-wiki            │              │
-    │              │              │              │                │              │
-    │     deep-dashboard         │              │                │              │
-    │     (harnessability)       │              │                │              │
-    │              │              │              │                │              │
-    │      Health Engine         │     SENSOR_RUN pipeline       │              │
-    │      ├─ drift scan         │     ├─ lint                   │              │
-    │      └─ fitness check      │     ├─ typecheck              │              │
-    │              │              │     └─ review-check           │              │
-    │         topology ─────────────► guides.phase3              │              │
-    │         detection          │              │                │              │
-    │              │              │              │         mutation test         │
-    │              │              │              │         fitness delta         │
-    │              │              │              │                │              │
-    │              │              │              │                │       deep-review
-    │              │              │              │                │       3-way verify
-    │              │              │              │                │              │
-    └──────────────┴──────────────┴──────────────┴────────────────┴──────────────┘
-                                                                          │
-    Continuous: deep-docs (doc scan) ◄──────────────────────────────────┘
-               deep-dashboard (effectiveness + action routing)
-               deep-evolve (autonomous experimentation — independent cycle)
+Phase 0       Phase 1        Phase 2     Phase 3          Phase 4       Post
+Brainstorm    Research       Plan        Implement        Test          Review
+   │             │             │             │               │             │
+   │        deep-wiki ◄── knowledge ──► deep-wiki           │             │
+   │             │             │             │               │             │
+   │    deep-dashboard         │             │               │             │
+   │    (harnessability)       │             │               │             │
+   │             │             │             │               │             │
+   │     Health Engine         │    SENSOR_RUN pipeline      │             │
+   │     ├─ drift scan         │    ├─ lint                  │             │
+   │     └─ fitness check      │    ├─ typecheck             │             │
+   │             │             │    └─ review-check          │             │
+   │        topology ────────────► guides.phase3             │             │
+   │        detection          │             │               │             │
+   │             │             │             │        mutation test        │
+   │             │             │             │        fitness delta        │
+   │             │             │             │               │             │
+   │             │             │             │               │      deep-review
+   │             │             │             │               │      3-way verify
+   │             │             │             │               │             │
+   └─────────────┴─────────────┴─────────────┴───────────────┴─────────────┘
+                                                                     │
+   Continuous: deep-docs (doc scan) ◄────────────────────────────────┘
+              deep-dashboard (effectiveness + action routing)
+              deep-evolve (autonomous experimentation — independent cycle)
 ```
 
 ### Plugin Data Flow
 
 ```
-deep-work ──── receipts ────► deep-dashboard (collector)
-    │                              │
-    ├── health_report ──────► deep-review (fitness-aware review)
-    │                              │
-    ├── fitness.json ◄──────► deep-review (rule consumption)
-    │                              │
-deep-docs ── last-scan.json ─► deep-dashboard (collector)
-    │                              │
-deep-dashboard                     ▼
-    ├── harnessability ──────► deep-work Phase 1 (research context)
-    └── effectiveness ────────► user (CLI report + optional markdown)
+deep-work ───── receipts ─────► deep-dashboard (collector)
+   │                                │
+   ├── health_report ─────────► deep-review (fitness-aware review)
+   │                                │
+   ├── fitness.json ◄─────────► deep-review (rule consumption)
+   │                                │
+deep-docs ── last-scan.json ──► deep-dashboard (collector)
+   │                                │
+deep-dashboard                      ▼
+   ├── harnessability ────────► deep-work Phase 1 (research context)
+   └── effectiveness ─────────► user (CLI report + optional markdown)
 ```
 
-### Framework Coverage: 7.9/10
+### Framework Coverage
 
-| Dimension | Score | Key Strength |
-|-----------|-------|-------------|
-| Computational Sensors | 9/10 | 13+ sensors across 5 ecosystems |
-| Self-Correction Loop | 9/10 | Multi-round, multi-sensor state machine |
-| Harnessability | 9/10 | Quantitative diagnostic tool (6 dimensions) |
-| Pre-Integration | 9/10 | Phase Guard + TDD + SENSOR_RUN pipeline |
-| Human Steering | 8/10 | Assumption Engine + Dashboard |
-| Continuous Timing | 6/10 | Strong static analysis, no runtime monitoring |
-
-[Full comparison analysis →](docs/harness-engineering-comparison.md)
+| Dimension | Key Strength |
+|-----------|-------------|
+| Computational Sensors | 13+ sensors across 5 ecosystems |
+| Self-Correction Loop | Multi-round, multi-sensor state machine |
+| Harnessability | Quantitative diagnostic tool (6 dimensions) |
+| Pre-Integration | Phase Guard + TDD + SENSOR_RUN pipeline |
+| Human Steering | Assumption Engine + Dashboard |
+| Continuous Timing | Strong static analysis, no runtime monitoring |
 
 ---
 

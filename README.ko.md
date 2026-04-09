@@ -53,95 +53,93 @@ Deep Suite는 [Harness Engineering](https://martinfowler.com/articles/harness-en
 ### 2×2 매트릭스: 각 플러그인의 위치
 
 ```
-              ┌───────────────────────────┬────────────────────────────┐
-              │     Computational         │     Inferential            │
-┌─────────────┼───────────────────────────┼────────────────────────────┤
-│             │                           │                            │
-│   Guides    │  deep-work                │  deep-work                 │
-│ (피드포워드 │  ├─ Phase Guard hook      │  ├─ research/plan/brainstm │
-│  제어)      │  ├─ TDD 상태 머신         │  └─ Sprint Contract        │
-│             │  └─ 토폴로지 템플릿       │                            │
-│             │     (phase1/3/4 가이드)   │  deep-wiki                 │
-│             │                           │  └─ 지속적 지식 축적       │
-│             │                           │                            │
-│             │                           │  deep-docs                 │
-│             │                           │  └─ 문서 신선도 가이드     │
-├─────────────┼───────────────────────────┼────────────────────────────┤
-│             │                           │                            │
-│  Sensors    │  deep-work                │  deep-review               │
-│ (피드백     │  ├─ Linter + 타입 체크    │  ├─ Opus 코드 리뷰         │
-│  제어)      │  ├─ 커버리지 + 뮤테이션   │  ├─ 3-way 교차 모델 검증   │
-│             │  ├─ 4개 드리프트 센서     │  └─ SOLID + 엔트로피 스캔  │
-│             │  ├─ Fitness 규칙          │                            │
-│             │  └─ review-check 센서     │  deep-work                 │
-│             │                           │  └─ 드리프트 체크 (의미론) │
-│             │  deep-docs                │                            │
-│             │  └─ 문서 신선도 스캔      │                            │
-│             │                           │                            │
-│             │  deep-dashboard           │                            │
-│             │  ├─ Harnessability 점수   │                            │
-│             │  └─ Effectiveness 점수    │                            │
-└─────────────┴───────────────────────────┴────────────────────────────┘
+                ┌──────────────────────────┬──────────────────────────┐
+                │  Computational           │  Inferential             │
+┌───────────────┼──────────────────────────┼──────────────────────────┤
+│               │                          │                          │
+│  Guides       │  deep-work               │  deep-work               │
+│  (피드포워드  │  ├─ Phase Guard hook     │  ├─ research/plan/brain  │
+│   제어)       │  ├─ TDD 상태 머신        │  └─ Sprint Contract      │
+│               │  └─ 토폴로지 템플릿      │                          │
+│               │                          │  deep-wiki               │
+│               │                          │  └─ 지속적 지식 축적     │
+│               │                          │                          │
+│               │                          │  deep-docs               │
+│               │                          │  └─ 문서 신선도 가이드   │
+├───────────────┼──────────────────────────┼──────────────────────────┤
+│               │                          │                          │
+│  Sensors      │  deep-work               │  deep-review             │
+│  (피드백      │  ├─ Linter + 타입 체크   │  ├─ Opus 코드 리뷰       │
+│   제어)       │  ├─ 커버리지 + 뮤테이션  │  ├─ 3-way 교차 모델      │
+│               │  ├─ 4개 드리프트 센서    │  └─ SOLID + 엔트로피     │
+│               │  ├─ Fitness 규칙         │                          │
+│               │  └─ review-check 센서    │  deep-work               │
+│               │                          │  └─ 드리프트 체크        │
+│               │  deep-docs               │                          │
+│               │  └─ 문서 신선도 스캔     │                          │
+│               │                          │                          │
+│               │  deep-dashboard          │                          │
+│               │  ├─ Harnessability       │                          │
+│               │  └─ Effectiveness        │                          │
+└───────────────┴──────────────────────────┴──────────────────────────┘
 ```
 
 ### 개발 라이프사이클 흐름
 
 ```
-Phase 0        Phase 1         Phase 2      Phase 3           Phase 4        Post
-Brainstorm     Research        Plan         Implement         Test           Review
-    │              │              │              │                │              │
-    │         deep-wiki ◄─── 지식 ──────► deep-wiki              │              │
-    │              │              │              │                │              │
-    │     deep-dashboard         │              │                │              │
-    │     (harnessability)       │              │                │              │
-    │              │              │              │                │              │
-    │      Health Engine         │     SENSOR_RUN 파이프라인     │              │
-    │      ├─ 드리프트 스캔      │     ├─ lint                   │              │
-    │      └─ fitness 체크       │     ├─ typecheck              │              │
-    │              │              │     └─ review-check           │              │
-    │         토폴로지 ─────────────► guides.phase3              │              │
-    │         감지               │              │                │              │
-    │              │              │              │         mutation test         │
-    │              │              │              │         fitness delta         │
-    │              │              │              │                │              │
-    │              │              │              │                │       deep-review
-    │              │              │              │                │       3-way 검증
-    │              │              │              │                │              │
-    └──────────────┴──────────────┴──────────────┴────────────────┴──────────────┘
-                                                                          │
-    Continuous: deep-docs (문서 스캔) ◄────────────────────────────────┘
-               deep-dashboard (effectiveness + 액션 라우팅)
-               deep-evolve (자율 실험 — 독립 사이클)
+Phase 0       Phase 1        Phase 2     Phase 3          Phase 4       Post
+Brainstorm    Research       Plan        Implement        Test          Review
+   │             │             │             │               │             │
+   │        deep-wiki ◄── 지식 ────────► deep-wiki          │             │
+   │             │             │             │               │             │
+   │    deep-dashboard         │             │               │             │
+   │    (harnessability)       │             │               │             │
+   │             │             │             │               │             │
+   │     Health Engine         │    SENSOR_RUN 파이프라인    │             │
+   │     ├─ 드리프트 스캔      │    ├─ lint                  │             │
+   │     └─ fitness 체크       │    ├─ typecheck             │             │
+   │             │             │    └─ review-check          │             │
+   │        토폴로지 ────────────► guides.phase3             │             │
+   │        감지               │             │               │             │
+   │             │             │             │        mutation test        │
+   │             │             │             │        fitness delta        │
+   │             │             │             │               │             │
+   │             │             │             │               │      deep-review
+   │             │             │             │               │      3-way 검증
+   │             │             │             │               │             │
+   └─────────────┴─────────────┴─────────────┴───────────────┴─────────────┘
+                                                                     │
+   Continuous: deep-docs (문서 스캔) ◄───────────────────────────────┘
+              deep-dashboard (effectiveness + 액션 라우팅)
+              deep-evolve (자율 실험 — 독립 사이클)
 ```
 
 ### 플러그인 데이터 흐름
 
 ```
-deep-work ──── receipts ────► deep-dashboard (collector)
-    │                              │
-    ├── health_report ──────► deep-review (fitness 인지 리뷰)
-    │                              │
-    ├── fitness.json ◄──────► deep-review (규칙 소비)
-    │                              │
-deep-docs ── last-scan.json ─► deep-dashboard (collector)
-    │                              │
-deep-dashboard                     ▼
-    ├── harnessability ──────► deep-work Phase 1 (research context)
-    └── effectiveness ────────► 사용자 (CLI 리포트 + 선택적 마크다운)
+deep-work ───── receipts ─────► deep-dashboard (collector)
+   │                                │
+   ├── health_report ─────────► deep-review (fitness 인지 리뷰)
+   │                                │
+   ├── fitness.json ◄─────────► deep-review (규칙 소비)
+   │                                │
+deep-docs ── last-scan.json ──► deep-dashboard (collector)
+   │                                │
+deep-dashboard                      ▼
+   ├── harnessability ────────► deep-work Phase 1 (research context)
+   └── effectiveness ─────────► 사용자 (CLI 리포트 + 선택적 마크다운)
 ```
 
-### 프레임워크 커버리지: 7.9/10
+### 프레임워크 커버리지
 
-| 차원 | 점수 | 핵심 강점 |
-|------|------|-----------|
-| Computational Sensors | 9/10 | 5개 생태계에 걸쳐 13+ 센서 |
-| Self-Correction Loop | 9/10 | 멀티 라운드, 멀티 센서 상태 머신 |
-| Harnessability | 9/10 | 정량적 진단 도구 (6차원) |
-| Pre-Integration | 9/10 | Phase Guard + TDD + SENSOR_RUN 파이프라인 |
-| Human Steering | 8/10 | Assumption Engine + Dashboard |
-| Continuous Timing | 6/10 | 정적 분석 강함, 런타임 모니터링 없음 |
-
-[전체 비교 분석 →](docs/harness-engineering-comparison.md)
+| 차원 | 핵심 강점 |
+|------|-----------|
+| Computational Sensors | 5개 생태계에 걸쳐 13+ 센서 |
+| Self-Correction Loop | 멀티 라운드, 멀티 센서 상태 머신 |
+| Harnessability | 정량적 진단 도구 (6차원) |
+| Pre-Integration | Phase Guard + TDD + SENSOR_RUN 파이프라인 |
+| Human Steering | Assumption Engine + Dashboard |
+| Continuous Timing | 정적 분석 강함, 런타임 모니터링 없음 |
 
 ---
 
