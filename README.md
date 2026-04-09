@@ -2,7 +2,7 @@
 
 # Claude Deep Suite
 
-A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketplace that bundles five complementary plugins for structured development, persistent knowledge management, autonomous experimentation, independent code review, and document gardening.
+A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketplace that bundles six complementary plugins for structured development, persistent knowledge management, autonomous experimentation, independent code review, document gardening, and harness diagnostics.
 
 ## Plugins
 
@@ -13,6 +13,7 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | Independent Evaluator with cross-model verification |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | Document gardening agent |
+| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | Cross-plugin harness diagnostics |
 
 ---
 
@@ -37,6 +38,7 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 /plugin install deep-evolve@Sungmin-Cho-claude-deep-suite
 /plugin install deep-review@Sungmin-Cho-claude-deep-suite
 /plugin install deep-docs@Sungmin-Cho-claude-deep-suite
+/plugin install deep-dashboard@Sungmin-Cho-claude-deep-suite
 
 # Or install only what you need
 /plugin install deep-work@Sungmin-Cho-claude-deep-suite
@@ -239,6 +241,45 @@ Inspired by OpenAI's [Harness Engineering](https://openai.com/index/harness-engi
 - **Scoring** — size, freshness, reference accuracy, duplication
 
 [Full documentation →](https://github.com/Sungmin-Cho/claude-deep-docs)
+
+---
+
+## deep-dashboard
+
+**Cross-plugin Harness Diagnostics** — assesses codebase harnessability and aggregates sensor results from deep-work, deep-review, and deep-docs into a unified view.
+
+### Inspiration
+
+Built on Böckeler/Fowler's [Harness Engineering](https://martinfowler.com/articles/harness-engineering.html) framework — the dashboard closes the feedback loop by measuring harness effectiveness across the entire deep-suite ecosystem.
+
+### Key Commands
+
+| Command | Description |
+|---------|-------------|
+| `/deep-harnessability` | Assess codebase harnessability — 6 dimensions, 0-10 score with recommendations |
+| `/deep-harness-dashboard` | Unified view — health, fitness, sessions, effectiveness, suggested actions |
+
+### Harnessability Dimensions
+
+| Dimension | Weight | What it measures |
+|-----------|--------|-----------------|
+| Type Safety | 25% | tsconfig strict, mypy strict, type hints |
+| Module Boundaries | 20% | dep-cruiser config, organized src, entry points |
+| Test Infrastructure | 20% | test framework, test files, coverage config |
+| Sensor Readiness | 15% | linter, type checker, lock file |
+| Linter & Formatter | 10% | eslint/ruff config, prettier/biome |
+| CI/CD | 10% | CI config, CI runs tests |
+
+### Dashboard Features
+
+- **Health status** — drift sensor results (dead-export, stale-config, dep-vuln, coverage-trend)
+- **Fitness rules** — architecture fitness function pass/fail
+- **Session quality** — recent 3 sessions average
+- **Effectiveness score** — weighted aggregate (0-10) with not_applicable redistribution
+- **Action routing** — suggested next action per finding
+- **Markdown export** — optional report file generation with user approval
+
+[Full documentation →](https://github.com/Sungmin-Cho/claude-deep-dashboard)
 
 ---
 

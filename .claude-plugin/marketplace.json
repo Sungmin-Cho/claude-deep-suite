@@ -1,13 +1,13 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "claude-deep-suite",
-  "description": "Deep Suite — structured development, wiki, autonomous experimentation, independent code review, and document gardening plugins for Claude Code",
+  "description": "Deep Suite — structured development, wiki, autonomous experimentation, independent code review, document gardening, and harness diagnostics plugins for Claude Code",
   "owner": { "name": "sungmin" },
   "plugins": [
     {
       "name": "deep-work",
       "description": "Evidence-Driven Development Protocol",
-      "version": "5.8.1",
+      "version": "6.0.0",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git"
@@ -34,7 +34,7 @@
     {
       "name": "deep-review",
       "description": "Independent Evaluator for AI coding agents",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git"
@@ -47,6 +47,15 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git"
+      }
+    },
+    {
+      "name": "deep-dashboard",
+      "description": "Cross-plugin harness diagnostics — harnessability scoring and unified dashboard",
+      "version": "1.0.0",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git"
       }
     }
   ]
