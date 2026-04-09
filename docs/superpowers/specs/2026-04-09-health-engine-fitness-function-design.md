@@ -19,11 +19,11 @@
 |-----------|------|
 | 아키텍처 | Phase 1 Research 통합 Health Engine (별도 hook/command 없음) |
 | 엔진 위치 | deep-work `health/` 디렉토리 |
-| fitness.yaml 생성 | 없으면 코드베이스 분석 후 자동 제안 → 유저 승인 |
-| fitness.yaml 규칙 | **계산적으로 검증 가능한 것만** (dep-cruiser, 파일 크기, import 패턴 등) |
+| fitness.json 생성 | 없으면 코드베이스 분석 후 자동 제안 → 유저 승인 |
+| fitness.json 규칙 | **계산적으로 검증 가능한 것만** (dep-cruiser, 파일 크기, import 패턴 등) |
 | dep-cruiser 미설치 | 설명 + 설치 제안. 거부 시 required dependency 규칙은 `required_missing` (실패), advisory는 skip. grep fallback 없음 |
 | 재검증 | Phase 4 Test에서 Fitness Delta Gate (Advisory) |
-| deep-review 연동 | fitness.yaml을 리뷰 기준으로 소비 + receipt의 health_report 참조 |
+| deep-review 연동 | fitness.json을 리뷰 기준으로 소비 + receipt의 health_report 참조 |
 | #2 인프라 재사용 | 파서 패턴, Required/Advisory/Not_applicable + Required_missing 정책, receipt 스키마 |
 | v1 언어 스코프 | dead-export, stale-config: JS/TS만. dependency 타입: JS/TS만 (dep-cruiser). file-metric, forbidden-pattern, structure: 범용 |
 | custom 타입 | v1에서 제거. 향후 per-command 승인 + allowlist 패턴으로 재도입 |
@@ -46,7 +46,7 @@
             │    ├── 의존성 취약점 감지
             │    └── stale config 감지
             ├── Fitness Check
-            │    ├── fitness.yaml 로드 (없으면 자동 생성 제안)
+            │    ├── fitness.json 로드 (없으면 자동 생성 제안)
             │    └── 규칙별 계산적 검증
             └── Health Report → research context 주입
 
@@ -59,7 +59,7 @@
             └── "이번 구현이 새 위반을 추가했는가?"
 
 deep-review (별도 플러그인):
-  └── 리뷰 시 fitness.yaml 규칙 참조
+  └── 리뷰 시 fitness.json 규칙 참조
   └── receipt의 health_report 참조
 ```
 
@@ -181,12 +181,12 @@ v1 미지원 생태계(Go, Rust, Java 등)에서는 해당 센서가 `not_applic
 
 ## 4. Architecture Fitness Function 설계
 
-### 4.1 fitness.yaml 스키마
+### 4.1 fitness.json 스키마
 
-프로젝트 루트의 `.deep-review/fitness.yaml`에 계산적으로 검증 가능한 아키텍처 규칙을 선언.
+프로젝트 루트의 `.deep-review/fitness.json`에 계산적으로 검증 가능한 아키텍처 규칙을 선언.
 
 ```yaml
-# .deep-review/fitness.yaml
+# .deep-review/fitness.json
 version: 1
 generated_at: "2026-04-09T14:30:00Z"
 
@@ -246,7 +246,7 @@ rules:
 
 ```
 
-> **`custom` 타입은 v1에서 제거.** fitness.yaml은 git으로 공유되는 프로젝트 파일이므로, 임의 명령 실행은 보안 경계를 넘어선다. 향후 per-command 승인 + allowlist 패턴(예: `node scripts/**`, `npm run *`)을 설계한 후 v2에서 재도입.
+> **`custom` 타입은 v1에서 제거.** fitness.json은 git으로 공유되는 프로젝트 파일이므로, 임의 명령 실행은 보안 경계를 넘어선다. 향후 per-command 승인 + allowlist 패턴(예: `node scripts/**`, `npm run *`)을 설계한 후 v2에서 재도입.
 
 ### 4.2 규칙 타입별 검증 엔진
 
@@ -262,13 +262,13 @@ rules:
 ### 4.3 dependency 규칙 검증 정책 (JS/TS only)
 
 ```
-fitness.yaml에 dependency 타입 규칙 존재
+fitness.json에 dependency 타입 규칙 존재
   └── dep-cruiser 설치 확인
        ├── 설치됨 → 정상 검증
        └── 미설치
             ├── 설명: "dep-cruiser는 JS/TS 프로젝트의 의존성 방향,
             │         순환 참조를 정적 분석하는 도구입니다.
-            │         fitness.yaml의 dependency 규칙 검증에 필요합니다."
+            │         fitness.json의 dependency 규칙 검증에 필요합니다."
             ├── 제안: "npm install --save-dev dependency-cruiser 설치를 진행할까요?"
             └── 유저 선택
                  ├── 승인 → 설치 후 검증
@@ -284,7 +284,7 @@ fitness.yaml에 dependency 타입 규칙 존재
 
 ### 4.4 자동 생성 로직 (Phase 1 Research)
 
-fitness.yaml이 없을 때의 자동 제안 흐름:
+fitness.json이 없을 때의 자동 제안 흐름:
 
 ```
 1. 프로젝트 구조 분석
@@ -305,7 +305,7 @@ fitness.yaml이 없을 때의 자동 제안 흐름:
     - [advisory] 파일 500줄 제한
     승인하시겠습니까?"
 
-4. 유저 승인 → .deep-review/fitness.yaml 생성 + git add
+4. 유저 승인 → .deep-review/fitness.json 생성 + git add
 ```
 
 ### 4.5 Phase 4 Delta Check
@@ -321,7 +321,7 @@ Delta: +1건 → Advisory 경고 "이번 구현에서 console.log 1건 추가됨
 - 새 위반 추가 없음 → PASS
 - 위반 감소 → PASS + 긍정 피드백
 - 위반 증가 → Advisory 경고 (차단하지 않되 receipt에 기록)
-- fitness.yaml 없음 → not_applicable (skip)
+- fitness.json 없음 → not_applicable (skip)
 
 ---
 
@@ -332,17 +332,17 @@ Delta: +1건 → Advisory 경고 "이번 구현에서 console.log 1건 추가됨
 | 파일 | 성격 | 검증 주체 | 위치 |
 |------|------|-----------|------|
 | `rules.yaml` | Inferential — LLM이 판단 | deep-review (Opus subagent) | `.deep-review/` |
-| `fitness.yaml` | Computational — 코드가 판단 | deep-work (Health Engine) | `.deep-review/` |
+| `fitness.json` | Computational — 코드가 판단 | deep-work (Health Engine) | `.deep-review/` |
 
 역할 분리: deep-work가 계산적 검증을 수행하고, deep-review는 그 결과를 소비. deep-review에 검증 엔진을 복제하지 않음.
 
 ### 5.2 연동 포인트
 
-**1) fitness.yaml 공유 (파일 시스템)**
+**1) fitness.json 공유 (파일 시스템)**
 
-`.deep-review/fitness.yaml`은 두 플러그인이 공유하는 계약:
+`.deep-review/fitness.json`은 두 플러그인이 공유하는 계약:
 - deep-work Phase 1에서 생성/검증 → 결과를 receipt에 기록
-- deep-review는 fitness.yaml을 Opus subagent prompt에 포함 → "이 규칙들은 계산적으로 검증되지만, 리뷰 시 관련 아키텍처 의도도 함께 고려하라"
+- deep-review는 fitness.json을 Opus subagent prompt에 포함 → "이 규칙들은 계산적으로 검증되지만, 리뷰 시 관련 아키텍처 의도도 함께 고려하라"
 
 **2) Health Report 소비 (receipt 경유)**
 
@@ -361,19 +361,19 @@ deep-work receipt의 `health_report` 필드를 deep-review가 읽으면:
 
 `/deep-review init`에서 rules.yaml 생성 시 안내 추가:
 ```
-"아키텍처 규칙을 계산적으로 강제하려면 deep-work의 fitness.yaml을 사용하세요.
- /deep-work 세션 Phase 1에서 자동으로 fitness.yaml 생성을 제안합니다."
+"아키텍처 규칙을 계산적으로 강제하려면 deep-work의 fitness.json을 사용하세요.
+ /deep-work 세션 Phase 1에서 자동으로 fitness.json 생성을 제안합니다."
 ```
 
-fitness.yaml 직접 생성은 deep-work의 책임. deep-review init에서는 안내만.
+fitness.json 직접 생성은 deep-work의 책임. deep-review init에서는 안내만.
 
 ### 5.3 독립 동작 보장
 
 | 시나리오 | deep-work | deep-review |
 |----------|-----------|-------------|
-| 둘 다 설치 | Health Check 실행 + receipt 기록 | receipt + fitness.yaml 참조 리뷰 |
+| 둘 다 설치 | Health Check 실행 + receipt 기록 | receipt + fitness.json 참조 리뷰 |
 | deep-work만 | Health Check 실행 | — |
-| deep-review만 | — | fitness.yaml 있으면 참조, 없으면 rules.yaml만으로 리뷰 |
+| deep-review만 | — | fitness.json 있으면 참조, 없으면 rules.yaml만으로 리뷰 |
 | 둘 다 미설치 | — | — |
 
 어떤 조합이든 에러 없이 동작. 연동 시 더 강력해질 뿐.
@@ -489,8 +489,8 @@ deep-work/
       stale-config.js              # 깨진 참조 감지 (JS/TS only)
       drift.test.js                # 드리프트 센서 통합 테스트
     fitness/
-      fitness-validator.js         # fitness.yaml 스키마 검증 + 규칙 검증 엔진
-      fitness-generator.js         # fitness.yaml 자동 생성 로직
+      fitness-validator.js         # fitness.json 스키마 검증 + 규칙 검증 엔진
+      fitness-generator.js         # fitness.json 자동 생성 로직
       rule-checkers/
         dependency-checker.js      # dep-cruiser 연동 (dependency 타입, JS/TS only)
         file-metric-checker.js     # line-count 등 (file-metric 타입, 범용)
@@ -517,9 +517,9 @@ deep-work/
 
 | 파일 | 변경 내용 |
 |------|-----------|
-| `commands/deep-review.md` | Stage 3 prompt에 fitness.yaml 주입 로직 추가 |
-| `agents/code-reviewer.md` | fitness.yaml 규칙 인지 지침 추가 |
-| `commands/deep-review.md` (init) | fitness.yaml 안내 문구 추가 |
+| `commands/deep-review.md` | Stage 3 prompt에 fitness.json 주입 로직 추가 |
+| `agents/code-reviewer.md` | fitness.json 규칙 인지 지침 추가 |
+| `commands/deep-review.md` (init) | fitness.json 안내 문구 추가 |
 
 ### 모듈 의존성
 
@@ -551,10 +551,10 @@ health-check.js (진입점)
 |------|------|------|
 | Health Engine 자체 크래시 | 경고 출력 + Phase 1 계속 진행 | Health Check 실패가 구현 작업을 막으면 안 됨 |
 | 개별 드리프트 센서 크래시 | 해당 센서 `error` 상태 + 나머지 센서 실행 | 센서 간 독립성 |
-| fitness.yaml 파싱 오류 | 경고 + fitness 검증 skip | 깨진 YAML이 세션을 막지 않음 |
+| fitness.json 파싱 오류 | 경고 + fitness 검증 skip | 깨진 YAML이 세션을 막지 않음 |
 | dep-cruiser 실행 오류 | dependency 규칙 `error` 상태 + 나머지 규칙 실행 | 도구 오류가 다른 검증을 막지 않음 |
 | `npm audit` 타임아웃 | dependency-vuln `timeout` 상태 | 네트워크 의존이므로 관대하게 |
-| fitness.yaml 없음 + 자동 생성 제안 거부 | fitness 검증 전체 `not_applicable` | 유저 선택 존중 |
+| fitness.json 없음 + 자동 생성 제안 거부 | fitness 검증 전체 `not_applicable` | 유저 선택 존중 |
 | baseline 파일 없음 (첫 세션) | coverage-trend `not_applicable` + fitness delta 전체 baseline으로 기록 | 비교 대상 없음 |
 | Phase 4 Fitness Delta 재검증 실패 | Advisory 경고만 | 이미 Advisory Gate |
 
@@ -583,11 +583,11 @@ Health Check 전체: 180초 (Phase 1 내에서)
 
 | 케이스 | 처리 |
 |--------|------|
-| 모노레포에서 여러 fitness.yaml | 프로젝트 루트의 `.deep-review/fitness.yaml`만 사용. 하위 패키지별 fitness는 향후 |
-| fitness.yaml 규칙이 0개 | 파일 존재하되 규칙 없음 → `not_applicable` (에러 아님) |
-| fitness.yaml version이 지원되지 않는 값 | 경고 + fitness 검증 전체 skip (`not_applicable`). Forward-compatibility 정책 — 팀원 간 플러그인 버전 불일치 대응 |
-| fitness.yaml 스키마 오류 (필수 필드 누락, 잘못된 type enum, 중복 id) | 오류 목록 출력 + 해당 규칙 skip. 유효한 규칙만 실행 |
-| deep-work 없이 deep-review에서 fitness.yaml 참조 | 파일이 있으면 Opus prompt에 포함. 계산적 검증은 수행하지 않음 (deep-review의 역할이 아님) |
+| 모노레포에서 여러 fitness.json | 프로젝트 루트의 `.deep-review/fitness.json`만 사용. 하위 패키지별 fitness는 향후 |
+| fitness.json 규칙이 0개 | 파일 존재하되 규칙 없음 → `not_applicable` (에러 아님) |
+| fitness.json version이 지원되지 않는 값 | 경고 + fitness 검증 전체 skip (`not_applicable`). Forward-compatibility 정책 — 팀원 간 플러그인 버전 불일치 대응 |
+| fitness.json 스키마 오류 (필수 필드 누락, 잘못된 type enum, 중복 id) | 오류 목록 출력 + 해당 규칙 skip. 유효한 규칙만 실행 |
+| deep-work 없이 deep-review에서 fitness.json 참조 | 파일이 있으면 Opus prompt에 포함. 계산적 검증은 수행하지 않음 (deep-review의 역할이 아님) |
 | 브랜치 전환 후 baseline 불일치 | commit/branch scoping으로 자동 무효화 + 재기록 |
 | git이 없는 프로젝트 | dead-export, stale-config, dependency-vuln, fitness 동작. baseline의 commit/branch 필드는 null — 시간 기반 무효화만 적용 |
 | 비 JS/TS 프로젝트 | dead-export, stale-config: `not_applicable`. dependency 타입 fitness: `required_missing`. file-metric, forbidden-pattern, structure: 정상 동작 |
