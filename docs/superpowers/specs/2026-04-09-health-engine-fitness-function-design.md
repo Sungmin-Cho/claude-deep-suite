@@ -105,7 +105,9 @@ Phase 1 Research에서 실행되는 4개 드리프트 센서. 모두 계산적(c
   JS/TS: npm audit --json (severity: high/critical만)
   Python: pip audit --json 또는 safety check
   C#: dotnet list package --vulnerable
-  registry.json에 audit 명령 추가
+  audit 명령은 registry.json의 각 ecosystem에 "audit" 필드로 추가:
+    "audit": { "cmd": "npm audit --json", "parser": "npm-audit" }
+  미정의 ecosystem은 dependency-vuln을 not_applicable로 처리
 출력: { vulnerabilities: [{package, severity, advisory}], critical: N, high: N }
 ```
 
