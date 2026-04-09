@@ -85,39 +85,52 @@
 
 ### Medium
 
-- [ ] **#5 Harness Templates — 토폴로지별 guides+sensors 번들**
+- [x] **#5 Harness Templates — 토폴로지별 guides+sensors 번들** ✅ 2026-04-09
   - 심각도: Medium
   - 대상 플러그인: deep-work
-  - 구현 항목:
-    - [ ] 서비스 토폴로지 감지 (Next.js SaaS, Python API, Event Processor 등)
-    - [ ] 토폴로지별 guides+sensors 번들 정의
-    - [ ] 프로필 시스템과 통합
+  - 구현 완료:
+    - [x] topology-registry.json — 6개 토폴로지 정의 (nextjs-app, react-spa, express-api, python-web, python-lib, generic)
+    - [x] topology-detector.js — 우선순위 기반 감지 + 사용자 custom topology 지원
+    - [x] template-loader.js — deep merge (오브젝트 재귀, 배열 교체)
+    - [x] 6개 토폴로지 JSON 템플릿 — guides(phase1/3/4), sensors, fitness_defaults, harnessability_hints
+    - [x] Phase 1 Research 통합 — topology 감지 + guides.phase1 주입
+    - [x] Phase 3 Implement 통합 — guides.phase3 advisory 주입
+    - [x] fitness-generator.js 확장 — template fitness_defaults를 seed로 사용
 
-- [ ] **#6 Self-Correction Loop 통합**
+- [x] **#6 Self-Correction Loop 통합** ✅ 2026-04-09
   - 심각도: Medium
-  - 대상 플러그인: deep-work, deep-review
-  - 구현 항목:
-    - [ ] 구현 중 linter/static analysis → 자기 교정 사이클
-    - [ ] deep-review를 Phase 3 내 인라인 피드백으로 통합
-    - [ ] Sensor 결과 LLM-optimized 포맷 변환
+  - 대상 플러그인: deep-work
+  - 구현 완료:
+    - [x] review-check.js 센서 — 2레이어 구조: always-on (topology guides) + fitness (fitness.json rules)
+    - [x] config disable 지원 — .deep-work/config.json의 review_check: false로 비활성화 가능
+    - [x] 파이프라인 통합 — lint → typecheck → review-check (센서별 3라운드 독립 제한)
+    - [x] Receipt 스키마 확장 — review-check 결과 포함
+  - 미구현 (v2):
+    - [ ] Inferential mini-review (v1은 computational만)
+    - [ ] changedFiles 범위 지정 (v1은 프로젝트 전체 fitness 검사)
 
 ### Low
 
-- [ ] **#7 Harnessability 진단 기능**
+- [x] **#7 Harnessability 진단 기능** ✅ 2026-04-09
   - 심각도: Low
-  - 대상 플러그인: deep-work
-  - 구현 항목:
-    - [ ] 코드베이스 하네스 가능성 자동 평가
-    - [ ] 타입 시스템, 모듈 경계, 활용 가능 sensor 진단
-    - [ ] 하네스 전략 추천
+  - 대상 플러그인: deep-dashboard (신규 플러그인)
+  - 구현 완료:
+    - [x] 6차원 스코어링 — type_safety(25%), module_boundaries(20%), test_infra(20%), sensor_readiness(15%), linter_formatter(10%), ci_cd(10%)
+    - [x] 17개 계산적 감지기 — 파일/설정 파일 검사 전용
+    - [x] 에코시스템 인식 — TS 체크는 Python 프로젝트에서 스킵, Python 체크는 TS 프로젝트에서 스킵
+    - [x] saveReport() — .deep-dashboard/harnessability-report.json에 generated_at 타임스탬프 포함 저장
+    - [x] /deep-harnessability 스킬
 
-- [ ] **#8 통합 하네스 대시보드**
+- [x] **#8 통합 하네스 대시보드** ✅ 2026-04-09
   - 심각도: Low
-  - 대상 플러그인: all
-  - 구현 항목:
-    - [ ] 5개 플러그인 센서 결과 통합 뷰
-    - [ ] 하네스 효과성 피드백 루프
-    - [ ] 인간 입력 라우팅 메커니즘
+  - 대상 플러그인: deep-dashboard (신규 플러그인)
+  - 구현 완료:
+    - [x] collector.js — deep-work, deep-review, deep-docs에서 데이터 수집 (v1 3개 플러그인 지원)
+    - [x] effectiveness.js — 4차원 가중 점수 (health 30%, fitness 25%, session 25%, harnessability 20%), not_applicable 재분배, 최근 3세션
+    - [x] action-router.js — 발견 유형별 suggested_action 생성
+    - [x] formatter.js — CLI 테이블 + 마크다운 출력
+    - [x] /deep-harness-dashboard 스킬
+    - [x] 사용자 승인 플로우 — 마크다운 리포트 생성 시 승인 요청
 
 ---
 
@@ -130,10 +143,10 @@
 | #3A 드리프트 감지 | 2026-04-09 | ✅ 완료 | 4 drift sensors + Health Engine 오케스트레이터. 13 commits, 61 tests. Branch: `feat/health-engine-fitness-function`. Opus+Codex 3중 리뷰 통과 |
 | #3B 런타임 모니터링 | — | 대기 | 플러그인 범위 밖 (SLO, 에러율, cron). 별도 설계 필요 |
 | #4 Architecture Fitness | 2026-04-09 | ✅ 완료 | fitness.json + 4 rule checkers + generator + deep-review 연동. #3A와 동일 브랜치 |
-| #5 Harness Templates | — | 대기 | |
-| #6 Self-Correction Loop | — | 대기 | |
-| #7 Harnessability 진단 | — | 대기 | |
-| #8 통합 대시보드 | — | 대기 | |
+| #5 Harness Templates | 2026-04-09 | ✅ 완료 | topology-registry.json(6개), detector, template-loader, 6개 topology JSON 템플릿, Phase 1/3 통합, fitness-generator seed. deep-work |
+| #6 Self-Correction Loop | 2026-04-09 | ✅ 완료 | review-check.js 센서(always-on + fitness 2레이어), lint→typecheck→review-check 파이프라인, config disable 지원. deep-work |
+| #7 Harnessability 진단 | 2026-04-09 | ✅ 완료 | 6차원 스코어(17개 감지기), ecosystem-aware, harnessability-report.json, /deep-harnessability. 신규 플러그인: deep-dashboard |
+| #8 통합 대시보드 | 2026-04-09 | ✅ 완료 | collector+effectiveness+action-router+formatter, 4차원 가중 점수, /deep-harness-dashboard, 사용자 승인 플로우. deep-dashboard |
 
 ---
 
