@@ -67,6 +67,8 @@ AI 코딩 도구가 복잡한 작업을 수행할 때, 코드베이스를 이해
 | `/deep-plan` | 수동 Phase 2 — 슬라이스 기반 구현 계획 |
 | `/deep-implement` | 수동 Phase 3 — TDD 강제 슬라이스 실행 |
 | `/deep-test` | Phase 4 — 품질 게이트 포함 검증 |
+| `/deep-sensor-scan` | Computational Sensor 스캔 — linter, 타입 체커, 커버리지 |
+| `/deep-mutation-test` | Mutation Testing — AI 생성 테스트 품질 검증 |
 
 ### 워크플로우 페이즈
 
@@ -83,7 +85,9 @@ Phase 4  Test          영수증 검사, 스펙 준수, 품질 게이트
 - **페이즈 잠금 파일 편집** — Phase 3 외부에서 코드 변경 차단
 - **TDD 강제** — 실패 테스트 먼저, 그다음 구현
 - **영수증 기반 증거** — 모든 슬라이스에서 완료 증거 수집
-- **품질 게이트** — 드리프트 체크, SOLID 리뷰, 인사이트 분석
+- **품질 게이트** — 드리프트 체크, SOLID 리뷰, 인사이트 분석, Sensor Clean, Mutation Score
+- **Computational Sensor** — linter/타입 체커/커버리지 자동 실행 + 자기 교정 루프 (SENSOR_RUN → SENSOR_FIX → SENSOR_CLEAN)
+- **Mutation Testing** — AI 생성 테스트 품질 자동 검증. survived mutant 발견 시 자동 재생성 (최대 3회)
 - **자동 플로우** — 하나의 커맨드로 전체 워크플로우 구동
 - **Completeness Policy** — placeholder 금지 패턴으로 plan 품질 강제 *(v5.8)*
 - **코드 스케치 크기별 완성도** — slice 크기(S/M/L)에 비례한 코드 상세도 *(v5.8)*

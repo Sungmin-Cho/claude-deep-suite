@@ -67,6 +67,8 @@ When AI coding tools tackle complex tasks, they often jump into implementation w
 | `/deep-plan` | Manual Phase 2 — slice-based implementation planning |
 | `/deep-implement` | Manual Phase 3 — TDD-enforced slice execution |
 | `/deep-test` | Phase 4 — verification with quality gates |
+| `/deep-sensor-scan` | Computational sensor scan — linter, type checker, coverage |
+| `/deep-mutation-test` | Mutation testing — AI-generated test quality verification |
 
 ### Workflow Phases
 
@@ -83,7 +85,9 @@ Phase 4  Test          Receipt check, spec compliance, quality gates
 - **Phase-locked file editing** — code changes blocked outside Phase 3
 - **TDD enforcement** — failing test first, then implementation
 - **Receipt-based evidence** — every slice collects proof of completion
-- **Quality gates** — drift check, SOLID review, insight analysis
+- **Quality gates** — drift check, SOLID review, insight analysis, Sensor Clean, Mutation Score
+- **Computational sensors** — auto-run linter/type checker/coverage with self-correction loop (SENSOR_RUN → SENSOR_FIX → SENSOR_CLEAN)
+- **Mutation testing** — auto-verify AI-generated test quality. Survived mutants trigger automatic test regeneration (up to 3 rounds)
 - **Auto-flow** — one command drives the entire workflow
 - **Completeness Policy** — plan quality enforcement with banned placeholder patterns *(v5.8)*
 - **Code sketch tiering** — proportional code detail by slice size (S/M/L) *(v5.8)*
