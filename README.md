@@ -176,11 +176,11 @@ Select Idea → Modify Code → Evaluate → Score improved?
 
 ## deep-review
 
-**Independent Evaluator** — AI 코딩 에이전트의 작업을 독립된 Opus 서브에이전트로 리뷰합니다. Codex 플러그인이 설치되어 있으면 3-way 교차 모델 검증을 실행합니다.
+**Independent Evaluator** — reviews AI coding agent output with a separate Opus subagent. Runs 3-way cross-model verification when the Codex plugin is installed.
 
 ### Inspiration
 
-Anthropic의 [Harness Design](https://www.anthropic.com/engineering/harness-design-long-running-apps)에서 영감 — Generator-Evaluator 분리로 자기 승인 편향을 구조적으로 제거합니다.
+Inspired by Anthropic's [Harness Design](https://www.anthropic.com/engineering/harness-design-long-running-apps) — structurally eliminates self-approval bias through Generator-Evaluator separation.
 
 ### Review Pipeline
 
@@ -213,11 +213,11 @@ Collect → Contract Check → Deep Review → Verdict
 
 ## deep-docs
 
-**Document Gardening Agent** — CLAUDE.md, AGENTS.md 등 에이전트 지침 문서의 신선도를 검증하고 자동 정비합니다.
+**Document Gardening Agent** — validates freshness and auto-repairs agent instruction documents like CLAUDE.md and AGENTS.md.
 
 ### Inspiration
 
-OpenAI의 [Harness Engineering](https://openai.com/index/harness-engineering/)에서 영감 — "doc-gardening 에이전트가 반복 실행되어 오래된 문서를 찾아 수정 PR을 연다."
+Inspired by OpenAI's [Harness Engineering](https://openai.com/index/harness-engineering/) — "a doc-gardening agent runs repeatedly, finds stale docs, and opens fix PRs."
 
 ### Key Commands
 
