@@ -50,84 +50,84 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 
 Deep Suite implements the [Harness Engineering](https://martinfowler.com/articles/harness-engineering.html) framework (Böckeler/Fowler, 2026) — the principle that **Agent = Model + Harness**. Each plugin occupies a specific role in the 2×2 matrix of Guides (feedforward) × Sensors (feedback), across Computational (deterministic) and Inferential (LLM-based) control.
 
-### 2×2 Matrix: Where Each Plugin Lives
+### 2x2 Matrix: Where Each Plugin Lives
 
 ```
-                ┌──────────────────────────┬──────────────────────────┐
-                │  Computational           │  Inferential             │
-┌───────────────┼──────────────────────────┼──────────────────────────┤
-│               │                          │                          │
-│  Guides       │  deep-work               │  deep-work               │
-│  (Feedforward │  ├─ Phase Guard hook     │  ├─ research/plan/brain  │
-│   Control)    │  ├─ TDD state machine    │  └─ Sprint Contract      │
-│               │  └─ Topology templates   │                          │
-│               │                          │  deep-wiki               │
-│               │                          │  └─ Persistent knowledge │
-│               │                          │                          │
-│               │                          │  deep-docs               │
-│               │                          │  └─ Document freshness   │
-├───────────────┼──────────────────────────┼──────────────────────────┤
-│               │                          │                          │
-│  Sensors      │  deep-work               │  deep-review             │
-│  (Feedback    │  ├─ Linters + typecheck  │  ├─ Opus code review     │
-│   Control)    │  ├─ Coverage + mutation  │  ├─ 3-way cross-model    │
-│               │  ├─ 4 drift sensors      │  └─ SOLID + entropy      │
-│               │  ├─ Fitness rules        │                          │
-│               │  └─ review-check sensor  │  deep-work               │
-│               │                          │  └─ Drift check          │
-│               │  deep-docs               │                          │
-│               │  └─ Doc freshness scan   │                          │
-│               │                          │                          │
-│               │  deep-dashboard          │                          │
-│               │  ├─ Harnessability       │                          │
-│               │  └─ Effectiveness        │                          │
-└───────────────┴──────────────────────────┴──────────────────────────┘
+                +---------------------------+---------------------------+
+                |  Computational            |  Inferential              |
++---------------+---------------------------+---------------------------+
+|               |                           |                           |
+|  Guides       |  deep-work                |  deep-work                |
+|  (Feedforward |  +- Phase Guard hook      |  +- research/plan/brain   |
+|   Control)    |  +- TDD state machine     |  +- Sprint Contract       |
+|               |  +- Topology templates    |                           |
+|               |                           |  deep-wiki                |
+|               |                           |  +- Persistent knowledge  |
+|               |                           |                           |
+|               |                           |  deep-docs                |
+|               |                           |  +- Document freshness    |
++---------------+---------------------------+---------------------------+
+|               |                           |                           |
+|  Sensors      |  deep-work                |  deep-review              |
+|  (Feedback    |  +- Linters + typecheck   |  +- Opus code review      |
+|   Control)    |  +- Coverage + mutation   |  +- 3-way cross-model     |
+|               |  +- 4 drift sensors       |  +- SOLID + entropy       |
+|               |  +- Fitness rules         |                           |
+|               |  +- review-check sensor   |  deep-work                |
+|               |                           |  +- Drift check           |
+|               |  deep-docs                |                           |
+|               |  +- Doc freshness scan    |                           |
+|               |                           |                           |
+|               |  deep-dashboard           |                           |
+|               |  +- Harnessability        |                           |
+|               |  +- Effectiveness         |                           |
++---------------+---------------------------+---------------------------+
 ```
 
 ### Development Lifecycle Flow
 
 ```
-Phase 0       Phase 1        Phase 2     Phase 3          Phase 4       Post
-Brainstorm    Research       Plan        Implement        Test          Review
-   │             │             │             │               │             │
-   │        deep-wiki ◄── knowledge ──► deep-wiki           │             │
-   │             │             │             │               │             │
-   │    deep-dashboard         │             │               │             │
-   │    (harnessability)       │             │               │             │
-   │             │             │             │               │             │
-   │     Health Engine         │    SENSOR_RUN pipeline      │             │
-   │     ├─ drift scan         │    ├─ lint                  │             │
-   │     └─ fitness check      │    ├─ typecheck             │             │
-   │             │             │    └─ review-check          │             │
-   │        topology ────────────► guides.phase3             │             │
-   │        detection          │             │               │             │
-   │             │             │             │        mutation test        │
-   │             │             │             │        fitness delta        │
-   │             │             │             │               │             │
-   │             │             │             │               │      deep-review
-   │             │             │             │               │      3-way verify
-   │             │             │             │               │             │
-   └─────────────┴─────────────┴─────────────┴───────────────┴─────────────┘
-                                                                     │
-   Continuous: deep-docs (doc scan) ◄────────────────────────────────┘
-              deep-dashboard (effectiveness + action routing)
-              deep-evolve (autonomous experimentation — independent cycle)
+ Phase 0     Phase 1      Phase 2    Phase 3        Phase 4     Post
+ Brainstorm  Research     Plan       Implement      Test        Review
+ |           |            |          |              |           |
+ |      deep-wiki <-- knowledge --> deep-wiki       |           |
+ |           |            |          |              |           |
+ |    deep-dashboard      |          |              |           |
+ |    (harnessability)    |          |              |           |
+ |           |            |          |              |           |
+ |    Health Engine       |   SENSOR_RUN pipeline   |           |
+ |    +- drift scan       |   +- lint               |           |
+ |    +- fitness check    |   +- typecheck          |           |
+ |           |            |   +- review-check       |           |
+ |      topology -----------> guides.phase3         |           |
+ |      detection         |          |              |           |
+ |           |            |          |       mutation test      |
+ |           |            |          |       fitness delta      |
+ |           |            |          |              |           |
+ |           |            |          |              |    deep-review
+ |           |            |          |              |    3-way verify
+ |           |            |          |              |           |
+ +===========+============+==========+==============+===========+
+                                                          |
+ Continuous: deep-docs (doc scan) <-----------------------+
+             deep-dashboard (effectiveness + action routing)
+             deep-evolve (autonomous experimentation)
 ```
 
 ### Plugin Data Flow
 
 ```
-deep-work ───── receipts ─────► deep-dashboard (collector)
-   │                                │
-   ├── health_report ─────────► deep-review (fitness-aware review)
-   │                                │
-   ├── fitness.json ◄─────────► deep-review (rule consumption)
-   │                                │
-deep-docs ── last-scan.json ──► deep-dashboard (collector)
-   │                                │
-deep-dashboard                      ▼
-   ├── harnessability ────────► deep-work Phase 1 (research context)
-   └── effectiveness ─────────► user (CLI report + optional markdown)
+ deep-work ------ receipts -------> deep-dashboard (collector)
+    |                                    |
+    +-- health_report ----------------> deep-review (fitness-aware review)
+    |                                    |
+    +-- fitness.json <----------------> deep-review (rule consumption)
+    |                                    |
+ deep-docs -- last-scan.json -----> deep-dashboard (collector)
+    |                                    |
+ deep-dashboard                          v
+    +-- harnessability ---------------> deep-work Phase 1 (research context)
+    +-- effectiveness ----------------> user (CLI report + optional markdown)
 ```
 
 ### Framework Coverage
