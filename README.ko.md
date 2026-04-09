@@ -58,25 +58,25 @@ Deep Suite는 [Harness Engineering](https://martinfowler.com/articles/harness-en
 +---------------+---------------------------+---------------------------+
 |               |                           |                           |
 |  Guides       |  deep-work                |  deep-work                |
-|  (피드포워드  |  +- Phase Guard hook      |  +- research/plan/brain   |
-|   제어)       |  +- TDD 상태 머신         |  +- Sprint Contract       |
-|               |  +- 토폴로지 템플릿       |                           |
+|  (Feedforward |  +- Phase Guard hook      |  +- research/plan/brain   |
+|   Control)    |  +- TDD state machine     |  +- Sprint Contract       |
+|               |  +- Topology templates    |                           |
 |               |                           |  deep-wiki                |
-|               |                           |  +- 지속적 지식 축적      |
+|               |                           |  +- Persistent knowledge  |
 |               |                           |                           |
 |               |                           |  deep-docs                |
-|               |                           |  +- 문서 신선도 가이드    |
+|               |                           |  +- Document freshness    |
 +---------------+---------------------------+---------------------------+
 |               |                           |                           |
 |  Sensors      |  deep-work                |  deep-review              |
-|  (피드백      |  +- Linter + 타입 체크    |  +- Opus 코드 리뷰        |
-|   제어)       |  +- 커버리지 + 뮤테이션   |  +- 3-way 교차 모델       |
-|               |  +- 4개 드리프트 센서     |  +- SOLID + 엔트로피      |
-|               |  +- Fitness 규칙          |                           |
-|               |  +- review-check 센서     |  deep-work                |
-|               |                           |  +- 드리프트 체크         |
+|  (Feedback    |  +- Linters + typecheck   |  +- Opus code review      |
+|   Control)    |  +- Coverage + mutation   |  +- 3-way cross-model     |
+|               |  +- 4 drift sensors       |  +- SOLID + entropy       |
+|               |  +- Fitness rules         |                           |
+|               |  +- review-check sensor   |  deep-work                |
+|               |                           |  +- Drift check           |
 |               |  deep-docs                |                           |
-|               |  +- 문서 신선도 스캔      |                           |
+|               |  +- Doc freshness scan    |                           |
 |               |                           |                           |
 |               |  deep-dashboard           |                           |
 |               |  +- Harnessability        |                           |
