@@ -12,6 +12,43 @@
 
 ---
 
+## 3-Way Review Erratum (v2)
+
+3-way 리뷰 (Opus + Codex standard + Codex adversarial) 결과 반영. 아래 수정 사항이 본문 코드보다 우선합니다.
+
+### Blockers Fixed
+
+| # | 문제 | 수정 |
+|---|------|------|
+| **PB4** | Template `colocated-tests` 규칙이 `source_glob`/`test_pattern` 사용 → 실제 checker는 `source`/`test` | Task 2: `source_glob`→`source`, `test_pattern`→`test`로 수정 |
+| **PB5** | Task 3에서 `generateFitnessRules` 참조 → 실제 함수명 `generateFitnessRules` | Task 3: 함수명 수정 |
+| **PB6** | Custom topology 삽입 미구현 (detector가 custom/ 새 ID 미발견) | Task 1: `detectTopology()`가 custom/ 디렉토리도 스캔하여 새 topology ID를 priority 기반으로 merge |
+| **PB2** | 파이프라인 통합이 `run-sensors.js`만 타겟 → 실제 오케스트레이션은 `commands/deep-implement.md` | Task 8: `run-sensors.js`에 review-check runner 추가 + `deep-implement.md`에 호출 흐름/per-sensor round 추적 명시. 두 곳 모두 수정 |
+
+### Concerns Addressed
+
+| # | 문제 | 수정 |
+|---|------|------|
+| **PB1→C** | `changedFiles` 필터링 미지원 | v1 scope reduction으로 명시: review-check의 fitness 레이어는 full-project advisory. 슬라이스 스코핑은 v2. Task 7 코드에 주석 추가 |
+| **PB7→C** | inferential 레이어 미구현 | v1 scope reduction으로 명시. `review_check: false` config disable은 구현 (Task 7에 추가) |
+| **PB3** | Dashboard collector 경로/필드 불일치 | Task 9: 구현 시 실제 receipt 파일을 `cat`으로 읽어 필드명 확인 후 collector 작성. 플랜의 fixture는 예시이며, 실제 스키마에 맞게 조정 필요 |
+| **PC1** | harnessability staleness가 age만 | Task 5: scorer 출력에 `head_sha` 필드 추가 (nice-to-have, 24h TTL이 1차 안전장치) |
+| **PC2** | topology detector가 detect.js 미사용 | Task 1: `detectTopology(projectRoot, ecosystemResult)` 시그니처로 변경. ecosystem detection 결과를 optional 입력으로 받아 중복 파싱 감소 |
+| **PC3** | §4.6 harnessability-topology 연동 미커버 | Task 5: scorer에 `topology` 옵션 추가. 감지된 topology의 `harnessability_hints`를 참조하여 토폴로지 맞춤 권장사항 생성 |
+| **PC4** | effectiveness.test.js 코드 누락 | Task 9에 effectiveness 테스트 코드 추가 |
+| **PC5** | `python_type_hints` detector 과도 | Task 5: `py.typed` 마커 또는 `.pyi` stub 파일 존재 시에만 true. `pyproject.toml` 존재만으로는 false |
+| **PC6** | harnessability 결과 파일 저장 미구현 | Task 5: scorer.js에 `saveReport(projectRoot, result)` 함수 추가. `.deep-dashboard/harnessability-report.json`에 저장 |
+
+### v1 Scope Reductions (의도적)
+
+아래는 v1에서 의도적으로 제외하며, 구현 시 주석으로 명시:
+
+1. **Inferential mini-review** — LLM 호출 비용/복잡도. v2에서 rules.yaml + guides.phase3 기반 single-prompt 체크 추가
+2. **changedFiles 스코핑** — 기존 checker API 변경 필요. v2에서 file-level filtering 추가
+3. **diff > 500줄 skip** — inferential 미구현이므로 자동 적용. v2에서 명시적 체크 추가
+
+---
+
 ## File Structure
 
 ### deep-work (existing plugin, `~/Dev/deep-work/`)
@@ -344,13 +381,40 @@ function matchTopology(projectRoot, topo, jsDeps, pythonDeps) {
   return true;
 }
 
-function detectTopology(projectRoot, registryPath) {
-  const registry = loadTopologyRegistry(registryPath);
-  const sorted = [...registry.topologies].sort((a, b) => b.priority - a.priority);
-  const jsDeps = readPackageJsonDeps(projectRoot);
-  const pythonDeps = readPythonDeps(projectRoot);
+function loadCustomTopologies(customDir) {
+  const dir = customDir || path.join(__dirname, 'custom');
+  try {
+    return fs.readdirSync(dir)
+      .filter(f => f.endsWith('.json'))
+      .map(f => {
+        try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')); }
+        catch { return null; }
+      })
+      .filter(t => t && t.topology && t.detect);
+  } catch { return []; }
+}
 
-  for (const topo of sorted) {
+function detectTopology(projectRoot, registryPath, options = {}) {
+  const registry = loadTopologyRegistry(registryPath);
+  const customTopos = loadCustomTopologies(options.customDir);
+
+  // Merge: custom topologies override built-in by ID, new IDs are added
+  const builtinMap = new Map(registry.topologies.map(t => [t.id, t]));
+  for (const ct of customTopos) {
+    builtinMap.set(ct.topology, {
+      id: ct.topology,
+      priority: ct.priority || 50,
+      display_name: ct.display_name || ct.topology,
+      detect: ct.detect,
+    });
+  }
+  const allTopos = [...builtinMap.values()].sort((a, b) => b.priority - a.priority);
+
+  // Use ecosystem detection result if provided, otherwise read deps directly
+  const jsDeps = options.ecosystemResult?.jsDeps || readPackageJsonDeps(projectRoot);
+  const pythonDeps = options.ecosystemResult?.pythonDeps || readPythonDeps(projectRoot);
+
+  for (const topo of allTopos) {
     if (matchTopology(projectRoot, topo, jsDeps, pythonDeps)) {
       const confidence = topo.id === 'generic' ? 'low'
         : (topo.detect.marker_files || topo.detect.marker_dirs) ? 'high' : 'medium';
@@ -525,8 +589,8 @@ Key files (showing nextjs-app as example — others follow same structure):
         "id": "colocated-tests",
         "type": "structure",
         "check": "colocated",
-        "source_glob": "app/**/*.tsx",
-        "test_pattern": "**/*.test.{tsx,ts}",
+        "source": "app/**/*.tsx",
+        "test": "**/*.test.{tsx,ts}",
         "severity": "advisory"
       }
     ]
@@ -709,7 +773,7 @@ Modify `~/Dev/deep-work/health/fitness/fitness-generator.js`:
 const { detectTopology } = require('../../templates/topology-detector.js');
 const { loadTemplate } = require('../../templates/template-loader.js');
 
-// Add to generateFitnessConfig function, before returning rules:
+// Add to generateFitnessRules function, before returning rules:
 // After UNIVERSAL_RULES and JS_TS_RULES are assembled, merge template defaults:
 function getTemplateRules(projectRoot) {
   const topoResult = detectTopology(projectRoot);
@@ -717,7 +781,7 @@ function getTemplateRules(projectRoot) {
   return (template.fitness_defaults && template.fitness_defaults.rules) || [];
 }
 
-// In generateFitnessConfig, merge template rules with existing rules,
+// In generateFitnessRules, merge template rules with existing rules,
 // deduplicate by id (existing rules take precedence):
 // const templateRules = getTemplateRules(projectRoot);
 // const existingIds = new Set(rules.map(r => r.id));
@@ -998,10 +1062,20 @@ const DETECTORS = {
     }
   },
   python_type_hints(root) {
+    // py.typed marker or .pyi stub files indicate type hint usage
+    if (fs.existsSync(path.join(root, 'py.typed'))) return true;
     try {
-      return fs.existsSync(path.join(root, 'py.typed')) ||
-        fs.existsSync(path.join(root, 'pyproject.toml'));
-    } catch { return false; }
+      // Check for .pyi stub files in src/ or top-level
+      const dirs = ['src', '.'];
+      for (const d of dirs) {
+        const dir = path.join(root, d);
+        if (fs.existsSync(dir)) {
+          const files = fs.readdirSync(dir);
+          if (files.some(f => f.endsWith('.pyi'))) return true;
+        }
+      }
+    } catch { /* ignore */ }
+    return false;
   },
   depcruiser_config(root) {
     return ['.dependency-cruiser.js', '.dependency-cruiser.cjs', '.dependency-cruiser.json']
@@ -1113,7 +1187,7 @@ function getGrade(total) {
   return 'Poor';
 }
 
-function scoreHarnessability(projectRoot) {
+function scoreHarnessability(projectRoot, options = {}) {
   const dimensions = {};
   let weightedSum = 0;
   let totalWeight = 0;
@@ -1149,16 +1223,27 @@ function scoreHarnessability(projectRoot) {
     grade,
     dimensions,
     recommendations,
+    topology: options?.topology || null,
+    topology_hints: options?.topologyHints || null,
     scored_at: new Date().toISOString(),
   };
 }
 
-module.exports = { scoreHarnessability, scoreDimension, DETECTORS };
+function saveReport(projectRoot, result) {
+  const dir = path.join(projectRoot, '.deep-dashboard');
+  fs.mkdirSync(dir, { recursive: true });
+  const reportPath = path.join(dir, 'harnessability-report.json');
+  fs.writeFileSync(reportPath, JSON.stringify(result, null, 2));
+  return reportPath;
+}
+
+module.exports = { scoreHarnessability, scoreDimension, saveReport, DETECTORS };
 
 if (require.main === module) {
   const root = process.argv[2] || process.cwd();
   const result = scoreHarnessability(root);
   process.stdout.write(JSON.stringify(result, null, 2) + '\n');
+  saveReport(root, result);
 }
 ```
 
@@ -1366,6 +1451,15 @@ function runReviewCheck(projectRoot, options) {
   const { topology, changedFiles } = options;
   const violations = [];
 
+  // Config disable check
+  try {
+    const configPath = path.join(projectRoot, '.deep-work', 'config.json');
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+    if (config.review_check === false) {
+      return { status: 'disabled', alwaysOn: null, fitness: null, violations: [] };
+    }
+  } catch { /* no config or parse error — proceed */ }
+
   // --- Always-on layer ---
   const template = loadTemplate(topology);
   const isGeneric = topology === 'generic';
@@ -1394,7 +1488,9 @@ function runReviewCheck(projectRoot, options) {
     const validation = validateFitness(fitnessData);
     if (validation.valid || validation.validRules.length > 0) {
       // Filter rules to only check changed files' relevant patterns
-      const fitnessResult = runFitnessCheck(projectRoot, validation.validRules, { changedFiles });
+      // v1: full-project fitness check (advisory). changedFiles scoping is v2.
+      // Existing checker API scans by glob, not by file list.
+      const fitnessResult = runFitnessCheck(projectRoot, validation.validRules);
 
       fitness = {
         total: fitnessResult.total,
@@ -1485,56 +1581,100 @@ against changed files. not_applicable only when all sources missing."
 
 ## Task 8: Pipeline Integration (#6, deep-work)
 
+**Architecture note:** `sensors/run-sensors.js` is a low-level single-sensor executor (exports `runSensor`, `selectSensorsForFiles`, `formatFeedback`). The actual SENSOR_RUN orchestration lives in `commands/deep-implement.md` which instructs the agent. Integration requires changes in BOTH places:
+1. `run-sensors.js` — add `runReviewCheck` as an exported runner function
+2. `commands/deep-implement.md` — add review-check to the SENSOR_RUN flow with per-sensor round tracking
+
 **Files:**
-- Modify: `~/Dev/deep-work/sensors/run-sensors.js` — add review-check to pipeline
-- Modify: `~/Dev/deep-work/commands/deep-implement.md` — per-sensor round tracking
-- Modify: `~/Dev/deep-work/commands/deep-test.md` — review-check in Phase 4
+- Modify: `~/Dev/deep-work/sensors/run-sensors.js` — export review-check runner
+- Modify: `~/Dev/deep-work/commands/deep-implement.md` — orchestration flow + per-sensor rounds
+- Modify: `~/Dev/deep-work/commands/deep-test.md` — review-check results in Phase 4 receipt
 
-- [ ] **Step 1: Add review-check to run-sensors.js**
+- [ ] **Step 1: Add review-check exports to run-sensors.js**
 
-In `run-sensors.js`, after the existing sensor execution loop, add review-check as the final sensor:
+At the bottom of `run-sensors.js`, add re-export so the review-check module is discoverable from the sensor package:
 
 ```javascript
-// Add to requires at top:
+// Add at end of run-sensors.js, after existing exports:
+// Re-export review-check for pipeline orchestration
 const { runReviewCheck, formatReviewCheckFeedback } = require('./review-check.js');
-
-// Add after typecheck sensor execution in the main runSensors function:
-// Review-check sensor (runs after lint + typecheck)
-// const reviewResult = runReviewCheck(projectRoot, {
-//   topology: sessionState.topology || 'generic',
-//   changedFiles: changedFiles,
-// });
-// if (reviewResult.status !== 'not_applicable') {
-//   results.push({ sensor: 'review-check', ...reviewResult });
-// }
+module.exports.runReviewCheck = runReviewCheck;
+module.exports.formatReviewCheckFeedback = formatReviewCheckFeedback;
 ```
 
-- [ ] **Step 2: Update deep-implement.md for per-sensor rounds**
+- [ ] **Step 2: Update deep-implement.md orchestration**
 
-Add to the SENSOR_RUN section:
+In `commands/deep-implement.md`, locate the SENSOR_RUN section (where lint and typecheck are orchestrated). Add review-check as the third sensor in the pipeline. The key additions:
 
 ```markdown
-### Per-Sensor Round Tracking
+### Sensor Pipeline (extended)
 
-Each sensor has an independent 3-round correction limit:
-- `lint_rounds`: 0/3
-- `typecheck_rounds`: 0/3
-- `review_check_rounds`: 0/3
+After GREEN, run sensors in order. Each sensor has an **independent 3-round correction limit**:
 
-When a sensor fails and triggers SENSOR_FIX, only that sensor's counter increments.
-After 3 failures for a sensor, skip it and proceed to next sensor.
-The global SENSOR_RUN→FIX→CLEAN loop continues until all sensors pass or exhaust their rounds.
+1. **lint** — `run-sensors.js runSensor` with lint command. Rounds: 0/3
+2. **typecheck** — `run-sensors.js runSensor` with typecheck command. Rounds: 0/3
+3. **review-check** — `review-check.js runReviewCheck(projectRoot, { topology, changedFiles })`. Rounds: 0/3
+   - This is a JS function call, not a shell command like lint/typecheck
+   - Run it by executing: `node -e "const {runReviewCheck}=require('./sensors/review-check.js'); ..."`
+   - Or call it inline from the command flow
+
+When a sensor fails and triggers SENSOR_FIX:
+- Only that sensor's counter increments
+- After fix, re-run ALL sensors from the beginning (lint → typecheck → review-check)
+- After 3 failures for a specific sensor, mark it as exhausted and skip
+- SENSOR_CLEAN when all sensors pass or are exhausted
+
+### review-check Integration
+
+```bash
+# Run review-check from command line:
+node -e "
+  const { runReviewCheck, formatReviewCheckFeedback } = require('./sensors/review-check.js');
+  const result = runReviewCheck('PROJECT_ROOT', { topology: 'DETECTED_TOPOLOGY' });
+  if (result.status === 'completed' && result.violations.length > 0) {
+    console.log(formatReviewCheckFeedback(result, 'SLICE_NAME'));
+    process.exit(1);
+  }
+  console.log(JSON.stringify(result));
+"
 ```
 
-- [ ] **Step 3: Commit**
+If review-check has required violations → SENSOR_FIX → agent corrects → re-run pipeline.
+If review-check has only advisory violations → log feedback, proceed to SENSOR_CLEAN.
+If review-check returns disabled/not_applicable → skip, proceed to SENSOR_CLEAN.
+```
+
+- [ ] **Step 3: Update deep-test.md for review-check in receipt**
+
+Add review-check results to the Phase 4 receipt schema:
+
+```markdown
+### Receipt Extension
+
+The slice receipt includes review-check results:
+```json
+{
+  "review_check": {
+    "status": "completed|not_applicable|disabled",
+    "violations_count": 0,
+    "required_violations": 0,
+    "advisory_violations": 0,
+    "rounds_used": 1
+  }
+}
+```
+```
+
+- [ ] **Step 4: Commit**
 
 ```bash
 cd ~/Dev/deep-work
 git add sensors/run-sensors.js commands/deep-implement.md commands/deep-test.md
 git commit -m "feat(#6): integrate review-check into sensor pipeline
 
-Per-sensor 3-round limit (lint, typecheck, review-check independent).
-review-check runs after lint+typecheck in SENSOR_RUN pipeline."
+Pipeline: lint → typecheck → review-check (per-sensor 3-round limit).
+review-check is a JS function, not a shell command.
+Added receipt schema extension for review-check results."
 ```
 
 ---
@@ -1821,12 +1961,63 @@ function getSuggestedActions(data) {
 module.exports = { getSuggestedActions, ACTION_MAP };
 ```
 
-- [ ] **Step 6: Run tests and verify they pass**
+- [ ] **Step 6: Write effectiveness tests**
 
-Run: `cd ~/Dev/deep-dashboard && node --test lib/dashboard/collector.test.js`
-Expected: All 3 tests PASS
+```javascript
+// ~/Dev/deep-dashboard/lib/dashboard/effectiveness.test.js
+'use strict';
+const { describe, it } = require('node:test');
+const assert = require('node:assert/strict');
+const { calculateEffectiveness } = require('./effectiveness.js');
 
-- [ ] **Step 7: Commit**
+describe('calculateEffectiveness', () => {
+  it('returns null when no data available', () => {
+    const data = {
+      deepWork: { status: 'no_data', receipts: [] },
+      deepReview: { status: 'no_data', receipts: [], fitness: null },
+      deepDocs: { status: 'no_data', data: null },
+      harnessability: { status: 'no_data', data: null },
+    };
+    const result = calculateEffectiveness(data);
+    assert.equal(result.effectiveness, null);
+  });
+
+  it('calculates score with partial data (not_applicable redistribution)', () => {
+    const data = {
+      deepWork: { status: 'available', receipts: [{ quality_score: 80 }] },
+      deepReview: { status: 'no_data', receipts: [], fitness: null },
+      deepDocs: { status: 'no_data', data: null },
+      harnessability: { status: 'available', data: { total: 7.0 } },
+    };
+    const result = calculateEffectiveness(data);
+    assert.ok(result.effectiveness !== null);
+    assert.ok(result.effectiveness >= 0 && result.effectiveness <= 10);
+    assert.ok(result.scores.session != null);
+    assert.ok(result.scores.harnessability != null);
+  });
+
+  it('normalizes session quality from 0-100 to 0-10', () => {
+    const data = {
+      deepWork: { status: 'available', receipts: [
+        { quality_score: 90 }, { quality_score: 80 }, { quality_score: 70 }
+      ]},
+      deepReview: { status: 'no_data', receipts: [], fitness: null },
+      deepDocs: { status: 'no_data', data: null },
+      harnessability: { status: 'no_data', data: null },
+    };
+    const result = calculateEffectiveness(data);
+    assert.ok(result.scores.session <= 10);
+    assert.ok(result.scores.session >= 0);
+  });
+});
+```
+
+- [ ] **Step 7: Run all tests and verify they pass**
+
+Run: `cd ~/Dev/deep-dashboard && node --test lib/dashboard/collector.test.js lib/dashboard/effectiveness.test.js`
+Expected: All 6 tests PASS
+
+- [ ] **Step 8: Commit**
 
 ```bash
 cd ~/Dev/deep-dashboard
@@ -2118,6 +2309,7 @@ After all tasks complete:
 | deep-work | `sensors/review-check.test.js` | Review-check sensor (4 cases) |
 | deep-dashboard | `lib/harnessability/scorer.test.js` | Harnessability scoring (4 cases) |
 | deep-dashboard | `lib/dashboard/collector.test.js` | Data collection (3 cases) |
+| deep-dashboard | `lib/dashboard/effectiveness.test.js` | Effectiveness scoring (3 cases) |
 | deep-dashboard | `lib/dashboard/formatter.test.js` | CLI + markdown output (3 cases) |
 
-Total: ~27 test cases across 6 test files.
+Total: ~30 test cases across 7 test files.
