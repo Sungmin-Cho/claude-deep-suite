@@ -191,6 +191,9 @@ Phase 4  Test          영수증 검사, 스펙 준수, 품질 게이트
 - **Completeness Policy** — placeholder 금지 패턴으로 plan 품질 강제 *(v5.8)*
 - **코드 스케치 크기별 완성도** — slice 크기(S/M/L)에 비례한 코드 상세도 *(v5.8)*
 - **Research 추적성** — 태그된 발견사항 [RF/RA]으로 연구→plan 결정 연결 *(v5.8)*
+- **Slice Review** — 센서 파이프라인 이후 슬라이스별 2단계 독립 리뷰 (스펙 준수 + 코드 품질) *(v6.0.1)*
+- **Red Flags** — implement/test 단계 합리화 방지 테이블 *(v6.0.1)*
+- **Pre-flight Check** — TDD 시작 전 전제조건 검증 *(v6.0.1)*
 
 [전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-work)
 

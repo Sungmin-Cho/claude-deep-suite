@@ -191,6 +191,9 @@ Phase 4  Test          Receipt check, spec compliance, quality gates
 - **Completeness Policy** — plan quality enforcement with banned placeholder patterns *(v5.8)*
 - **Code sketch tiering** — proportional code detail by slice size (S/M/L) *(v5.8)*
 - **Research traceability** — tagged findings [RF/RA] linking research to plan decisions *(v5.8)*
+- **Slice Review** — per-slice 2-stage independent review (spec compliance + code quality) immediately after sensor pipeline *(v6.0.1)*
+- **Red Flags** — rationalization prevention tables in implement/test phases *(v6.0.1)*
+- **Pre-flight Check** — prerequisite verification before each TDD cycle *(v6.0.1)*
 
 [Full documentation →](https://github.com/Sungmin-Cho/claude-deep-work)
 

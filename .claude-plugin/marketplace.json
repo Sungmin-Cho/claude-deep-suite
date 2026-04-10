@@ -7,7 +7,7 @@
     {
       "name": "deep-work",
       "description": "Evidence-Driven Development Protocol",
-      "version": "6.0.0",
+      "version": "6.0.1",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git"
