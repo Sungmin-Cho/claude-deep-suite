@@ -117,17 +117,23 @@ Deep Suite implements the [Harness Engineering](https://martinfowler.com/article
 ### Plugin Data Flow
 
 ```
- deep-work ------ receipts -------> deep-dashboard (collector)
+ deep-work ------- receipts -------> deep-dashboard (collector)
     |                                    |
     +-- health_report ----------------> deep-review (fitness-aware review)
     |                                    |
     +-- fitness.json <----------------> deep-review (rule consumption)
     |                                    |
- deep-docs -- last-scan.json -----> deep-dashboard (collector)
+ deep-docs ---- last-scan.json ---> deep-dashboard (collector)
+    |                                    |
+ deep-evolve -- evolve-receipt ----> deep-dashboard (collector)
     |                                    |
  deep-dashboard                          v
     +-- harnessability ---------------> deep-work Phase 1 (research context)
     +-- effectiveness ----------------> user (CLI report + optional markdown)
+
+ deep-review -- recurring-findings -> deep-evolve (experiment steering)
+ deep-evolve -- evolve-insights ---> deep-work (research context)
+ deep-evolve -- review trigger ----> deep-review (pre-merge verification)
 ```
 
 ### Framework Coverage
@@ -234,7 +240,7 @@ Raw Sources  →  Wiki (markdown pages)  →  Schema (management rules)
 
 ## deep-evolve
 
-**Autonomous Experimentation Protocol** — specify a goal, and deep-evolve systematically improves your project through measured experiment loops.
+**Autonomous Experimentation Protocol** — specify a goal, and deep-evolve systematically improves your project through measured experiment loops. v2.1 introduces cross-plugin feedback: recurring findings from deep-review steer experiment direction, evolve-insights feed into deep-work research context, and deep-evolve triggers deep-review for pre-merge verification.
 
 ### Inspiration
 
