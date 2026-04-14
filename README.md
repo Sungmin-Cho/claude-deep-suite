@@ -147,6 +147,39 @@ Deep Suite implements the [Harness Engineering](https://martinfowler.com/article
 | Human Steering | Assumption Engine + Dashboard |
 | Continuous Timing | Strong static analysis, no runtime monitoring |
 
+### Integrated Workflow — How to Use Them Together
+
+Each plugin works independently, but the real power comes from using them together. Here's how they map to a project lifecycle:
+
+| Plugin | Core Question | When to Use |
+|--------|--------------|-------------|
+| **deep-work** | "How do I design and implement this?" | Every code task — features, bugs, refactors |
+| **deep-evolve** | "Can I automatically make this better?" | Performance optimization, test improvement |
+| **deep-review** | "Is this code actually good?" | Pre-PR independent verification |
+| **deep-docs** | "Do docs match the code?" | Post-change documentation sync |
+| **deep-wiki** | "How do I preserve what I learned?" | Knowledge accumulation across sessions |
+| **deep-dashboard** | "Is the harness working well?" | Project health diagnosis |
+
+**By complexity:**
+
+```bash
+# Quick fix (30 min) — deep-work alone
+/deep-work "fix login 500 error"
+
+# Medium feature (2-4 hours) — deep-work + review + docs
+/deep-work "add Stripe payment integration"
+/deep-review                    # independent code review
+/deep-docs scan                 # sync documentation
+
+# Large optimization (half-day+) — full plugin stack
+/deep-harness-dashboard         # diagnose project health
+/deep-evolve "achieve 90% test coverage"  # autonomous experiments
+# → select "deep-review then merge"       # auto-verified merge
+/wiki-ingest .deep-evolve/report.md       # preserve learnings
+```
+
+For detailed scenarios with step-by-step walkthroughs, see the [Integrated Workflow Guide](https://github.com/Sungmin-Cho/claude-deep-suite/wiki/Integrated-Workflow-Guide).
+
 ---
 
 ## deep-work

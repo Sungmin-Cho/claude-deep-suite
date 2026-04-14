@@ -147,6 +147,39 @@ Deep Suite는 [Harness Engineering](https://martinfowler.com/articles/harness-en
 | Human Steering | Assumption Engine + Dashboard |
 | Continuous Timing | 정적 분석 강함, 런타임 모니터링 없음 |
 
+### 통합 워크플로우 — 함께 사용하는 방법
+
+각 플러그인은 독립적으로 동작하지만, 함께 사용할 때 진정한 힘이 발휘된다. 프로젝트 라이프사이클에서의 역할:
+
+| 플러그인 | 핵심 질문 | 언제 쓰나 |
+|---------|----------|----------|
+| **deep-work** | "이걸 어떻게 설계하고 구현하지?" | 모든 코드 작업 — 기능, 버그, 리팩토링 |
+| **deep-evolve** | "자동으로 더 좋게 만들 수 있나?" | 성능 최적화, 테스트 개선 |
+| **deep-review** | "이 코드가 정말 괜찮은가?" | PR 전 독립 검증 |
+| **deep-docs** | "문서가 코드와 맞는가?" | 변경 후 문서 동기화 |
+| **deep-wiki** | "배운 것을 어떻게 남기지?" | 세션 간 지식 축적 |
+| **deep-dashboard** | "하네스가 잘 동작하는가?" | 프로젝트 건강도 진단 |
+
+**복잡도별 사용 가이드:**
+
+```bash
+# 간단한 버그 수정 (30분) — deep-work 하나로 충분
+/deep-work "로그인 500 에러 수정"
+
+# 중간 규모 기능 (2-4시간) — deep-work + review + docs
+/deep-work "Stripe 결제 연동 추가"
+/deep-review                    # 독립 코드 리뷰
+/deep-docs scan                 # 문서 동기화
+
+# 대규모 최적화 (반나절+) — 전체 플러그인 스택
+/deep-harness-dashboard         # 프로젝트 건강도 진단
+/deep-evolve "테스트 커버리지 90% 달성"  # 자율 실험
+# → "deep-review 실행 후 merge" 선택     # 자동 검증 후 merge
+/wiki-ingest .deep-evolve/report.md      # 학습 결과 축적
+```
+
+단계별 상세 시나리오는 [통합 워크플로우 가이드](https://github.com/Sungmin-Cho/claude-deep-suite/wiki/Integrated-Workflow-Guide)를 참조.
+
 ---
 
 ## deep-work
