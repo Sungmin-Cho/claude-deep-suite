@@ -117,17 +117,23 @@ Deep Suite는 [Harness Engineering](https://martinfowler.com/articles/harness-en
 ### 플러그인 데이터 흐름
 
 ```
- deep-work ------ receipts -------> deep-dashboard (collector)
+ deep-work ------- receipts -------> deep-dashboard (수집)
     |                                    |
     +-- health_report ----------------> deep-review (fitness-aware review)
     |                                    |
     +-- fitness.json <----------------> deep-review (rule consumption)
     |                                    |
- deep-docs -- last-scan.json -----> deep-dashboard (collector)
+ deep-docs ---- last-scan.json ---> deep-dashboard (수집)
+    |                                    |
+ deep-evolve -- evolve-receipt ----> deep-dashboard (수집)
     |                                    |
  deep-dashboard                          v
     +-- harnessability ---------------> deep-work Phase 1 (research context)
     +-- effectiveness ----------------> user (CLI report + optional markdown)
+
+ deep-review -- recurring-findings -> deep-evolve (실험 방향 조향)
+ deep-evolve -- evolve-insights ---> deep-work (research context)
+ deep-evolve -- review 트리거 -----> deep-review (merge 전 검증)
 ```
 
 ### 프레임워크 커버리지
@@ -234,7 +240,7 @@ Phase 4  Test          영수증 검사, 스펙 준수, 품질 게이트
 
 ## deep-evolve
 
-**자율 실험 프로토콜** — 목표를 지정하면, deep-evolve가 측정 기반 실험 루프를 통해 프로젝트를 체계적으로 개선합니다.
+**자율 실험 프로토콜** — 목표를 지정하면, deep-evolve가 측정 기반 실험 루프를 통해 프로젝트를 체계적으로 개선합니다. v2.1에서 크로스 플러그인 피드백 도입: deep-review의 반복 발견사항이 실험 방향을 조향하고, evolve-insights가 deep-work 리서치 컨텍스트에 공급되며, deep-evolve가 merge 전 검증을 위해 deep-review를 트리거합니다.
 
 ### 영감
 

@@ -7,7 +7,7 @@
     {
       "name": "deep-work",
       "description": "Evidence-Driven Development Protocol",
-      "version": "6.0.1",
+      "version": "6.2.0",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git"
@@ -25,7 +25,7 @@
     {
       "name": "deep-evolve",
       "description": "Autonomous Experimentation Protocol",
-      "version": "1.0.0",
+      "version": "2.1.0",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-evolve.git"
@@ -34,7 +34,7 @@
     {
       "name": "deep-review",
       "description": "Independent Evaluator for AI coding agents",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git"
@@ -52,7 +52,7 @@
     {
       "name": "deep-dashboard",
       "description": "Cross-plugin harness diagnostics — harnessability scoring and unified dashboard",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git"
