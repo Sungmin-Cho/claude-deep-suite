@@ -178,7 +178,7 @@ Each plugin works independently, but the real power comes from using them togeth
 /wiki-ingest .deep-evolve/report.md       # preserve learnings
 ```
 
-For detailed scenarios with step-by-step walkthroughs, see the [Integrated Workflow Guide](https://github.com/Sungmin-Cho/claude-deep-suite/wiki/Integrated-Workflow-Guide).
+For detailed scenarios with step-by-step walkthroughs, see the [Integrated Workflow Guide](guides/integrated-workflow-guide.md).
 
 ---
 

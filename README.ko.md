@@ -178,7 +178,7 @@ Deep Suite는 [Harness Engineering](https://martinfowler.com/articles/harness-en
 /wiki-ingest .deep-evolve/report.md      # 학습 결과 축적
 ```
 
-단계별 상세 시나리오는 [통합 워크플로우 가이드](https://github.com/Sungmin-Cho/claude-deep-suite/wiki/Integrated-Workflow-Guide)를 참조.
+단계별 상세 시나리오는 [통합 워크플로우 가이드](guides/integrated-workflow-guide.ko.md)를 참조.
 
 ---
 
