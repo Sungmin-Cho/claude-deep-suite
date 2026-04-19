@@ -6,14 +6,14 @@
 
 ## 플러그인
 
-| 플러그인 | 설명 |
-|---------|------|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 증거 기반 개발 프로토콜 |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | LLM 관리형 마크다운 위키 |
-| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 자율 실험 프로토콜 |
-| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 독립 Evaluator + 교차 모델 검증 |
-| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 문서 가드닝 에이전트 |
-| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 크로스 플러그인 하네스 진단 |
+| 플러그인 | 버전 | 설명 |
+|---------|------|------|
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.3.0 | 증거 기반 개발 프로토콜 (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.1 | LLM 관리형 마크다운 위키 |
+| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 2.2.2 | 자율 실험 프로토콜 + 크로스 플러그인 피드백 |
+| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.1 | 독립 Evaluator + 교차 모델 검증 |
+| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | 문서 가드닝 에이전트 |
+| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.1.1 | 크로스 플러그인 하네스 진단 |
 
 ---
 
@@ -87,8 +87,8 @@ Deep Suite는 [Harness Engineering](https://martinfowler.com/articles/harness-en
 ### 개발 라이프사이클 흐름
 
 ```
- Phase 0     Phase 1      Phase 2    Phase 3        Phase 4     Post
- Brainstorm  Research     Plan       Implement      Test        Review
+ Phase 0     Phase 1      Phase 2    Phase 3        Phase 4     Phase 5
+ Brainstorm  Research     Plan       Implement      Test        Integrate
  |           |            |          |              |           |
  |      deep-wiki <-- knowledge --> deep-wiki       |           |
  |           |            |          |              |           |
@@ -104,14 +104,17 @@ Deep Suite는 [Harness Engineering](https://martinfowler.com/articles/harness-en
  |           |            |          |       mutation test      |
  |           |            |          |       fitness delta      |
  |           |            |          |              |           |
- |           |            |          |              |    deep-review
- |           |            |          |              |    3-way verify
+ |           |            |          |              |  Phase 5가 설치된 플러그인
+ |           |            |          |              |  아티팩트를 읽고
+ |           |            |          |              |  → LLM이 다음 액션 랭킹
+ |           |            |          |              |  → 사용자 선택 (루프 ≤5)
  |           |            |          |              |           |
- +===========+============+==========+==============+===========+
+ +===========+============+==========+==============+===========+====→ /deep-finish
                                                           |
  Continuous: deep-docs (doc scan) <-----------------------+
              deep-dashboard (effectiveness + action routing)
              deep-evolve (autonomous experimentation)
+             deep-review (독립 Opus 검증)
 ```
 
 ### 플러그인 데이터 흐름
@@ -163,19 +166,21 @@ Deep Suite는 [Harness Engineering](https://martinfowler.com/articles/harness-en
 **복잡도별 사용 가이드:**
 
 ```bash
-# 간단한 버그 수정 (30분) — deep-work 하나로 충분
-/deep-work "로그인 500 에러 수정"
+# 간단한 버그 수정 (30분) — deep-work 하나로 충분, Phase 5 스킵
+/deep-work --skip-integrate "로그인 500 에러 수정"
 
-# 중간 규모 기능 (2-4시간) — deep-work + review + docs
+# 중간 규모 기능 (2-4시간) — Phase 5가 review/docs/wiki를 조율
 /deep-work "Stripe 결제 연동 추가"
-/deep-review                    # 독립 코드 리뷰
-/deep-docs scan                 # 문서 동기화
+# → Phase 5가 /deep-review, /deep-docs scan, /wiki-ingest를 top-3 추천 (루프)
+
+# 즉석 추천 — 활성 세션 중 언제든
+/deep-integrate
 
 # 대규모 최적화 (반나절+) — 전체 플러그인 스택
-/deep-harness-dashboard         # 프로젝트 건강도 진단
-/deep-evolve "테스트 커버리지 90% 달성"  # 자율 실험
-# → "deep-review 실행 후 merge" 선택     # 자동 검증 후 merge
-/wiki-ingest .deep-evolve/report.md      # 학습 결과 축적
+/deep-harness-dashboard                                  # 프로젝트 건강도 진단
+/deep-evolve "테스트 커버리지 90% 달성"                    # 자율 실험
+# → "deep-review 실행 후 merge" 선택                     # 자동 검증 후 merge
+/wiki-ingest .deep-evolve/<session-id>/                  # 학습 결과 축적
 ```
 
 단계별 상세 시나리오는 [통합 워크플로우 가이드](guides/integrated-workflow-guide.ko.md)를 참조.
@@ -192,13 +197,15 @@ AI 코딩 도구가 복잡한 작업을 수행할 때, 코드베이스를 이해
 
 ### 해결
 
-`/deep-work "task"` 하나로 **Brainstorm → Research → Plan → Implement → Test** 전체 파이프라인을 자동 실행합니다. 구현 단계가 아닌 페이즈에서는 코드 파일 수정이 훅으로 물리적 차단됩니다.
+`/deep-work "task"` 하나로 **Brainstorm → Research → Plan → Implement → Test → Integrate** 전체 파이프라인을 자동 실행합니다. 구현 단계가 아닌 페이즈에서는 코드 파일 수정이 훅으로 물리적 차단됩니다.
 
 ### 주요 커맨드
 
 | 커맨드 | 설명 |
 |--------|------|
 | `/deep-work <task>` | 자동 플로우 — 전체 파이프라인 실행. 플랜 승인만 필요. |
+| `/deep-work --skip-integrate <task>` | 위와 동일하나 Phase 5 스킵 후 `/deep-finish`로 직행 |
+| `/deep-integrate` | 수동 Phase 5 — 설치된 플러그인 아티팩트 기반 top-3 AI 추천 (스킵 후 재진입) |
 | `/deep-status` | 통합 뷰 — 진행상황, 리포트, 영수증, 히스토리, 가정 |
 | `/deep-debug` | 근본 원인 조사 기반 체계적 디버깅 |
 | `/deep-research` | 수동 Phase 1 — 코드베이스 심층 분석 |
@@ -211,11 +218,13 @@ AI 코딩 도구가 복잡한 작업을 수행할 때, 코드베이스를 이해
 ### 워크플로우 페이즈
 
 ```
-Phase 0  Brainstorm    디자인 탐색 — "어떻게 하기 전에 왜"
+Phase 0  Brainstorm    디자인 탐색 — "어떻게 하기 전에 왜" (스킵 가능)
 Phase 1  Research      코드베이스 심층 분석 및 문서화
 Phase 2  Plan          슬라이스 기반 구현 계획 (사용자 승인 필요)
 Phase 3  Implement     TDD 강제 실행 — 실패 테스트 → 코드 → 영수증
 Phase 4  Test          영수증 검사, 스펙 준수, 품질 게이트
+Phase 5  Integrate     설치된 플러그인 아티팩트 읽기 → LLM top-3 추천
+                       → 사용자 선택 (≤5라운드). 스킵 가능. (v6.3.0)
 ```
 
 ### 핵심 기능
@@ -233,6 +242,7 @@ Phase 4  Test          영수증 검사, 스펙 준수, 품질 게이트
 - **Slice Review** — 센서 파이프라인 이후 슬라이스별 2단계 독립 리뷰 (스펙 준수 + 코드 품질) *(v6.0.1)*
 - **Red Flags** — implement/test 단계 합리화 방지 테이블 *(v6.0.1)*
 - **Pre-flight Check** — TDD 시작 전 전제조건 검증 *(v6.0.1)*
+- **Phase 5 Integrate** — Test 완료 후 AI가 top-3 다음 액션(review/docs/wiki/dashboard/evolve)을 추천, 최대 5라운드 대화형 루프 *(v6.3.0)*
 
 [전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-work)
 

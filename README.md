@@ -6,14 +6,14 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 
 ## Plugins
 
-| Plugin | Description |
-|--------|-------------|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | LLM-managed markdown wiki |
-| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | Autonomous Experimentation Protocol |
-| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | Independent Evaluator with cross-model verification |
-| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | Document gardening agent |
-| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | Cross-plugin harness diagnostics |
+| Plugin | Version | Description |
+|--------|---------|-------------|
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.3.0 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.1 | LLM-managed markdown wiki |
+| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 2.2.2 | Autonomous Experimentation Protocol with cross-plugin feedback |
+| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.1 | Independent Evaluator with cross-model verification |
+| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | Document gardening agent |
+| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.1.1 | Cross-plugin harness diagnostics |
 
 ---
 
@@ -87,8 +87,8 @@ Deep Suite implements the [Harness Engineering](https://martinfowler.com/article
 ### Development Lifecycle Flow
 
 ```
- Phase 0     Phase 1      Phase 2    Phase 3        Phase 4     Post
- Brainstorm  Research     Plan       Implement      Test        Review
+ Phase 0     Phase 1      Phase 2    Phase 3        Phase 4     Phase 5
+ Brainstorm  Research     Plan       Implement      Test        Integrate
  |           |            |          |              |           |
  |      deep-wiki <-- knowledge --> deep-wiki       |           |
  |           |            |          |              |           |
@@ -104,14 +104,17 @@ Deep Suite implements the [Harness Engineering](https://martinfowler.com/article
  |           |            |          |       mutation test      |
  |           |            |          |       fitness delta      |
  |           |            |          |              |           |
- |           |            |          |              |    deep-review
- |           |            |          |              |    3-way verify
+ |           |            |          |              |  Phase 5 reads artifacts
+ |           |            |          |              |  from installed plugins
+ |           |            |          |              |  → LLM ranks next actions
+ |           |            |          |              |  → user picks (loop ≤5)
  |           |            |          |              |           |
- +===========+============+==========+==============+===========+
+ +===========+============+==========+==============+===========+====→ /deep-finish
                                                           |
  Continuous: deep-docs (doc scan) <-----------------------+
              deep-dashboard (effectiveness + action routing)
              deep-evolve (autonomous experimentation)
+             deep-review (independent Opus verification)
 ```
 
 ### Plugin Data Flow
@@ -163,19 +166,21 @@ Each plugin works independently, but the real power comes from using them togeth
 **By complexity:**
 
 ```bash
-# Quick fix (30 min) — deep-work alone
-/deep-work "fix login 500 error"
+# Quick fix (30 min) — deep-work alone, skip Phase 5
+/deep-work --skip-integrate "fix login 500 error"
 
-# Medium feature (2-4 hours) — deep-work + review + docs
+# Medium feature (2-4 hours) — Phase 5 orchestrates review/docs/wiki
 /deep-work "add Stripe payment integration"
-/deep-review                    # independent code review
-/deep-docs scan                 # sync documentation
+# → Phase 5 recommends /deep-review, /deep-docs scan, /wiki-ingest (top-3 loop)
+
+# Ad-hoc recommendation — any time during an active session
+/deep-integrate
 
 # Large optimization (half-day+) — full plugin stack
-/deep-harness-dashboard         # diagnose project health
-/deep-evolve "achieve 90% test coverage"  # autonomous experiments
-# → select "deep-review then merge"       # auto-verified merge
-/wiki-ingest .deep-evolve/report.md       # preserve learnings
+/deep-harness-dashboard                                  # diagnose project health
+/deep-evolve "achieve 90% test coverage"                 # autonomous experiments
+# → select "deep-review then merge"                      # auto-verified merge
+/wiki-ingest .deep-evolve/<session-id>/                  # preserve learnings
 ```
 
 For detailed scenarios with step-by-step walkthroughs, see the [Integrated Workflow Guide](guides/integrated-workflow-guide.md).
@@ -192,13 +197,15 @@ When AI coding tools tackle complex tasks, they often jump into implementation w
 
 ### The Solution
 
-`/deep-work "task"` runs the entire **Brainstorm → Research → Plan → Implement → Test** pipeline automatically. Code file modifications are physically blocked during non-implementation phases via hooks.
+`/deep-work "task"` runs the entire **Brainstorm → Research → Plan → Implement → Test → Integrate** pipeline automatically. Code file modifications are physically blocked during non-implementation phases via hooks.
 
 ### Key Commands
 
 | Command | Description |
 |---------|-------------|
 | `/deep-work <task>` | Auto-flow orchestration — runs the full pipeline. Plan approval is the only required interaction. |
+| `/deep-work --skip-integrate <task>` | Same, but skip Phase 5 and go straight to `/deep-finish` |
+| `/deep-integrate` | Manual Phase 5 — AI recommends top-3 next actions from installed plugin artifacts (re-entry after skip) |
 | `/deep-status` | Unified view — progress, report, receipts, history, assumptions |
 | `/deep-debug` | Systematic debugging with root cause investigation |
 | `/deep-research` | Manual Phase 1 — deep codebase analysis |
@@ -211,11 +218,13 @@ When AI coding tools tackle complex tasks, they often jump into implementation w
 ### Workflow Phases
 
 ```
-Phase 0  Brainstorm    Design exploration — "why before how"
+Phase 0  Brainstorm    Design exploration — "why before how" (skippable)
 Phase 1  Research      Deep codebase analysis and documentation
 Phase 2  Plan          Slice-based implementation plan (requires user approval)
 Phase 3  Implement     TDD-enforced execution — failing test → code → receipt
 Phase 4  Test          Receipt check, spec compliance, quality gates
+Phase 5  Integrate     Reads installed plugin artifacts → LLM ranks next actions
+                       → user picks from top-3 (≤5 rounds). Skippable. (v6.3.0)
 ```
 
 ### Key Features
@@ -233,6 +242,7 @@ Phase 4  Test          Receipt check, spec compliance, quality gates
 - **Slice Review** — per-slice 2-stage independent review (spec compliance + code quality) immediately after sensor pipeline *(v6.0.1)*
 - **Red Flags** — rationalization prevention tables in implement/test phases *(v6.0.1)*
 - **Pre-flight Check** — prerequisite verification before each TDD cycle *(v6.0.1)*
+- **Phase 5 Integrate** — AI-recommended top-3 next actions (review/docs/wiki/dashboard/evolve) after Test, with interactive loop up to 5 rounds *(v6.3.0)*
 
 [Full documentation →](https://github.com/Sungmin-Cho/claude-deep-work)
 
