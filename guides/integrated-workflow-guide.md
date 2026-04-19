@@ -4,6 +4,8 @@
 
 This guide explains how the 6 plugins in deep-suite **work together** during a real project. Rather than listing each plugin's features, it focuses on the integrated flow from a developer's perspective.
 
+> Reflects **deep-work v6.3.0** (Phase 5 Integrate), **deep-review v1.3.1** (Stage 5.5 recurring findings, entropy), **deep-evolve v2.2.2** (per-session directory layout), **deep-docs v1.1.0**, **deep-wiki v1.1.1**, **deep-dashboard v1.1.1**.
+
 ---
 
 ## Plugin Roles at a Glance
@@ -11,27 +13,29 @@ This guide explains how the 6 plugins in deep-suite **work together** during a r
 ```
 Development Lifecycle:
 
-  Plan          →      Build        →      Verify       →      Maintain
-  ─────────────────────────────────────────────────────────────────────
-  deep-work           deep-work           deep-review       deep-docs
-  (Research            (Implement          (independent      (document
-   + Plan)              + Test)             review)           gardening)
-                      deep-evolve         deep-dashboard
-                      (autonomous          (harness
-                       optimization)        diagnostics)
+  Plan          →      Build        →      Verify       →      Integrate      →    Finish
+  ───────────────────────────────────────────────────────────────────────────────────────
+  deep-work           deep-work           deep-review       deep-work              deep-work
+  (Research            (Implement          (independent      (Phase 5:              (/deep-finish)
+   + Plan)              + Test)             review)           AI recommends
+                       deep-evolve         deep-dashboard    next step)
+                       (autonomous         (harness
+                        optimization)       diagnostics)
                                            deep-wiki
                                            (knowledge
                                             accumulation)
 ```
 
-| Plugin | Core Question | When to Use |
-|--------|--------------|-------------|
-| **deep-work** | "How do I design and implement this?" | Every code task — features, bugs, refactors |
-| **deep-evolve** | "Can I automatically make this better?" | Performance optimization, test improvement, code quality |
-| **deep-review** | "Is this code actually good?" | Pre-PR independent verification |
-| **deep-docs** | "Do docs match the code?" | Post-change documentation sync |
-| **deep-wiki** | "How do I preserve what I learned?" | Knowledge accumulation across sessions |
-| **deep-dashboard** | "Is the harness working well?" | Project health diagnosis, improvement areas |
+| Plugin | Core Question | When to Use | Entry Point |
+|--------|--------------|-------------|-------------|
+| **deep-work** | "How do I design and implement this?" | Every code task — features, bugs, refactors | `/deep-work <task>` |
+| **deep-evolve** | "Can I automatically make this better?" | Performance optimization, test improvement, code quality | `/deep-evolve` |
+| **deep-review** | "Is this code actually good?" | Pre-PR independent verification | `/deep-review` |
+| **deep-docs** | "Do docs match the code?" | Post-change documentation sync | `/deep-docs scan` |
+| **deep-wiki** | "How do I preserve what I learned?" | Knowledge accumulation across sessions | `/wiki-ingest <source>` |
+| **deep-dashboard** | "Is the harness working well?" | Project health diagnosis, improvement areas | `/deep-harness-dashboard` |
+
+**Note on commands vs skills** — `/deep-harnessability` and `/deep-harness-dashboard` are exposed as plugin **skills** (not top-level commands). Claude Code invokes them via the slash-command interface just like commands; internally they live under `deep-dashboard/skills/`.
 
 ---
 
@@ -39,32 +43,29 @@ Development Lifecycle:
 
 ### Example: "Add JWT authentication middleware to Express API"
 
-#### Phase 1: Analyze & Plan with deep-work
+#### Step 1: Analyze, plan, build with deep-work
 
 ```bash
 /deep-work "Add JWT-based user authentication middleware"
 ```
 
-deep-work automatically starts a 5-phase workflow:
+deep-work automatically runs the **6-phase** workflow (v6.3.0):
 
-1. **Brainstorm** (optional) — Why JWT? Session vs JWT tradeoffs. Discuss requirements with the user.
+1. **Brainstorm** (skippable) — Why JWT? Session vs JWT tradeoffs. Clarify requirements with the user.
 2. **Research** — Deep codebase analysis. Existing middleware patterns, routing structure, test infrastructure, dependencies.
-3. **Plan** — Implementation plan with file-by-file changes, test strategy, ordering. Requires user approval.
+3. **Plan** — Slice-based implementation plan with file-by-file changes, test strategy, ordering. **User approval required.**
+4. **Implement** — TDD-enforced per-slice execution. RED (failing test) → GREEN (minimal code) → REFACTOR.
+5. **Test** — Full verification: coverage, type checking, linting, Sensor Clean, Mutation Score, Slice Review.
+6. **Integrate** *(skippable, new in v6.3.0)* — reads installed deep-suite plugin artifacts and proposes the top-3 next actions (see Scenario 5).
 
-At this stage, cross-plugin data is automatically utilized:
-- If **harnessability-report.json** exists, Research includes context like "Type Safety 3.2/10 — consider enabling tsconfig strict mode"
-- If **evolve-insights.json** exists, Research references insights like "guard clause pattern was effective in previous projects"
+Cross-plugin context is automatically consumed during Research:
 
-#### Phase 2: Implement with deep-work
-
-After plan approval, the Implement phase begins automatically:
-
-4. **Implement** — TDD-enforced slice-by-slice implementation. RED (failing test) → GREEN (minimal code) → REFACTOR cycle enforced per slice.
-5. **Test** — Full verification: coverage, type checking, linting.
+- If **`.deep-dashboard/harnessability-report.json`** exists — Research includes hints like "Type Safety 3.2/10 — consider enabling `tsconfig` strict mode".
+- If **`.deep-evolve/<session-id>/evolve-insights.json`** exists — Research references prior project insights like "guard-clause pattern was effective here previously".
 
 ```
 Slice 1: auth middleware skeleton
-  → Write test → Verify failure → Implement → Tests pass → Commit
+  → Write test → Verify failure → Implement → Tests pass → Slice Review → Commit
 
 Slice 2: JWT verification logic
   → Write test → ... → Commit
@@ -73,65 +74,87 @@ Slice 3: Route protection
   → Write test → ... → Commit
 ```
 
-#### Phase 3: Verify with deep-review
+#### Step 2: Phase 5 Integrate (or skip)
 
-Before creating a PR:
+When Phase 4 (Test) completes, deep-work asks:
+
+```
+Phase 5 Integrate — proceed, or skip to /deep-finish?
+  [proceed] Read plugin artifacts and get AI recommendations
+  [skip]    Go straight to /deep-finish (pass --skip-integrate)
+```
+
+Choosing `proceed` triggers the recommendation loop (Scenario 5). Choosing `skip` preserves the legacy `/deep-finish` flow; you can still re-enter later with `/deep-integrate`.
+
+#### Step 3: Independent review with deep-review (typically chosen by Phase 5)
 
 ```bash
 /deep-review
 ```
 
-deep-review runs an independent agent to evaluate the code:
-- **Stage 1**: Detect git state (clean/staged/unstaged)
-- **Stage 2**: Load project rules (rules.yaml)
-- **Stage 3**: Opus sub-agent reviews the full diff (optionally with Codex 3-way cross-verification)
-- **Stage 4**: Verdict — APPROVE / CONCERN / REQUEST_CHANGES
+deep-review runs an independent Opus subagent over the full diff:
 
-deep-review also **automatically extracts recurring findings** (v1.2.0):
-- Stage 5.5 analyzes previous reports for repeated patterns → writes `recurring-findings.json`
-- The next deep-evolve session uses these patterns to steer experiment direction
+- **Stage 1** — Detect git state (clean/staged/unstaged).
+- **Stage 2** — Load project rules (`.deep-review/rules.yaml`).
+- **Stage 3** — Opus subagent reviews the diff (optionally 3-way cross-verification when Codex plugin is installed).
+- **Stage 4** — Verdict: APPROVE / CONCERN / REQUEST_CHANGES.
+- **Stage 5.5** *(only once 2+ review reports exist)* — Aggregates recurring patterns across historical reports into `.deep-review/recurring-findings.json`. The next deep-evolve session reads this file to steer experiment direction.
 
-#### Phase 4: Sync docs with deep-docs
+deep-review also writes `.deep-review/fitness.json` for architecture fitness rules consumed by later reviews and the dashboard.
+
+#### Step 4: Sync docs with deep-docs
 
 ```bash
 /deep-docs scan
 ```
 
-Scans CLAUDE.md, README, API docs for drift from code. Auto-fixable items are repaired with `/deep-docs garden`.
+Scans CLAUDE.md, README, API docs for drift from code. Auto-fixable items are repaired with `/deep-docs garden`. The scan writes `.deep-docs/last-scan.json` (includes HEAD SHA + branch) for deep-dashboard to consume.
 
-#### Phase 5: Accumulate knowledge with deep-wiki
+#### Step 5: Accumulate knowledge with deep-wiki
 
 ```bash
-/wiki-ingest .deep-work/report.md
+/wiki-ingest .deep-work/<session-dir>/report.md
+# or pass the whole session folder — the ingest picks up report.md automatically
+/wiki-ingest .deep-work/<session-dir>/
 ```
 
 Ingests the deep-work session report into the wiki. Patterns, decisions, and tradeoffs from the JWT implementation are permanently preserved.
+
+> `/wiki-ingest` accepts a URL, a file path, or a deep-work session folder. It does **not** accept `session-receipt.json` directly — pass `report.md` or the session directory.
+
+#### Step 6: Close the session
+
+```bash
+/deep-finish
+```
+
+The standard 4-option finish menu (merge / PR / keep / discard) runs unchanged.
 
 ---
 
 ## Scenario 2: Performance Optimization (deep-evolve focused)
 
-### Example: "Automatically optimize ML model val_bpb"
+### Example: "Automatically minimize ML model val_bpb"
 
-#### Step 1: Start deep-evolve session
+#### Step 1: Start a deep-evolve session
 
 ```bash
 /deep-evolve
 ```
 
-deep-evolve analyzes the project and generates an evaluation harness:
+deep-evolve creates a new session directory `.deep-evolve/<session-id>/` and records `session_id` in `.deep-evolve/current.json`. Inside the session root it generates:
 
-1. **Project analysis** (5 stages): language, framework, test infrastructure, metrics detection
-2. **Goal setting**: "val_bpb minimize" — confirmed with user
-3. **Scaffolding**: Auto-generates `prepare.py` (eval harness) + `program.md` (experiment instructions) + `strategy.yaml` (strategy parameters)
+- `prepare.py` (or `prepare-protocol.md` for MCP/tool-based evaluation)
+- `program.md` (experiment instructions)
+- `strategy.yaml` (strategy parameters)
+- `runs/`, `code-archive/` sub-directories
 
-Cross-plugin data is automatically utilized:
-- If `recurring-findings.json` exists → Stage 3.5 reads it to bias prepare.py scenario weights and add "known recurring defects" to program.md
-- If meta-archive has a similar project → transfers validated strategy.yaml initial values
+Cross-plugin data is utilized automatically:
+
+- If `.deep-review/recurring-findings.json` exists → Stage 3.5 reads it to bias `prepare.py` scenario weights and injects a "known recurring defects" section into `program.md`.
+- If the meta-archive has a similar project → transfers validated `strategy.yaml` initial values.
 
 #### Step 2: Autonomous experiment loop
-
-The agent runs experiments autonomously, even while you're away:
 
 ```
 Inner Loop (code evolution):
@@ -139,18 +162,18 @@ Inner Loop (code evolution):
   → Score improved? Keep : git reset → Repeat (20 rounds)
 
 Outer Loop (strategy evolution):
-  20 Inner Loop rounds complete → Meta Analysis → Adjust strategy.yaml
+  20 Inner Loop rounds → Meta Analysis → Adjust strategy.yaml
   → Compute Q(v) → Strategy improved? Keep : Restore previous strategy
   → Stagnation? Fork from strategy archive → Still stuck? Expand prepare.py
 ```
 
 #### Step 3: Completion & cross-plugin integration
 
-When experiments complete:
+When experiments complete, deep-evolve writes into the **session root**:
 
-1. **evolve-receipt.json** auto-generated → deep-dashboard collects it
-2. **evolve-insights.json** auto-generated → next deep-work session's Research references it
-3. **6 options presented**:
+1. `.deep-evolve/<session-id>/evolve-receipt.json` — deep-dashboard collects it.
+2. `.deep-evolve/<session-id>/evolve-insights.json` — surfaced to the next deep-work Research phase.
+3. Completion menu (6 options):
    - "deep-review then merge" — independent verification before auto-merge
    - "deep-review then create PR" — independent verification before PR
    - "merge to main" / "create PR" / "keep branch" / "discard"
@@ -168,8 +191,9 @@ When experiments complete:
 ```
 
 Automatically analyzes 6 dimensions:
-- Type Safety, Test Infrastructure, CI/CD, Linting, Documentation, Architecture
-- Each scored 0-10 by 17 computational detectors
+
+- Type Safety, Module Boundaries, Test Infrastructure, Sensor Readiness, Linter & Formatter, CI/CD
+- Each scored 0-10 by computational detectors
 - Results saved to `.deep-dashboard/harnessability-report.json`
 
 #### Step 2: Unified dashboard
@@ -207,6 +231,7 @@ Aggregates data from all plugins into a single effectiveness score:
 #### Step 3: Act on suggestions
 
 Follow the dashboard's recommended actions using other plugins:
+
 - "npm audit fix" → run directly
 - "Run /deep-evolve with meta analysis" → `/deep-evolve`
 - "Add tests in next deep-work session" → `/deep-work "improve test coverage"`
@@ -220,26 +245,28 @@ Follow the dashboard's recommended actions using other plugins:
 #### Accumulate external knowledge
 
 ```bash
-# Extract knowledge from a URL
+# URL
 /wiki-ingest https://martinfowler.com/articles/harness-engineering.html
 
-# Extract knowledge from a file
+# Local file
 /wiki-ingest docs/architecture-decision.md
 
-# Auto-accumulate deep-work session results
-/wiki-ingest .deep-work/report.md
+# deep-work session folder — picks up report.md automatically
+/wiki-ingest .deep-work/<session-dir>/
+
+# Or point directly at report.md
+/wiki-ingest .deep-work/<session-dir>/report.md
 ```
 
-The wiki creates/updates pages per source. **Pages get richer as more knowledge accumulates** on the same topic (accumulation principle).
+The wiki creates/updates pages per source. **Pages accumulate knowledge** as more sources land on the same topic (accumulation principle).
 
 #### Search & leverage knowledge
 
 ```bash
-# Find answers grounded in wiki content
 /wiki-query "What are the pros and cons of refresh token rotation in JWT auth?"
 ```
 
-Generates answers based on accumulated wiki knowledge. When cross-page insights emerge from 2+ pages, a synthesis page is automatically created and filed back into the wiki.
+Generates answers grounded in wiki content with inline citations. When cross-page insights emerge from 2+ pages, a synthesis page is automatically created and filed back into the wiki.
 
 #### Wiki health management
 
@@ -251,20 +278,105 @@ Detects contradictions, broken links, stale content, and orphan pages.
 
 ---
 
-## Cross-Plugin Data Flow (v2.1.0)
+## Scenario 5: Phase 5 Integrate — AI Recommendation Loop
+
+*(new in deep-work v6.3.0)*
+
+### Purpose
+
+After a deep-work session completes (Phase 4 Test), you often face the decision *"what should I run next?"* — `/deep-review`? `/deep-docs`? `/wiki-ingest`? `/deep-harness-dashboard`? Phase 5 Integrate reads the artifacts that installed deep-suite plugins have already produced and lets an LLM rank the top-3 next actions with rationale.
+
+### How to enter
+
+**Automatic (recommended):** After Phase 4, deep-work asks whether to proceed into Phase 5. Choose `proceed`.
+
+**Skip at entry:** Pass `--skip-integrate`:
+
+```bash
+/deep-work --skip-integrate "<task>"
+```
+
+**Manual re-entry:** Even after skipping, you can call Phase 5 from an active session at any time:
+
+```bash
+/deep-integrate
+```
+
+Requires an active deep-work session with Phase 4 complete. Without one, the command exits with an error.
+
+### UX — top-3 loop
+
+Phase 5 repeatedly:
+
+1. **Gathers signals** from `$WORK_DIR/session-receipt.json`, `.deep-review/recurring-findings.json`, `.deep-review/fitness.json`, `.deep-dashboard/harnessability-report.json`, `.deep-docs/last-scan.json`, `.deep-evolve/<session-id>/evolve-insights.json`, `.wiki-meta/index.json`, and `git diff`. Missing files are read as `null` (fail-safe).
+2. **Asks the LLM** to rank the top-3 next actions with a rationale and the signals used.
+3. **Renders** the top-3 plus `[skip] [finish]`.
+4. **You pick** one; the selected command runs; the plugin updates its own artifacts.
+5. **Loop** with the updated signals — up to **5 rounds**.
+
+### Loop state file
+
+Phase 5 writes incrementally to `$WORK_DIR/integrate-loop.json` — one entry per round (plugin, command, outcome, timestamp) plus the last recommendations cached for re-display. On Ctrl-C or session interruption, the Stop-hook records `terminated_by: "interrupted"` so the next `/deep-integrate` can offer "resume / restart / skip".
+
+### Termination conditions
+
+| Reason | Meaning |
+|--------|---------|
+| `user-finish` | User selected "finish" |
+| `max-rounds` | 5-round hard cap reached |
+| `no-more-recommendations` | LLM returned empty `recommendations[]` |
+| `interrupted` | Ctrl-C or session end |
+| `error` | LLM/tool failure after retry (Phase 5 is closed via `--skip-integrate` fallback) |
+
+### Typical recommendation examples
+
+| Signal | Top-3 likely |
+|--------|--------------|
+| `files_changed > 0` + docs changed | deep-docs scan, deep-review, wiki-ingest |
+| `weakest_dimension="documentation"` in dashboard | deep-docs scan, deep-harness-dashboard, wiki-ingest |
+| `recurring-findings.json` has 3+ findings, deep-evolve missing | Install deep-evolve *(installation suggestion, not a direct action)* |
+| `files_changed=0` | Single lightweight action + `finish_recommended: true` |
+
+### What changes in deep-finish
+
+`/deep-finish` now hints `/deep-integrate` if no `integrate-loop.json` exists for the current session. You can ignore the hint and proceed; it is non-blocking.
+
+---
+
+## Cross-Plugin Data Flow (v6.3.0)
 
 ```
-deep-work ──── receipts ────────→ deep-dashboard (collection)
-deep-docs ──── last-scan.json ──→ deep-dashboard (collection)
-deep-evolve ── evolve-receipt ──→ deep-dashboard (collection)
+deep-work ────────── receipts ──────────→ deep-dashboard (collection)
+deep-docs ────────── last-scan.json ────→ deep-dashboard (collection)
+deep-evolve ──────── evolve-receipt ────→ deep-dashboard (collection)
+                     (per-session dir)
 
-deep-review ── recurring-findings → deep-evolve (experiment steering)
-deep-evolve ── evolve-insights ──→ deep-work (research context)
-deep-evolve ── review trigger ───→ deep-review (pre-merge verification)
-deep-dashboard ─ harnessability ─→ deep-work (research context)
+deep-review ──────── recurring-findings → deep-evolve (experiment steering)
+deep-evolve ──────── evolve-insights ───→ deep-work Research (context)
+                     (per-session dir)
+deep-evolve ──────── review trigger ────→ deep-review (pre-merge verification)
+deep-dashboard ───── harnessability ────→ deep-work Research (context)
+
+Phase 5 reads ALL of the above + git signals → AI ranks next action (loop)
 ```
 
-Each plugin operates **independently** and exchanges data through JSON files. If a plugin isn't installed, others still work without errors (graceful degradation).
+Absolute path reference:
+
+| Artifact | Location |
+|----------|----------|
+| deep-work receipts | `$WORK_DIR/session-receipt.json`, `$WORK_DIR/receipts/SLICE-*.json` |
+| deep-work report | `$WORK_DIR/report.md` (`$WORK_DIR = .deep-work/<YYYYMMDD-HHMMSS-slug>/`) |
+| deep-work Phase 5 loop | `$WORK_DIR/integrate-loop.json` |
+| deep-review findings | `.deep-review/recurring-findings.json` (Stage 5.5, needs 2+ reports) |
+| deep-review fitness | `.deep-review/fitness.json` |
+| deep-review reports | `.deep-review/reports/<timestamp>-review.md` |
+| deep-docs scan | `.deep-docs/last-scan.json` |
+| deep-dashboard | `.deep-dashboard/harnessability-report.json` |
+| deep-evolve pointer | `.deep-evolve/current.json` (`session_id`) |
+| deep-evolve session | `.deep-evolve/<session-id>/evolve-receipt.json`, `.deep-evolve/<session-id>/evolve-insights.json` |
+| deep-wiki index | `<wiki-root>/.wiki-meta/index.json` |
+
+Each plugin operates **independently** and communicates via JSON files. Missing plugins degrade gracefully — Phase 5 treats absent artifacts as `null` and just narrows its recommendation pool.
 
 ---
 
@@ -273,25 +385,26 @@ Each plugin operates **independently** and exchanges data through JSON files. If
 ### Quick bug fix (~30 min)
 
 ```bash
-/deep-work "fix login 500 error"
-# → Research → Plan → Implement (TDD) → Test
-# → /deep-review (optional)
-# → commit & merge
+/deep-work --skip-integrate "fix login 500 error"
+# → Research → Plan → Implement (TDD) → Test → /deep-finish
+# Optional: /deep-review before commit if the fix touches critical code
 ```
 
-deep-work alone is sufficient. Use deep-review only for critical PRs.
+deep-work alone is sufficient. Skip Phase 5 for trivial changes.
 
 ### Medium feature (2-4 hours)
 
 ```bash
 /deep-work "add Stripe payment integration"
-# → full 5-phase (Brainstorm → ... → Test)
-# → /deep-review (recommended)
-# → /deep-docs scan (sync documentation)
-# → /wiki-ingest (accumulate session results)
+# → Full 6-phase (Brainstorm → ... → Test → Integrate)
+# Phase 5 usually recommends:
+#   1. /deep-review     (new code path, payment = critical)
+#   2. /deep-docs scan  (docs likely touched)
+#   3. /wiki-ingest     (preserve the decision rationale)
+# → /deep-finish
 ```
 
-deep-work + deep-review + deep-docs. Accumulating session results in the wiki makes them available for future reference.
+deep-work + deep-review + deep-docs + wiki-ingest, coordinated via Phase 5.
 
 ### Large-scale optimization (half-day+)
 
@@ -301,27 +414,36 @@ deep-work + deep-review + deep-docs. Accumulating session results in the wiki ma
 
 # 2. Autonomous optimization
 /deep-evolve "achieve 90% test coverage"
-# → agent autonomously runs dozens of experiments
+# → dozens of experiments, session at .deep-evolve/<session-id>/
 
 # 3. Verify results
-# → select "deep-review then merge" at completion
+# → at completion menu, select "deep-review then merge"
 
 # 4. Accumulate learnings
-/wiki-ingest .deep-evolve/report.md
+/wiki-ingest .deep-evolve/<session-id>/    # session folder works directly
 ```
 
 Full plugin stack. Dashboard for diagnosis → Evolve for autonomous improvement → Review for verification → Wiki for accumulation.
+
+### Phase 5 ad-hoc consultation
+
+```bash
+# During an existing deep-work session that skipped Phase 5
+/deep-integrate
+```
+
+Gets an AI recommendation for the current snapshot of artifacts — useful when you're mid-session and wondering which plugin to call next.
 
 ---
 
 ## Tips
 
-1. **Always start with deep-work** — Even for "simple" tasks. Skipping research and planning usually leads to rework.
+1. **Let Phase 5 drive the suite** — the integrated recommender already knows which artifacts exist and what the latest diff looks like. Override its top-3 only when you have a specific reason.
 
-2. **Run deep-review before PRs** — An independent agent catches what self-review misses. Enable Codex 3-way cross-verification for even stronger coverage.
+2. **Run deep-review before PRs** — an independent Opus subagent catches what self-review misses. Install the Codex plugin for 3-way cross-verification.
 
-3. **Use deep-evolve with measurable goals** — "Make the code better" is too vague. "Minimize val_bpb" or "achieve 100% test pass rate" gives the agent a clear target.
+3. **Use deep-evolve with measurable goals** — "make the code better" is too vague. "Minimize `val_bpb`" or "100% pass rate on scenario suite" gives the agent a clear target.
 
-4. **Run deep-dashboard regularly** — Weekly `/deep-harness-dashboard` runs help track project health trends and identify where to invest.
+4. **Run /deep-harness-dashboard weekly** — trend tracking exposes regressions in harness effectiveness before they compound.
 
-5. **Accumulate everything in deep-wiki** — Today's struggle is tomorrow's asset. Session reports, external docs, and technical decisions in the wiki compound over time.
+5. **Accumulate everything in deep-wiki** — today's struggle is tomorrow's asset. Session reports, external docs, and technical decisions in the wiki compound over time. Phase 5 will surface wiki-ingest as a top recommendation when it sees a session report that has not yet been archived.
