@@ -8,7 +8,7 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.3.0 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.3.1 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.1 | LLM-managed markdown wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 2.2.2 | Autonomous Experimentation Protocol with cross-plugin feedback |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.1 | Independent Evaluator with cross-model verification |
