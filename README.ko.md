@@ -9,7 +9,7 @@
 | 플러그인 | 버전 | 설명 |
 |---------|------|------|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.3.1 | 증거 기반 개발 프로토콜 (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.1 | LLM 관리형 마크다운 위키 |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.2 | LLM 관리형 마크다운 위키 |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 2.2.2 | 자율 실험 프로토콜 + 크로스 플러그인 피드백 |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.1 | 독립 Evaluator + 교차 모델 검증 |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | 문서 가드닝 에이전트 |

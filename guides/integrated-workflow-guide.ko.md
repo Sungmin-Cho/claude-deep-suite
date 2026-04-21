@@ -4,7 +4,7 @@
 
 이 가이드는 deep-suite의 6개 플러그인이 실제 프로젝트에서 **어떻게 함께 동작하는지** 설명한다. 개별 플러그인의 기능 목록이 아니라, 개발자 관점의 **통합 사용 흐름**에 초점을 맞춘다.
 
-> 반영 버전: **deep-work v6.3.1** (Phase Exit Gates + 4계층 echo 방어; Phase 5 Integrate는 v6.3.0 신설), **deep-review v1.3.1** (Stage 5.5 recurring findings, entropy), **deep-evolve v2.2.2** (세션별 디렉토리 구조), **deep-docs v1.1.0**, **deep-wiki v1.1.1**, **deep-dashboard v1.1.1**.
+> 반영 버전: **deep-work v6.3.1** (Phase Exit Gates + 4계층 echo 방어; Phase 5 Integrate는 v6.3.0 신설), **deep-review v1.3.1** (Stage 5.5 recurring findings, entropy), **deep-evolve v2.2.2** (세션별 디렉토리 구조), **deep-docs v1.1.0**, **deep-wiki v1.1.2** (페이지 I/O를 subagent로 위임; 구조화 manifest + per-source provenance + ingest 시점 hash), **deep-dashboard v1.1.1**.
 
 ---
 

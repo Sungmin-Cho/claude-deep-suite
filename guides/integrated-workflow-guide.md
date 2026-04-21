@@ -4,7 +4,7 @@
 
 This guide explains how the 6 plugins in deep-suite **work together** during a real project. Rather than listing each plugin's features, it focuses on the integrated flow from a developer's perspective.
 
-> Reflects **deep-work v6.3.1** (Phase Exit Gates + 4-layer echo defense; Phase 5 Integrate from v6.3.0), **deep-review v1.3.1** (Stage 5.5 recurring findings, entropy), **deep-evolve v2.2.2** (per-session directory layout), **deep-docs v1.1.0**, **deep-wiki v1.1.1**, **deep-dashboard v1.1.1**.
+> Reflects **deep-work v6.3.1** (Phase Exit Gates + 4-layer echo defense; Phase 5 Integrate from v6.3.0), **deep-review v1.3.1** (Stage 5.5 recurring findings, entropy), **deep-evolve v2.2.2** (per-session directory layout), **deep-docs v1.1.0**, **deep-wiki v1.1.2** (subagent delegation for page I/O; structured manifest with per-source provenance and ingest-time content hashing), **deep-dashboard v1.1.1**.
 
 ---
 
