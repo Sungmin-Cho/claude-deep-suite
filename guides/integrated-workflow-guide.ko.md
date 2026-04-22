@@ -4,7 +4,7 @@
 
 이 가이드는 deep-suite의 6개 플러그인이 실제 프로젝트에서 **어떻게 함께 동작하는지** 설명한다. 개별 플러그인의 기능 목록이 아니라, 개발자 관점의 **통합 사용 흐름**에 초점을 맞춘다.
 
-> 반영 버전: **deep-work v6.3.1** (Phase Exit Gates + 4계층 echo 방어; Phase 5 Integrate는 v6.3.0 신설), **deep-review v1.3.2** (gitignored 세션 문서 대상 Codex 자동 노출 프로토콜 + F8 플래그 교정 + 설치 검증 감사; Stage 5.5 recurring findings, entropy 유지), **deep-evolve v2.2.2** (세션별 디렉토리 구조), **deep-docs v1.1.0**, **deep-wiki v1.1.2** (페이지 I/O를 subagent로 위임; 구조화 manifest + per-source provenance + ingest 시점 hash), **deep-dashboard v1.1.1**.
+> 반영 버전: **deep-work v6.3.1** (Phase Exit Gates + 4계층 echo 방어; Phase 5 Integrate는 v6.3.0 신설), **deep-review v1.3.2** (gitignored 세션 문서 대상 Codex 자동 노출 프로토콜 + F8 플래그 교정 + 설치 검증 감사; Stage 5.5 recurring findings, entropy 유지), **deep-evolve v3.0.0** (AAR 기반 증거 중심 hill-climbing: 아이디어 카테고리 엔트로피 추적, legibility gate, shortcut detector, diagnose-retry — 모두 `session.yaml.deep_evolve_version`으로 게이팅; v2.2.2 세션은 soft migration으로 지원), **deep-docs v1.1.0**, **deep-wiki v1.1.2** (페이지 I/O를 subagent로 위임; 구조화 manifest + per-source provenance + ingest 시점 hash), **deep-dashboard v1.1.1**.
 
 ---
 
@@ -155,23 +155,38 @@ deep-evolve는 새 세션 디렉토리 `.deep-evolve/<session-id>/`를 생성하
 #### Step 2: 자율 실험 루프
 
 ```
-Inner Loop (코드 진화):
-  아이디어 앙상블(3개 후보 → 1개 선택) → 코드 수정 → 커밋 → 평가
-  → score 향상? keep : git reset → 반복 (20회)
+Inner Loop (코드 진화, v3 흐름):
+  아이디어 앙상블(3개 후보) → 카테고리 태깅(1.5, v3) → 1개 선택
+  → 코드 수정 → 커밋 → 평가 → Delta 측정(4.5, v3)
+  → Diagnose gate(5.a, v3; crash/severe-drop → 1회 재시도)
+  → score 비교 → Shortcut detector(5.c, v3; 작은 변경 + 큰 score jump 감지)
+  → Legibility gate(5.d, v3; keep 시 rationale 필수)
+  → Persist: Keep / Discard / Hard-reject-flagged → 반복(20회)
+
+  Step 6.a.5 (v3): 누적 3회 flagged keep → Section D prepare 확장 강제
+  (flagged commit의 diff를 기반으로 한 적대적 시나리오 주입).
 
 Outer Loop (전략 진화):
-  Inner Loop 20회 완료 → Meta Analysis → strategy.yaml 조정
+  Inner Loop 20회 완료 → Meta Analysis → strategy.yaml 조정 (entropy overlay 포함, v3)
   → Q(v) 계산 → 전략 개선? keep : 이전 전략 복원
-  → 정체? 전략 아카이브에서 분기 → 더 정체? prepare.py 확장
+  → 정체 OR flagged 밀도 임계? Tier 3 prepare 확장 + flagged 증거 주입(v3)
+  → Epoch transition → Inner Loop 재개
 ```
+
+**v3 silent-failure 방어**: 세대별 entropy_snapshot 이벤트가 탐험 붕괴 감지;
+shortcut detector + 강제 Section D가 score-vs-LOC 휴리스틱으로 adversarial
+harness 통과하는 것 방지; diagnose-retry가 환경/하이퍼파라미터 문제인 아이디어
+구출; legibility gate(`session.legibility.missing_rationale_count`)가 설명 불가
+keep 표면화.
 
 #### Step 3: 완료 & 크로스 플러그인 연동
 
 실험 완료 시 **세션 루트**에 다음을 기록:
 
-1. `.deep-evolve/<session-id>/evolve-receipt.json` — deep-dashboard가 수집.
+1. `.deep-evolve/<session-id>/evolve-receipt.json` — deep-dashboard가 수집. v3에서는 receipt이 실제 `deep_evolve_version`을 담는다 (이전엔 `"2.2.2"` 하드코드).
 2. `.deep-evolve/<session-id>/evolve-insights.json` — 다음 deep-work Research에서 참조.
-3. 완료 메뉴(6개 옵션):
+3. **v3 Signals 섹션** (v3 세션 한정) 최종 리포트에 포함: 아이디어 entropy 궤적, shortcut flagged 건수, hard-rejected (`flagged_unexplained`) keep, diagnose-retry 사용, rationale 누락 count, Section D 강제 트리거, Tier 3 flagged-trigger 발화.
+4. 완료 메뉴(6개 옵션):
    - "deep-review 실행 후 merge" — 독립 검증 후 자동 merge
    - "deep-review 실행 후 PR 생성" — 독립 검증 후 PR
    - "main에 merge" / "PR 생성" / "branch 유지" / "폐기"
