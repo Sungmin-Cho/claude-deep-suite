@@ -4,7 +4,7 @@
 
 This guide explains how the 6 plugins in deep-suite **work together** during a real project. Rather than listing each plugin's features, it focuses on the integrated flow from a developer's perspective.
 
-> Reflects **deep-work v6.3.1** (Phase Exit Gates + 4-layer echo defense; Phase 5 Integrate from v6.3.0), **deep-review v1.3.2** (Codex auto-exposure protocol for gitignored session docs + F8 flag fix + installation audit; Stage 5.5 recurring findings, entropy retained), **deep-evolve v2.2.2** (per-session directory layout), **deep-docs v1.1.0**, **deep-wiki v1.1.2** (subagent delegation for page I/O; structured manifest with per-source provenance and ingest-time content hashing), **deep-dashboard v1.1.1**.
+> Reflects **deep-work v6.3.1** (Phase Exit Gates + 4-layer echo defense; Phase 5 Integrate from v6.3.0), **deep-review v1.3.2** (Codex auto-exposure protocol for gitignored session docs + F8 flag fix + installation audit; Stage 5.5 recurring findings, entropy retained), **deep-evolve v3.0.0** (AAR-inspired evidence-rich hill-climbing: idea-category entropy tracking, legibility gate, shortcut detector, diagnose-retry — all gated on `session.yaml.deep_evolve_version`; v2.2.2 sessions remain supported via soft migration), **deep-docs v1.1.0**, **deep-wiki v1.1.2** (subagent delegation for page I/O; structured manifest with per-source provenance and ingest-time content hashing), **deep-dashboard v1.1.1**.
 
 ---
 
@@ -157,23 +157,38 @@ Cross-plugin data is utilized automatically:
 #### Step 2: Autonomous experiment loop
 
 ```
-Inner Loop (code evolution):
-  Idea ensemble (3 candidates → select 1) → Code modification → Commit → Evaluate
-  → Score improved? Keep : git reset → Repeat (20 rounds)
+Inner Loop (code evolution, v3 flow):
+  Idea ensemble (3 candidates) → Category tagging (1.5, v3) → Select 1
+  → Code modification → Commit → Evaluate → Delta measurement (4.5, v3)
+  → Diagnose gate (5.a, v3; crash/severe-drop → 1 retry)
+  → Score compare → Shortcut detector (5.c, v3; flag tiny-change + big-jump)
+  → Legibility gate (5.d, v3; rationale required on keep)
+  → Persist: Keep / Discard / Hard-reject-flagged → Repeat (20 rounds)
+
+  Step 6.a.5 (v3): 3 cumulative flagged keeps → force Section D prepare expansion
+  with adversarial scenarios derived from flagged commits' diffs.
 
 Outer Loop (strategy evolution):
-  20 Inner Loop rounds → Meta Analysis → Adjust strategy.yaml
+  20 Inner Loop rounds → Meta Analysis → Adjust strategy.yaml (with entropy overlay, v3)
   → Compute Q(v) → Strategy improved? Keep : Restore previous strategy
-  → Stagnation? Fork from strategy archive → Still stuck? Expand prepare.py
+  → Stagnation OR flagged density? Tier 3 prepare expansion with flagged evidence injection (v3)
+  → Epoch transition → Resume Inner Loop
 ```
+
+**v3 silent-failure defenses**: entropy_snapshot event per generation catches
+exploration collapse; shortcut detector + forced Section D prevent the agent
+from passing adversarial harness via score-vs-LOC heuristic; diagnose-retry
+recovers ideas whose only problem was environment/hyperparameter; legibility
+gate (`session.legibility.missing_rationale_count`) surfaces unexplainable keeps.
 
 #### Step 3: Completion & cross-plugin integration
 
 When experiments complete, deep-evolve writes into the **session root**:
 
-1. `.deep-evolve/<session-id>/evolve-receipt.json` — deep-dashboard collects it.
+1. `.deep-evolve/<session-id>/evolve-receipt.json` — deep-dashboard collects it. In v3 the receipt carries the session's actual `deep_evolve_version` (previously hardcoded `"2.2.2"`).
 2. `.deep-evolve/<session-id>/evolve-insights.json` — surfaced to the next deep-work Research phase.
-3. Completion menu (6 options):
+3. **v3 Signals section** in the final report (only on v3 sessions): idea entropy trajectory, shortcut flagged count, hard-rejected (`flagged_unexplained`) keeps, diagnose-retry usage, rationale missing count, Section D forced triggers, Tier 3 flagged-trigger fires.
+4. Completion menu (6 options):
    - "deep-review then merge" — independent verification before auto-merge
    - "deep-review then create PR" — independent verification before PR
    - "merge to main" / "create PR" / "keep branch" / "discard"
