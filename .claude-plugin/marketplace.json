@@ -1,8 +1,10 @@
 {
   "name": "claude-deep-suite",
-  "owner": { "name": "sungmin" },
+  "owner": {
+    "name": "sungmin"
+  },
   "metadata": {
-    "description": "Deep Suite — structured development, wiki, autonomous experimentation, independent code review, document gardening, and harness diagnostics plugins for Claude Code"
+    "description": "Deep Suite \u2014 structured development, wiki, autonomous experimentation, independent code review, document gardening, and harness diagnostics plugins for Claude Code"
   },
   "plugins": [
     {
@@ -38,7 +40,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "96999aaaf62abcb06bb083140ad3b62cec4b7aa4"
+        "sha": "c05865905bee8ee9d1d90614ec52bd189b885bfe"
       }
     },
     {
@@ -52,7 +54,7 @@
     },
     {
       "name": "deep-dashboard",
-      "description": "Cross-plugin harness diagnostics — harnessability scoring and unified dashboard",
+      "description": "Cross-plugin harness diagnostics \u2014 harnessability scoring and unified dashboard",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git",
