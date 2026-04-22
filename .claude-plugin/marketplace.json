@@ -27,11 +27,11 @@
     },
     {
       "name": "deep-evolve",
-      "description": "Autonomous Experimentation Protocol",
+      "description": "Autonomous Experimentation Protocol — entropy tracking, shortcut defense, diagnose-retry",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-evolve.git",
-        "sha": "d717b4e5c00dd686c07a4cd786404ba14476c433"
+        "sha": "df0b6e9300fe31b8b6321f2bc61188096b42eecb"
       }
     },
     {
