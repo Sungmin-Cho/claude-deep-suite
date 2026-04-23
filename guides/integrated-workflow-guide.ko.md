@@ -4,7 +4,7 @@
 
 이 가이드는 deep-suite의 6개 플러그인이 실제 프로젝트에서 **어떻게 함께 동작하는지** 설명한다. 개별 플러그인의 기능 목록이 아니라, 개발자 관점의 **통합 사용 흐름**에 초점을 맞춘다.
 
-> 반영 버전: **deep-work v6.3.1** (Phase Exit Gates + 4계층 echo 방어; Phase 5 Integrate는 v6.3.0 신설), **deep-review v1.3.2** (gitignored 세션 문서 대상 Codex 자동 노출 프로토콜 + F8 플래그 교정 + 설치 검증 감사; Stage 5.5 recurring findings, entropy 유지), **deep-evolve v3.0.0** (AAR 기반 증거 중심 hill-climbing: 아이디어 카테고리 엔트로피 추적, legibility gate, shortcut detector, diagnose-retry — 모두 `session.yaml.deep_evolve_version`으로 게이팅; v2.2.2 세션은 soft migration으로 지원), **deep-docs v1.1.0**, **deep-wiki v1.1.2** (페이지 I/O를 subagent로 위임; 구조화 manifest + per-source provenance + ingest 시점 hash), **deep-dashboard v1.1.1**.
+> 반영 버전: **deep-work v6.4.0** (Research/Implement의 Team/Solo subagent 위임 + receipt 사후 검증; Phase Exit Gates는 v6.3.1; Phase 5 Integrate는 v6.3.0 신설), **deep-review v1.3.2** (gitignored 세션 문서 대상 Codex 자동 노출 프로토콜 + F8 플래그 교정 + 설치 검증 감사; Stage 5.5 recurring findings, entropy 유지), **deep-evolve v3.0.0** (AAR 기반 증거 중심 hill-climbing: 아이디어 카테고리 엔트로피 추적, legibility gate, shortcut detector, diagnose-retry — 모두 `session.yaml.deep_evolve_version`으로 게이팅; v2.2.2 세션은 soft migration으로 지원), **deep-docs v1.1.0**, **deep-wiki v1.1.2** (페이지 I/O를 subagent로 위임; 구조화 manifest + per-source provenance + ingest 시점 hash), **deep-dashboard v1.1.1**.
 
 ---
 

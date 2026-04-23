@@ -8,7 +8,7 @@
 
 | 플러그인 | 버전 | 설명 |
 |---------|------|------|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.3.1 | 증거 기반 개발 프로토콜 (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.0 | 증거 기반 개발 프로토콜 (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.2 | LLM 관리형 마크다운 위키 |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.0.0 | 자율 실험 프로토콜 — 엔트로피 추적, 쇼트컷 방어, 진단-재시도 |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.2 | 독립 Evaluator + 교차 모델 검증 + Codex 자동 노출 프로토콜 |
@@ -243,6 +243,7 @@ Phase 5  Integrate     설치된 플러그인 아티팩트 읽기 → LLM top-3 
 - **Red Flags** — implement/test 단계 합리화 방지 테이블 *(v6.0.1)*
 - **Pre-flight Check** — TDD 시작 전 전제조건 검증 *(v6.0.1)*
 - **Phase 5 Integrate** — Test 완료 후 AI가 top-3 다음 액션(review/docs/wiki/dashboard/evolve)을 추천, 최대 5라운드 대화형 루프 *(v6.3.0)*
+- **Team/Solo 위임** — Research/Implement는 항상 subagent에 위임. team 모드에서 Research는 3-way 병렬, Implement는 Agent Team 또는 multi-subagent 선택 프롬프트 제공. solo는 단일 agent 순차 실행. Receipt 사후 검증으로 TDD 계약 강제. *(v6.4.0)*
 
 [전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-work)
 

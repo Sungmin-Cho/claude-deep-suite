@@ -4,7 +4,7 @@
 
 This guide explains how the 6 plugins in deep-suite **work together** during a real project. Rather than listing each plugin's features, it focuses on the integrated flow from a developer's perspective.
 
-> Reflects **deep-work v6.3.1** (Phase Exit Gates + 4-layer echo defense; Phase 5 Integrate from v6.3.0), **deep-review v1.3.2** (Codex auto-exposure protocol for gitignored session docs + F8 flag fix + installation audit; Stage 5.5 recurring findings, entropy retained), **deep-evolve v3.0.0** (AAR-inspired evidence-rich hill-climbing: idea-category entropy tracking, legibility gate, shortcut detector, diagnose-retry — all gated on `session.yaml.deep_evolve_version`; v2.2.2 sessions remain supported via soft migration), **deep-docs v1.1.0**, **deep-wiki v1.1.2** (subagent delegation for page I/O; structured manifest with per-source provenance and ingest-time content hashing), **deep-dashboard v1.1.1**.
+> Reflects **deep-work v6.4.0** (Team/Solo subagent delegation for Research/Implement + post-hoc receipt verification; Phase Exit Gates from v6.3.1; Phase 5 Integrate from v6.3.0), **deep-review v1.3.2** (Codex auto-exposure protocol for gitignored session docs + F8 flag fix + installation audit; Stage 5.5 recurring findings, entropy retained), **deep-evolve v3.0.0** (AAR-inspired evidence-rich hill-climbing: idea-category entropy tracking, legibility gate, shortcut detector, diagnose-retry — all gated on `session.yaml.deep_evolve_version`; v2.2.2 sessions remain supported via soft migration), **deep-docs v1.1.0**, **deep-wiki v1.1.2** (subagent delegation for page I/O; structured manifest with per-source provenance and ingest-time content hashing), **deep-dashboard v1.1.1**.
 
 ---
 
