@@ -11,7 +11,7 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.0 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.2 | LLM-managed markdown wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.0.0 | Autonomous Experimentation Protocol — entropy tracking, shortcut defense, diagnose-retry |
-| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.3 | Independent Evaluator with cross-model verification + Phase 6 subagent delegation |
+| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | Independent Evaluator with cross-model verification + Phase 6 subagent delegation (hardened) |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | Document gardening agent |
 | [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.1.1 | Cross-plugin harness diagnostics |
 
@@ -362,6 +362,7 @@ Collect → Contract Check → Deep Review → Verdict
 - **Independent evaluator** — separate Opus subagent with no Generator context
 - **Cross-model verification** — 3-way parallel review when Codex is installed
 - **Phase 6 subagent delegation** (v1.3.3) — `/deep-review --respond` IMPLEMENT phase runs in a dedicated `phase6-implementer` Sonnet subagent per severity group. Main session keeps Phase 1~5 judgment; subagent performs per-item Edit + tests. Main verifies with fail-closed content-aware delta (`git hash-object`) + allowlist + `git commit --only` pathspec-limited commit. Falls back to in-session execution on dispatch failure.
+- **Phase 6 trust-boundary hardening + platform compatibility** (v1.3.4) — 4-round cross-model review surfaced 5 latent trust-boundary bugs and platform issues, all fixed: staged rename detection (`--name-status -M`, staged ∪ unstaged union), allowlist bypass via pre-existing dirty outside paths, dirty recovery now restores index + worktree, tracked-but-deleted WIP state preservation, macOS `/bin/bash` 3.2 compatibility (TSV temp files replace `declare -A`), and CI matrix on `ubuntu-latest` + `macos-latest`. e2e coverage 5 → 11 scenarios (E1~E11).
 - **Sprint Contract** — structured success criteria verification
 - **Environment adaptation** — works in git/non-git, with/without Codex
 
