@@ -11,7 +11,7 @@
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.0 | 증거 기반 개발 프로토콜 (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.2 | LLM 관리형 마크다운 위키 |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.0.0 | 자율 실험 프로토콜 — 엔트로피 추적, 쇼트컷 방어, 진단-재시도 |
-| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.2 | 독립 Evaluator + 교차 모델 검증 + Codex 자동 노출 프로토콜 |
+| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.3 | 독립 Evaluator + 교차 모델 검증 + Phase 6 서브에이전트 위임 |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | 문서 가드닝 에이전트 |
 | [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.1.1 | 크로스 플러그인 하네스 진단 |
 
@@ -354,12 +354,14 @@ Anthropic의 [Harness Design](https://www.anthropic.com/engineering/harness-desi
 | `/deep-review` | 독립 Opus 에이전트로 현재 변경사항 리뷰 |
 | `/deep-review --contract` | Sprint Contract 기반 검증 |
 | `/deep-review --entropy` | 엔트로피 스캔 (코드 드리프트, 패턴 불일치) |
+| `/deep-review --respond` | 리뷰 피드백에 증거 기반 대응 (v1.3.3부터 Phase 6가 Sonnet 서브에이전트로 위임됨) |
 | `/deep-review init` | 프로젝트별 리뷰 규칙 초기화 |
 
 ### 핵심 기능
 
 - **독립 평가자** — Generator 컨텍스트를 공유하지 않는 별도 Opus 서브에이전트
 - **교차 모델 검증** — Codex 설치 시 3-way 병렬 리뷰
+- **Phase 6 서브에이전트 위임** (v1.3.3) — `/deep-review --respond`의 IMPLEMENT 단계를 전용 `phase6-implementer` Sonnet 서브에이전트에 심각도 그룹별로 위임. Main 세션은 Phase 1~5(판단) 유지, 서브에이전트가 항목별 Edit + 테스트 수행. Main은 content-aware delta(`git hash-object`) + allowlist + `git commit --only` pathspec-limited 커밋으로 fail-closed 검증. dispatch 실패 시 main 직접 수행으로 graceful fallback.
 - **Sprint Contract** — 구조화된 성공 기준 검증
 - **환경 적응** — git/non-git, Codex 유무에 관계없이 동작
 

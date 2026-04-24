@@ -36,11 +36,11 @@
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator for AI coding agents",
+      "description": "Independent Evaluator for AI coding agents — cross-model review + Phase 6 subagent delegation",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "31e9023e902238d39dba33dc655d73928687f75f"
+        "sha": "5aca31a0e5559fdcff587017217b80484021b0d6"
       }
     },
     {
