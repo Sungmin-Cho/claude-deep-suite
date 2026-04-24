@@ -9,7 +9,7 @@
 | 플러그인 | 버전 | 설명 |
 |---------|------|------|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.0 | 증거 기반 개발 프로토콜 (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.2 | LLM 관리형 마크다운 위키 |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.4 | LLM 관리형 마크다운 위키 (subagent 위임 + 병렬 tool dispatch + hash 정규화) |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.0.0 | 자율 실험 프로토콜 — 엔트로피 추적, 쇼트컷 방어, 진단-재시도 |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | 독립 Evaluator + 교차 모델 검증 + Phase 6 서브에이전트 위임 (hardened) |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | 문서 가드닝 에이전트 |
@@ -277,6 +277,9 @@ Phase 5  Integrate     설치된 플러그인 아티팩트 읽기 → LLM top-3 
 - **자동 린트** — 매 인제스트/리빌드 후 자동 실행
 - **자동 파일링** — 2개 이상 페이지를 종합한 쿼리 결과는 위키에 자동 저장
 - **Obsidian 호환** — Obsidian 볼트로 사용 가능
+- **페이지 I/O의 subagent 위임** (v1.1.2) — 모든 ingest가 전용 `wiki-synthesizer` 에이전트로 dispatch. 에이전트가 소스 읽기 / create vs update 판단 / 페이지 쓰기 / 버전 백업을 담당하고, 메인 세션은 메타데이터(`index.json`, `log.jsonl`, `sources/*.yaml`)만 관리. SessionStart 훅의 멀티 파일 자동 ingest에서 컨텍스트 압박이 유의미하게 감소.
+- **멀티 페이지 ingest의 병렬 tool dispatch** (v1.1.3) — `wiki-synthesizer`가 각 phase(source read / candidate survey / backup / page write) 내부의 독립 tool call을 한 메시지에 묶어 발행. LLM 추론 이상으로 wall-clock을 지배하던 ~3N 순차 round-trip이 제거됨. README에 cloud-synced `wiki_root` latency 경고 추가.
+- **Hash 정규화 + promotion regression guard** (v1.1.4) — `/wiki-ingest` Step 8d가 `source_hashes` 값을 정규식 검증 후 agent가 해싱 불가한 경우 `origin`에서 post-hoc 재계산 → `sources/*.yaml:content_hash`는 항상 실제 sha256 반영. promotion block은 `.last-scan`을 먼저 읽고 역행 차단 — 버전 전환기 stale `.pending-scan` / 수동 파일 변경에도 방어.
 
 [전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-wiki)
 

@@ -9,7 +9,7 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 | Plugin | Version | Description |
 |--------|---------|-------------|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.0 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.2 | LLM-managed markdown wiki |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.4 | LLM-managed markdown wiki (subagent delegation + parallel tool dispatch + hash normalization) |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.0.0 | Autonomous Experimentation Protocol — entropy tracking, shortcut defense, diagnose-retry |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | Independent Evaluator with cross-model verification + Phase 6 subagent delegation (hardened) |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | Document gardening agent |
@@ -277,6 +277,9 @@ Raw Sources  →  Wiki (markdown pages)  →  Schema (management rules)
 - **Auto-lint** — runs after every ingest and rebuild
 - **Auto-filing** — query results that synthesize 2+ pages are filed back into the wiki
 - **Obsidian-compatible** — works as an Obsidian vault
+- **Subagent delegation for page I/O** (v1.1.2) — every ingest dispatches to a dedicated `wiki-synthesizer` agent that owns source reading, create-vs-update judgment, page writing, and version backup; main session keeps only the small metadata footprint (`index.json`, `log.jsonl`, `sources/*.yaml`), which materially reduces context pressure for multi-file SessionStart auto-ingests.
+- **Parallel tool dispatch for multi-page ingests** (v1.1.3) — `wiki-synthesizer` now batches all independent tool calls within each workflow phase (source read / candidate survey / backup / page write) in a single message, eliminating the ~3N sequential round-trip tax that previously dominated wall-clock time beyond LLM inference. Cloud-synced `wiki_root` warning added to README.
+- **Hash normalization + promotion regression guard** (v1.1.4) — `/wiki-ingest` Step 8d normalizes `source_hashes` by regex-validating each value and recomputing from `origin` when the agent lacks hashing capability, so `sources/*.yaml:content_hash` always reflects a real sha256. Promotion block now reads `.last-scan` before advancing and refuses to regress it, defending against stale `.pending-scan` artifacts from version transitions and manual file mutations.
 
 [Full documentation →](https://github.com/Sungmin-Cho/claude-deep-wiki)
 
