@@ -10,7 +10,7 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 |--------|---------|-------------|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.1 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.4 | LLM-managed markdown wiki (subagent delegation + parallel tool dispatch + hash normalization) |
-| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.1.0 | Autonomous Experimentation Protocol — virtual parallel N-seed, adaptive scheduler, cross-seed borrow, cascade synthesis |
+| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.1.1 | Autonomous Experimentation Protocol — virtual parallel N-seed, adaptive scheduler, hardened scoring/guard contracts |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | Independent Evaluator with cross-model verification + Phase 6 subagent delegation (hardened) |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | Document gardening agent |
 | [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.1.1 | Cross-plugin harness diagnostics |
@@ -287,7 +287,7 @@ Raw Sources  →  Wiki (markdown pages)  →  Schema (management rules)
 
 ## deep-evolve
 
-**Autonomous Experimentation Protocol** — specify a goal, and deep-evolve systematically improves your project through measured experiment loops. v2.1 introduced cross-plugin feedback: recurring findings from deep-review steer experiment direction, evolve-insights feed into deep-work research context, and deep-evolve triggers deep-review for pre-merge verification. v3.0 added AAR-inspired layers (entropy tracking, legibility gate, shortcut detector, diagnose-retry). **v3.1 adds virtual parallel N-seed exploration**: each session runs N=1..9 independent seed worktrees coordinated by an adaptive scheduler over a shared forum, with session-end synthesis merging per-seed results into a single best branch. v3.0.x sessions remain fully supported via VERSION_TIER routing.
+**Autonomous Experimentation Protocol** — specify a goal, and deep-evolve systematically improves your project through measured experiment loops. v2.1 introduced cross-plugin feedback: recurring findings from deep-review steer experiment direction, evolve-insights feed into deep-work research context, and deep-evolve triggers deep-review for pre-merge verification. v3.0 added AAR-inspired layers (entropy tracking, legibility gate, shortcut detector, diagnose-retry). **v3.1 adds virtual parallel N-seed exploration**: each session runs N=1..9 independent seed worktrees coordinated by an adaptive scheduler over a shared forum, with session-end synthesis merging per-seed results into a single best branch. v3.1.1 hardens stdout metric failure handling, sealed prepare read/write guards, scheduler journal contracts, and package contents. v3.0.x sessions remain fully supported via VERSION_TIER routing.
 
 ### Inspiration
 

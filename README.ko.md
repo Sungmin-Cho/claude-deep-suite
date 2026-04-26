@@ -10,7 +10,7 @@
 |---------|------|------|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.1 | 증거 기반 개발 프로토콜 (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.4 | LLM 관리형 마크다운 위키 (subagent 위임 + 병렬 tool dispatch + hash 정규화) |
-| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.1.0 | 자율 실험 프로토콜 — virtual parallel N-seed, 적응형 스케줄러, cross-seed borrow, cascade synthesis |
+| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.1.1 | 자율 실험 프로토콜 — virtual parallel N-seed, 적응형 스케줄러, 강화된 scoring/guard 계약 |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | 독립 Evaluator + 교차 모델 검증 + Phase 6 서브에이전트 위임 (hardened) |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | 문서 가드닝 에이전트 |
 | [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.1.1 | 크로스 플러그인 하네스 진단 |
@@ -287,7 +287,7 @@ Phase 5  Integrate     설치된 플러그인 아티팩트 읽기 → LLM top-3 
 
 ## deep-evolve
 
-**자율 실험 프로토콜** — 목표를 지정하면, deep-evolve가 측정 기반 실험 루프를 통해 프로젝트를 체계적으로 개선합니다. v2.1에서 크로스 플러그인 피드백 도입: deep-review의 반복 발견사항이 실험 방향을 조향하고, evolve-insights가 deep-work 리서치 컨텍스트에 공급되며, deep-evolve가 merge 전 검증을 위해 deep-review를 트리거합니다. v3.0에서 AAR 기반 레이어 추가 (엔트로피 추적, legibility gate, shortcut detector, diagnose-retry). **v3.1에서 virtual parallel N-seed 탐색 추가**: 각 세션이 N=1..9개 독립 seed worktree를 적응형 스케줄러로 조정, 공유 forum으로 seed 간 관찰, 세션 종료 시 synthesis로 per-seed 결과를 단일 best 브랜치로 병합. v3.0.x 세션은 VERSION_TIER 라우팅으로 완전 지원.
+**자율 실험 프로토콜** — 목표를 지정하면, deep-evolve가 측정 기반 실험 루프를 통해 프로젝트를 체계적으로 개선합니다. v2.1에서 크로스 플러그인 피드백 도입: deep-review의 반복 발견사항이 실험 방향을 조향하고, evolve-insights가 deep-work 리서치 컨텍스트에 공급되며, deep-evolve가 merge 전 검증을 위해 deep-review를 트리거합니다. v3.0에서 AAR 기반 레이어 추가 (엔트로피 추적, legibility gate, shortcut detector, diagnose-retry). **v3.1에서 virtual parallel N-seed 탐색 추가**: 각 세션이 N=1..9개 독립 seed worktree를 적응형 스케줄러로 조정, 공유 forum으로 seed 간 관찰, 세션 종료 시 synthesis로 per-seed 결과를 단일 best 브랜치로 병합. v3.1.1은 stdout metric 실패 처리, sealed prepare read/write guard, scheduler journal 계약, 패키징 범위를 강화합니다. v3.0.x 세션은 VERSION_TIER 라우팅으로 완전 지원.
 
 ### 영감
 
