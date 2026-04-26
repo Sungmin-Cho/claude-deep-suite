@@ -8,7 +8,7 @@ Harness Engineering 프레임워크(Agent = Model + Harness) 기반으로, Guide
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| deep-work | 6.4.0 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → Integrate) |
+| deep-work | 6.4.1 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → Integrate) |
 | deep-wiki | 1.1.4 | LLM-managed markdown wiki (subagent delegation + parallel tool dispatch + hash normalization) |
 | deep-evolve | 3.0.0 | Autonomous Experimentation Protocol with cross-plugin feedback |
 | deep-review | 1.3.4 | Independent Evaluator with cross-model verification + Phase 6 subagent delegation (hardened) |

@@ -8,7 +8,7 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.0 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.1 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.4 | LLM-managed markdown wiki (subagent delegation + parallel tool dispatch + hash normalization) |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.0.0 | Autonomous Experimentation Protocol — entropy tracking, shortcut defense, diagnose-retry |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | Independent Evaluator with cross-model verification + Phase 6 subagent delegation (hardened) |
@@ -243,7 +243,7 @@ Phase 5  Integrate     Reads installed plugin artifacts → LLM ranks next actio
 - **Red Flags** — rationalization prevention tables in implement/test phases *(v6.0.1)*
 - **Pre-flight Check** — prerequisite verification before each TDD cycle *(v6.0.1)*
 - **Phase 5 Integrate** — AI-recommended top-3 next actions (review/docs/wiki/dashboard/evolve) after Test, with interactive loop up to 5 rounds *(v6.3.0)*
-- **Team/Solo Delegation** — Research/Implement always delegate to subagents. In team mode Research runs 3-way parallel; Implement prompts to choose Agent Team vs multi-subagent. Solo runs a single agent sequentially. Post-hoc receipt verification enforces TDD contract. *(v6.4.0)*
+- **Team/Solo Delegation** — Research/Implement always delegate to subagents. In team mode Research runs 3-way parallel; Implement prompts to choose Agent Team vs multi-subagent. Solo runs a single agent sequentially. Post-hoc receipt verification enforces TDD contract. *(v6.4.1)*
 
 [Full documentation →](https://github.com/Sungmin-Cho/claude-deep-work)
 
