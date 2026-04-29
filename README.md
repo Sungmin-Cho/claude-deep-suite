@@ -8,7 +8,7 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.1 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.2 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.4 | LLM-managed markdown wiki (subagent delegation + parallel tool dispatch + hash normalization) |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.1.1 | Autonomous Experimentation Protocol — virtual parallel N-seed, adaptive scheduler, hardened scoring/guard contracts |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | Independent Evaluator with cross-model verification + Phase 6 subagent delegation (hardened) |
@@ -244,6 +244,9 @@ Phase 5  Integrate     Reads installed plugin artifacts → LLM ranks next actio
 - **Pre-flight Check** — prerequisite verification before each TDD cycle *(v6.0.1)*
 - **Phase 5 Integrate** — AI-recommended top-3 next actions (review/docs/wiki/dashboard/evolve) after Test, with interactive loop up to 5 rounds *(v6.3.0)*
 - **Team/Solo Delegation** — Research/Implement always delegate to subagents. In team mode Research runs 3-way parallel; Implement prompts to choose Agent Team vs multi-subagent. Solo runs a single agent sequentially. Post-hoc receipt verification enforces TDD contract. *(v6.4.1)*
+- **Profile schema v3** — `interactive_each_session` array, `defaults.*` separation, per-item ask each session; v2→v3 auto-migration (atomic write + flock + idempotent + .v2-backup + rollback). *(v6.4.2)*
+- **Session recommender sub-agent** — Sonnet default, fenced JSON recommendations, model allowlist `^(haiku|sonnet|opus)$`. New flags: `--no-ask`, `--recommender=MODEL`, `--no-recommender`. *(v6.4.2)*
+- **Notification system removed** — notify.sh, notify-parse.test.js, notification-guide.md deleted; webhook integration broken. **Breaking change.** *(v6.4.2)*
 
 [Full documentation →](https://github.com/Sungmin-Cho/claude-deep-work)
 

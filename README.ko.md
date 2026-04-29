@@ -8,7 +8,7 @@
 
 | 플러그인 | 버전 | 설명 |
 |---------|------|------|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.1 | 증거 기반 개발 프로토콜 (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.2 | 증거 기반 개발 프로토콜 (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.4 | LLM 관리형 마크다운 위키 (subagent 위임 + 병렬 tool dispatch + hash 정규화) |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.1.1 | 자율 실험 프로토콜 — virtual parallel N-seed, 적응형 스케줄러, 강화된 scoring/guard 계약 |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | 독립 Evaluator + 교차 모델 검증 + Phase 6 서브에이전트 위임 (hardened) |
@@ -244,6 +244,9 @@ Phase 5  Integrate     설치된 플러그인 아티팩트 읽기 → LLM top-3 
 - **Pre-flight Check** — TDD 시작 전 전제조건 검증 *(v6.0.1)*
 - **Phase 5 Integrate** — Test 완료 후 AI가 top-3 다음 액션(review/docs/wiki/dashboard/evolve)을 추천, 최대 5라운드 대화형 루프 *(v6.3.0)*
 - **Team/Solo 위임** — Research/Implement는 항상 subagent에 위임. team 모드에서 Research는 3-way 병렬, Implement는 Agent Team 또는 multi-subagent 선택 프롬프트 제공. solo는 단일 agent 순차 실행. Receipt 사후 검증으로 TDD 계약 강제. *(v6.4.1)*
+- **Profile schema v3** — `interactive_each_session` 배열, `defaults.*` 분리, 세션별 항목 ask. v2→v3 자동 마이그레이션 (atomic write + flock + idempotent + .v2-backup + rollback). *(v6.4.2)*
+- **Session recommender sub-agent** — Sonnet 기본, fenced JSON 추천, 모델 allowlist `^(haiku|sonnet|opus)$`. 신규 플래그: `--no-ask`, `--recommender=MODEL`, `--no-recommender`. *(v6.4.2)*
+- **알림 시스템 제거** — notify.sh, notify-parse.test.js, notification-guide.md 삭제; webhook 통합 끊김. **Breaking change.** *(v6.4.2)*
 
 [전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-work)
 
