@@ -9,7 +9,7 @@
 | 플러그인 | 버전 | 설명 |
 |---------|------|------|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.2 | 증거 기반 개발 프로토콜 (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.1.4 | LLM 관리형 마크다운 위키 (subagent 위임 + 병렬 tool dispatch + hash 정규화) |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.2.0 | LLM 관리형 마크다운 위키 (throughput 필터 + skim-first synthesizer + SCAN-WINDOW lint + ingest-repair 자가복구) |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.1.1 | 자율 실험 프로토콜 — virtual parallel N-seed, 적응형 스케줄러, 강화된 scoring/guard 계약 |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | 독립 Evaluator + 교차 모델 검증 + Phase 6 서브에이전트 위임 (hardened) |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | 문서 가드닝 에이전트 |
@@ -283,6 +283,7 @@ Phase 5  Integrate     설치된 플러그인 아티팩트 읽기 → LLM top-3 
 - **페이지 I/O의 subagent 위임** (v1.1.2) — 모든 ingest가 전용 `wiki-synthesizer` 에이전트로 dispatch. 에이전트가 소스 읽기 / create vs update 판단 / 페이지 쓰기 / 버전 백업을 담당하고, 메인 세션은 메타데이터(`index.json`, `log.jsonl`, `sources/*.yaml`)만 관리. SessionStart 훅의 멀티 파일 자동 ingest에서 컨텍스트 압박이 유의미하게 감소.
 - **멀티 페이지 ingest의 병렬 tool dispatch** (v1.1.3) — `wiki-synthesizer`가 각 phase(source read / candidate survey / backup / page write) 내부의 독립 tool call을 한 메시지에 묶어 발행. LLM 추론 이상으로 wall-clock을 지배하던 ~3N 순차 round-trip이 제거됨. README에 cloud-synced `wiki_root` latency 경고 추가.
 - **Hash 정규화 + promotion regression guard** (v1.1.4) — `/wiki-ingest` Step 8d가 `source_hashes` 값을 정규식 검증 후 agent가 해싱 불가한 경우 `origin`에서 post-hoc 재계산 → `sources/*.yaml:content_hash`는 항상 실제 sha256 반영. promotion block은 `.last-scan`을 먼저 읽고 역행 차단 — 버전 전환기 stale `.pending-scan` / 수동 파일 변경에도 방어.
+- **Throughput + lint 강화** (v1.2.0) — 3축 릴리즈, 4-cycle review 거침 (총 49 issue surface, 33건 fix, 16건 v1.2.1+/v1.3.0+ deferred). **Throughput**: 선택적 `auto_ingest:` config 블록 (path glob + frontmatter-tag opt-in)이 SessionStart hook 호출 빈도를 줄임; `/wiki-ingest` Step 1.5 hash-skip이 `file`/`deep-work-report` source의 sha256이 기존 `.wiki-meta/sources/<slug>.yaml:content_hash`와 일치하면 batch에서 drop, 단 wiki 측 state integrity 검증 (페이지 존재, frontmatter slug, terminal log)을 gating으로 — 실패 시 `ingest-repair` 자가복구 경로로 fall-through; `wiki-synthesizer` Phase 1 candidate survey가 skim-then-deep (top-K ≤ 5)로 변경 + Phase 1c skim-skipped supplied candidate에 대한 안전망. **Lint**: 새 `[SCAN-WINDOW]` invariant check + `--fix` stale `.pending-scan` 자동 정리; `tags: [leaf]` + `lint.orphan_ignore` globs로 orphan 분류; broken-link 검사가 fenced code block 제외; `pages_created` same-batch dedup guard로 multi-source batch에서도 "log 전체에 한 번만" invariant 보존. **`ingest-repair` 액션**: bytes는 같지만 페이지가 missing/corrupted일 때 wiki state 복구; `pages_created:[]` 제약으로 lint Step 6 LOG-INVARIANT 보존 (자가복구는 lifecycle restoration이지 새 creation이 아님).
 
 [전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-wiki)
 

@@ -18,11 +18,11 @@
     },
     {
       "name": "deep-wiki",
-      "description": "LLM-managed markdown wiki",
+      "description": "LLM-managed markdown wiki — throughput filters (auto_ingest globs/tags + hash skip with state integrity) + skim-first synthesizer + lint hardening (SCAN-WINDOW + orphan classification + same-batch dedup) + ingest-repair self-healing",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "62344828b4deca82f2fc232682eb70e60dc0a181"
+        "sha": "fab7ea1f439679211ef3daa1b9e102c6aa8c9c50"
       }
     },
     {
