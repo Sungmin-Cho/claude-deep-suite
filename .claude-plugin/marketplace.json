@@ -18,11 +18,11 @@
     },
     {
       "name": "deep-wiki",
-      "description": "LLM-managed markdown wiki — throughput filters (auto_ingest globs/tags + hash skip with state integrity) + skim-first synthesizer + lint hardening (SCAN-WINDOW + orphan classification + same-batch dedup) + ingest-repair self-healing",
+      "description": "LLM-managed markdown wiki — Step 1.5 hash-skip integrity hardening (in-batch slug allocator + forced-repair on missing log) + wiki-lint false-positive elimination (http URL exclusion + multi-line indented code) + per-source provenance preservation (B5 dual-classification) + cloud-mirror documentation + throughput filters (auto_ingest globs/tags) + skim-first synthesizer + ingest-repair self-healing",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "fab7ea1f439679211ef3daa1b9e102c6aa8c9c50"
+        "sha": "9d22df6d2f01577c2c368ebe6215e602232d7114"
       }
     },
     {
