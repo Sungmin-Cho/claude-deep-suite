@@ -18,11 +18,11 @@
     },
     {
       "name": "deep-wiki",
-      "description": "LLM-managed markdown wiki — Step 1.5 hash-skip integrity hardening (in-batch slug allocator + forced-repair on missing log) + wiki-lint false-positive elimination (http URL exclusion + multi-line indented code) + per-source provenance preservation (B5 dual-classification) + cloud-mirror documentation + throughput filters (auto_ingest globs/tags) + skim-first synthesizer + ingest-repair self-healing",
+      "description": "LLM-managed markdown wiki — A4 synthesizer fanout (Approach B; parallel multi-source ingest, branch-scoped lock, second-pass worker-mode merge with colliding_drafts) + hook YAML parser broaden (block + inline + dotted; mirrored in lint.orphan_ignore) + 6 polish (delimiter-aware slug allocator, tab-indent + post-list-2-blank lint fixes, spec/plan ordering convention, review prompt tweak, README sweep) + new ingest-fail lifecycle action + .failed-sources.tsv retry manifest",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "9d22df6d2f01577c2c368ebe6215e602232d7114"
+        "sha": "7f78bec3d6f37e54dbb4c4e95f9c86070f9827dd"
       }
     },
     {
