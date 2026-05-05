@@ -18,11 +18,11 @@
     },
     {
       "name": "deep-wiki",
-      "description": "LLM-managed markdown wiki — A4 synthesizer fanout (Approach B; parallel multi-source ingest, branch-scoped lock, second-pass worker-mode merge with colliding_drafts) + hook YAML parser broaden (block + inline + dotted; mirrored in lint.orphan_ignore) + 6 polish (delimiter-aware slug allocator, tab-indent + post-list-2-blank lint fixes, spec/plan ordering convention, review prompt tweak, README sweep) + new ingest-fail lifecycle action + .failed-sources.tsv retry manifest",
+      "description": "LLM-managed markdown wiki — A5 single-source page-level fanout (Stage 1 wiki-synthesizer mode=analysis emits page_plan + sub-threshold inline_bodies; Stage 2 parallel wiki-page-writer workers; Stage 3 main aggregates under lock with mandatory C3 concurrency check) targeting ~15min → ~4min on 295-page wiki + Karpathy 10-15-page synthesis property preserved + new partial_fail sentinel (A1 Step 1.5 cascading + partial-fail-recovery repair_reason + ingest-fail 3-strike force-promote) + optional .config.json (a5_fanout_threshold + a5_worker_timeout_sec) + Step 7.7.A-F failure handling (per-worker / all-fail / mid-loop / C3 abort / timeout / R4 metadata pipeline recovery) + multi-source A4 path byte-identical from v1.3.0",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "7f78bec3d6f37e54dbb4c4e95f9c86070f9827dd"
+        "sha": "009b7dd42b121d9a03122b07f79584412baf89df"
       }
     },
     {
