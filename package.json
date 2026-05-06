@@ -6,7 +6,7 @@
   "description": "Deep Suite marketplace + sidecar metadata + validators",
   "packageManager": "npm@11.12.1",
   "scripts": {
-    "test": "node --test \"tests/*.test.js\"",
+    "test": "node --test tests/*.test.js",
     "validate": "node scripts/validate-suite-extensions.js",
     "docs:check": "node scripts/generate-reference-sections.js --check",
     "docs:write": "node scripts/generate-reference-sections.js --write",
