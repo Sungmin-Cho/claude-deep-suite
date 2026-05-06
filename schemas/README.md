@@ -49,7 +49,7 @@ The two SemVer-bearing fields (envelope `producer_version` and the plugin's `plu
 
 Schema cannot express "required when `hooks_active` is `[]` AND the plugin's `hooks/hooks.json` declares `{}`" (it's a conditional cross-file constraint). This invariant is enforced **outside the schema**:
 
-- Today: documented expectation; PR reviewers catch violations. The current sidecar (`.claude-plugin/suite-extensions.json`) records a reason for `deep-review` and `deep-docs`; `deep-dashboard` uses `consumer_only: true` instead.
+- Today: documented expectation; PR reviewers catch violations. The current sidecar (`.claude-plugin/suite-extensions.json`) records a reason for `deep-review`, `deep-docs`, and `deep-dashboard`. The `consumer_only` field is defined in the schema for future read-only consumers but is currently unused in the live sidecar.
 - Future: M5 hook pattern guide may add a `scripts/check-hooks-coverage.js` lint that asserts every plugin with empty hooks has either a non-empty `hooks_intentionally_empty_reason` or `consumer_only: true`.
 
 ## `data_flow.via` is a display-only label
