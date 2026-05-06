@@ -9,7 +9,7 @@ Harness Engineering 프레임워크(Agent = Model + Harness) 기반으로, Guide
 | Plugin | Version | Description |
 |--------|---------|-------------|
 | deep-work | 6.4.2 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → Integrate) |
-| deep-wiki | 1.4.0 | LLM-managed markdown wiki (A5 single-source page-level fanout — Stage 1 analysis + Stage 2 parallel page-writer workers + Stage 3 main aggregates under lock with mandatory C3 concurrency check; partial_fail sentinel + .config.json) |
+| deep-wiki | 1.4.1 | LLM-managed markdown wiki (v1.4.1 Track C synthesizer agent split for trust-boundary closure — 3 split agents `wiki-synthesizer-{analysis,worker,inline}`; active agents have `tools:[Read,Glob,Grep,WebFetch]` — Write physically removed → tool-level M1 closure; qualified namespace routing closes v1.4.0 dogfood caller voluntary downgrade; `scripts/lint-agent-tools.sh` Bash 3.2 portable manifest; `_post_dispatch_dirty_scan()` at 3 sites WIKI_TEST_MODE=1 gated; inline file DORMANT with rot-mitigation header. A5 single-source + A4 multi-source paths preserved structurally from v1.4.0, NOT byte-identical) |
 | deep-evolve | 3.1.1 | Autonomous Experimentation Protocol with virtual parallel N-seed exploration and hardened runtime guards |
 | deep-review | 1.3.4 | Independent Evaluator with cross-model verification + Phase 6 subagent delegation (hardened) |
 | deep-docs | 1.1.0 | Document gardening agent |
