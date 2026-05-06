@@ -41,14 +41,14 @@ function readJson(path) {
   } catch (err) {
     console.error(`error: cannot read ${path}: ${err.message}`);
     process.exitCode = 2;
-    return null;
+    return { ok: false };
   }
   try {
-    return JSON.parse(raw);
+    return { ok: true, data: JSON.parse(raw) };
   } catch (err) {
     console.error(`error: cannot parse ${path}: ${err.message}`);
     process.exitCode = 2;
-    return null;
+    return { ok: false };
   }
 }
 
@@ -99,10 +99,12 @@ function main() {
     return;
   }
 
-  const schema = readJson(SCHEMA_PATH);
-  if (schema === null) return;
-  const data = readJson(target);
-  if (data === null) return;
+  const schemaResult = readJson(SCHEMA_PATH);
+  if (!schemaResult.ok) return;
+  const schema = schemaResult.data;
+  const dataResult = readJson(target);
+  if (!dataResult.ok) return;
+  const data = dataResult.data;
 
   let validate;
   try {

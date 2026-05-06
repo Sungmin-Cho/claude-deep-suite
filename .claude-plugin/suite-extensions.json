@@ -30,13 +30,13 @@
       "capabilities": ["persistent-memory", "auto-ingest", "trust-boundary-closure", "agent-tool-lint"],
       "artifacts": {
         "writes": [
-          ".wiki-meta/index.json",
-          ".wiki-meta/log.jsonl",
-          ".wiki-meta/.versions/*",
+          "<wiki_root>/log.jsonl",
+          "<wiki_root>/.wiki-meta/index.json",
+          "<wiki_root>/.wiki-meta/.versions/*",
           "<wiki_root>/pages/**/*.md"
         ],
         "reads": [
-          "<wiki_root>/.pending-scan"
+          "<wiki_root>/.wiki-meta/.pending-scan"
         ]
       },
       "hooks_active": ["SessionStart"]
@@ -46,7 +46,7 @@
       "capabilities": ["autonomous-experiment", "n-seed-parallel", "outer-inner-loop", "immutable-guard"],
       "artifacts": {
         "writes": [
-          ".deep-evolve/<session>/current.json",
+          ".deep-evolve/current.json",
           ".deep-evolve/<session>/evolve-receipt.json",
           ".deep-evolve/<session>/evolve-insights.json",
           ".deep-evolve/<session>/forum.jsonl"

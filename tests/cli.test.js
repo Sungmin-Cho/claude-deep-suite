@@ -54,3 +54,9 @@ test('CLI prints schema_version hint when /schema_version const violation occurs
   assert.match(res.stderr, /schema_version is locked to "1.0"/);
   assert.match(res.stderr, /schemas\/README\.md §Schema versioning/);
 });
+
+test('CLI exits 1 with "fails schema validation" on JSON literal null input', () => {
+  const res = runCli(['tests/fixtures/invalid-null-manifest.json']);
+  assert.equal(res.status, 1, res.stderr);
+  assert.match(res.stderr, /fails schema validation/);
+});
