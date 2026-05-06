@@ -323,7 +323,7 @@ Requires an active deep-work session with Phase 4 complete. Without one, the com
 
 Phase 5 repeatedly:
 
-1. **Gathers signals** from `$WORK_DIR/session-receipt.json`, `.deep-review/recurring-findings.json`, `.deep-review/fitness.json`, `.deep-dashboard/harnessability-report.json`, `.deep-docs/last-scan.json`, `.deep-evolve/<session-id>/evolve-insights.json`, `.wiki-meta/index.json`, and `git diff`. Missing files are read as `null` (fail-safe).
+1. **Gathers signals** from `$WORK_DIR/session-receipt.json`, `.deep-review/recurring-findings.json`, `.deep-review/fitness.json`, `.deep-dashboard/harnessability-report.json`, `.deep-docs/last-scan.json`, `.deep-evolve/<session-id>/evolve-insights.json`, `<wiki_root>/.wiki-meta/index.json`, and `git diff`. Missing files are read as `null` (fail-safe).
 2. **Asks the LLM** to rank the top-3 next actions with a rationale and the signals used.
 3. **Renders** the top-3 plus `[skip] [finish]`.
 4. **You pick** one; the selected command runs; the plugin updates its own artifacts.
@@ -358,22 +358,25 @@ Phase 5 writes incrementally to `$WORK_DIR/integrate-loop.json` — one entry pe
 
 ---
 
-## Cross-Plugin Data Flow (v6.3.0)
+## Cross-Plugin Data Flow
 
+<!-- deep-suite:auto-generated:data-flow-en:start -->
+
+```mermaid
+flowchart LR
+  deep-work -- "session-receipt" --> deep-review
+  deep-work -- "session-receipt + harness-sessions.jsonl" --> deep-dashboard
+  deep-docs -- "last-scan.json" --> deep-dashboard
+  deep-evolve -- "evolve-receipt" --> deep-dashboard
+  deep-evolve -- "evolve-insights (Research context)" --> deep-work
+  deep-dashboard -- "harnessability-report.json (Phase 1 Research consumes)" --> deep-work
+  deep-review -- "recurring-findings.json" --> deep-evolve
+  deep-wiki -- "index.json (Research reference)" --> deep-work
 ```
-deep-work ────────── receipts ──────────→ deep-dashboard (collection)
-deep-docs ────────── last-scan.json ────→ deep-dashboard (collection)
-deep-evolve ──────── evolve-receipt ────→ deep-dashboard (collection)
-                     (per-session dir)
 
-deep-review ──────── recurring-findings → deep-evolve (experiment steering)
-deep-evolve ──────── evolve-insights ───→ deep-work Research (context)
-                     (per-session dir)
-deep-evolve ──────── review trigger ────→ deep-review (pre-merge verification)
-deep-dashboard ───── harnessability ────→ deep-work Research (context)
+<!-- deep-suite:auto-generated:data-flow-en:end -->
 
-Phase 5 reads ALL of the above + git signals → AI ranks next action (loop)
-```
+> The diagram above is regenerated from `.claude-plugin/suite-extensions.json` `data_flow[]`. It is **non-authoritative** — intent only. Machine-readable cross-plugin truth lives in M3 envelope (`run_id` / `parent_run_id`). Phase 5 reads ALL of the above + git signals → AI ranks next action (loop).
 
 Absolute path reference:
 
@@ -389,7 +392,7 @@ Absolute path reference:
 | deep-dashboard | `.deep-dashboard/harnessability-report.json` |
 | deep-evolve pointer | `.deep-evolve/current.json` (`session_id`) |
 | deep-evolve session | `.deep-evolve/<session-id>/evolve-receipt.json`, `.deep-evolve/<session-id>/evolve-insights.json` |
-| deep-wiki index | `<wiki-root>/.wiki-meta/index.json` |
+| deep-wiki index | `<wiki_root>/.wiki-meta/index.json` |
 
 Each plugin operates **independently** and communicates via JSON files. Missing plugins degrade gracefully — Phase 5 treats absent artifacts as `null` and just narrows its recommendation pool.
 

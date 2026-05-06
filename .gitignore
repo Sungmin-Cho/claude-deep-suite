@@ -1,3 +1,11 @@
-docs/
+# Most of docs/ is internal working notes (plans, backlogs, analysis).
+# Only the M2 carve-outs below ship publicly: policy contract + auto-generated
+# reference docs. Anything new in docs/ stays local-only by default.
+docs/*
+docs/superpowers/
+!docs/memory-hierarchy.md
+!docs/source-pinning.md
+!docs/capability-matrix.md
+!docs/artifact-io-graph.md
 node_modules/
 .deep-suite-cache/

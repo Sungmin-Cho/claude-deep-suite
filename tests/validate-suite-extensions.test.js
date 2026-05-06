@@ -200,6 +200,31 @@ test('envelope-invalid-dirty-numeric fails (dirty:1 matches neither boolean nor 
   );
 });
 
+// --- W-R4: SemVer 2.0.0 strict (3 fixtures) ---
+
+test('envelope-invalid-bad-semver-leading-zero fails ("01.0.0" → SemVer 2.0.0 §2 disallows leading-zero numerics)', () => {
+  const validate = makeEnvelopeValidator();
+  const data = readJson('tests/fixtures/envelope-invalid-bad-semver-leading-zero.json');
+  assert.equal(validate(data), false);
+  const reasons = validate.errors.map(e => e.keyword);
+  assert.ok(reasons.includes('pattern'), JSON.stringify(validate.errors));
+});
+
+test('envelope-valid-with-build-metadata passes ("1.0.0+commit.abc.123" — SemVer 2.0.0 build metadata)', () => {
+  const validate = makeEnvelopeValidator();
+  const data = readJson('tests/fixtures/envelope-valid-with-build-metadata.json');
+  const ok = validate(data);
+  assert.equal(ok, true, JSON.stringify(validate.errors, null, 2));
+});
+
+test('envelope-invalid-empty-prerelease-id fails ("1.2.3-.." → SemVer 2.0.0 §9 disallows empty prerelease ids)', () => {
+  const validate = makeEnvelopeValidator();
+  const data = readJson('tests/fixtures/envelope-invalid-empty-prerelease-id.json');
+  assert.equal(validate(data), false);
+  const reasons = validate.errors.map(e => e.keyword);
+  assert.ok(reasons.includes('pattern'), JSON.stringify(validate.errors));
+});
+
 // --- Real-file cross-references (drift protection) ---
 
 test('actual .claude-plugin/suite-extensions.json validates against schema', () => {

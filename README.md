@@ -6,14 +6,20 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 
 ## Plugins
 
+<!-- deep-suite:auto-generated:plugin-table-en:start -->
+
 | Plugin | Version | Description |
-|--------|---------|-------------|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.2 | Evidence-Driven Development Protocol (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.4.1 | v1.4.1 — Track C synthesizer agent split for trust-boundary closure |
-| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.1.1 | Autonomous Experimentation Protocol — virtual parallel N-seed, adaptive scheduler, hardened scoring/guard contracts |
-| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | Independent Evaluator with cross-model verification + Phase 6 subagent delegation (hardened) |
+|---|---|---|
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.2 | Evidence-Driven Development Protocol |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.4.1 | LLM-managed markdown wiki |
+| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.1.1 | Autonomous Experimentation Protocol |
+| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | Independent Evaluator for AI coding agents |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | Document gardening agent |
 | [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.1.1 | Cross-plugin harness diagnostics |
+
+<!-- deep-suite:auto-generated:plugin-table-en:end -->
+
+> The plugin table above is auto-generated from `.claude-plugin/marketplace.json` + each plugin's pinned `plugin.json.version`. Edit the marketplace, not this block. Run `node scripts/generate-reference-sections.js --write` to refresh.
 
 ---
 
