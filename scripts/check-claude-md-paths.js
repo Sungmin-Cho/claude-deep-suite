@@ -13,9 +13,32 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..');
+
+// `git check-ignore` returns exit 0 if the path is ignored, 1 if not, 128 on
+// "not in a git repo" or other error.
+function isGitIgnored(repoRelative) {
+  const res = spawnSync('git', ['-C', REPO_ROOT, 'check-ignore', '-q', repoRelative], {
+    encoding: 'utf8',
+  });
+  if (res.error) return false;
+  return res.status === 0;
+}
+
+// Returns true if the path is tracked by git (committed). Used together with
+// `existsSync` to suppress soft errors for legitimately untracked / gitignored
+// paths that local devs may have but CI clones do not (e.g., ONBOARDING.md
+// that the user authored locally, or docs/superpowers/plans/).
+function isGitTracked(repoRelative) {
+  const res = spawnSync('git', ['-C', REPO_ROOT, 'ls-files', '--error-unmatch', repoRelative], {
+    encoding: 'utf8',
+  });
+  if (res.error) return false;
+  return res.status === 0;
+}
 
 function extractStructureBlock(md) {
   const startRe = /^##\s+Project Structure\s*$/m;
@@ -113,14 +136,22 @@ function main() {
   const lineCountToBlock = md.slice(0, block.offset).split('\n').length;
 
   let drift = 0;
+  let skipped = 0;
   for (const c of candidates) {
     const trailing = c.token.endsWith('/') ? c.token.slice(0, -1) : c.token;
     const target = resolve(REPO_ROOT, trailing);
-    if (!existsSync(target)) {
-      const lineNo = lineCountToBlock + c.lineNo;
-      console.error(`✗ CLAUDE.md:${lineNo} — Project Structure references missing path: ${c.token}`);
-      drift++;
+    if (existsSync(target)) continue;
+    // Soft-pass for paths that are gitignored or simply not tracked. CI clones
+    // legitimately lack these (docs/superpowers/, locally-authored docs, etc.).
+    // The check still fails when the path is *tracked* (or trackable) but the
+    // file is missing on disk — that's a real structural drift.
+    if (isGitIgnored(trailing) || !isGitTracked(trailing)) {
+      skipped++;
+      continue;
     }
+    const lineNo = lineCountToBlock + c.lineNo;
+    console.error(`✗ CLAUDE.md:${lineNo} — Project Structure references missing path: ${c.token}`);
+    drift++;
   }
 
   if (drift > 0) {
@@ -129,7 +160,9 @@ function main() {
     process.exitCode = 1;
     return;
   }
-  console.log(`✓ all ${candidates.length} Project Structure paths exist`);
+  const verified = candidates.length - skipped;
+  const skipNote = skipped > 0 ? ` (${skipped} gitignored path${skipped > 1 ? 's' : ''} soft-skipped — legitimately local-only)` : '';
+  console.log(`✓ all ${verified} Project Structure paths exist${skipNote}`);
   process.exitCode = 0;
 }
 
