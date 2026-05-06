@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-evolve",
+    "producer_version": "3.1.1",
+    "artifact_kind": "evolve-receipt",
+    "run_id": "01J9X8K3B9N1W5QO4S6CR9F3XU",
+    "parent_run_id": "01J9X7K2A8M0V4PN3R5BQ8E2WT",
+    "generated_at": "2026-05-06T13:00:00Z",
+    "schema": { "name": "evolve-receipt", "version": "1.0" },
+    "git": {
+      "head": "def5678901",
+      "branch": "main",
+      "dirty": "unknown"
+    },
+    "provenance": {
+      "source_artifacts": [
+        { "path": ".deep-review/recurring-findings.json", "run_id": "01J9X7..." }
+      ],
+      "tool_versions": {
+        "node": { "version": "20.11.0", "arch": "arm64" },
+        "claude-code": "2.x"
+      }
+    }
+  },
+  "payload": { "epochs": 3, "q_delta": 0.04 }
+}

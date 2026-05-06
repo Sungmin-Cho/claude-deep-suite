@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/artifact-envelope.schema.json",
+  "title": "Deep Suite Artifact Envelope",
+  "description": "Common envelope for cross-plugin JSON artifacts. Producers wrap their domain payload in this envelope so consumers (deep-dashboard, suite tooling) can validate, trace, and aggregate uniformly. Phased rollout per plugin in M3.",
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": {
+    "^x-": { "description": "Reserved forward-compat extension namespace at envelope root level." }
+  },
+  "required": ["schema_version", "envelope", "payload"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema_version": {
+      "const": "1.0",
+      "description": "Locked to 1.0 for envelope v1. Same lock-not-additive policy as suite-extensions schema. Forward-compat additions go through `x-*` patternProperties (root + envelope block); breaking changes require new schema file (artifact-envelope-v2.schema.json)."
+    },
+    "envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": { "description": "Reserved forward-compat extension namespace inside envelope block." }
+      },
+      "required": [
+        "producer",
+        "producer_version",
+        "artifact_kind",
+        "run_id",
+        "generated_at",
+        "schema",
+        "git",
+        "provenance"
+      ],
+      "properties": {
+        "producer": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "description": "Plugin name (strict kebab-case, matches sidecar plugin keys)."
+        },
+        "producer_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(-[A-Za-z0-9.-]+)?$",
+          "description": "SemVer (MAJOR.MINOR.PATCH, optional prerelease). Matches plugin.json.version source-of-truth policy (CLAUDE.md §Conventions)."
+        },
+        "artifact_kind": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "description": "Producer-defined artifact category (strict kebab-case)."
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique identifier for this artifact's producing run (e.g., ULID)."
+        },
+        "session_id": {
+          "type": "string",
+          "description": "Optional. Higher-level session this run belongs to."
+        },
+        "parent_run_id": {
+          "type": "string",
+          "description": "Optional. Producer's parent in cross-plugin trace tree (e.g., deep-review run links back to deep-work session-receipt run_id). Forward-compat for M4 telemetry trace assembly."
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "RFC 3339 timestamp."
+        },
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "version"],
+          "properties": {
+            "name": { "type": "string", "minLength": 1 },
+            "version": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+$",
+              "description": "Payload schema MAJOR.MINOR (independent from envelope schema_version)."
+            }
+          }
+        },
+        "git": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["head", "branch", "dirty"],
+          "properties": {
+            "head": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{7,40}$",
+              "description": "Git SHA hex (7–40 chars). Empty/non-hex strings rejected."
+            },
+            "branch": { "type": "string", "minLength": 1 },
+            "worktree": { "type": "string" },
+            "dirty": {
+              "description": "Working tree state at artifact generation. 'unknown' allowed when generator (e.g., shallow CI clone) cannot determine state.",
+              "oneOf": [
+                { "type": "boolean" },
+                { "const": "unknown" }
+              ]
+            }
+          }
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source_artifacts", "tool_versions"],
+          "properties": {
+            "source_artifacts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["path"],
+                "properties": {
+                  "path": { "type": "string", "minLength": 1 },
+                  "run_id": { "type": "string" }
+                }
+              }
+            },
+            "tool_versions": {
+              "type": "object",
+              "additionalProperties": {
+                "description": "Either a plain version string (e.g., '20.11.0') or a structured object (e.g., { version, arch, build }).",
+                "oneOf": [
+                  { "type": "string" },
+                  { "type": "object" }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "payload": {
+      "description": "Plugin-specific content. Validated against producer's domain schema (out of scope here)."
+    }
+  }
+}

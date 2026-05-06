@@ -1,0 +1,119 @@
+{
+  "$schema": "../schemas/suite-extensions.schema.json",
+  "schema_version": "1.0",
+  "suite": {
+    "name": "claude-deep-suite",
+    "harness_taxonomy": "boeckeler-2026",
+    "telemetry_namespace": "suite"
+  },
+  "plugins": {
+    "deep-work": {
+      "runtime": ["node", "bash"],
+      "capabilities": ["planning", "phase-guard", "tdd", "receipts", "quality-gates", "topology-templates"],
+      "artifacts": {
+        "writes": [
+          ".deep-work/<session>/session-receipt.json",
+          ".deep-work/<session>/receipts/SLICE-*.json",
+          ".deep-work/harness-history/harness-sessions.jsonl"
+        ],
+        "reads": [
+          ".deep-dashboard/harnessability-report.json",
+          ".deep-evolve/<session>/evolve-insights.json",
+          ".deep-review/recurring-findings.json",
+          ".wiki-meta/index.json"
+        ]
+      },
+      "hooks_active": ["SessionStart", "PreToolUse", "PostToolUse", "Stop"]
+    },
+    "deep-wiki": {
+      "runtime": ["bash", "node"],
+      "capabilities": ["persistent-memory", "auto-ingest", "trust-boundary-closure", "agent-tool-lint"],
+      "artifacts": {
+        "writes": [
+          "<wiki_root>/log.jsonl",
+          "<wiki_root>/.wiki-meta/index.json",
+          "<wiki_root>/.wiki-meta/.versions/*",
+          "<wiki_root>/pages/**/*.md"
+        ],
+        "reads": [
+          "<wiki_root>/.wiki-meta/.pending-scan"
+        ]
+      },
+      "hooks_active": ["SessionStart"]
+    },
+    "deep-evolve": {
+      "runtime": ["python", "bash"],
+      "capabilities": ["autonomous-experiment", "n-seed-parallel", "outer-inner-loop", "immutable-guard"],
+      "artifacts": {
+        "writes": [
+          ".deep-evolve/current.json",
+          ".deep-evolve/<session>/evolve-receipt.json",
+          ".deep-evolve/<session>/evolve-insights.json",
+          ".deep-evolve/<session>/forum.jsonl"
+        ],
+        "reads": [
+          ".deep-review/recurring-findings.json"
+        ]
+      },
+      "hooks_active": ["PreToolUse"]
+    },
+    "deep-review": {
+      "runtime": ["bash", "node"],
+      "capabilities": ["independent-evaluation", "cross-model-verification", "fitness-validation", "phase-6-delegation"],
+      "artifacts": {
+        "writes": [
+          ".deep-review/reports/<timestamp>-review.md",
+          ".deep-review/responses/<timestamp>-response.md",
+          ".deep-review/recurring-findings.json",
+          ".deep-review/entropy-log.jsonl"
+        ],
+        "reads": [
+          ".deep-work/<session>/session-receipt.json",
+          ".deep-review/contracts/SLICE-*.yaml",
+          ".deep-review/fitness.json"
+        ]
+      },
+      "hooks_active": [],
+      "hooks_intentionally_empty_reason": "Evaluator는 user-invocation 기반 trust-boundary 설계 — event-driven hooks를 두지 않아 자기 결과를 자기 입력으로 삼는 echo chamber를 차단."
+    },
+    "deep-docs": {
+      "runtime": ["node"],
+      "capabilities": ["doc-gardening", "scan-garden-audit", "schema-versioned-artifact"],
+      "artifacts": {
+        "writes": [
+          ".deep-docs/last-scan.json"
+        ],
+        "reads": []
+      },
+      "hooks_active": [],
+      "hooks_intentionally_empty_reason": "Garden은 user 명시 호출(scan/garden/audit)로만 trigger — 자동 hook은 doc rot 방지 직관과 무관하게 noise를 만든다."
+    },
+    "deep-dashboard": {
+      "runtime": ["node"],
+      "capabilities": ["harnessability-scoring", "cross-plugin-aggregation", "effectiveness-scoring"],
+      "artifacts": {
+        "writes": [
+          ".deep-dashboard/harnessability-report.json"
+        ],
+        "reads": [
+          ".deep-work/**",
+          ".deep-review/**",
+          ".deep-docs/**",
+          ".deep-evolve/**",
+          ".wiki-meta/**"
+        ]
+      },
+      "hooks_active": [],
+      "hooks_intentionally_empty_reason": "Aggregator는 user 명시 호출(/deep-harness-dashboard)에서만 보고서를 생성 — event-driven hook은 cross-plugin 집계 의미와 무관하게 noise를 만든다."
+    }
+  },
+  "data_flow": [
+    { "from": "deep-work", "to": "deep-review", "via": "session-receipt" },
+    { "from": "deep-work", "to": "deep-dashboard", "via": "session-receipt + harness-sessions.jsonl" },
+    { "from": "deep-docs", "to": "deep-dashboard", "via": "last-scan.json" },
+    { "from": "deep-evolve", "to": "deep-dashboard", "via": "evolve-receipt + evolve-insights" },
+    { "from": "deep-dashboard", "to": "deep-work", "via": "harnessability-report.json (Phase 1 Research consumes)" },
+    { "from": "deep-review", "to": "deep-evolve", "via": "recurring-findings.json" },
+    { "from": "deep-wiki", "to": "deep-work", "via": "index.json (Research reference)" }
+  ]
+}

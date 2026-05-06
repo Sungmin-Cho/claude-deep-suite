@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "plugins": {
+    "deep-work": {
+      "runtime": ["node"],
+      "capabilities": ["planning"],
+      "artifacts": { "writes": [], "reads": [] }
+    }
+  }
+}

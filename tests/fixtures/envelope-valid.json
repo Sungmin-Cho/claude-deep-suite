@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-review",
+    "producer_version": "1.3.4",
+    "artifact_kind": "review-report",
+    "run_id": "01J9X7K2A8M0V4PN3R5BQ8E2WT",
+    "session_id": "session-2026-05-06-14-00-00",
+    "generated_at": "2026-05-06T12:34:56Z",
+    "schema": { "name": "review-report", "version": "1.0" },
+    "git": {
+      "head": "abc1234567890abc1234567890abc1234567890",
+      "branch": "feat/auth-middleware",
+      "worktree": ".deep-work/.worktrees/session-1",
+      "dirty": false
+    },
+    "provenance": {
+      "source_artifacts": [
+        { "path": ".deep-work/<session>/session-receipt.json", "run_id": "01J9X7..." }
+      ],
+      "tool_versions": {
+        "node": "20.11.0",
+        "claude-code": "2.x"
+      }
+    }
+  },
+  "payload": {
+    "verdict": "APPROVE",
+    "summary": "All slices pass. No recurring findings."
+  }
+}

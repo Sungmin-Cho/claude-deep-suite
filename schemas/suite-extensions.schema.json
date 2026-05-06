@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/suite-extensions.schema.json",
+  "title": "Deep Suite Extensions Sidecar Manifest",
+  "description": "Cross-plugin metadata for the deep-suite marketplace. NOT read by Claude Code; consumed by suite tooling only. See schemas/README.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": {
+    "^x-": {
+      "description": "Reserved forward-compat extension namespace at root level. Validators ignore content; producers may use freely without bumping schema_version."
+    }
+  },
+  "required": ["schema_version", "suite", "plugins"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Optional editor hint; ignored at validate time."
+    },
+    "schema_version": {
+      "const": "1.0",
+      "description": "Locked to 1.0 for v1. Forward-compat additions go through `x-*` patternProperties (defined at root, suite, and plugin entry levels). Breaking changes require a new schema file (suite-extensions-v2.schema.json) per schemas/README.md."
+    },
+    "suite": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": { "description": "Reserved forward-compat extension namespace inside suite block." }
+      },
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "description": "Marketplace name (strict kebab-case). Must equal marketplace.json.name."
+        },
+        "harness_taxonomy": {
+          "type": "string",
+          "description": "Reference taxonomy used for capability classification (e.g., 'boeckeler-2026')."
+        },
+        "telemetry_namespace": {
+          "type": "string",
+          "description": "Prefix for M4 metric names (e.g., 'suite')."
+        }
+      }
+    },
+    "plugins": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-z][a-z0-9]*(-[a-z0-9]+)*$": {
+          "$ref": "#/$defs/pluginEntry",
+          "$comment": "Strict kebab-case: lowercase-alnum + single hyphens between segments. Rejects PascalCase, leading/trailing hyphen, double hyphen (e.g., 'deep-', 'deep--work'), and digit-leading names."
+        }
+      }
+    },
+    "data_flow": {
+      "type": "array",
+      "description": "Cross-plugin artifact dependencies. Each edge identifies producer → consumer + a human-readable transport label. NOTE: JSON Schema cannot express that `from`/`to` reference an existing `plugins` key — that referential integrity is enforced by the validator CLI (scripts/validate-suite-extensions.js) as a post-schema phase. `via` is a DISPLAY-ONLY label (Option 1 per handoff §5); it is not validated against artifact paths.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["from", "to", "via"],
+        "properties": {
+          "from": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+            "description": "Producer plugin key. Referential check: must equal a `plugins` key (validator Phase 2)."
+          },
+          "to": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+            "description": "Consumer plugin key. Referential check: must equal a `plugins` key (validator Phase 2)."
+          },
+          "via": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Human-readable transport label. NOT validated against `artifacts.writes`/`reads` — display-only. Compound labels are acceptable (e.g., 'session-receipt + harness-sessions.jsonl')."
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "pluginEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": { "description": "Reserved forward-compat extension namespace per plugin entry." }
+      },
+      "required": ["runtime", "capabilities", "artifacts"],
+      "properties": {
+        "runtime": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["node", "bash", "python", "powershell"]
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+          }
+        },
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["writes", "reads"],
+          "properties": {
+            "writes": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "reads": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "hooks_active": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "Setup", "SessionStart", "InstructionsLoaded",
+              "UserPromptSubmit", "UserPromptExpansion",
+              "PreToolUse", "PermissionRequest", "PermissionDenied",
+              "PostToolUse", "PostToolUseFailure", "PostToolBatch",
+              "Notification", "SubagentStart", "SubagentStop",
+              "Stop", "StopFailure", "TeammateIdle",
+              "TaskCreated", "TaskCompleted",
+              "ConfigChange", "CwdChanged", "FileChanged",
+              "PreCompact", "PostCompact",
+              "Elicitation", "ElicitationResult",
+              "WorktreeCreate", "WorktreeRemove", "SessionEnd"
+            ]
+          }
+        },
+        "hooks_intentionally_empty_reason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Required when hooks_active is [] AND the plugin's hooks/hooks.json has \"hooks\": {}. Documents trust-boundary intent (e.g., 'Evaluator는 user-invocation 기반 trust-boundary 설계')."
+        },
+        "consumer_only": {
+          "type": "boolean",
+          "description": "True for read-only consumers (e.g., deep-dashboard)."
+        }
+      }
+    }
+  }
+}

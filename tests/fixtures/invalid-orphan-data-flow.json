@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "suite": { "name": "claude-deep-suite" },
+  "plugins": {
+    "deep-work": {
+      "runtime": ["node"],
+      "capabilities": ["planning"],
+      "artifacts": { "writes": [], "reads": [] }
+    }
+  },
+  "data_flow": [
+    { "from": "deep-work", "to": "non-existent-plugin", "via": "phantom" }
+  ]
+}
