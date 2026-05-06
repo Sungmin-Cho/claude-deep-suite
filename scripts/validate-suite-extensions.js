@@ -82,6 +82,8 @@ function validateReferentialIntegrity(data) {
 
 function main() {
   const positionals = process.argv.slice(2);
+  const flag = positionals.find(p => p.startsWith('-'));
+  if (flag) { usage(`unknown flag: ${flag}`); return; }
   if (positionals.length > 1) {
     usage(`expected 0 or 1 path argument, got ${positionals.length}: ${positionals.join(' ')}`);
     return;

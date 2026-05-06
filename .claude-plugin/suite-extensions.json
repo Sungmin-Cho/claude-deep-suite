@@ -93,8 +93,7 @@
       "capabilities": ["harnessability-scoring", "cross-plugin-aggregation", "effectiveness-scoring"],
       "artifacts": {
         "writes": [
-          ".deep-dashboard/harnessability-report.json",
-          ".deep-dashboard/effectiveness-report.json"
+          ".deep-dashboard/harnessability-report.json"
         ],
         "reads": [
           ".deep-work/**",
@@ -105,7 +104,7 @@
         ]
       },
       "hooks_active": [],
-      "consumer_only": true
+      "hooks_intentionally_empty_reason": "Aggregator는 user 명시 호출(/deep-harness-dashboard)에서만 보고서를 생성 — event-driven hook은 cross-plugin 집계 의미와 무관하게 noise를 만든다."
     }
   },
   "data_flow": [

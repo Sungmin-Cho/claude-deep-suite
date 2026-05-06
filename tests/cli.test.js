@@ -60,3 +60,9 @@ test('CLI exits 1 with "fails schema validation" on JSON literal null input', ()
   assert.equal(res.status, 1, res.stderr);
   assert.match(res.stderr, /fails schema validation/);
 });
+
+test('CLI exits 2 on flag-shaped argv (--help)', () => {
+  const res = runCli(['--help']);
+  assert.equal(res.status, 2);
+  assert.match(res.stderr, /unknown flag: --help/);
+});
