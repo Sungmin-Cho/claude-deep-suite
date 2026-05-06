@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "suite": { "name": "claude-deep-suite" },
+  "plugins": {
+    "deep-work": {
+      "runtime": ["ruby"],
+      "capabilities": ["planning"],
+      "artifacts": { "writes": [], "reads": [] }
+    }
+  }
+}

@@ -447,6 +447,34 @@ Built on Böckeler/Fowler's [Harness Engineering](https://martinfowler.com/artic
 
 ---
 
+## Suite Extensions (Sidecar Manifest)
+
+Cross-plugin metadata that does not fit Claude Code's official `marketplace.json` schema lives in a sidecar at `.claude-plugin/suite-extensions.json`, validated by [`schemas/suite-extensions.schema.json`](./schemas/suite-extensions.schema.json) (JSON Schema Draft 2020-12).
+
+**Why a sidecar?** `marketplace.json` is closed (`additionalProperties: false`) — adding suite-only fields like `runtime`, `capabilities`, `artifacts` would either be ignored or rejected by `claude plugin validate`. The sidecar pattern keeps the official manifest clean while suite tooling consumes the extra metadata.
+
+**What's in it:**
+
+- `suite.name` (must equal `marketplace.json.name`), `harness_taxonomy`, `telemetry_namespace`
+- `plugins.<name>` — per-plugin `runtime`, `capabilities`, `artifacts.{writes,reads}`, `hooks_active`, optional `hooks_intentionally_empty_reason`, optional `consumer_only`
+- `data_flow[]` — producer → consumer edges with display-only `via` labels (machine-readable cross-plugin trace lives in the M3 artifact envelope)
+
+**Schema versioning is locked at `1.0`.** Forward-compat additions go through `x-*` patternProperties at root, suite, and plugin entry levels. Breaking changes require a new schema file (`suite-extensions-v2.schema.json`). See [`schemas/README.md`](./schemas/README.md) §Schema versioning.
+
+**Validation:**
+
+```bash
+npm install                       # ajv + ajv-formats (devDeps only)
+npm test                          # 32 unit + spawnSync CLI tests
+npm run validate                  # validates the real .claude-plugin/suite-extensions.json
+```
+
+The validator runs in two phases — JSON Schema (Phase 1) and post-schema referential integrity for `data_flow.from`/`to` (Phase 2). Phase is reported via stderr prefix; exit code is `0`/`1`/`2` (valid / validation fail / IO-usage-compile error).
+
+A second schema, [`artifact-envelope.schema.json`](./schemas/artifact-envelope.schema.json), defines the common envelope plugins will adopt during the M3 milestone for cross-plugin traceability and deep-dashboard aggregation.
+
+---
+
 ## License
 
 MIT

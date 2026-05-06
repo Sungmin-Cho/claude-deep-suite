@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "suite": {
+    "name": "claude-deep-suite"
+  },
+  "plugins": {
+    "deep-work": {
+      "runtime": ["node"],
+      "capabilities": ["planning"],
+      "artifacts": {
+        "writes": [".deep-work/<session>/session-receipt.json"],
+        "reads": []
+      }
+    }
+  }
+}

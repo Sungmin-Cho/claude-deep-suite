@@ -447,6 +447,34 @@ Böckeler/Fowler의 [Harness Engineering](https://martinfowler.com/articles/harn
 
 ---
 
+## Suite Extensions (사이드카 매니페스트)
+
+Claude Code 공식 `marketplace.json` 스키마에 들어가지 못하는 cross-plugin 메타데이터를 사이드카 파일 `.claude-plugin/suite-extensions.json`에 보관하고, [`schemas/suite-extensions.schema.json`](./schemas/suite-extensions.schema.json) (JSON Schema Draft 2020-12)으로 검증한다.
+
+**왜 사이드카인가?** `marketplace.json`은 closed schema (`additionalProperties: false`)이다. `runtime`, `capabilities`, `artifacts` 같은 suite-only 필드를 추가하면 `claude plugin validate`가 무시하거나 거부한다. 사이드카 패턴은 공식 매니페스트를 깨끗하게 유지하면서 suite 도구가 추가 메타데이터를 소비할 수 있게 한다.
+
+**내용:**
+
+- `suite.name` (`marketplace.json.name`과 동일해야 함), `harness_taxonomy`, `telemetry_namespace`
+- `plugins.<name>` — 플러그인별 `runtime`, `capabilities`, `artifacts.{writes,reads}`, `hooks_active`, optional `hooks_intentionally_empty_reason`, optional `consumer_only`
+- `data_flow[]` — producer → consumer edge. `via`는 display-only 라벨 (machine-readable cross-plugin trace는 M3 artifact envelope이 담당)
+
+**스키마 버전은 `1.0`으로 잠금**. 추가 forward-compat 확장은 root, suite, plugin entry 레벨의 `x-*` patternProperties를 통해 한다. Breaking change는 새 스키마 파일(`suite-extensions-v2.schema.json`)이 필요하다. [`schemas/README.md`](./schemas/README.md) §Schema versioning 참조.
+
+**검증:**
+
+```bash
+npm install                       # ajv + ajv-formats (devDeps 전용)
+npm test                          # 32 unit + spawnSync CLI 테스트
+npm run validate                  # 실제 .claude-plugin/suite-extensions.json 검증
+```
+
+검증은 두 단계로 동작한다 — JSON Schema (Phase 1) + `data_flow.from`/`to`에 대한 post-schema referential integrity (Phase 2). Phase는 stderr prefix로 구분되고 exit code는 `0`/`1`/`2` (성공 / 검증 실패 / IO·usage·compile 오류)이다.
+
+두 번째 스키마 [`artifact-envelope.schema.json`](./schemas/artifact-envelope.schema.json)은 M3 마일스톤에서 플러그인이 채택할 공통 envelope을 정의한다 — cross-plugin traceability와 deep-dashboard 집계용.
+
+---
+
 ## 라이선스
 
 MIT
