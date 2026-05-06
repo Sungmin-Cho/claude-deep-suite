@@ -1,0 +1,80 @@
+name: Manifest Doc Sync
+
+on:
+  pull_request:
+    paths:
+      - '.claude-plugin/**'
+      - 'README*.md'
+      - 'CLAUDE.md'
+      - 'guides/**'
+      - 'docs/**'
+      - 'schemas/**'
+      - 'scripts/**'
+      - 'templates/**'
+      - 'tests/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/manifest-doc-sync.yml'
+  push:
+    branches: [main]
+  schedule:
+    # Daily at 06:00 UTC — picks up upstream plugin changes that drift the
+    # pinned-version assertions even when nothing in this repo changed.
+    - cron: '0 6 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit + integration tests
+        run: npm test
+
+      - name: Validate sidecar (schema + referential integrity)
+        run: npm run validate
+
+      - name: Reference sections up to date
+        run: node scripts/generate-reference-sections.js --check
+
+      - name: README/CLAUDE plugin-table drift check
+        run: node scripts/check-readme-plugin-table.js
+
+      - name: CLAUDE.md Project Structure paths exist
+        run: node scripts/check-claude-md-paths.js
+
+      - name: Guide narrative version coherence
+        run: node scripts/check-guide-version.js
+
+      - name: SemVer ↔ SHA sync (cache-key drift)
+        run: node scripts/check-semver-sha-sync.js
+
+      - name: Sidecar paths exist in pinned plugin source
+        run: node scripts/check-pinned-plugin-paths.js
+
+      - name: Cross-plugin memory-hierarchy conflicts
+        run: node scripts/check-memory-hierarchy.js
+
+      - name: Sanity — marketplace.json untouched relative to base
+        if: github.event_name == 'pull_request'
+        run: |
+          BASE="origin/${{ github.base_ref }}"
+          git fetch origin "${{ github.base_ref }}" --depth=1
+          DIFF=$(git diff "$BASE..HEAD" -- .claude-plugin/marketplace.json | wc -l)
+          if [ "$DIFF" -gt 0 ]; then
+            echo "::warning title=marketplace.json changed::review whether the SHA bump is intentional"
+          fi

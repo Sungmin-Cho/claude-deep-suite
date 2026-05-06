@@ -39,8 +39,8 @@
         },
         "producer_version": {
           "type": "string",
-          "pattern": "^\\d+\\.\\d+\\.\\d+(-[A-Za-z0-9.-]+)?$",
-          "description": "SemVer (MAJOR.MINOR.PATCH, optional prerelease). Matches plugin.json.version source-of-truth policy (CLAUDE.md §Conventions)."
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+          "description": "SemVer 2.0.0 strict (official recommended regex). Accepts MAJOR.MINOR.PATCH, optional prerelease (`-1.2.3-alpha.1`), and optional build metadata (`+commit.abc`). Rejects leading-zero numerics (`01.0.0`) and empty prerelease ids (`1.2.3-..`). Matches plugin.json.version source-of-truth policy (CLAUDE.md §Conventions)."
         },
         "artifact_kind": {
           "type": "string",

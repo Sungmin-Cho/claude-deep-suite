@@ -6,14 +6,20 @@
 
 ## 플러그인
 
+<!-- deep-suite:auto-generated:plugin-table-ko:start -->
+
 | 플러그인 | 버전 | 설명 |
-|---------|------|------|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.2 | 증거 기반 개발 프로토콜 (Brainstorm → Research → Plan → Implement → Test → **Integrate**) |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.4.1 | v1.4.1 — Track C synthesizer 에이전트 분리로 trust-boundary 폐쇄 |
-| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.1.1 | 자율 실험 프로토콜 — virtual parallel N-seed, 적응형 스케줄러, 강화된 scoring/guard 계약 |
-| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | 독립 Evaluator + 교차 모델 검증 + Phase 6 서브에이전트 위임 (hardened) |
-| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | 문서 가드닝 에이전트 |
-| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.1.1 | 크로스 플러그인 하네스 진단 |
+|---|---|---|
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.2 | Evidence-Driven Development Protocol |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.4.1 | LLM-managed markdown wiki |
+| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.1.1 | Autonomous Experimentation Protocol |
+| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | Independent Evaluator for AI coding agents |
+| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | Document gardening agent |
+| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.1.1 | Cross-plugin harness diagnostics |
+
+<!-- deep-suite:auto-generated:plugin-table-ko:end -->
+
+> 위 표는 `.claude-plugin/marketplace.json` 과 각 플러그인의 pinned `plugin.json.version` 으로부터 자동 생성됩니다. 직접 편집하지 말고 marketplace 를 수정하세요. 갱신은 `node scripts/generate-reference-sections.js --write`.
 
 ---
 
