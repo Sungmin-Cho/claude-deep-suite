@@ -11,7 +11,7 @@
 | 플러그인 | 버전 | 설명 |
 |---|---|---|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.4.2 | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.4.1 | LLM-managed markdown wiki |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.4.2 | LLM-managed markdown wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.1.1 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.3.4 | Independent Evaluator for AI coding agents |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.1.0 | Document gardening agent |
