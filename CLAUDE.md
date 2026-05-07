@@ -34,9 +34,13 @@ Harness Engineering 프레임워크(Agent = Model + Harness) 기반으로, Guide
 schemas/
   suite-extensions.schema.json    — Sidecar manifest JSON Schema (Draft 2020-12)
   artifact-envelope.schema.json   — M3 cross-plugin envelope (forward-compat, SemVer 2.0.0 strict)
+  payload-registry/<producer>/<artifact_kind>/v<MAJOR.MINOR>.schema.json — M3 Phase 1 payload schemas (8 seeds: deep-docs/last-scan, deep-dashboard/harnessability-report, deep-work/{session,slice}-receipt, deep-evolve/{evolve-receipt,evolve-insights}, deep-review/recurring-findings, deep-wiki/index)
   README.md                       — Schema 사용·기여·버전 정책
 scripts/
   validate-suite-extensions.js    — ajv 기반 sidecar validator (Phase 1 schema + Phase 2 referential)
+  validate-artifact.js            — M3 envelope + payload-registry 단일 파일 validator
+  validate-artifact-fixtures.js   — M3 valid-*/invalid-* 일괄 CI gate
+  wrap-artifact.js                — M3 Phase 2 plugin-maintainer helper (legacy → envelope)
   generate-reference-sections.js  — M2 marker-based reference generator (--check / --write)
   check-readme-plugin-table.js    — M2 narrative drift gate (plugin name + version literal outside markers)
   check-claude-md-paths.js        — M2 §Project Structure 경로 존재 검증
@@ -49,11 +53,14 @@ scripts/
   README.md                       — Script convention 및 inventory
 tests/
   validate-suite-extensions.test.js — schema/envelope/cross-ref 테스트 (W-R4 SemVer 2.0.0 추가)
+  validate-artifact.test.js       — M3 validator CLI 시나리오 (envelope/payload phase + registry-miss)
+  wrap-artifact.test.js           — M3 wrap helper roundtrip + override + kebab-case 거부
   cli.test.js                     — validator CLI 시나리오 (exit code + stderr prefix)
   markers.test.js                 — markers.js round-trip 테스트
   generate-reference-sections.test.js — generator CLI 시나리오 (--check/--write/--id, fixture override)
   cli-sync-checkers.test.js       — 6 check-* 스크립트 spawnSync 시나리오
   fixtures/                       — schema + envelope + plugin-cache fixture
+  fixtures/envelope-payloads/<producer>/<kind>/v<v>/{valid-*,invalid-*}.json — M3 envelope fixture set (per-producer × kind)
 package.json / package-lock.json  — Node 20+ ESM 프로젝트 (private, ajv + ajv-formats devDeps)
 guides/
   integrated-workflow-guide.md    — 6개 플러그인 통합 워크플로우 (EN)
@@ -65,6 +72,7 @@ docs/
   source-pinning.md               — M2 auto-generated source-pinning 표
   capability-matrix.md            — M2 auto-generated capability matrix
   artifact-io-graph.md            — M2 auto-generated cross-plugin artifact I/O graph
+  envelope-migration.md           — M3 Phase 2 plugin-maintainer migration guide (compat matrix + 6-month timer + chain example)
   backlog-*.md / next-session-*.md — 작업 백로그 및 세션 인계 노트
   superpowers/specs/              — 플러그인 설계 문서 (이력)
   superpowers/plans/              — 플러그인 구현 계획 (이력)

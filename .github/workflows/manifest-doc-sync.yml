@@ -68,6 +68,9 @@ jobs:
       - name: Cross-plugin memory-hierarchy conflicts
         run: node scripts/check-memory-hierarchy.js
 
+      - name: Validate envelope fixtures (M3 Phase 1)
+        run: npm run validate-artifact-fixtures
+
       - name: Sanity — marketplace.json untouched relative to base
         if: github.event_name == 'pull_request'
         run: |

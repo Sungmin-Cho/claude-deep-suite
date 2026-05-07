@@ -14,6 +14,9 @@ Suite-level tooling. Each script is self-contained and runnable from the repo ro
 | `check-semver-sha-sync.js` | Verify marketplace.entry.sha → plugin.json.version → suite docs marker tables agree (cache-key drift guard) | `0` clean, `1` drift, `2` IO/usage/fetch |
 | `check-pinned-plugin-paths.js` | Verify sidecar artifact paths appear in pinned plugin source (W-R1, W-R2 absorber) | `0` clean, `1` drift, `2` IO/fetch |
 | `check-memory-hierarchy.js` | Detect cross-plugin policy conflicts using a keyword dictionary (suite ↔ each plugin's docs at pinned SHA) | `0` clean, `1` conflict, `2` IO/usage/fetch |
+| `validate-artifact.js` | Validate a JSON artifact against `schemas/artifact-envelope.schema.json` + (when registered) `schemas/payload-registry/<producer>/<kind>/v<v>.schema.json`. M3 Phase 1. | `0` valid (envelope passes; payload either passes or registry-miss warning), `1` validation fail (envelope vs payload phase via stderr prefix), `2` IO/usage |
+| `validate-artifact-fixtures.js` | Walk `tests/fixtures/envelope-payloads/` and assert every `valid-*` fixture exits 0 and every `invalid-*` fixture exits 1. CI gate for envelope contract. | `0` clean, `1` mismatch |
+| `wrap-artifact.js` | Wrap a legacy JSON file into the envelope format. Auto-generates ULID `run_id`, detects git head/branch/dirty, fills `tool_versions.node`. M3 Phase 2 plugin-maintainer helper. | `0` wrapped, `1` envelope schema reject, `2` IO/usage |
 
 ## Library
 
@@ -50,8 +53,27 @@ npm run docs:sync      # all 6 check-* scripts
 
 The cache (`.deep-suite-cache/<plugin>-<sha>/`) is gitignored and shared across runs. CI populates it via `gh api` (uses `${{ secrets.GITHUB_TOKEN }}`); local devs need `gh auth login` once.
 
+## M3 Common Artifact Envelope (Phase 1)
+
+The `validate-artifact.js` + `validate-artifact-fixtures.js` + `wrap-artifact.js` trio implement the suite-side infrastructure for M3 Phase 1. Plugin maintainers performing Phase 2 envelope adoption use them as a *local cross-check* without taking the suite repo as a dependency.
+
+```bash
+npm run validate-artifact -- path/to/artifact.json   # single file
+npm run validate-artifact-fixtures                   # batch CI gate
+node scripts/wrap-artifact.js \
+  --producer deep-docs \
+  --artifact-kind last-scan \
+  --schema-version 1.0 \
+  --producer-version 1.1.0 \
+  --input legacy.json \
+  --output wrapped.json
+```
+
+The payload registry under `schemas/payload-registry/<producer>/<artifact_kind>/v<MAJOR.MINOR>.schema.json` is the single source of truth. See `docs/envelope-migration.md` for the per-plugin migration playbook.
+
 ## See also
 
 - `schemas/README.md` — schema registry consumed by these scripts
-- `docs/deep-suite-harness-roadmap.md` §M2 — milestone plan
+- `docs/deep-suite-harness-roadmap.md` §M2, §M3 — milestone plans
 - `docs/memory-hierarchy.md` — policy contract enforced by `check-memory-hierarchy.js`
+- `docs/envelope-migration.md` — M3 Phase 2 plugin-maintainer guide
