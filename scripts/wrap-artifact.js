@@ -204,6 +204,7 @@ function main() {
   if (a['parent-run-id']) envelope.parent_run_id = a['parent-run-id'];
 
   const wrapped = {
+    $schema: 'https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/artifact-envelope.schema.json',
     schema_version: '1.0',
     envelope,
     payload,

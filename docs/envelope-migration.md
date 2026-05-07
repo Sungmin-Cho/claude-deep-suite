@@ -98,7 +98,27 @@ node /path/to/claude-deep-suite/scripts/validate-artifact.js sample-wrapped.json
 기존 `writeFileSync(path, JSON.stringify(payload))` 패턴을 envelope wrap으로 전환:
 
 ```js
-import { ulid } from 'ulid';                    // 또는 Node 20+ crypto.randomBytes 직접 사용
+// Zero-dep ULID generator (suite 정책: 외부 패키지 추가 불필요).
+// 자세한 구현은 claude-deep-suite scripts/wrap-artifact.js 참조.
+// ulid npm 패키지도 동작함 (`npm install ulid` 후 아래 주석 참고).
+import { randomBytes } from 'node:crypto';
+
+const CROCKFORD = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+function generateUlid(now = Date.now()) {
+  // 48-bit timestamp + 80-bit randomness, Crockford Base32 26 chars.
+  const t = BigInt(now);
+  const r = randomBytes(10);
+  let s = '';
+  // timestamp (10 chars)
+  for (let i = 9; i >= 0; i--) { s = CROCKFORD[Number((t >> BigInt(i * 5)) & 31n)] + s; }
+  // randomness (16 chars)
+  let rb = 0n;
+  for (const b of r) rb = (rb << 8n) | BigInt(b);
+  for (let i = 15; i >= 0; i--) { s += CROCKFORD[Number((rb >> BigInt(i * 5)) & 31n)]; }
+  return s;
+}
+// 또는: import { ulid as generateUlid } from 'ulid';  // npm install ulid
+
 import pkg from './plugin.json' assert { type: 'json' };
 import { execSync } from 'node:child_process';
 
@@ -119,7 +139,7 @@ const wrapped = {
     producer: 'deep-docs',
     producer_version: pkg.version,                // plugin.json.version source-of-truth
     artifact_kind: 'last-scan',
-    run_id: ulid(),
+    run_id: generateUlid(),       // 또는 ulid() if using the ulid npm package
     generated_at: new Date().toISOString(),
     schema: { name: 'last-scan', version: '1.0' },
     git: detectGit(),
@@ -265,6 +285,13 @@ emit해도 schema는 통과 (단, dashboard chain reconstruction 효율↓).
 **Q. `dirty: "unknown"` 은 언제?**
 A. shallow CI clone 또는 detached worktree 등 git status 조회 실패 시. wrap helper가
 자동으로 fallback 처리.
+
+**Q. `head: '0000000'` 은 언제?**
+A. wrap helper가 git context 자동 감지 실패 시 (non-git 디렉토리, shallow CI clone 등)
+fallback으로 emit하는 sentinel 값. envelope schema regex `^[a-f0-9]{7,40}$` 를 통과하는
+7-zero 문자열. dashboard가 chain reconstruction 시 이 sentinel을 보면 'producer git
+context unavailable'로 해석해야 한다 (실제 commit SHA 아님). 명시적 git 정보 필요 시
+`--git-head` override 사용.
 
 ---
 

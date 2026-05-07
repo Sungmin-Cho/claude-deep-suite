@@ -19,6 +19,9 @@
 // Registry miss is informational (stderr "! ... payload schema not found ...")
 // and does NOT fail validation — Phase 2 plugin migrations seed payload schemas
 // gradually.
+//
+// Trust model: local dev tool. <target>/<registry-path> are user-controlled —
+// no path traversal guard since the user invokes us against their own filesystem.
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';

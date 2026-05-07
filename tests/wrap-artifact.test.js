@@ -56,6 +56,7 @@ test('wrap → validate roundtrip succeeds for deep-docs/last-scan', () => {
 
     const wrapped = JSON.parse(readFileSync(output, 'utf8'));
     assert.equal(wrapped.schema_version, '1.0');
+    assert.ok(wrapped.$schema, '$schema link populated');
     assert.equal(wrapped.envelope.producer, 'deep-docs');
     assert.equal(wrapped.envelope.artifact_kind, 'last-scan');
     assert.equal(wrapped.envelope.schema.version, '1.0');
