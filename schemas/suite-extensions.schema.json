@@ -56,7 +56,7 @@
     },
     "data_flow": {
       "type": "array",
-      "description": "Cross-plugin artifact dependencies. Each edge identifies producer → consumer + a human-readable transport label. NOTE: JSON Schema cannot express that `from`/`to` reference an existing `plugins` key — that referential integrity is enforced by the validator CLI (scripts/validate-suite-extensions.js) as a post-schema phase. `via` is a DISPLAY-ONLY label (Option 1 per handoff §5); it is not validated against artifact paths.",
+      "description": "Cross-plugin artifact dependencies. Each edge identifies producer → consumer + a human-readable transport label. NOTE: JSON Schema cannot express that `from`/`to` reference an existing `plugins` key — that referential integrity is enforced by the validator CLI (scripts/validate-suite-extensions.js) as a post-schema phase. `via` is a DISPLAY-ONLY label (Option 1 per handoff §5); it is not validated against artifact paths. **Non-authoritative**: this graph captures intent / primary flows, not every cross-plugin read or write. Machine-readable cross-plugin truth lives in M3 envelope (`run_id` / `parent_run_id`). See schemas/README.md §`data_flow is intent-only, not exhaustive`.",
       "items": {
         "type": "object",
         "additionalProperties": false,

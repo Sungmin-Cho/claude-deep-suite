@@ -4,7 +4,7 @@
 
 This guide explains how the 6 plugins in deep-suite **work together** during a real project. Rather than listing each plugin's features, it focuses on the integrated flow from a developer's perspective.
 
-> Reflects **deep-work v6.4.2** (Profile schema v3 + `interactive_each_session` + session recommender sub-agent + `--no-ask`/`--recommender`/`--no-recommender` flags + notification system removed; Team/Solo subagent delegation from v6.4.1; Phase Exit Gates from v6.3.1; Phase 5 Integrate from v6.3.0), **deep-review v1.3.4** (Phase 6 subagent delegation from v1.3.3 + v1.3.4 trust-boundary hardening: staged rename precision, allowlist bypass block via pre-existing outside content hash, dirty recovery index/worktree sync, tracked-deleted WIP preservation, macOS bash 3.2 compatibility via TSV temp files, ubuntu + macOS CI matrix; Stage 5.5 recurring findings, entropy retained), **deep-evolve v3.1.1** (v3.1 virtual parallel N-seed exploration with adaptive scheduler, cross-seed forum, cascade synthesis; v3.1.1 hardens stdout metric failure handling, sealed prepare read/write guards, scheduler journal contracts, and package contents; v3.0.x sessions remain supported via VERSION_TIER routing), **deep-docs v1.1.0**, **deep-wiki v1.4.1** (Track C synthesizer agent split for trust-boundary closure — replaces unified `wiki-synthesizer` with 3 split agents `wiki-synthesizer-{analysis,worker,inline}`; active agents (analysis + worker) have `tools: [Read, Glob, Grep, WebFetch]` — Write physically removed → tool-level M1 closure (closes v1.4.0 dogfood realized failure mode where 2/14 workers wrote outside contracted boundary); qualified namespace routing (V-0 empirical: `deep-wiki:wiki-X` resolves, unqualified errors out — Step 7.6.A explicit comment forbids `general-purpose` fallback); new `scripts/lint-agent-tools.sh` Bash 3.2 portable manifest + `_post_dispatch_dirty_scan()` at 3 sites (WIKI_TEST_MODE=1 gated); inline file DORMANT with `status:dormant` + `last_known_active:v1.3.0` + `contract_frozen_at:a9966c7` rot-mitigation header. Layered defense-in-depth (NOT comprehensive enforcement): L1 (V-0 best-effort without runtime metadata API; Track C v2 deferred until runtime-API supports metadata exposure) + L2 (§3.9 in-root scope only — does NOT catch off-root /tmp writes from v1.4.0 realized failure mode; process-level sandboxing deferred to v1.5.0+) honestly disclosed in CHANGELOG. Migration: BREAKING — external callers MUST switch to qualified `deep-wiki:wiki-synthesizer-{inline|analysis|worker}`, no compat shim per Option B. A5 single-source page-fanout + A4 multi-source paths preserved structurally from v1.4.0 (NOT byte-identical: split-agent dispatch shape change). Earlier line: v1.4.0 A5 single-source page-level fanout (`wiki-synthesizer mode="analysis"` + `wiki-page-writer` workers); v1.3.0 A4 multi-source synthesizer fanout (Approach B) + hook YAML parser broaden; v1.2.x throughput + lint hardening + ingest-repair self-healing; v1.1.4 `source_hashes` normalization + `.pending-scan` promotion regression guard; v1.1.3 parallel tool dispatch inside `wiki-synthesizer`; v1.1.2 page I/O subagent delegation), **deep-dashboard v1.1.1**.
+> Reflects **deep-work v6.4.2** (Profile schema v3 + `interactive_each_session` + session recommender sub-agent + `--no-ask`/`--recommender`/`--no-recommender` flags + notification system removed; Team/Solo subagent delegation from v6.4.1; Phase Exit Gates from v6.3.1; Phase 5 Integrate from v6.3.0), **deep-review v1.3.4** (Phase 6 subagent delegation from v1.3.3 + v1.3.4 trust-boundary hardening: staged rename precision, allowlist bypass block via pre-existing outside content hash, dirty recovery index/worktree sync, tracked-deleted WIP preservation, macOS bash 3.2 compatibility via TSV temp files, ubuntu + macOS CI matrix; Stage 5.5 recurring findings, entropy retained), **deep-evolve v3.1.1** (v3.1 virtual parallel N-seed exploration with adaptive scheduler, cross-seed forum, cascade synthesis; v3.1.1 hardens stdout metric failure handling, sealed prepare read/write guards, scheduler journal contracts, and package contents; v3.0.x sessions remain supported via VERSION_TIER routing), **deep-docs v1.1.0**, **deep-wiki v1.4.2** (Track C synthesizer agent split for trust-boundary closure — replaces unified `wiki-synthesizer` with 3 split agents `wiki-synthesizer-{analysis,worker,inline}`; active agents (analysis + worker) have `tools: [Read, Glob, Grep, WebFetch]` — Write physically removed → tool-level M1 closure (closes v1.4.0 dogfood realized failure mode where 2/14 workers wrote outside contracted boundary); qualified namespace routing (V-0 empirical: `deep-wiki:wiki-X` resolves, unqualified errors out — Step 7.6.A explicit comment forbids `general-purpose` fallback); new `scripts/lint-agent-tools.sh` Bash 3.2 portable manifest + `_post_dispatch_dirty_scan()` at 3 sites (WIKI_TEST_MODE=1 gated); inline file DORMANT with `status:dormant` + `last_known_active:v1.3.0` + `contract_frozen_at:a9966c7` rot-mitigation header. Layered defense-in-depth (NOT comprehensive enforcement): L1 (V-0 best-effort without runtime metadata API; Track C v2 deferred until runtime-API supports metadata exposure) + L2 (§3.9 in-root scope only — does NOT catch off-root /tmp writes from v1.4.0 realized failure mode; process-level sandboxing deferred to v1.5.0+) honestly disclosed in CHANGELOG. Migration: BREAKING — external callers MUST switch to qualified `deep-wiki:wiki-synthesizer-{inline|analysis|worker}`, no compat shim per Option B. A5 single-source page-fanout + A4 multi-source paths preserved structurally from v1.4.0 (NOT byte-identical: split-agent dispatch shape change). Earlier line: v1.4.0 A5 single-source page-level fanout (`wiki-synthesizer mode="analysis"` + `wiki-page-writer` workers); v1.3.0 A4 multi-source synthesizer fanout (Approach B) + hook YAML parser broaden; v1.2.x throughput + lint hardening + ingest-repair self-healing; v1.1.4 `source_hashes` normalization + `.pending-scan` promotion regression guard; v1.1.3 parallel tool dispatch inside `wiki-synthesizer`; v1.1.2 page I/O subagent delegation), **deep-dashboard v1.1.1**.
 
 ---
 
@@ -323,7 +323,7 @@ Requires an active deep-work session with Phase 4 complete. Without one, the com
 
 Phase 5 repeatedly:
 
-1. **Gathers signals** from `$WORK_DIR/session-receipt.json`, `.deep-review/recurring-findings.json`, `.deep-review/fitness.json`, `.deep-dashboard/harnessability-report.json`, `.deep-docs/last-scan.json`, `.deep-evolve/<session-id>/evolve-insights.json`, `.wiki-meta/index.json`, and `git diff`. Missing files are read as `null` (fail-safe).
+1. **Gathers signals** from `$WORK_DIR/session-receipt.json`, `.deep-review/recurring-findings.json`, `.deep-review/fitness.json`, `.deep-dashboard/harnessability-report.json`, `.deep-docs/last-scan.json`, `.deep-evolve/<session-id>/evolve-insights.json`, `<wiki_root>/.wiki-meta/index.json`, and `git diff`. Missing files are read as `null` (fail-safe).
 2. **Asks the LLM** to rank the top-3 next actions with a rationale and the signals used.
 3. **Renders** the top-3 plus `[skip] [finish]`.
 4. **You pick** one; the selected command runs; the plugin updates its own artifacts.
@@ -358,22 +358,25 @@ Phase 5 writes incrementally to `$WORK_DIR/integrate-loop.json` — one entry pe
 
 ---
 
-## Cross-Plugin Data Flow (v6.3.0)
+## Cross-Plugin Data Flow
 
+<!-- deep-suite:auto-generated:data-flow-en:start -->
+
+```mermaid
+flowchart LR
+  deep-work -- "session-receipt" --> deep-review
+  deep-work -- "session-receipt + harness-sessions.jsonl" --> deep-dashboard
+  deep-docs -- "last-scan.json" --> deep-dashboard
+  deep-evolve -- "evolve-receipt" --> deep-dashboard
+  deep-evolve -- "evolve-insights (Research context)" --> deep-work
+  deep-dashboard -- "harnessability-report.json (Phase 1 Research consumes)" --> deep-work
+  deep-review -- "recurring-findings.json" --> deep-evolve
+  deep-wiki -- "index.json (Research reference)" --> deep-work
 ```
-deep-work ────────── receipts ──────────→ deep-dashboard (collection)
-deep-docs ────────── last-scan.json ────→ deep-dashboard (collection)
-deep-evolve ──────── evolve-receipt ────→ deep-dashboard (collection)
-                     (per-session dir)
 
-deep-review ──────── recurring-findings → deep-evolve (experiment steering)
-deep-evolve ──────── evolve-insights ───→ deep-work Research (context)
-                     (per-session dir)
-deep-evolve ──────── review trigger ────→ deep-review (pre-merge verification)
-deep-dashboard ───── harnessability ────→ deep-work Research (context)
+<!-- deep-suite:auto-generated:data-flow-en:end -->
 
-Phase 5 reads ALL of the above + git signals → AI ranks next action (loop)
-```
+> The diagram above is regenerated from `.claude-plugin/suite-extensions.json` `data_flow[]`. It is **non-authoritative** — intent only. Machine-readable cross-plugin truth lives in M3 envelope (`run_id` / `parent_run_id`). Phase 5 reads ALL of the above + git signals → AI ranks next action (loop).
 
 Absolute path reference:
 
@@ -389,7 +392,7 @@ Absolute path reference:
 | deep-dashboard | `.deep-dashboard/harnessability-report.json` |
 | deep-evolve pointer | `.deep-evolve/current.json` (`session_id`) |
 | deep-evolve session | `.deep-evolve/<session-id>/evolve-receipt.json`, `.deep-evolve/<session-id>/evolve-insights.json` |
-| deep-wiki index | `<wiki-root>/.wiki-meta/index.json` |
+| deep-wiki index | `<wiki_root>/.wiki-meta/index.json` |
 
 Each plugin operates **independently** and communicates via JSON files. Missing plugins degrade gracefully — Phase 5 treats absent artifacts as `null` and just narrows its recommendation pool.
 

@@ -20,7 +20,7 @@
           ".deep-dashboard/harnessability-report.json",
           ".deep-evolve/<session>/evolve-insights.json",
           ".deep-review/recurring-findings.json",
-          ".wiki-meta/index.json"
+          "<wiki_root>/.wiki-meta/index.json"
         ]
       },
       "hooks_active": ["SessionStart", "PreToolUse", "PostToolUse", "Stop"]
@@ -100,7 +100,7 @@
           ".deep-review/**",
           ".deep-docs/**",
           ".deep-evolve/**",
-          ".wiki-meta/**"
+          "<wiki_root>/.wiki-meta/**"
         ]
       },
       "hooks_active": [],
@@ -111,7 +111,8 @@
     { "from": "deep-work", "to": "deep-review", "via": "session-receipt" },
     { "from": "deep-work", "to": "deep-dashboard", "via": "session-receipt + harness-sessions.jsonl" },
     { "from": "deep-docs", "to": "deep-dashboard", "via": "last-scan.json" },
-    { "from": "deep-evolve", "to": "deep-dashboard", "via": "evolve-receipt + evolve-insights" },
+    { "from": "deep-evolve", "to": "deep-dashboard", "via": "evolve-receipt" },
+    { "from": "deep-evolve", "to": "deep-work", "via": "evolve-insights (Research context)" },
     { "from": "deep-dashboard", "to": "deep-work", "via": "harnessability-report.json (Phase 1 Research consumes)" },
     { "from": "deep-review", "to": "deep-evolve", "via": "recurring-findings.json" },
     { "from": "deep-wiki", "to": "deep-work", "via": "index.json (Research reference)" }

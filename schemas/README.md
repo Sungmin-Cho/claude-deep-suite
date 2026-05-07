@@ -38,7 +38,7 @@ Top-level `schema_version: "1.0"` — **locked via JSON Schema `const`**.
 |---|---|---|---|
 | `schema_version` (sidecar) | `.claude-plugin/suite-extensions.json` | `const "1.0"` | `schemas/suite-extensions.schema.json` |
 | `schema_version` (envelope) | wraps every artifact | `const "1.0"` | `schemas/artifact-envelope.schema.json` (locked symmetrically) |
-| `producer_version` (envelope) | wraps every artifact | SemVer `^\d+\.\d+\.\d+(-[A-Za-z0-9.-]+)?$` | The plugin's `plugin.json.version` (per CLAUDE.md §Conventions) |
+| `producer_version` (envelope) | wraps every artifact | SemVer 2.0.0 (official recommended regex — accepts `1.0.0+commit.abc` build metadata, rejects `01.0.0` leading-zero numerics and `1.2.3-..` empty prerelease ids) | The plugin's `plugin.json.version` (per CLAUDE.md §Conventions) |
 | `envelope.schema.version` | wraps every artifact (payload schema id) | `^\d+\.\d+$` | The producer's domain schema (registry lookup, M3+) |
 
 Why `schema.version` is *not* locked: it identifies the producer's payload schema, which evolves independently per producer's domain. The envelope frame itself is locked (`schema_version: const "1.0"`); the payload contract underneath can rev.
@@ -57,6 +57,19 @@ Schema cannot express "required when `hooks_active` is `[]` AND the plugin's `ho
 `data_flow[*].via` is a human-readable transport label and is **not validated against `artifacts.writes`/`reads`**. Compound labels like `"session-receipt + harness-sessions.jsonl"` or `"index.json (Research reference)"` are acceptable. The validator's referential integrity phase only enforces that `from` and `to` reference existing plugin keys.
 
 Rationale: machine-readable cross-plugin truth lives in the M3 envelope (`run_id`, `parent_run_id`); the sidecar `data_flow` is a human-readable map of intent.
+
+## `data_flow` is intent-only, not exhaustive
+
+`data_flow[]` captures **primary** producer → consumer flows for human readers and tooling that visualizes the suite. It is **non-authoritative**: it does not enumerate every cross-plugin read or write expressed by `artifacts.reads`/`artifacts.writes`. Adding or removing an `artifacts` entry does not require a corresponding `data_flow` edit unless the maintainer wants the diagram to highlight that link.
+
+The validator CLI enforces only:
+
+- `from` / `to` reference existing plugin keys (Phase 2 referential integrity).
+- `via` is a non-empty string (display-only, no semantic constraint).
+
+Comprehensive cross-plugin trace ↔ artifact mapping is delegated to the M3 envelope (`run_id` / `parent_run_id` + `provenance.source_artifacts[]`). When that envelope adopts plugin-by-plugin in M3, consumers like `deep-dashboard` can reconstruct the full graph from emitted artifacts; the sidecar continues to serve the human-readable summary.
+
+This decision is recorded in `docs/backlog-m1-round2-deferred.md` §W-R3 (Option #2 — non-authoritative declared).
 
 ## Artifact envelope `payload` validation delegation
 
