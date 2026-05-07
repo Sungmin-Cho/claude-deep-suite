@@ -220,6 +220,25 @@ test('wrap exits 2 on invalid --dirty value', () => {
   assert.match(wrapRes.stderr, /must be one of true\|false\|unknown/);
 });
 
+test('wrap rejects --dirty value before reading input (fail-fast)', () => {
+  const dir = makeTmp();
+  try {
+    // intentionally do not create input file
+    const wrapRes = runWrap([
+      '--producer', 'deep-docs', '--artifact-kind', 'last-scan',
+      '--schema-version', '1.0', '--producer-version', '1.1.0',
+      '--input', join(dir, 'does-not-exist.json'),
+      '--output', join(dir, 'out.json'),
+      '--dirty', 'maybe',
+    ]);
+    assert.equal(wrapRes.status, 2);
+    assert.match(wrapRes.stderr, /must be one of true\|false\|unknown/);
+    assert.doesNotMatch(wrapRes.stderr, /cannot read/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('wrap exits 2 on unknown flag (typo guard)', () => {
   const wrapRes = runWrap([
     '--producer', 'deep-docs', '--artifact-kind', 'last-scan',

@@ -169,6 +169,16 @@ function main() {
     }
   }
 
+  // Validate --dirty allow-list before any IO so argv-level errors fail fast
+  // and are independent of ambient filesystem state (e.g. /tmp/x.json presence).
+  if (a['dirty'] !== undefined) {
+    const VALID_DIRTY = new Set(['true', 'false', 'unknown']);
+    if (!VALID_DIRTY.has(a['dirty'])) {
+      usage(`--dirty must be one of true|false|unknown, got "${a['dirty']}"`);
+      return;
+    }
+  }
+
   if (!existsSync(ENVELOPE_SCHEMA_PATH)) {
     console.error(`error: envelope schema not found at ${ENVELOPE_SCHEMA_PATH}`);
     process.exitCode = 2;
@@ -192,12 +202,8 @@ function main() {
   // Apply optional git override flags (useful for shallow CI clones or cross-repo invocations).
   if (a['git-head'] !== undefined) git.head = a['git-head'];
   if (a['git-branch'] !== undefined) git.branch = a['git-branch'];
+  // Apply --dirty override (value already validated above before IO).
   if (a['dirty'] !== undefined) {
-    const VALID_DIRTY = new Set(['true', 'false', 'unknown']);
-    if (!VALID_DIRTY.has(a['dirty'])) {
-      usage(`--dirty must be one of true|false|unknown, got "${a['dirty']}"`);
-      return;
-    }
     if (a['dirty'] === 'true') git.dirty = true;
     else if (a['dirty'] === 'false') git.dirty = false;
     else git.dirty = 'unknown';
