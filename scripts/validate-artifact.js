@@ -36,7 +36,7 @@ const PAYLOAD_REGISTRY_DIR = resolve(repoRoot, 'schemas/payload-registry');
 
 function usage(extra) {
   if (extra) console.error(`error: ${extra}`);
-  console.error('usage: validate-artifact.js <path-to-artifact.json>');
+  console.error('usage: validate-artifact.js [--strict] <path-to-artifact.json>');
   process.exitCode = 2;
 }
 
@@ -76,24 +76,39 @@ function reportAjvErrors(errors, prefixLabel) {
   }
 }
 
+function normalizeSchemaVersion(schemaVersion) {
+  // Normalize MAJOR.MINOR so that "1.00" ≡ "1.0", preventing registry misses
+  // caused by producer-side zero-padding differences. parseInt NaN-guards each
+  // component — if a segment cannot be parsed the original string is returned.
+  const parts = schemaVersion.split('.');
+  const normalized = parts.map((s) => {
+    const n = parseInt(s, 10);
+    return Number.isNaN(n) ? s : String(n);
+  });
+  return normalized.join('.');
+}
+
 function payloadRegistryPath(producer, artifactKind, schemaVersion) {
-  // schema.version is "MAJOR.MINOR" per envelope schema. Registry filename uses
-  // the same literal — no normalization, so a producer that emits "1.0" and a
-  // producer that emits "1.00" land in different files (intentional: schema
-  // bumps must be explicit).
+  // schema.version is "MAJOR.MINOR" per envelope schema. Normalize before
+  // constructing the path so producers that emit "1.00" resolve to the same
+  // registry entry as those that emit "1.0".
+  const normalizedVersion = normalizeSchemaVersion(schemaVersion);
   return resolve(
     PAYLOAD_REGISTRY_DIR,
     producer,
     artifactKind,
-    `v${schemaVersion}.schema.json`,
+    `v${normalizedVersion}.schema.json`,
   );
 }
 
 function main() {
-  const positionals = process.argv.slice(2);
-  const flag = positionals.find((p) => p.startsWith('-'));
-  if (flag) {
-    usage(`unknown flag: ${flag}`);
+  const argv = process.argv.slice(2);
+  const strictIdx = argv.indexOf('--strict');
+  const strict = strictIdx !== -1;
+  const positionals = strict ? argv.filter((_, i) => i !== strictIdx) : argv;
+  const unknownFlag = positionals.find((p) => p.startsWith('-'));
+  if (unknownFlag) {
+    usage(`unknown flag: ${unknownFlag}`);
     return;
   }
   if (positionals.length !== 1) {
@@ -148,6 +163,14 @@ function main() {
   const registryPath = payloadRegistryPath(producer, artifactKind, schemaVersion);
 
   if (!existsSync(registryPath)) {
+    const normalizedVersion = normalizeSchemaVersion(schemaVersion);
+    if (strict) {
+      console.error(
+        `✗ ${target} fails strict-mode registry lookup (${producer}/${artifactKind}/v${normalizedVersion}) — no payload schema registered`,
+      );
+      process.exitCode = 1;
+      return;
+    }
     console.error(
       `! ${target} payload schema not found in registry (${producer}/${artifactKind}/v${schemaVersion}) — envelope-only validation`,
     );

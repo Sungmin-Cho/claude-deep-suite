@@ -28,7 +28,7 @@ function walk(root) {
 }
 
 function run(path) {
-  return spawnSync('node', [VALIDATOR, path], {
+  return spawnSync('node', [VALIDATOR, '--strict', path], {
     cwd: repoRoot,
     encoding: 'utf8',
     timeout: 10000,

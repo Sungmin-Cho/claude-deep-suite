@@ -101,6 +101,61 @@ test('CLI exits 0 with registry-miss warning on unknown producer/kind triple', (
   }
 });
 
+test('CLI normalizes schema.version with leading/trailing zeros (1.00 → 1.0)', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'm3-validate-'));
+  try {
+    const fixture = join(dir, 'valid-schema-version-normalized.json');
+    writeFileSync(fixture, JSON.stringify({
+      schema_version: '1.0',
+      envelope: {
+        producer: 'deep-docs',
+        producer_version: '1.1.0',
+        artifact_kind: 'last-scan',
+        run_id: '01J9X7K2A8M0V4PN3R5BQ8E2WT',
+        generated_at: '2026-05-07T09:00:00Z',
+        schema: { name: 'last-scan', version: '1.00' },
+        git: { head: 'a6b3485', branch: 'main', dirty: false },
+        provenance: { source_artifacts: [], tool_versions: {} },
+      },
+      payload: {
+        scanned_paths: ['CLAUDE.md'],
+        findings: [],
+      },
+    }, null, 2));
+    const res = runCli([fixture]);
+    assert.equal(res.status, 0, `stderr=${res.stderr}\nstdout=${res.stdout}`);
+    assert.match(res.stdout, /validates against envelope schema \+ payload schema/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('CLI exits 1 with strict-mode registry-miss prefix on unregistered triple', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'm3-validate-'));
+  try {
+    const fixture = join(dir, 'unregistered-strict.json');
+    writeFileSync(fixture, JSON.stringify({
+      schema_version: '1.0',
+      envelope: {
+        producer: 'deep-docs',
+        producer_version: '1.1.0',
+        artifact_kind: 'no-such-kind',
+        run_id: '01J9X7K2A8M0V4PN3R5BQ8E2WT',
+        generated_at: '2026-05-07T09:00:00Z',
+        schema: { name: 'no-such-kind', version: '1.0' },
+        git: { head: 'a6b3485', branch: 'main', dirty: false },
+        provenance: { source_artifacts: [], tool_versions: {} },
+      },
+      payload: { anything: true },
+    }, null, 2));
+    const res = runCli(['--strict', fixture]);
+    assert.equal(res.status, 1, `stderr=${res.stderr}\nstdout=${res.stdout}`);
+    assert.match(res.stderr, /fails strict-mode registry lookup/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('CLI exits 2 on missing target file', () => {
   const res = runCli(['tests/fixtures/envelope-payloads/does-not-exist.json']);
   assert.equal(res.status, 2);
