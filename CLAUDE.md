@@ -92,3 +92,4 @@ README.md / README.ko.md          — 프로젝트 소개 (EN/KO)
   - Cross-plugin memory hierarchy 는 `docs/memory-hierarchy.md` 가 정의. 신규 정책 추가는 거기 표 + `scripts/check-memory-hierarchy.js POLICIES` 양쪽 갱신.
   - Sidecar paths 는 pinned plugin source 와 1:1 일치해야 한다 (`scripts/check-pinned-plugin-paths.js` enforced; W-R1, W-R2 회귀 차단).
   - `<wiki_root>/` (underscore) 가 wiki paths 의 canonical prefix. `<wiki-root>/` (hyphen) 은 금지.
+
