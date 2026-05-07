@@ -75,7 +75,19 @@ dashboard envelope-aware read는 Phase 3 / M4 범위.
 
 각 plugin repo에서:
 
-### 4.1 Branch + helper sample
+### 4.1 Phase 1 placeholder schemas (important)
+
+The 8 payload schemas under `schemas/payload-registry/<producer>/<kind>/v1.0.schema.json` shipped in Phase 1 are intentionally **placeholders**: they declare `type: object` + forward-compat `^x-` extensions, but do **not** enforce `required` fields or specific `properties`. Phase 2 plugin migration PRs replace each placeholder with the authoritative shape derived from the plugin's live `current-emit.json`. Until that PR lands for a given plugin:
+
+- `validate-artifact <wrapped.json>` (default) → envelope schema enforced + payload "any object"
+- `validate-artifact --strict <wrapped.json>` → also requires registry hit (i.e., that the producer/kind/version triple has a registered placeholder schema). The placeholder accepts any payload; the strict mode catches typos in producer/artifact_kind/schema.version.
+
+When you (Phase 2 maintainer) replace a placeholder, your PR should:
+1. Update the schema to reflect actual emit fields (with real `required` / `properties`).
+2. Add a fixture per shape — at minimum `valid-minimal.json` and one `invalid-*.json`.
+3. Run `npm run validate-artifact-fixtures` (CI gate) to confirm coverage.
+
+### 4.2 Branch + helper sample
 
 ```bash
 git checkout -b feat/m3-envelope-adoption
@@ -93,7 +105,7 @@ node /path/to/claude-deep-suite/scripts/wrap-artifact.js \
 node /path/to/claude-deep-suite/scripts/validate-artifact.js sample-wrapped.json
 ```
 
-### 4.2 Writer 코드 변경
+### 4.3 Writer 코드 변경
 
 기존 `writeFileSync(path, JSON.stringify(payload))` 패턴을 envelope wrap으로 전환:
 
@@ -106,16 +118,23 @@ import { randomBytes } from 'node:crypto';
 const CROCKFORD = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
 function generateUlid(now = Date.now()) {
   // 48-bit timestamp + 80-bit randomness, Crockford Base32 26 chars.
-  const t = BigInt(now);
+  // Timestamp encoded MSB-first (per ULID spec) so lex sort = time sort.
+  let ts = now;
+  const tsChars = new Array(10);
+  for (let i = 9; i >= 0; i--) {
+    tsChars[i] = CROCKFORD[ts % 32];
+    ts = Math.floor(ts / 32);
+  }
+  // Randomness portion (80 bits → 16 base32 chars).
   const r = randomBytes(10);
-  let s = '';
-  // timestamp (10 chars)
-  for (let i = 9; i >= 0; i--) { s = CROCKFORD[Number((t >> BigInt(i * 5)) & 31n)] + s; }
-  // randomness (16 chars)
   let rb = 0n;
   for (const b of r) rb = (rb << 8n) | BigInt(b);
-  for (let i = 15; i >= 0; i--) { s += CROCKFORD[Number((rb >> BigInt(i * 5)) & 31n)]; }
-  return s;
+  const randChars = new Array(16);
+  for (let i = 15; i >= 0; i--) {
+    randChars[i] = CROCKFORD[Number(rb & 31n)];
+    rb >>= 5n;
+  }
+  return tsChars.join('') + randChars.join('');
 }
 // 또는: import { ulid as generateUlid } from 'ulid';  // npm install ulid
 
@@ -153,7 +172,7 @@ const wrapped = {
 writeFileSync(path, JSON.stringify(wrapped, null, 2) + '\n');
 ```
 
-### 4.3 `parent_run_id` chain (consumer plugins)
+### 4.4 `parent_run_id` chain (consumer plugins)
 
 자기 artifact가 *다른 plugin의 artifact를 입력으로* 가질 때 chain을 명시:
 
@@ -172,17 +191,17 @@ test('review report parent_run_id matches consumed session-receipt run_id', () =
 });
 ```
 
-### 4.4 Plugin self-tests
+### 4.5 Plugin self-tests
 
 - Emit 결과를 suite repo `validate-artifact.js`로 cross-check (플러그인 자체 CI는 suite 의존 없음 — 로컬 dev에서만 확인하면 충분)
 - Plugin 자체 test에서 envelope schema는 inline JSON 또는 fetched copy로 검증 가능
 
-### 4.5 Plugin 메타데이터
+### 4.6 Plugin 메타데이터
 
 - README / CHANGELOG: "v<next>: artifact emits M3 envelope (cf. claude-deep-suite/docs/envelope-migration.md)"
 - `plugin.json.version` patch 또는 minor bump (envelope adoption은 minor 권장 — 새 contract 추가)
 
-### 4.6 PR merge → suite SHA bump
+### 4.7 PR merge → suite SHA bump
 
 Plugin PR merge 후 suite repo에서 *별도 PR*:
 ```bash

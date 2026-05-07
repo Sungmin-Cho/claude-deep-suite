@@ -1,33 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-work/slice-receipt/v1.0.schema.json",
-  "title": "deep-work slice-receipt payload v1.0",
-  "description": "Minimal additive shape for .deep-work/<session>/receipts/SLICE-*.json payload.",
+  "title": "deep-work slice-receipt payload v1.0 (Phase 1 placeholder)",
+  "description": "Phase 1 placeholder schema. Phase 2 plugin migration PR will replace with the authoritative shape derived from live emit. Until then, validate-artifact accepts any object as payload — see docs/envelope-migration.md §4.1.",
   "type": "object",
   "additionalProperties": true,
   "patternProperties": {
     "^x-": { "description": "Forward-compat extension namespace." }
-  },
-  "required": ["slice_id", "status"],
-  "properties": {
-    "slice_id": {
-      "type": "string",
-      "pattern": "^SLICE-\\d+$",
-      "description": "Slice identifier."
-    },
-    "status": {
-      "enum": ["pending", "in_progress", "passed", "failed", "skipped"]
-    },
-    "started_at": { "type": "string", "format": "date-time" },
-    "ended_at": { "type": "string", "format": "date-time" },
-    "tests": {
-      "type": "object",
-      "additionalProperties": true,
-      "properties": {
-        "added": { "type": "integer", "minimum": 0 },
-        "failing": { "type": "integer", "minimum": 0 }
-      }
-    },
-    "review_verdict": { "type": "string" }
   }
 }

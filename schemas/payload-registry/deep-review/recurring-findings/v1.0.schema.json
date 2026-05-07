@@ -1,35 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-review/recurring-findings/v1.0.schema.json",
-  "title": "deep-review recurring-findings payload v1.0",
-  "description": "Minimal additive shape for .deep-review/recurring-findings.json payload.",
+  "title": "deep-review recurring-findings payload v1.0 (Phase 1 placeholder)",
+  "description": "Phase 1 placeholder schema. Phase 2 plugin migration PR will replace with the authoritative shape derived from live emit. Until then, validate-artifact accepts any object as payload — see docs/envelope-migration.md §4.1.",
   "type": "object",
   "additionalProperties": true,
   "patternProperties": {
     "^x-": { "description": "Forward-compat extension namespace." }
-  },
-  "required": ["findings"],
-  "properties": {
-    "findings": {
-      "type": "array",
-      "description": "Recurring findings observed across review sessions. Each entry tracks count + severity.",
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "required": ["fingerprint", "severity", "occurrences"],
-        "properties": {
-          "fingerprint": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Stable identifier across review runs (hash or rule id)."
-          },
-          "severity": { "enum": ["info", "concern", "request_changes", "blocker"] },
-          "occurrences": { "type": "integer", "minimum": 1 },
-          "first_seen": { "type": "string", "format": "date-time" },
-          "last_seen": { "type": "string", "format": "date-time" },
-          "summary": { "type": "string" }
-        }
-      }
-    }
   }
 }

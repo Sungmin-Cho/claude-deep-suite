@@ -1,38 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-wiki/index/v1.0.schema.json",
-  "title": "deep-wiki index payload v1.0",
-  "description": "Minimal additive shape for <wiki_root>/.wiki-meta/index.json payload (envelope-wrapped). Phase 2 deep-wiki migration may broaden, but the existing wiki-schema (kebab-case slugs, source provenance) remains authoritative outside this envelope.",
+  "title": "deep-wiki index payload v1.0 (Phase 1 placeholder)",
+  "description": "Phase 1 placeholder schema. Phase 2 plugin migration PR will replace with the authoritative shape derived from live emit. Until then, validate-artifact accepts any object as payload — see docs/envelope-migration.md §4.1.",
   "type": "object",
   "additionalProperties": true,
   "patternProperties": {
     "^x-": { "description": "Forward-compat extension namespace." }
-  },
-  "required": ["pages"],
-  "properties": {
-    "pages": {
-      "type": "array",
-      "description": "Catalog of wiki pages. Empty array allowed for a freshly initialized wiki.",
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "required": ["slug", "path"],
-        "properties": {
-          "slug": {
-            "type": "string",
-            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
-            "description": "Kebab-case slug per wiki-schema."
-          },
-          "path": { "type": "string", "minLength": 1 },
-          "title": { "type": "string" },
-          "updated_at": { "type": "string", "format": "date-time" },
-          "sources": {
-            "type": "array",
-            "items": { "type": "object", "additionalProperties": true }
-          }
-        }
-      }
-    },
-    "wiki_root": { "type": "string", "minLength": 1 }
   }
 }

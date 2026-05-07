@@ -1,32 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-evolve/evolve-insights/v1.0.schema.json",
-  "title": "deep-evolve evolve-insights payload v1.0",
-  "description": "Minimal additive shape for .deep-evolve/<session>/evolve-insights.json payload (Research-context document consumed by deep-work).",
+  "title": "deep-evolve evolve-insights payload v1.0 (Phase 1 placeholder)",
+  "description": "Phase 1 placeholder schema. Phase 2 plugin migration PR will replace with the authoritative shape derived from live emit. Until then, validate-artifact accepts any object as payload — see docs/envelope-migration.md §4.1.",
   "type": "object",
   "additionalProperties": true,
   "patternProperties": {
     "^x-": { "description": "Forward-compat extension namespace." }
-  },
-  "required": ["insights"],
-  "properties": {
-    "insights": {
-      "type": "array",
-      "description": "Distilled findings the evolve session learned across epochs.",
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "required": ["title", "evidence"],
-        "properties": {
-          "title": { "type": "string", "minLength": 1 },
-          "evidence": { "type": "string" },
-          "confidence": { "type": "string", "enum": ["low", "medium", "high"] }
-        }
-      }
-    },
-    "recommendations": {
-      "type": "array",
-      "items": { "type": "object", "additionalProperties": true }
-    }
   }
 }
