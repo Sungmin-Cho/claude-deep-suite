@@ -166,6 +166,18 @@ function main() {
     return;
   }
 
+  // Identity check: schema.name must match artifact_kind (cross-plugin trace contract).
+  // The envelope schema makes both fields required separately; nothing in the schema
+  // forces equality, so we enforce it here as an additional invariant.
+  if (data.envelope.schema.name !== data.envelope.artifact_kind) {
+    console.error(
+      `✗ ${target} fails identity check: envelope.schema.name "${data.envelope.schema.name}" ` +
+      `!= envelope.artifact_kind "${data.envelope.artifact_kind}"`,
+    );
+    process.exitCode = 1;
+    return;
+  }
+
   // Envelope passed → registry lookup for payload schema.
   const env = data.envelope;
   const producer = env.producer;

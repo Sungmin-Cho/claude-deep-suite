@@ -185,6 +185,17 @@ test('CLI exits 2 on --strict=<invalid> value', () => {
   assert.match(res.stderr, /--strict expects true\|false/);
 });
 
+test('CLI exits 1 with identity-check prefix on schema.name vs artifact_kind mismatch', () => {
+  const fixture = resolve(
+    FIXTURE_ROOT,
+    'deep-docs/last-scan/v1.0/invalid-schema-name-mismatch.json',
+  );
+  const res = runCli([fixture]);
+  assert.equal(res.status, 1, res.stderr);
+  assert.match(res.stderr, /fails identity check/);
+  assert.match(res.stderr, /schema\.name.*artifact_kind/);
+});
+
 test('all valid-* fixtures use 26-char Crockford ULID for run_id / parent_run_id / source_artifacts.run_id', () => {
   const ULID_RE = /^[0-9A-HJKMNP-TV-Z]{26}$/;
   const valids = walkFixtures(FIXTURE_ROOT).filter((p) => /\bvalid-/.test(p));
