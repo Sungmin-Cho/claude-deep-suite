@@ -209,6 +209,28 @@ test('wrap respects --git-head, --git-branch, --dirty overrides', () => {
   }
 });
 
+test('wrap exits 2 on invalid --dirty value', () => {
+  const wrapRes = runWrap([
+    '--producer', 'deep-docs', '--artifact-kind', 'last-scan',
+    '--schema-version', '1.0', '--producer-version', '1.1.0',
+    '--input', '/tmp/x.json', '--output', '/tmp/y.json',
+    '--dirty', 'yes',  // typo, not in allow-list
+  ]);
+  assert.equal(wrapRes.status, 2);
+  assert.match(wrapRes.stderr, /must be one of true\|false\|unknown/);
+});
+
+test('wrap exits 2 on unknown flag (typo guard)', () => {
+  const wrapRes = runWrap([
+    '--producer', 'deep-docs', '--artifact-kind', 'last-scan',
+    '--schema-version', '1.0', '--producer-version', '1.1.0',
+    '--input', '/tmp/x.json', '--output', '/tmp/y.json',
+    '--gut-head', 'deadbeef',  // typo for --git-head
+  ]);
+  assert.equal(wrapRes.status, 2);
+  assert.match(wrapRes.stderr, /unknown flag --gut-head/);
+});
+
 test('wrap detects git context from process.cwd()', () => {
   const dir = makeTmp();
   try {

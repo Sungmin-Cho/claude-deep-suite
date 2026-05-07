@@ -142,6 +142,12 @@ function readJson(path) {
   }
 }
 
+const KNOWN_FLAGS = new Set([
+  'producer', 'artifact-kind', 'schema-version', 'producer-version',
+  'input', 'output', 'run-id', 'parent-run-id', 'session-id',
+  'git-head', 'git-branch', 'dirty',
+]);
+
 function main() {
   const parsed = parseArgs(process.argv.slice(2));
   if (parsed.error) {
@@ -149,6 +155,12 @@ function main() {
     return;
   }
   const a = parsed.args;
+  for (const k of Object.keys(a)) {
+    if (!KNOWN_FLAGS.has(k)) {
+      usage(`unknown flag --${k}`);
+      return;
+    }
+  }
   const required = ['producer', 'artifact-kind', 'schema-version', 'producer-version', 'input', 'output'];
   for (const r of required) {
     if (!a[r]) {
@@ -181,9 +193,13 @@ function main() {
   if (a['git-head'] !== undefined) git.head = a['git-head'];
   if (a['git-branch'] !== undefined) git.branch = a['git-branch'];
   if (a['dirty'] !== undefined) {
-    const d = a['dirty'];
-    if (d === 'true') git.dirty = true;
-    else if (d === 'false') git.dirty = false;
+    const VALID_DIRTY = new Set(['true', 'false', 'unknown']);
+    if (!VALID_DIRTY.has(a['dirty'])) {
+      usage(`--dirty must be one of true|false|unknown, got "${a['dirty']}"`);
+      return;
+    }
+    if (a['dirty'] === 'true') git.dirty = true;
+    else if (a['dirty'] === 'false') git.dirty = false;
     else git.dirty = 'unknown';
   }
 
