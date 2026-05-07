@@ -10,7 +10,6 @@ on:
       - 'docs/**'
       - 'schemas/**'
       - 'scripts/**'
-      - 'templates/**'
       - 'tests/**'
       - 'package.json'
       - 'package-lock.json'

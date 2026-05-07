@@ -55,27 +55,64 @@ const POLICIES = [
     message: 'plugin doc uses "<wiki-root>/" (hyphen) — suite canonical is "<wiki_root>/" (underscore) per W-R1 fix',
     only: ['deep-wiki', 'deep-work', 'deep-dashboard'],
   },
+  {
+    id: 'hooks-empty-with-reason',
+    file: '*',
+    // Matches plugin docs claiming `hooks_active: []` is fine without a reason —
+    // suite policy requires `hooks_intentionally_empty_reason` (per the schema)
+    // when the plugin's own hooks/hooks.json is empty. Catalogued in
+    // docs/memory-hierarchy.md §Conflict catalog.
+    match: /hooks_active\s*:\s*\[\s*\][^\n]{0,80}(no reason needed|reason not required|empty hooks ok)/i,
+    permit: /(intentionally|reason required|hooks_intentionally_empty_reason)/i,
+    message: 'plugin doc claims `hooks_active: []` is fine without a reason — suite policy requires `hooks_intentionally_empty_reason` for trust-boundary documentation',
+  },
 ];
 
 function lineNumberOf(text, idx) {
   return text.slice(0, idx).split('\n').length;
 }
 
+// Closes review C3: scope `permit` to a small window around the match (not
+// the whole file). The previous file-scoped check let any unrelated
+// "removed" / "deprecated" elsewhere in a CHANGELOG silence every policy
+// globally. Window is the matched line ± 1 line — wide enough to allow
+// phrasing like "we removed\nthe X helper" but not arbitrary historical
+// mentions further away. Also iterate every match site so one permit cannot
+// mask a separate violation in the same file.
+const PERMIT_WINDOW_LINES = 1;
+
+function permitMasks({ pol, text, idx }) {
+  if (!pol.permit) return false;
+  const lines = text.split('\n');
+  const lineNo = lineNumberOf(text, idx);
+  const lo = Math.max(0, lineNo - 1 - PERMIT_WINDOW_LINES);
+  const hi = Math.min(lines.length, lineNo + PERMIT_WINDOW_LINES);
+  const window = lines.slice(lo, hi).join('\n');
+  return pol.permit.test(window);
+}
+
 function checkFile({ plugin, path, text }) {
   const offenses = [];
+  const lines = text.split('\n');
   for (const pol of POLICIES) {
     if (pol.only && !pol.only.includes(plugin)) continue;
-    const m = text.match(pol.match);
-    if (!m) continue;
-    if (pol.permit && pol.permit.test(text)) continue;
-    offenses.push({
-      plugin,
-      file: path,
-      line: lineNumberOf(text, m.index),
-      policyId: pol.id,
-      message: pol.message,
-      snippet: text.split('\n')[lineNumberOf(text, m.index) - 1].trim(),
-    });
+    const flags = pol.match.flags.includes('g') ? pol.match.flags : pol.match.flags + 'g';
+    const re = new RegExp(pol.match.source, flags);
+    let m;
+    while ((m = re.exec(text)) !== null) {
+      if (!permitMasks({ pol, text, idx: m.index })) {
+        const lineNo = lineNumberOf(text, m.index);
+        offenses.push({
+          plugin,
+          file: path,
+          line: lineNo,
+          policyId: pol.id,
+          message: pol.message,
+          snippet: (lines[lineNo - 1] ?? '').trim(),
+        });
+      }
+      if (m.index === re.lastIndex) re.lastIndex++; // defensive: zero-width
+    }
   }
   return offenses;
 }

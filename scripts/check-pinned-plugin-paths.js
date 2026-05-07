@@ -43,13 +43,37 @@ const PROBE_FILES = [
 
 // Pseudo-glob patterns ⇒ candidate file paths. Real listing not done — we
 // just grep the union of PROBE_FILES + a few well-known per-plugin files.
+// PER_PLUGIN_EXTRA expanded post-review C2: previous probe set missed
+// command/skill files where `<plugin>/current.json`-style runtime artifacts
+// are first written. We now reach into commands/* per plugin.
 const PER_PLUGIN_EXTRA = {
-  'deep-work': ['skills/deep-test/SKILL.md', 'skills/deep-implement/SKILL.md', 'commands/deep-finish.md'],
-  'deep-wiki': ['skills/wiki-schema/SKILL.md', 'commands/wiki-ingest.md'],
-  'deep-evolve': ['skills/deep-evolve-workflow/SKILL.md'],
-  'deep-review': ['skills/deep-review-workflow/SKILL.md', 'commands/deep-review.md'],
-  'deep-docs': ['skills/deep-docs-workflow/SKILL.md', 'commands/deep-docs.md'],
-  'deep-dashboard': ['skills/deep-harness-dashboard/SKILL.md', 'skills/deep-harnessability/SKILL.md'],
+  'deep-work': [
+    'skills/deep-test/SKILL.md',
+    'skills/deep-implement/SKILL.md',
+    'commands/deep-finish.md',
+    'commands/deep-work.md',
+  ],
+  'deep-wiki': [
+    'skills/wiki-schema/SKILL.md',
+    'commands/wiki-ingest.md',
+  ],
+  'deep-evolve': [
+    'skills/deep-evolve-workflow/SKILL.md',
+    'skills/deep-evolve-workflow/protocols/init.md',
+    'commands/deep-evolve.md',
+  ],
+  'deep-review': [
+    'skills/deep-review-workflow/SKILL.md',
+    'commands/deep-review.md',
+  ],
+  'deep-docs': [
+    'skills/deep-docs-workflow/SKILL.md',
+    'commands/deep-docs.md',
+  ],
+  'deep-dashboard': [
+    'skills/deep-harness-dashboard/SKILL.md',
+    'skills/deep-harnessability/SKILL.md',
+  ],
 };
 
 // Sidecar paths the plugin's *own* source naturally references vs. paths that
@@ -64,18 +88,47 @@ function isOwnPath(plugin, path) {
 }
 
 // Extract distinctive static segments from a path. Drop placeholders like
-// `<session>` or `*` or short tokens (`/`, `**`).
+// `<session>`, glob segments (anything containing `*` — including
+// `SLICE-*.yaml` which won't appear as a literal in source), and short tokens.
 function distinctiveSegments(path) {
   // Strip protocol prefixes (none expected); split on /
   const segs = path.split('/').filter(Boolean);
   const out = [];
   for (const s of segs) {
     if (s.includes('<') || s.includes('>')) continue;     // placeholder
-    if (s === '**' || s === '*') continue;
+    if (s.includes('*')) continue;                         // glob — won't appear literally
     if (s.length < 4) continue;                            // too short to grep meaningfully
     out.push(s);
   }
   return out;
+}
+
+// Longest contiguous static literal in the path — used as a stronger probe
+// than independent segments. We strip leading/trailing placeholder segments
+// and join the inner static run with `/`. Empty if the path is mostly
+// placeholders. Closes review C2 (segment OR-grep too lenient).
+function staticLiteralPrefix(path) {
+  const segs = path.split('/').filter(Boolean);
+  // Find the longest contiguous run of segments that contains no placeholder
+  // and no glob, and at least one segment of length ≥ 4.
+  let bestStart = -1, bestLen = 0;
+  let curStart = -1, curLen = 0;
+  for (let i = 0; i < segs.length; i++) {
+    const s = segs[i];
+    const isStatic = !s.includes('<') && !s.includes('>') && !s.includes('*');
+    if (isStatic) {
+      if (curStart < 0) curStart = i;
+      curLen++;
+      if (curLen > bestLen) { bestStart = curStart; bestLen = curLen; }
+    } else {
+      curStart = -1;
+      curLen = 0;
+    }
+  }
+  if (bestLen < 2) return null;  // single-segment runs handled by segments
+  const run = segs.slice(bestStart, bestStart + bestLen).join('/');
+  // Require at least one ≥ 4-char segment in the run for meaningful matching.
+  return segs.slice(bestStart, bestStart + bestLen).some((s) => s.length >= 4) ? run : null;
 }
 
 function buildHaystack({ pluginInfo }) {
@@ -135,6 +188,27 @@ function main() {
   let drift = 0;
   const checked = { plugins: 0, paths: 0 };
 
+  // Closes review C2: marketplace ↔ sidecar key reconciliation.
+  // A plugin in marketplace.json without a sidecar entry (or vice versa) was
+  // previously silently skipped. Fail fast — these key sets are the contract.
+  const marketKeys = new Set(market.plugins.map((p) => p.plugin));
+  const sidecarKeys = new Set(Object.keys(sidecar.plugins ?? {}));
+  const missingInSidecar = [...marketKeys].filter((k) => !sidecarKeys.has(k));
+  const missingInMarket = [...sidecarKeys].filter((k) => !marketKeys.has(k));
+  if (missingInSidecar.length > 0 || missingInMarket.length > 0) {
+    console.error('✗ marketplace.json ↔ suite-extensions.json plugin key sets differ:');
+    if (missingInSidecar.length > 0) {
+      console.error(`    in marketplace but not sidecar: ${missingInSidecar.join(', ')}`);
+    }
+    if (missingInMarket.length > 0) {
+      console.error(`    in sidecar but not marketplace: ${missingInMarket.join(', ')}`);
+    }
+    console.error('');
+    console.error('Fix: align the two manifests so every plugin appears in both.');
+    process.exitCode = 1;
+    return;
+  }
+
   for (const info of market.plugins) {
     const entry = sidecar.plugins?.[info.plugin];
     if (!entry) continue;
@@ -157,12 +231,30 @@ function main() {
       const segments = distinctiveSegments(p);
       if (segments.length === 0) continue;       // nothing meaningful to grep
       checked.paths++;
-      const found = segments.some((s) => matchAny(chunks, s));
+      // Closes review C2: tighten match logic without breaking real paths
+      // whose segments legitimately scatter across the probed file set.
+      //
+      //   1. Optimistic strong-pass: if the path's longest static literal
+      //      prefix appears verbatim in any chunk, accept (high confidence).
+      //   2. Otherwise: require *every* distinctive segment to appear
+      //      somewhere across the chunk union — tighter than the original
+      //      "any one segment matches" (which let `.deep-work` alone pass
+      //      for any path under that prefix), but lenient enough that
+      //      paths whose halves live in different probe files still pass
+      //      until the probe set is expanded.
+      //
+      // This still lets a probe-set blind spot through, but no longer lets
+      // a single segment vouch for a whole path.
+      const literalPrefix = staticLiteralPrefix(p);
+      const literalHit = literalPrefix && chunks.some((c) => c.text.includes(literalPrefix));
+      const segmentHit = segments.every((s) => matchAny(chunks, s));
+      const found = literalHit || segmentHit;
       if (!found) {
         const lineNo = findSidecarLine(sidecarText, info.plugin, p);
         const where = lineNo > 0 ? `:${lineNo}` : '';
         console.error(`✗ .claude-plugin/suite-extensions.json${where} — ${info.plugin}.${kind} path "${p}" not found in pinned source (SHA ${info.sha.slice(0, 7)})`);
         console.error(`    distinctive segments: ${segments.join(', ')}`);
+        if (literalPrefix) console.error(`    literal prefix tried: ${literalPrefix}`);
         drift++;
       }
     }

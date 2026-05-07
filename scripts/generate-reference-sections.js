@@ -38,9 +38,12 @@ const REPO_ROOT = resolve(__dirname, '..');
 
 function shortDescription(desc) {
   if (!desc) return '';
-  // Cut at first sentence boundary; collapse whitespace.
+  // Cut at first sentence boundary; collapse whitespace; escape pipes so the
+  // rendered Markdown row stays a 3-column table even if the marketplace
+  // description contains `|`. Unescaped `|` shifts cells in the renderer and
+  // breaks `rowsFromMarker()` parsing in check-semver-sha-sync.js (review W1).
   const cut = desc.split(/[.—]/)[0].trim();
-  return cut.replace(/\s+/g, ' ');
+  return cut.replace(/\s+/g, ' ').replace(/\|/g, '\\|');
 }
 
 function renderPluginTable({ plugins, versions, locale, linkify }) {

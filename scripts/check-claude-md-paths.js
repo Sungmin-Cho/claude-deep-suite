@@ -19,21 +19,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..');
 
 // `git check-ignore` returns exit 0 if the path is ignored, 1 if not, 128 on
-// "not in a git repo" or other error.
+// "not in a git repo" or other error. We use it to soft-skip *only* gitignored
+// paths — anything else missing-on-disk is real structural drift.
 function isGitIgnored(repoRelative) {
   const res = spawnSync('git', ['-C', REPO_ROOT, 'check-ignore', '-q', repoRelative], {
-    encoding: 'utf8',
-  });
-  if (res.error) return false;
-  return res.status === 0;
-}
-
-// Returns true if the path is tracked by git (committed). Used together with
-// `existsSync` to suppress soft errors for legitimately untracked / gitignored
-// paths that local devs may have but CI clones do not (e.g., ONBOARDING.md
-// that the user authored locally, or docs/superpowers/plans/).
-function isGitTracked(repoRelative) {
-  const res = spawnSync('git', ['-C', REPO_ROOT, 'ls-files', '--error-unmatch', repoRelative], {
     encoding: 'utf8',
   });
   if (res.error) return false;
@@ -119,7 +108,12 @@ function main() {
     process.exitCode = 2;
     return;
   }
-  const claudePath = resolve(REPO_ROOT, 'CLAUDE.md');
+  // M2_TEST_CLAUDE_MD overrides the target file (test scaffolding). Existence
+  // checks for paths inside the override still resolve relative to REPO_ROOT,
+  // so fixtures can describe real-or-bogus paths against the live repo tree.
+  const claudePath = process.env.M2_TEST_CLAUDE_MD
+    ? resolve(process.env.M2_TEST_CLAUDE_MD)
+    : resolve(REPO_ROOT, 'CLAUDE.md');
   if (!existsSync(claudePath)) {
     console.error(`error: CLAUDE.md not found at ${claudePath}`);
     process.exitCode = 2;
@@ -141,11 +135,12 @@ function main() {
     const trailing = c.token.endsWith('/') ? c.token.slice(0, -1) : c.token;
     const target = resolve(REPO_ROOT, trailing);
     if (existsSync(target)) continue;
-    // Soft-pass for paths that are gitignored or simply not tracked. CI clones
-    // legitimately lack these (docs/superpowers/, locally-authored docs, etc.).
-    // The check still fails when the path is *tracked* (or trackable) but the
-    // file is missing on disk — that's a real structural drift.
-    if (isGitIgnored(trailing) || !isGitTracked(trailing)) {
+    // Soft-pass ONLY for explicitly gitignored paths — CI clones legitimately
+    // lack docs/superpowers/, etc., per the repo's gitignore policy. Anything
+    // else (typos, references to files the dev forgot to commit) must fail:
+    // an "untracked" path that doesn't exist on disk is real drift, not local
+    // configuration. Closes review C1 (false-pass on ONBOARDING.md).
+    if (isGitIgnored(trailing)) {
       skipped++;
       continue;
     }

@@ -88,7 +88,7 @@ The check fetches via `scripts/lib/fetch-plugin-files.js`, so it shares the `.de
 1. Append a row to the conflict catalog above with rule + failure phrasing.
 2. Append a corresponding rule to `scripts/check-memory-hierarchy.js` `POLICIES` array.
 3. Add a fixture under `tests/fixtures/plugin-cache/<plugin>/` that triggers + passes the new rule.
-4. Add a test case to `tests/check-memory-hierarchy.test.js`.
+4. Add a test case to `tests/cli-sync-checkers.test.js` (the spawn-based suite that covers all six checkers; a dedicated `tests/check-memory-hierarchy.test.js` is **not** maintained — keep the test surface unified).
 
 If the new policy is *security-shaped*, also bump CLAUDE.md § Conventions to record the rationale (so future maintainers don't relax it without history).
 

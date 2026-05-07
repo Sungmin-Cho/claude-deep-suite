@@ -47,10 +47,6 @@ scripts/
   lib/markers.js                  — auto-generated marker parser/replacer
   lib/fetch-plugin-files.js       — gh api + .deep-suite-cache 캐시 fetcher
   README.md                       — Script convention 및 inventory
-templates/
-  README-plugin-table.tmpl.md     — generator 산출물 형식 문서화
-  data-flow-diagram.tmpl.md       — generator 산출물 형식 문서화
-  source-pinning.tmpl.md          — generator 산출물 형식 문서화
 tests/
   validate-suite-extensions.test.js — schema/envelope/cross-ref 테스트 (W-R4 SemVer 2.0.0 추가)
   cli.test.js                     — validator CLI 시나리오 (exit code + stderr prefix)
@@ -73,7 +69,6 @@ docs/
   superpowers/specs/              — 플러그인 설계 문서 (이력)
   superpowers/plans/              — 플러그인 구현 계획 (이력)
 README.md / README.ko.md          — 프로젝트 소개 (EN/KO)
-ONBOARDING.md                     — 신규 팀원 온보딩 가이드
 ```
 
 ## Conventions

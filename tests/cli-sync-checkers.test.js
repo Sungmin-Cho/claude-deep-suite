@@ -41,6 +41,17 @@ test('check-claude-md-paths.js exits 0 against committed CLAUDE.md', () => {
   assert.equal(res.status, 0, res.stderr);
 });
 
+// Closes review C1: the prior soft-skip predicate accepted any non-tracked
+// path, so a typo in §Project Structure exited 0 silently. The hardened
+// predicate fails on missing-and-not-gitignored paths.
+test('check-claude-md-paths.js exits 1 when CLAUDE.md references a missing non-gitignored path (regression for C1)', () => {
+  const res = run('check-claude-md-paths.js', [], {
+    M2_TEST_CLAUDE_MD: resolve(repoRoot, 'tests/fixtures/regression/CLAUDE-with-bogus-path.md'),
+  });
+  assert.equal(res.status, 1, `expected drift; stderr: ${res.stderr}`);
+  assert.match(res.stderr, /nonexistent-typo-file\.md/);
+});
+
 // --- check-guide-version.js ---
 
 test('check-guide-version.js exits 0 against committed guides', () => {
