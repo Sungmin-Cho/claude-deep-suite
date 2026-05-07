@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-evolve",
+    "producer_version": "3.1.1",
+    "artifact_kind": "evolve-receipt",
+    "run_id": "01J9X8EVOLVE000000000000RCT",
+    "generated_at": "2026-05-07T11:00:00Z",
+    "schema": { "name": "evolve-receipt", "version": "1.0" },
+    "git": { "head": "a6b3485", "branch": "main", "dirty": false },
+    "provenance": {
+      "source_artifacts": [],
+      "tool_versions": { "node": "20.11.0", "python": "3.11.7" }
+    }
+  },
+  "payload": {
+    "session_id": "evolve-2026-05-07-11-00",
+    "epochs": [
+      { "epoch": 0, "q_delta": 0.0, "seeds_run": 0 },
+      { "epoch": 1, "q_delta": 0.18, "seeds_run": 4 }
+    ]
+  }
+}

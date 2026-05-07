@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-dashboard",
+    "producer_version": "1.1.1",
+    "artifact_kind": "harnessability-report",
+    "run_id": "01J9X8DASHBOARD0000000HRN0",
+    "generated_at": "2026-05-07T10:00:00Z",
+    "schema": { "name": "harnessability-report", "version": "1.0" },
+    "git": { "head": "a6b3485", "branch": "main", "dirty": false },
+    "provenance": {
+      "source_artifacts": [
+        { "path": ".deep-work/<session>/session-receipt.json" },
+        { "path": ".deep-docs/last-scan.json" }
+      ],
+      "tool_versions": { "node": "20.11.0" }
+    }
+  },
+  "payload": {
+    "overall_score": 78,
+    "plugin_scores": {
+      "deep-work": { "score": 82 },
+      "deep-docs": { "score": 75 }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-docs/last-scan/v1.0.schema.json",
+  "title": "deep-docs last-scan payload v1.0",
+  "description": "Minimal additive shape for deep-docs/last-scan.json payload (envelope-wrapped). Phase 2 plugin migration may broaden via additive minor bumps.",
+  "type": "object",
+  "additionalProperties": true,
+  "patternProperties": {
+    "^x-": { "description": "Forward-compat extension namespace (matches envelope policy)." }
+  },
+  "required": ["scanned_paths", "findings"],
+  "properties": {
+    "scanned_paths": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Doc files inspected during this scan run."
+    },
+    "findings": {
+      "type": "array",
+      "description": "Drift / staleness signals detected. Empty array = clean scan.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["path", "severity"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "severity": { "enum": ["info", "warn", "error"] },
+          "rule": { "type": "string" },
+          "message": { "type": "string" }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Aggregate counts. Optional but conventional."
+    }
+  }
+}

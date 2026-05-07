@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-docs",
+    "producer_version": "1.1.0",
+    "artifact_kind": "last-scan",
+    "run_id": "01J9X7K2A8M0V4PN3R5BQ8E2WT",
+    "generated_at": "2026-05-07T09:00:00Z",
+    "schema": { "name": "last-scan", "version": "1.0" },
+    "git": { "head": "a6b3485", "branch": "main", "dirty": false },
+    "provenance": { "source_artifacts": [], "tool_versions": {} }
+  }
+}

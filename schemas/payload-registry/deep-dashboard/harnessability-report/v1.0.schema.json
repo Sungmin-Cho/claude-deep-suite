@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-dashboard/harnessability-report/v1.0.schema.json",
+  "title": "deep-dashboard harnessability-report payload v1.0",
+  "description": "Minimal additive shape for deep-dashboard harnessability-report.json payload. Phase 2 may broaden.",
+  "type": "object",
+  "additionalProperties": true,
+  "patternProperties": {
+    "^x-": { "description": "Forward-compat extension namespace." }
+  },
+  "required": ["overall_score", "plugin_scores"],
+  "properties": {
+    "overall_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Suite-level harnessability score 0..100."
+    },
+    "plugin_scores": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["score"],
+        "properties": {
+          "score": { "type": "number", "minimum": 0, "maximum": 100 },
+          "signals": { "type": "array", "items": { "type": "object", "additionalProperties": true } }
+        }
+      },
+      "description": "Per-plugin score map keyed by plugin name (matches sidecar plugin keys)."
+    },
+    "missing_signals": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Signals the dashboard could not collect this run."
+    }
+  }
+}

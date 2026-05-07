@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-wiki",
+    "producer_version": "1.4.2",
+    "artifact_kind": "index",
+    "run_id": "01J9X8WIKI0000000000000IDX0",
+    "generated_at": "2026-05-07T12:00:00Z",
+    "schema": { "name": "index", "version": "1.0" },
+    "git": { "head": "a6b3485", "branch": "main", "dirty": false },
+    "provenance": {
+      "source_artifacts": [],
+      "tool_versions": { "node": "20.11.0" }
+    }
+  },
+  "payload": {
+    "wiki_root": "/Users/sungmin/Library/CloudStorage/.../Personal Vault",
+    "pages": [
+      {
+        "slug": "harness-engineering-overview",
+        "path": "pages/harness-engineering-overview.md",
+        "title": "Harness Engineering Overview",
+        "updated_at": "2026-05-06T18:00:00Z"
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-evolve/evolve-receipt/v1.0.schema.json",
+  "title": "deep-evolve evolve-receipt payload v1.0",
+  "description": "Minimal additive shape for .deep-evolve/<session>/evolve-receipt.json payload.",
+  "type": "object",
+  "additionalProperties": true,
+  "patternProperties": {
+    "^x-": { "description": "Forward-compat extension namespace." }
+  },
+  "required": ["session_id", "epochs"],
+  "properties": {
+    "session_id": { "type": "string", "minLength": 1 },
+    "started_at": { "type": "string", "format": "date-time" },
+    "ended_at": { "type": "string", "format": "date-time" },
+    "epochs": {
+      "type": "array",
+      "description": "Per-epoch quality / outcome record. Empty array allowed (session aborted before first epoch).",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["epoch", "q_delta"],
+        "properties": {
+          "epoch": { "type": "integer", "minimum": 0 },
+          "q_delta": { "type": "number" },
+          "seeds_run": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "outcome": { "type": "string" }
+  }
+}

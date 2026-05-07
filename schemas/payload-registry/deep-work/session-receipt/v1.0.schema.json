@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-work/session-receipt/v1.0.schema.json",
+  "title": "deep-work session-receipt payload v1.0",
+  "description": "Minimal additive shape for deep-work .deep-work/<session>/session-receipt.json payload.",
+  "type": "object",
+  "additionalProperties": true,
+  "patternProperties": {
+    "^x-": { "description": "Forward-compat extension namespace." }
+  },
+  "required": ["session_id", "phase", "started_at"],
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "deep-work session identifier (plugin-defined format)."
+    },
+    "phase": {
+      "type": "string",
+      "description": "Session phase at receipt write time (e.g., research, plan, implement, test, integrate, finish).",
+      "enum": [
+        "brainstorm",
+        "research",
+        "plan",
+        "implement",
+        "test",
+        "integrate",
+        "finish",
+        "aborted"
+      ]
+    },
+    "started_at": { "type": "string", "format": "date-time" },
+    "ended_at": { "type": "string", "format": "date-time" },
+    "topology": { "type": "string" },
+    "tdd_mode": { "type": "string" },
+    "slices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["id"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^SLICE-\\d+$" },
+          "status": { "type": "string" }
+        }
+      }
+    }
+  }
+}

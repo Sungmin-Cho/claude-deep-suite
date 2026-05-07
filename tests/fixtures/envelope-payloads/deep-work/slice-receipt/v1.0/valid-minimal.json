@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-work",
+    "producer_version": "6.4.2",
+    "artifact_kind": "slice-receipt",
+    "run_id": "01J9X8WORK000000000000SLC01",
+    "parent_run_id": "01J9X8WORK000000000000SESS0",
+    "generated_at": "2026-05-07T10:30:00Z",
+    "schema": { "name": "slice-receipt", "version": "1.0" },
+    "git": {
+      "head": "a6b3485",
+      "branch": "feat/auth-middleware",
+      "worktree": ".deep-work/.worktrees/session-1",
+      "dirty": true
+    },
+    "provenance": {
+      "source_artifacts": [
+        { "path": ".deep-work/session-1/session-receipt.json", "run_id": "01J9X8WORK000000000000SESS0" }
+      ],
+      "tool_versions": { "node": "20.11.0" }
+    }
+  },
+  "payload": {
+    "slice_id": "SLICE-001",
+    "status": "passed",
+    "tests": { "added": 3, "failing": 0 }
+  }
+}

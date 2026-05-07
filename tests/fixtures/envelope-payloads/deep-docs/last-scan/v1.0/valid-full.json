@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-docs",
+    "producer_version": "1.1.0",
+    "artifact_kind": "last-scan",
+    "run_id": "01J9X7K2A8M0V4PN3R5BQ8E2WT",
+    "session_id": "scan-2026-05-07-09-00",
+    "parent_run_id": "01J9X7000000000000000000WT",
+    "generated_at": "2026-05-07T09:00:00Z",
+    "schema": { "name": "last-scan", "version": "1.0" },
+    "git": {
+      "head": "a6b3485abcdef0123456789abcdef0123456789",
+      "branch": "main",
+      "worktree": ".",
+      "dirty": false
+    },
+    "provenance": {
+      "source_artifacts": [
+        { "path": "CLAUDE.md" },
+        { "path": "README.md", "run_id": "01J9X70000000000000000PRIOR" }
+      ],
+      "tool_versions": {
+        "node": "20.11.0",
+        "claude-code": { "version": "2.x", "build": "release" }
+      }
+    },
+    "x-extra": "forward-compat marker"
+  },
+  "payload": {
+    "scanned_paths": ["CLAUDE.md", "README.md", "guides/integrated-workflow-guide.md"],
+    "findings": [
+      {
+        "path": "guides/integrated-workflow-guide.md",
+        "severity": "warn",
+        "rule": "version-coherence",
+        "message": "narrative version drifted from marker"
+      }
+    ],
+    "summary": { "total": 3, "warnings": 1 }
+  }
+}
