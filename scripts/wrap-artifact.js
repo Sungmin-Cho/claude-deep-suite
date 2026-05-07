@@ -13,6 +13,9 @@
 //     [--run-id <ulid>]             override generated ULID
 //     [--parent-run-id <ulid>]      cross-plugin trace parent
 //     [--session-id <id>]           higher-level session marker
+//     [--git-head <sha>]            override auto-detected git HEAD (e.g. for shallow CI clones)
+//     [--git-branch <branch>]       override auto-detected git branch
+//     [--dirty <true|false|unknown>] override auto-detected dirty flag
 //
 // Exit codes:
 //   0 — wrapped successfully
@@ -57,6 +60,13 @@ function parseArgs(argv) {
     if (!a.startsWith('--')) {
       return { error: `unexpected positional argument: ${a}` };
     }
+    if (a.includes('=')) {
+      const eqIdx = a.indexOf('=');
+      const key = a.slice(2, eqIdx);
+      const value = a.slice(eqIdx + 1);
+      args[key] = value;
+      continue;
+    }
     const key = a.slice(2);
     const next = argv[i + 1];
     if (next === undefined || next.startsWith('--')) {
@@ -96,7 +106,7 @@ function generateUlid(now = Date.now()) {
 
 function safeGitOutput(cmd) {
   try {
-    return execSync(cmd, { cwd: repoRoot, stdio: ['ignore', 'pipe', 'ignore'] })
+    return execSync(cmd, { cwd: process.cwd(), stdio: ['ignore', 'pipe', 'ignore'] })
       .toString()
       .trim();
   } catch {
@@ -166,6 +176,16 @@ function main() {
   }
 
   const git = detectGitContext();
+
+  // Apply optional git override flags (useful for shallow CI clones or cross-repo invocations).
+  if (a['git-head'] !== undefined) git.head = a['git-head'];
+  if (a['git-branch'] !== undefined) git.branch = a['git-branch'];
+  if (a['dirty'] !== undefined) {
+    const d = a['dirty'];
+    if (d === 'true') git.dirty = true;
+    else if (d === 'false') git.dirty = false;
+    else git.dirty = 'unknown';
+  }
 
   const envelope = {
     producer: a.producer,

@@ -74,6 +74,12 @@ function main() {
 
   console.log(`fixtures: ${fixtures.length} (pass=${pass}, fail=${fail}, unknown=${unknown})`);
 
+  if (unknown > 0) {
+    console.error(`✗ ${unknown} fixture(s) have unrecognized name (must start with valid- or invalid-)`);
+    process.exitCode = 1;
+    return;
+  }
+
   if (fail > 0) {
     for (const f of failures) {
       console.error(`✗ ${f.rel} expected exit ${f.want}, got ${f.got}`);

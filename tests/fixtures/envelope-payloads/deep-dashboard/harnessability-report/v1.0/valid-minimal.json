@@ -4,7 +4,7 @@
     "producer": "deep-dashboard",
     "producer_version": "1.1.1",
     "artifact_kind": "harnessability-report",
-    "run_id": "01J9X8DASHBOARD0000000HRN0",
+    "run_id": "01J9X8DAS0000000000000HRN0",
     "generated_at": "2026-05-07T10:00:00Z",
     "schema": { "name": "harnessability-report", "version": "1.0" },
     "git": { "head": "a6b3485", "branch": "main", "dirty": false },

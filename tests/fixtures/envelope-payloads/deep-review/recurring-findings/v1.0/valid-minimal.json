@@ -4,14 +4,14 @@
     "producer": "deep-review",
     "producer_version": "1.3.4",
     "artifact_kind": "recurring-findings",
-    "run_id": "01J9X8REVIEW000000000000REC",
-    "parent_run_id": "01J9X8WORK000000000000SESS0",
+    "run_id": "01J9X8REVW000000000000REC0",
+    "parent_run_id": "01J9X8W0RK0000000000SESS00",
     "generated_at": "2026-05-07T11:30:00Z",
     "schema": { "name": "recurring-findings", "version": "1.0" },
     "git": { "head": "a6b3485", "branch": "main", "dirty": false },
     "provenance": {
       "source_artifacts": [
-        { "path": ".deep-work/session-1/session-receipt.json", "run_id": "01J9X8WORK000000000000SESS0" }
+        { "path": ".deep-work/session-1/session-receipt.json", "run_id": "01J9X8W0RK0000000000SESS00" }
       ],
       "tool_versions": { "node": "20.11.0" }
     }

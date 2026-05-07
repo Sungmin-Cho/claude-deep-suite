@@ -18,7 +18,7 @@
     "provenance": {
       "source_artifacts": [
         { "path": "CLAUDE.md" },
-        { "path": "README.md", "run_id": "01J9X70000000000000000PRIOR" }
+        { "path": "README.md", "run_id": "01J9X700000000000000000PR0" }
       ],
       "tool_versions": {
         "node": "20.11.0",

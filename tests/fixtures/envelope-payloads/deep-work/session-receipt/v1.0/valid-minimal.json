@@ -4,7 +4,7 @@
     "producer": "deep-work",
     "producer_version": "6.4.2",
     "artifact_kind": "session-receipt",
-    "run_id": "01J9X8WORK000000000000SESS0",
+    "run_id": "01J9X8W0RK0000000000SESS00",
     "generated_at": "2026-05-07T10:15:00Z",
     "schema": { "name": "session-receipt", "version": "1.0" },
     "git": {

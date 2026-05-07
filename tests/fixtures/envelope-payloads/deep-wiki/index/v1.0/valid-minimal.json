@@ -4,7 +4,7 @@
     "producer": "deep-wiki",
     "producer_version": "1.4.2",
     "artifact_kind": "index",
-    "run_id": "01J9X8WIKI0000000000000IDX0",
+    "run_id": "01J9X8W0K0000000000000DX00",
     "generated_at": "2026-05-07T12:00:00Z",
     "schema": { "name": "index", "version": "1.0" },
     "git": { "head": "a6b3485", "branch": "main", "dirty": false },

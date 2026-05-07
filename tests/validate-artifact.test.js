@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { readdirSync, statSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve, join } from 'node:path';
@@ -172,4 +172,35 @@ test('CLI exits 2 on too few positional args', () => {
   const res = runCli([]);
   assert.equal(res.status, 2);
   assert.match(res.stderr, /expected exactly 1 path argument/);
+});
+
+test('all valid-* fixtures use 26-char Crockford ULID for run_id / parent_run_id / source_artifacts.run_id', () => {
+  const ULID_RE = /^[0-9A-HJKMNP-TV-Z]{26}$/;
+  const valids = walkFixtures(FIXTURE_ROOT).filter((p) => /\bvalid-/.test(p));
+  assert.ok(valids.length >= 8, `expected ≥8 valid fixtures, got ${valids.length}`);
+  const failures = [];
+  for (const path of valids) {
+    let doc;
+    try {
+      doc = JSON.parse(readFileSync(path, 'utf8'));
+    } catch {
+      failures.push(`${path}: cannot parse JSON`);
+      continue;
+    }
+    const env = doc.envelope ?? {};
+    const check = (fieldPath, value) => {
+      if (value === undefined) return; // optional field — skip
+      if (!ULID_RE.test(value)) {
+        failures.push(`${path}: ${fieldPath} "${value}" is not a 26-char Crockford ULID`);
+      }
+    };
+    check('envelope.run_id', env.run_id);
+    check('envelope.parent_run_id', env.parent_run_id);
+    for (const [i, sa] of (env.provenance?.source_artifacts ?? []).entries()) {
+      check(`envelope.provenance.source_artifacts[${i}].run_id`, sa.run_id);
+    }
+  }
+  if (failures.length > 0) {
+    assert.fail(`ULID lint failures:\n${failures.map((f) => `  - ${f}`).join('\n')}`);
+  }
 });

@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { mkdtempSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve, join } from 'node:path';
@@ -15,9 +16,9 @@ function makeTmp() {
   return mkdtempSync(join(tmpdir(), 'm3-wrap-'));
 }
 
-function runWrap(args) {
+function runWrap(args, cwd) {
   return spawnSync('node', [WRAP_CLI, ...args], {
-    cwd: repoRoot,
+    cwd: cwd ?? repoRoot,
     encoding: 'utf8',
     timeout: 10000,
   });
@@ -150,4 +151,94 @@ test('wrap exits 2 on flag without value', () => {
   const wrapRes = runWrap(['--producer']);
   assert.equal(wrapRes.status, 2);
   assert.match(wrapRes.stderr, /flag --producer expects a value/);
+});
+
+test('wrap accepts --key=value GNU-style flags', () => {
+  const dir = makeTmp();
+  try {
+    const input = join(dir, 'legacy.json');
+    const output = join(dir, 'wrapped.json');
+    writeFileSync(input, JSON.stringify({ scanned_paths: [], findings: [] }));
+
+    const wrapRes = runWrap([
+      `--producer=deep-docs`,
+      `--artifact-kind=last-scan`,
+      `--schema-version=1.0`,
+      `--producer-version=1.1.0`,
+      `--input=${input}`,
+      `--output=${output}`,
+    ]);
+    assert.equal(wrapRes.status, 0, wrapRes.stderr);
+
+    const wrapped = JSON.parse(readFileSync(output, 'utf8'));
+    assert.equal(wrapped.envelope.producer, 'deep-docs');
+    assert.equal(wrapped.envelope.artifact_kind, 'last-scan');
+    assert.match(wrapped.envelope.run_id, /^[0-9A-HJKMNP-TV-Z]{26}$/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('wrap respects --git-head, --git-branch, --dirty overrides', () => {
+  const dir = makeTmp();
+  try {
+    const input = join(dir, 'legacy.json');
+    const output = join(dir, 'wrapped.json');
+    writeFileSync(input, JSON.stringify({ scanned_paths: [], findings: [] }));
+
+    const wrapRes = runWrap([
+      '--producer', 'deep-docs',
+      '--artifact-kind', 'last-scan',
+      '--schema-version', '1.0',
+      '--producer-version', '1.1.0',
+      '--input', input,
+      '--output', output,
+      '--git-head', 'deadbeefdeadbeef',
+      '--git-branch', 'feat/test-override',
+      '--dirty', 'true',
+    ]);
+    assert.equal(wrapRes.status, 0, wrapRes.stderr);
+
+    const wrapped = JSON.parse(readFileSync(output, 'utf8'));
+    assert.equal(wrapped.envelope.git.head, 'deadbeefdeadbeef');
+    assert.equal(wrapped.envelope.git.branch, 'feat/test-override');
+    assert.equal(wrapped.envelope.git.dirty, true);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('wrap detects git context from process.cwd()', () => {
+  const dir = makeTmp();
+  try {
+    // Initialise a fresh git repo in the tmp dir so its HEAD differs from suite repo HEAD.
+    execSync('git init', { cwd: dir, stdio: 'ignore' });
+    execSync('git config user.email "test@test.com"', { cwd: dir, stdio: 'ignore' });
+    execSync('git config user.name "Test"', { cwd: dir, stdio: 'ignore' });
+    const tmpInput = join(dir, 'legacy.json');
+    writeFileSync(tmpInput, JSON.stringify({ scanned_paths: [], findings: [] }));
+    execSync(`git add .`, { cwd: dir, stdio: 'ignore' });
+    execSync('git commit -m "init"', { cwd: dir, stdio: 'ignore' });
+
+    const tmpHead = execSync('git rev-parse HEAD', { cwd: dir, encoding: 'utf8' }).trim();
+    const suiteHead = execSync('git rev-parse HEAD', { cwd: repoRoot, encoding: 'utf8' }).trim();
+    // The two repos must have different HEADs for this test to be meaningful.
+    assert.notEqual(tmpHead, suiteHead, 'tmpdir HEAD should differ from suite repo HEAD');
+
+    const output = join(dir, 'wrapped.json');
+    const wrapRes = runWrap([
+      '--producer', 'deep-docs',
+      '--artifact-kind', 'last-scan',
+      '--schema-version', '1.0',
+      '--producer-version', '1.1.0',
+      '--input', tmpInput,
+      '--output', output,
+    ], dir); // run with cwd=dir so process.cwd() is the tmp git repo
+    assert.equal(wrapRes.status, 0, wrapRes.stderr);
+
+    const wrapped = JSON.parse(readFileSync(output, 'utf8'));
+    assert.equal(wrapped.envelope.git.head, tmpHead, 'envelope.git.head must reflect tmpdir repo, not suite repo');
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
