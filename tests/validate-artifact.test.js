@@ -166,6 +166,25 @@ test('CLI exits 2 on too few positional args', () => {
   assert.match(res.stderr, /expected exactly 1 path argument/);
 });
 
+test('CLI accepts --strict=true (GNU-style)', () => {
+  const fixture = resolve(FIXTURE_ROOT, 'deep-docs/last-scan/v1.0/valid-minimal.json');
+  const res = runCli(['--strict=true', fixture]);
+  assert.equal(res.status, 0, res.stderr);
+});
+
+test('CLI accepts --strict=false (GNU-style)', () => {
+  const fixture = resolve(FIXTURE_ROOT, 'deep-docs/last-scan/v1.0/valid-minimal.json');
+  const res = runCli(['--strict=false', fixture]);
+  assert.equal(res.status, 0, res.stderr);
+});
+
+test('CLI exits 2 on --strict=<invalid> value', () => {
+  const fixture = resolve(FIXTURE_ROOT, 'deep-docs/last-scan/v1.0/valid-minimal.json');
+  const res = runCli(['--strict=yes', fixture]);
+  assert.equal(res.status, 2);
+  assert.match(res.stderr, /--strict expects true\|false/);
+});
+
 test('all valid-* fixtures use 26-char Crockford ULID for run_id / parent_run_id / source_artifacts.run_id', () => {
   const ULID_RE = /^[0-9A-HJKMNP-TV-Z]{26}$/;
   const valids = walkFixtures(FIXTURE_ROOT).filter((p) => /\bvalid-/.test(p));

@@ -249,7 +249,7 @@ function main() {
   }
 
   if (!validate(wrapped)) {
-    console.error(`✗ wrapped artifact fails envelope schema (check --producer / --artifact-kind / --producer-version):`);
+    console.error(`✗ wrapped artifact fails envelope schema:`);
     for (const err of validate.errors ?? []) {
       const at = err.instancePath || '<root>';
       console.error(`  - ${at} ${err.message} (${err.keyword})`);

@@ -53,6 +53,7 @@ function main() {
   let pass = 0;
   let fail = 0;
   let unknown = 0;
+  const unknownPaths = [];
   const failures = [];
 
   for (const path of fixtures) {
@@ -60,6 +61,7 @@ function main() {
     const rel = relative(repoRoot, path);
     if (want == null) {
       unknown++;
+      unknownPaths.push(rel);
       console.warn(`? ${rel} — filename does not start with valid-/invalid-, skipping enforcement`);
       continue;
     }
@@ -75,7 +77,8 @@ function main() {
   console.log(`fixtures: ${fixtures.length} (pass=${pass}, fail=${fail}, unknown=${unknown})`);
 
   if (unknown > 0) {
-    console.error(`✗ ${unknown} fixture(s) have unrecognized name (must start with valid- or invalid-)`);
+    console.error(`✗ ${unknown} fixture(s) have unrecognized name (must start with valid- or invalid-):`);
+    for (const p of unknownPaths) console.error(`    ${p}`);
     process.exitCode = 1;
     return;
   }

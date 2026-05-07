@@ -106,9 +106,25 @@ function payloadRegistryPath(producer, artifactKind, schemaVersion) {
 
 function main() {
   const argv = process.argv.slice(2);
-  const strictIdx = argv.indexOf('--strict');
-  const strict = strictIdx !== -1;
-  const positionals = strict ? argv.filter((_, i) => i !== strictIdx) : argv;
+  let strict = false;
+  const positionals = [];
+  for (const a of argv) {
+    if (a === '--strict') {
+      strict = true;
+      continue;
+    }
+    if (a.startsWith('--strict=')) {
+      const v = a.slice('--strict='.length);
+      if (v === 'true') strict = true;
+      else if (v === 'false') strict = false;
+      else {
+        usage(`--strict expects true|false, got "${v}"`);
+        return;
+      }
+      continue;
+    }
+    positionals.push(a);
+  }
   const unknownFlag = positionals.find((p) => p.startsWith('-'));
   if (unknownFlag) {
     usage(`unknown flag: ${unknownFlag}`);
