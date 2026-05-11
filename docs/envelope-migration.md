@@ -240,13 +240,26 @@ npm run docs:sync     # check-semver-sha-sync + check-pinned-plugin-paths + chec
 | Plugin | Envelope-emitting since (commit) | merged_at | timer notes |
 |---|---|---|---|
 | deep-docs | `3cc522933916a9e54e920ef2b694a879e24a01b1` | 2026-05-07 | **T+0 시작점 (first plugin merge)** |
-| deep-dashboard | `cfd07bd5c1feb37f85bc86d91b0987f1e8eb1910` | 2026-05-07 | M4 close `3c3f417da81691bb8bf98aefd7adcc86610cda79` (2026-05-11) — suite telemetry + 16 metrics |
+| deep-dashboard | `cfd07bd5c1feb37f85bc86d91b0987f1e8eb1910` | 2026-05-07 | M4 close `3c3f417da81691bb8bf98aefd7adcc86610cda79` (2026-05-11) — suite telemetry + 16 metrics; M5.6 close `678829d7b7d60c0aad4173a3549d3e44de29c61a` (2026-05-11, v1.3.1) — 3 M5-deferred metric 활성화 (handoff roundtrip + compaction frequency/preserved-ratio) |
 | deep-work | `6f23e79a72af30c730e97f309167d060856fa697` | 2026-05-07 | |
 | deep-evolve | `9b867b1e23c2c5b35cfca239fe691f3eb864b499` | 2026-05-08 | |
 | deep-review | `a76473fdbd540127f7c9492c76934a198dc9602b` | 2026-05-08 | |
 | deep-wiki | `4f5cbf8c6a2c6cff352389c4f914cab678bcf4ad` | 2026-05-11 | Phase 2 final (6/6 완료 트리거) |
 
 > _T+0 = 2026-05-07 (deep-docs `3cc522933916a9e54e920ef2b694a879e24a01b1` first plugin merge). T+0+6mo = 2026-11-07 — 도달 시 dashboard warning 활성화 PR을 issue로 발행._
+
+### 6.2 M5 producer-side adoption ledger (handoff + compaction-state emit)
+
+M5.6 dashboard activation (2026-05-11) 은 a-priori — producer 가 아직 envelope-wrapped `handoff.json` / `compaction-state.json` 을 emit 하지 않는다. 본 표는 M5.7 plugin-side adoption 진행을 추적한다.
+
+| Plugin | handoff emit | compaction-state emit | 비고 |
+|---|---|---|---|
+| deep-work | 🔴 미착수 | 🔴 미착수 | Phase 5 Integrate → handoff; phase transition / slice GREEN → compaction-state |
+| deep-evolve | 🔴 미착수 | 🔴 미착수 | epoch end → reverse handoff (`evolve-to-deep-work`); loop epoch end → compaction-state |
+
+상세 spec: `docs/deep-suite-harness-roadmap.md` §M5.7. 작업 시작 시 본 표 행을 PR/commit/날짜로 갱신.
+
+> _M5.7 활성화 timeline_: 2026-05-11 dashboard activation → +2주 (≈ 2026-05-25) 최소 한 plugin 이 emit 시작 목표. 2026-11-07 까지 producer 측 미완 시 legacy fallback warning 활성화.
 
 ---
 
