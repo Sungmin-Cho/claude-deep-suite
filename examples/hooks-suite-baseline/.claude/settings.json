@@ -1,0 +1,42 @@
+{
+  "_comment": "Deep Suite baseline hooks pack. Copy this .claude/ directory plus the scripts/ directory at the same level into your repo root. SessionStart rotates stale per-session state. PreToolUse blocks 'git push --force' (set CLAUDE_ALLOW_FORCE_PUSH=1 to override). Stop appends a one-line NDJSON metric record. See guides/hook-patterns.md for the design rationale.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/session-open.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/pre-tool-guard.sh",
+            "if": "Bash(git push --force *)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/pre-tool-guard.sh",
+            "if": "Bash(git push -f *)"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/stop-flush-metrics.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
