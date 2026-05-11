@@ -6,6 +6,8 @@ This guide documents how the 6 Deep Suite plugins use Claude Code [hooks](https:
 
 > The accompanying executable scaffold lives in `examples/hooks-suite-baseline/` and `examples/hooks-strict-mode/`. Copy either into your own project and tweak.
 
+> **Forward-references in this guide**: paths under `examples/`, the `schemas/handoff.schema.json` / `schemas/compaction-state.schema.json` files, and the paired `guides/long-run-handoff.md` / `guides/context-management.md` guides ship in **subsequent M5 PRs** (5.2 schemas + guides, 5.3 example pack). This document is the descriptive anchor and lands first; the cross-references resolve as those PRs merge.
+
 ---
 
 ## 1. Why hooks vs commands vs subagents
@@ -41,6 +43,8 @@ The authoritative source is `.claude-plugin/suite-extensions.json` `plugins.<nam
 
 **Invariant**: a plugin with `hooks_active: []` MUST set `hooks_intentionally_empty_reason` *or* `consumer_only: true` (M5 lint candidate; documented in `schemas/README.md` §`hooks_intentionally_empty_reason` invariant).
 
+> `consumer_only` is reserved in the schema for future read-only consumers and is currently unused in the live sidecar — today all three empty-hooks plugins (`deep-review`, `deep-docs`, `deep-dashboard`) ship `hooks_intentionally_empty_reason`.
+
 ---
 
 ## 3. Recommended patterns
@@ -57,6 +61,8 @@ Run when Claude Code starts (any matcher: `startup`, `resume`, `clear`, `compact
   "hooks": {
     "SessionStart": [
       {
+        // matcher omitted = fires on every SessionStart cause (startup, resume,
+        // clear, compact). Use e.g. "startup|resume" to narrow.
         "hooks": [
           { "type": "command",
             "command": "${CLAUDE_PROJECT_DIR}/scripts/session-open.sh" }
@@ -107,12 +113,15 @@ PreToolUse runs before every tool call. The matcher narrows which calls trigger 
 # scripts/pre-tool-guard.sh — denies force-push outright
 #!/usr/bin/env bash
 set -euo pipefail
+if [[ "${CLAUDE_ALLOW_FORCE_PUSH:-0}" == "1" ]]; then
+  exit 0
+fi
 cat <<'EOF' >&2
 ✗ refused: 'git push --force' requires explicit user override.
   If you really mean this, set CLAUDE_ALLOW_FORCE_PUSH=1 in the shell that
   ran `claude`, then retry. Hooks see the env var via inheritance.
 EOF
-[[ "${CLAUDE_ALLOW_FORCE_PUSH:-0}" == "1" ]]
+exit 2   # exit code 2 blocks the tool call; exit 1 is non-blocking warning
 ```
 
 **Why**: the system prompt already discourages destructive operations, but the hook layer makes it *unbypassable* by an off-policy model output. The full denylist lives in `examples/hooks-strict-mode/scripts/denylist-guard.sh`.
@@ -125,6 +134,10 @@ Use PostToolUse when a tool result is the natural place to materialize an [M3 en
 # scripts/post-tool-emit-receipt.sh — minimal sketch
 #!/usr/bin/env bash
 set -euo pipefail
+# PostToolUse passes the tool result JSON on stdin (not as a positional arg).
+payload="$(mktemp)"
+trap 'rm -f "$payload"' EXIT
+cat > "$payload"
 run_id="$(uuidgen | tr 'A-Z' 'a-z')"
 out=".deep-myplugin/${run_id}/receipt.json"
 mkdir -p "$(dirname "$out")"
@@ -132,7 +145,7 @@ node "${CLAUDE_PROJECT_DIR}/scripts/wrap-artifact.js" \
   --producer my-plugin \
   --kind tool-receipt \
   --schema 'tool-receipt:1.0' \
-  --payload-file "$1" \
+  --payload-file "$payload" \
   --out "$out"
 ```
 
@@ -160,10 +173,10 @@ printf '{"ts":"%s","event":"stop","session":"%s"}\n' \
 
 | Anti-pattern | Why it's bad |
 |---|---|
-| Hook that calls an LLM | Non-deterministic; introduces echo-chamber risk if the called LLM ingests the same project's prior output. |
+| Hook that calls an LLM synchronously on a hot path (PreToolUse / PostToolUse) | Per-tool-call latency cost + non-determinism + echo-chamber risk if the called LLM ingests the same project's prior output. Acceptable on SessionStart / Stop where latency is amortized; on hot-path events, prefer a deterministic command and dispatch the LLM work to a subagent via slash command. |
 | Hook that runs slow (>2 s) | Blocks every tool call; users perceive Claude as hung. Move slow work to a subagent + slash command. |
 | Hook that writes to a *peer* plugin's data directory | Violates plugin ownership; only the owning plugin should write its `.deep-<name>/` tree. Cross-plugin reads are fine; writes are not. |
-| Hook with broad matcher (`*`) and per-call side effects | Multiplies noise across the session. Narrow the matcher (`Bash\|Write\|Edit`) and add an inner `if` rule. |
+| Hook with broad matcher and per-call side effects | Multiplies noise across the session. Narrow the matcher to specific tools (e.g., `Bash`, `Write`, `Edit`) and add an inner `if` rule. |
 | Hook that depends on a remote service | If the network is down, every tool call fails. Push remote calls into commands the user explicitly invokes. |
 | Hook that emits an artifact *without* the envelope wrap | Loses cross-plugin discoverability and the `run_id` chain (M3 §6.1 fallback timer expires 2026-11-07 — after that, raw artifacts get a dashboard warning). |
 
@@ -177,11 +190,12 @@ The strict-mode example pack (`examples/hooks-strict-mode/`) ships a denylist gu
 |---|---|---|
 | Force push | `Bash(git push --force *)`, `Bash(git push -f *)` | Can overwrite teammates' work upstream. |
 | Hard reset to remote | `Bash(git reset --hard origin/*)` | Discards local commits without confirmation. |
-| Recursive delete of repo paths | `Bash(rm -rf /*)`, `Bash(rm -rf ~/* )`, `Bash(rm -rf .*)` | Catastrophic, unrecoverable. |
+| Recursive delete | `Bash(rm -rf *)` (catches `rm -rf build/`, `rm -rf .next/`, etc. — broadest, then add specific overrides for known-safe paths via `if` env-var) | Catastrophic, unrecoverable. |
 | Drop / truncate SQL | `Bash(* DROP TABLE *)`, `Bash(* TRUNCATE *)` | Production data loss. |
 | Kubectl destructive | `Bash(kubectl delete *)`, `Bash(kubectl drain *)` | Affects shared infrastructure. |
 
-The denylist's job is not to be exhaustive — it's to make the *common* foot-guns require an explicit override.
+> **Permission-rule syntax reminder**: `Bash(<glob>)` matches the Bash tool's `command` argument as a glob, not a regex. Use `*` for "anything"; backslashes are literal. The denylist's job is not to be exhaustive — it makes the *common* foot-guns require an explicit override (`exit 2` blocks the call; `exit 0` allows it).
+
 
 ---
 
