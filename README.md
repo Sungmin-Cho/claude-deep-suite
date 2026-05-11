@@ -15,7 +15,7 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.2.0 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.4.0 | Independent Evaluator |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.2.0 | Document gardening agent |
-| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.3.0 | Cross-plugin harness diagnostics + M4 suite telemetry |
+| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.3.1 | Cross-plugin harness diagnostics + suite telemetry |
 
 <!-- deep-suite:auto-generated:plugin-table-en:end -->
 

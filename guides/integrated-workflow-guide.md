@@ -4,7 +4,7 @@
 
 This guide explains how the 6 plugins in deep-suite **work together** during a real project. Rather than listing each plugin's features, it focuses on the integrated flow from a developer's perspective.
 
-> Reflects **deep-work v6.5.0**, **deep-review v1.4.0**, **deep-evolve v3.2.0**, **deep-docs v1.2.0**, **deep-wiki v1.5.0**, **deep-dashboard v1.3.0** — all 6 plugins adopt the M3 common artifact envelope (cross-plugin `run_id` chain + envelope-aware payload validation against the payload registry under `schemas/payload-registry/`). deep-dashboard v1.3.0 closes M4 with suite-level telemetry (16 metrics, JSONL time-series, markdown trend report, optional OTLP export). See `docs/envelope-migration.md` for envelope schema + migration guide.
+> Reflects **deep-work v6.5.0**, **deep-review v1.4.0**, **deep-evolve v3.2.0**, **deep-docs v1.2.0**, **deep-wiki v1.5.0**, **deep-dashboard v1.3.1** — all 6 plugins adopt the M3 common artifact envelope (cross-plugin `run_id` chain + envelope-aware payload validation against the payload registry under `schemas/payload-registry/`). deep-dashboard v1.3.1 closes M4 with suite-level telemetry (16 metrics, JSONL time-series, markdown trend report, optional OTLP export) and activates 3 M5-deferred metrics (handoff roundtrip + compaction frequency/preserved-ratio) consuming the new `handoff` and `compaction-state` payload schemas. See `docs/envelope-migration.md` for envelope schema + migration guide.
 
 ---
 

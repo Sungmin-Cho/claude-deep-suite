@@ -54,11 +54,11 @@
     },
     {
       "name": "deep-dashboard",
-      "description": "Cross-plugin harness diagnostics + M4 suite telemetry — emits envelope-wrapped harnessability-report.json + envelope-aware collector + 16-metric aggregator + JSONL/markdown/OTLP exporters (v1.3.0+)",
+      "description": "Cross-plugin harness diagnostics + suite telemetry — emits envelope-wrapped harnessability-report.json + envelope-aware collector + 16-metric aggregator (3 M5-activated: handoff roundtrip + compaction frequency/preserved-ratio) + JSONL/markdown/OTLP exporters (v1.3.1+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git",
-        "sha": "3c3f417da81691bb8bf98aefd7adcc86610cda79"
+        "sha": "678829d7b7d60c0aad4173a3549d3e44de29c61a"
       }
     }
   ]
