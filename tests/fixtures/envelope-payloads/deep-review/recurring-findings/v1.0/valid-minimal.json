@@ -2,29 +2,42 @@
   "schema_version": "1.0",
   "envelope": {
     "producer": "deep-review",
-    "producer_version": "1.3.4",
+    "producer_version": "1.4.0",
     "artifact_kind": "recurring-findings",
-    "run_id": "01J9X8REVW000000000000REC0",
-    "parent_run_id": "01J9X8W0RK0000000000SESS00",
-    "generated_at": "2026-05-07T11:30:00Z",
+    "run_id": "01JTKR9CD3EFGHJKMNPQRSTVWX",
+    "session_id": "2026-05-08T11-30-00",
+    "parent_run_id": "01JTK00000000000000000000Z",
+    "generated_at": "2026-05-08T11:30:42.123Z",
     "schema": { "name": "recurring-findings", "version": "1.0" },
-    "git": { "head": "a6b3485", "branch": "main", "dirty": false },
+    "git": {
+      "head": "abc1234",
+      "branch": "feat/m3-envelope-adoption",
+      "dirty": false
+    },
     "provenance": {
       "source_artifacts": [
-        { "path": ".deep-work/session-1/session-receipt.json", "run_id": "01J9X8W0RK0000000000SESS00" }
+        { "path": ".deep-work/2026-05-08T11-30-00/session-receipt.json", "run_id": "01JTK00000000000000000000Z" },
+        { "path": ".deep-review/reports/2026-05-08-110000-review.md" }
       ],
-      "tool_versions": { "node": "20.11.0" }
+      "tool_versions": { "node": "v20.11.0" }
     }
   },
   "payload": {
+    "updated_at": "2026-05-08T11:30:42.123Z",
+    "taxonomy_version": "1.0",
     "findings": [
       {
-        "fingerprint": "sha256:3a7f...auth-trust-boundary",
-        "severity": "concern",
-        "occurrences": 4,
-        "first_seen": "2026-04-12T08:00:00Z",
-        "last_seen": "2026-05-07T11:30:00Z",
-        "summary": "Trust boundary check missing on /api/auth/refresh"
+        "category": "error-handling",
+        "severity": "critical",
+        "occurrences": 5,
+        "example_files": [
+          "src/api/handlers.ts:42",
+          "src/services/payment.ts:88"
+        ],
+        "description": "try/catch 블록이 빠져있어 예외가 silent fail. Promise rejection 도 unhandled.",
+        "source_reports": [
+          "2026-05-08-110000-review.md"
+        ]
       }
     ]
   }

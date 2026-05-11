@@ -1,11 +1,54 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-evolve/evolve-insights/v1.0.schema.json",
-  "title": "deep-evolve evolve-insights payload v1.0 (Phase 1 placeholder)",
-  "description": "Phase 1 placeholder schema. Phase 2 plugin migration PR will replace with the authoritative shape derived from live emit. Until then, validate-artifact accepts any object as payload — see docs/envelope-migration.md §4.1.",
+  "title": "deep-evolve evolve-insights payload v1.0",
+  "description": "Authoritative payload schema for deep-evolve evolve-insights envelope (artifact_kind=evolve-insights, schema.version=1.0). Mirrors deep-evolve v3.2.0+ emit shape from Phase 2 envelope adoption. Multi-source aggregator over meta-archive — no parent_run_id; provenance.source_artifacts records archive paths.",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "patternProperties": {
     "^x-": { "description": "Forward-compat extension namespace." }
+  },
+  "required": ["updated_at"],
+  "properties": {
+    "updated_at": { "type": "string", "format": "date-time" },
+    "insights_for_deep_work": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/insight" }
+    },
+    "insights_for_deep_review": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/insight" }
+    },
+    "insights_for_deep_docs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/insight" }
+    },
+    "insights": {
+      "type": "array",
+      "description": "Legacy flat insights array (pre-routing). Newer emits use `insights_for_*` routed buckets.",
+      "items": { "$ref": "#/$defs/insight" }
+    }
+  },
+  "$defs": {
+    "insight": {
+      "type": "object",
+      "description": "Single insight item. `evidence` always present; producers emit either `pattern`+`suggestion` (Phase 2 deep-evolve canonical) or `title` (legacy/cross-plugin compat).",
+      "additionalProperties": true,
+      "required": ["evidence"],
+      "properties": {
+        "pattern": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "evidence": { "type": "string", "minLength": 1 },
+        "source_archive_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "suggestion": { "type": "string" },
+        "confidence": {
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        }
+      }
+    }
   }
 }

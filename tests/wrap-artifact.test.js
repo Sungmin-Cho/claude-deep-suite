@@ -37,13 +37,18 @@ test('wrap → validate roundtrip succeeds for deep-docs/last-scan', () => {
   try {
     const input = join(dir, 'legacy.json');
     const output = join(dir, 'wrapped.json');
-    writeFileSync(input, JSON.stringify({ scanned_paths: ['CLAUDE.md'], findings: [] }));
+    const samplePayload = {
+      provenance: { is_git: true },
+      documents: [],
+      summary: { total_issues: 0, auto_fixable: 0, audit_only: 0 },
+    };
+    writeFileSync(input, JSON.stringify(samplePayload));
 
     const wrapRes = runWrap([
       '--producer', 'deep-docs',
       '--artifact-kind', 'last-scan',
       '--schema-version', '1.0',
-      '--producer-version', '1.1.0',
+      '--producer-version', '1.2.0',
       '--input', input,
       '--output', output,
     ]);
@@ -62,7 +67,7 @@ test('wrap → validate roundtrip succeeds for deep-docs/last-scan', () => {
     assert.equal(wrapped.envelope.schema.version, '1.0');
     assert.match(wrapped.envelope.run_id, /^[0-9A-HJKMNP-TV-Z]{26}$/);
     assert.ok(wrapped.envelope.generated_at, 'generated_at populated');
-    assert.deepEqual(wrapped.payload, { scanned_paths: ['CLAUDE.md'], findings: [] });
+    assert.deepEqual(wrapped.payload, samplePayload);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

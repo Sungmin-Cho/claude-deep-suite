@@ -4,61 +4,61 @@
     "name": "sungmin"
   },
   "metadata": {
-    "description": "Deep Suite \u2014 structured development, wiki, autonomous experimentation, independent code review, document gardening, and harness diagnostics plugins for Claude Code"
+    "description": "Deep Suite — structured development, wiki, autonomous experimentation, independent code review, document gardening, and harness diagnostics plugins for Claude Code"
   },
   "plugins": [
     {
       "name": "deep-work",
-      "description": "Evidence-Driven Development Protocol",
+      "description": "Evidence-Driven Development Protocol — emits envelope-wrapped session-receipt + slice-receipt + receipt-migration auto-call (v6.5.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
-        "sha": "df3ac9d269626c32f743aa881b2a87dc4041879b"
+        "sha": "6f23e79a72af30c730e97f309167d060856fa697"
       }
     },
     {
       "name": "deep-wiki",
-      "description": "LLM-managed markdown wiki — v1.4.2 patch: 4-item v1.4.1 backlog closure (F1+F2+B3+I2) + 3 rounds of /deep-review fixups (13 critical + 4 warning, all ACCEPT). F1 (HIGH) — synthesizer `existing_page_body` truncation false-positive C3 abort: main re-reads disk authoritatively post-Stage-1 as the C3 hash baseline + Stage 2/inline-write context (subsumes prior P6 hash-from-emit). v1.4.1 cache-active dogfood found 12377B→725B emit truncation. F2 (MEDIUM) — §3.9 4th invocation site for single-source Stage 1 dispatch (label `A5-analysis`); /deep-review round-1 deferred I1. B3 (MEDIUM) — `phase_timing_ms` schema-additive field on `ingest` log lines (`{stage_1_analysis, stage_2_fanout, stage_3_write, total}` ms ints); `_ts_ms` Bash 3.2 portable helper (python3 → date fallback). v1.4.0 plan §10.2 deferred. I2 (LOW) — V-2/V-3 WebFetch probe full-URL allowlist comparison: stub server records Host header (6th TSV column), record-sh extracts `<host><path>?<query>` for normalized compare; closes cross-host + query-string exfil false-pass. 3-round /deep-review fixups: F1.1 sub-threshold drift→A5 fanout (silent corruption block), F1.2 PARTIAL_FAIL preservation, F1.3 basename pre-disk-read regex guard, B3.1 path-coverage matrix vs Step 10 omission rule alignment, F1.4+F1.5 byte-identical claim removal + agent doc precision, W3 set -u defaults, W4 v2-v3-record empty-log short-circuit, R2.F1.6 hash-compare replaces size-delta heuristic (concurrent-ingest baseline race close), R2.F1.7 all-dropped→`do_all_failed_under_lock` (terminal-skip bypass close), R2.C1 CLAUDE.md byte-identical drift fix, R3.P2.1 slug vs descriptor mismatch, R3.P2.2 3-strike retry counter (Step 7.5.M-D mirror), R3.C-1 mkdir soft-fail + trap restoration, R3.C-2 first-ingest baseline yaml R4-Adv-Adv-2 mirror, R3.C-3 FAILED_PAGE_FILES parallel array, R3.W-1 stage_3_write timing scope, R3.W-2 reason taxonomy normalization. Mandatory L1+L2 (carried from v1.4.1 §11.5): V-0 best-effort + §3.9 in-root scope only. No external API changes; hash values NOT byte-identical to v1.4.1 (`$(cat)` newline-strip vs v1.4.1's `printf '%s' \"$emit\"`) but Stage 3 success/abort decisions equivalent for spec-compliant agents (symmetric byte-stripping across F1 capture and C3 re-check).",
+      "description": "LLM-managed markdown wiki — emits envelope-wrapped index.json (multi-source aggregator) + 5 envelope-aware markdown command sites (v1.5.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "257bb53aaa197bca5c0e3f5ce66376fb08758d5d"
+        "sha": "4f5cbf8c6a2c6cff352389c4f914cab678bcf4ad"
       }
     },
     {
       "name": "deep-evolve",
-      "description": "Autonomous Experimentation Protocol — virtual parallel N-seed, adaptive scheduler, cross-seed borrow, cascade synthesis",
+      "description": "Autonomous Experimentation Protocol — emits envelope-wrapped evolve-receipt + evolve-insights with identity-gated chain extraction (v3.2.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-evolve.git",
-        "sha": "003a8cdf74e5511f020b11ce66cd95a11519a2fe"
+        "sha": "9b867b1e23c2c5b35cfca239fe691f3eb864b499"
       }
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator for AI coding agents — cross-model review + Phase 6 subagent delegation",
+      "description": "Independent Evaluator — emits envelope-wrapped recurring-findings.json + envelope-aware session-receipt consumer (v1.4.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "e8514a10999dd46d1f2aab08b51bfd65d7769b4f"
+        "sha": "a76473fdbd540127f7c9492c76934a198dc9602b"
       }
     },
     {
       "name": "deep-docs",
-      "description": "Document gardening agent",
+      "description": "Document gardening agent — emits envelope-wrapped last-scan.json (v1.2.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git",
-        "sha": "8a8164bcffc5173a249a2c44a5417fc3d17ea04e"
+        "sha": "3cc522933916a9e54e920ef2b694a879e24a01b1"
       }
     },
     {
       "name": "deep-dashboard",
-      "description": "Cross-plugin harness diagnostics \u2014 harnessability scoring and unified dashboard",
+      "description": "Cross-plugin harness diagnostics — emits envelope-wrapped harnessability-report.json + envelope-aware collector (v1.2.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git",
-        "sha": "3c1c9f8c439362e30e8f26d44c2b760cab06fbd9"
+        "sha": "cfd07bd5c1feb37f85bc86d91b0987f1e8eb1910"
       }
     }
   ]

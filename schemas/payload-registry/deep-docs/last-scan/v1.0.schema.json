@@ -1,11 +1,91 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-docs/last-scan/v1.0.schema.json",
-  "title": "deep-docs last-scan payload v1.0 (Phase 1 placeholder)",
-  "description": "Phase 1 placeholder schema. Phase 2 plugin migration PR will replace with the authoritative shape derived from live emit. Until then, validate-artifact accepts any object as payload — see docs/envelope-migration.md §4.1.",
+  "title": "deep-docs last-scan payload v1.0",
+  "description": "Authoritative payload schema for deep-docs last-scan envelope (artifact_kind=last-scan, schema.version=1.0). Mirrors deep-docs v1.2.0+ emit shape from Phase 2 envelope adoption. Forward-compat additions use `^x-*` patternProperties; breaking changes require v1.1+ minor bump (additive) or v2.0 schema file (breaking).",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "patternProperties": {
     "^x-": { "description": "Forward-compat extension namespace." }
+  },
+  "required": ["provenance", "documents", "summary"],
+  "properties": {
+    "provenance": {
+      "type": "object",
+      "description": "Plugin-internal provenance for cache/reuse decisions. NOT the envelope-level provenance.",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {}
+      },
+      "required": ["is_git"],
+      "properties": {
+        "is_git": {
+          "type": "boolean",
+          "description": "Whether the scanned root is a git repository (affects reuse gate)."
+        },
+        "worktree_hash": {
+          "type": "string",
+          "description": "Optional content-hash for non-git roots (path_check_enabled fallback)."
+        }
+      }
+    },
+    "documents": {
+      "type": "array",
+      "description": "Per-document scan results.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["path", "issues", "metrics"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "required": ["type", "category", "severity"],
+              "properties": {
+                "type": { "type": "string", "minLength": 1 },
+                "category": {
+                  "type": "string",
+                  "enum": ["auto-fix", "audit-only"]
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": ["high", "medium", "low", "info"]
+                },
+                "line": { "type": "integer", "minimum": 0 },
+                "current_value": { "type": "string" },
+                "suggested_value": { "type": "string" },
+                "evidence": { "type": "string" }
+              }
+            }
+          },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "size_lines": { "type": "integer", "minimum": 0 },
+              "freshness_score": { "type": "number" },
+              "reference_accuracy": { "type": "number" },
+              "duplication_count": { "type": "integer", "minimum": 0 }
+            }
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {}
+      },
+      "required": ["total_issues", "auto_fixable", "audit_only"],
+      "properties": {
+        "total_issues": { "type": "integer", "minimum": 0 },
+        "auto_fixable": { "type": "integer", "minimum": 0 },
+        "audit_only": { "type": "integer", "minimum": 0 }
+      }
+    }
   }
 }

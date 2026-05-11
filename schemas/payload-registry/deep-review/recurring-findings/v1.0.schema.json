@@ -1,11 +1,53 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-review/recurring-findings/v1.0.schema.json",
-  "title": "deep-review recurring-findings payload v1.0 (Phase 1 placeholder)",
-  "description": "Phase 1 placeholder schema. Phase 2 plugin migration PR will replace with the authoritative shape derived from live emit. Until then, validate-artifact accepts any object as payload — see docs/envelope-migration.md §4.1.",
+  "title": "deep-review recurring-findings payload v1.0",
+  "description": "Authoritative payload schema for deep-review recurring-findings envelope (artifact_kind=recurring-findings, schema.version=1.0). Mirrors deep-review v1.4.0+ emit shape from Phase 2 envelope adoption. parent_run_id chains to consumed deep-work session-receipt run_id when present.",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "patternProperties": {
     "^x-": { "description": "Forward-compat extension namespace." }
+  },
+  "required": ["updated_at", "findings"],
+  "properties": {
+    "updated_at": { "type": "string", "format": "date-time" },
+    "taxonomy_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$",
+      "description": "Internal severity/category taxonomy version (independent from envelope schema_version)."
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Single recurring finding. `severity` + `occurrences` always present; producers emit either `category` + `description` (Phase 2 deep-review canonical) or `fingerprint` + `summary` (cross-report dedupe form).",
+        "additionalProperties": true,
+        "required": ["severity", "occurrences"],
+        "properties": {
+          "fingerprint": {
+            "type": "string",
+            "description": "Stable hash for cross-report dedupe (e.g., sha256:<hex>:<tag>)."
+          },
+          "category": { "type": "string", "minLength": 1 },
+          "severity": {
+            "type": "string",
+            "enum": ["critical", "warning", "concern", "info", "high", "medium", "low"]
+          },
+          "occurrences": { "type": "integer", "minimum": 1 },
+          "first_seen": { "type": "string", "format": "date-time" },
+          "last_seen": { "type": "string", "format": "date-time" },
+          "summary": { "type": "string" },
+          "description": { "type": "string" },
+          "example_files": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "source_reports": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
   }
 }

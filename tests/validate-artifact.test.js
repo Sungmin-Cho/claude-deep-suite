@@ -101,7 +101,7 @@ test('CLI normalizes schema.version with leading/trailing zeros (1.00 → 1.0)',
       schema_version: '1.0',
       envelope: {
         producer: 'deep-docs',
-        producer_version: '1.1.0',
+        producer_version: '1.2.0',
         artifact_kind: 'last-scan',
         run_id: '01J9X7K2A8M0V4PN3R5BQ8E2WT',
         generated_at: '2026-05-07T09:00:00Z',
@@ -110,8 +110,9 @@ test('CLI normalizes schema.version with leading/trailing zeros (1.00 → 1.0)',
         provenance: { source_artifacts: [], tool_versions: {} },
       },
       payload: {
-        scanned_paths: ['CLAUDE.md'],
-        findings: [],
+        provenance: { is_git: true },
+        documents: [],
+        summary: { total_issues: 0, auto_fixable: 0, audit_only: 0 },
       },
     }, null, 2));
     const res = runCli([fixture]);

@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-evolve",
+    "producer_version": "3.2.0",
+    "artifact_kind": "evolve-insights",
+    "run_id": "01JTKR9CD3EFGHJKMNPQRSTVWX",
+    "generated_at": "2026-05-08T03:43:12.987Z",
+    "schema": { "name": "evolve-insights", "version": "1.0" },
+    "git": { "head": "abc1234", "branch": "main", "dirty": false },
+    "provenance": { "source_artifacts": [], "tool_versions": {} }
+  },
+  "payload": {
+    "insights_for_deep_work": []
+  }
+}

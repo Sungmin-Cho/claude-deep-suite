@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-work",
+    "producer_version": "6.5.0",
+    "artifact_kind": "session-receipt",
+    "run_id": "01JTKH22NHABCDEFGHJKMNPQRS",
+    "generated_at": "2026-05-07T11:42:08.456Z",
+    "schema": { "name": "session-receipt", "version": "1.0" },
+    "git": { "head": "def5678", "branch": "main", "dirty": false },
+    "provenance": { "source_artifacts": [], "tool_versions": {} }
+  },
+  "payload": {
+    "schema_version": "1.0",
+    "session_id": "dw-2026-05-07T10-00-00-000Z",
+    "started_at": "2026-05-07T10:00:00.000Z",
+    "outcome": "abandoned",
+    "slices": { "total": 0 }
+  }
+}

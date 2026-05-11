@@ -2,41 +2,63 @@
   "schema_version": "1.0",
   "envelope": {
     "producer": "deep-docs",
-    "producer_version": "1.1.0",
+    "producer_version": "1.2.0",
     "artifact_kind": "last-scan",
-    "run_id": "01J9X7K2A8M0V4PN3R5BQ8E2WT",
-    "session_id": "scan-2026-05-07-09-00",
-    "parent_run_id": "01J9X7000000000000000000WT",
-    "generated_at": "2026-05-07T09:00:00Z",
+    "run_id": "01KR0J7WBXJS57PBM04MYPHENX",
+    "session_id": "scan-2026-05-07-10-00",
+    "parent_run_id": "01KR0J7000000000000000007T",
+    "generated_at": "2026-05-07T10:00:00Z",
     "schema": { "name": "last-scan", "version": "1.0" },
     "git": {
-      "head": "a6b3485abcdef0123456789abcdef0123456789",
-      "branch": "main",
+      "head": "3840da993e96c57c07ba569b02a8ab0129e76f8a",
+      "branch": "feat/m3-envelope-adoption",
       "worktree": ".",
       "dirty": false
     },
     "provenance": {
       "source_artifacts": [
         { "path": "CLAUDE.md" },
-        { "path": "README.md", "run_id": "01J9X700000000000000000PR0" }
+        { "path": "README.md", "run_id": "01KR0J700000000000000000PR" },
+        { "path": "AGENTS.md" }
       ],
       "tool_versions": {
-        "node": "20.11.0",
+        "node": "v20.11.0",
         "claude-code": { "version": "2.x", "build": "release" }
       }
     },
     "x-extra": "forward-compat marker"
   },
   "payload": {
-    "scanned_paths": ["CLAUDE.md", "README.md", "guides/integrated-workflow-guide.md"],
-    "findings": [
+    "provenance": {
+      "is_git": true,
+      "worktree_hash": "3f8a0b1c2d4e5f607182930a1b2c3d4e5f607182"
+    },
+    "documents": [
       {
-        "path": "guides/integrated-workflow-guide.md",
-        "severity": "warn",
-        "rule": "version-coherence",
-        "message": "narrative version drifted from marker"
+        "path": "CLAUDE.md",
+        "issues": [
+          {
+            "type": "dead-reference",
+            "category": "auto-fix",
+            "severity": "high",
+            "line": 42,
+            "current_value": "src/auth/middleware.ts",
+            "suggested_value": "src/auth/auth-middleware.ts",
+            "evidence": "git rename detected"
+          }
+        ],
+        "metrics": {
+          "size_lines": 85,
+          "freshness_score": 7,
+          "reference_accuracy": 0.85,
+          "duplication_count": 1
+        }
       }
     ],
-    "summary": { "total": 3, "warnings": 1 }
+    "summary": {
+      "total_issues": 1,
+      "auto_fixable": 1,
+      "audit_only": 0
+    }
   }
 }

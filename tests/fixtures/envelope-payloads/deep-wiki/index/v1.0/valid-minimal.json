@@ -2,26 +2,42 @@
   "schema_version": "1.0",
   "envelope": {
     "producer": "deep-wiki",
-    "producer_version": "1.4.2",
+    "producer_version": "1.5.0",
     "artifact_kind": "index",
-    "run_id": "01J9X8W0K0000000000000DX00",
-    "generated_at": "2026-05-07T12:00:00Z",
+    "run_id": "01JTKZQ7N3ABCDEFGHJKMNPQRS",
+    "generated_at": "2026-05-11T10:00:00Z",
     "schema": { "name": "index", "version": "1.0" },
-    "git": { "head": "a6b3485", "branch": "main", "dirty": false },
+    "git": { "head": "abc1234", "branch": "main", "dirty": false },
     "provenance": {
-      "source_artifacts": [],
-      "tool_versions": { "node": "20.11.0" }
+      "source_artifacts": [
+        { "path": "pages/react-hooks.md" },
+        { "path": "pages/postgres-indexing.md" },
+        { "path": "pages/llm-wiki-philosophy.md" }
+      ],
+      "tool_versions": { "node": "v20.11.0" }
     }
   },
   "payload": {
-    "wiki_root": "/Users/sungmin/Library/CloudStorage/.../Personal Vault",
     "pages": [
       {
-        "slug": "harness-engineering-overview",
-        "path": "pages/harness-engineering-overview.md",
-        "title": "Harness Engineering Overview",
-        "updated_at": "2026-05-06T18:00:00Z"
+        "file": "llm-wiki-philosophy.md",
+        "title": "LLM Wiki Philosophy",
+        "tags": ["llm", "knowledge-management"],
+        "aliases": ["wiki philosophy", "karpathy wiki"]
+      },
+      {
+        "file": "postgres-indexing.md",
+        "title": "Postgres Indexing",
+        "tags": ["database", "postgres", "performance"],
+        "aliases": ["postgres indexes", "btree index"]
+      },
+      {
+        "file": "react-hooks.md",
+        "title": "React Hooks",
+        "tags": ["programming", "react", "frontend"],
+        "aliases": ["hooks", "useState"]
       }
-    ]
+    ],
+    "generated_at": "2026-05-11T10:00:00Z"
   }
 }

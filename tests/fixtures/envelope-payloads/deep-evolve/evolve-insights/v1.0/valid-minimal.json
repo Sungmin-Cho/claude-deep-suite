@@ -2,26 +2,40 @@
   "schema_version": "1.0",
   "envelope": {
     "producer": "deep-evolve",
-    "producer_version": "3.1.1",
+    "producer_version": "3.2.0",
     "artifact_kind": "evolve-insights",
-    "run_id": "01J9X8EVV000000000000NS000",
-    "parent_run_id": "01J9X8EVV000000000000RCT00",
-    "generated_at": "2026-05-07T11:05:00Z",
+    "run_id": "01JTKR9CD3EFGHJKMNPQRSTVWX",
+    "session_id": "2026-05-07T11-30-00",
+    "generated_at": "2026-05-08T03:43:12.987Z",
     "schema": { "name": "evolve-insights", "version": "1.0" },
-    "git": { "head": "a6b3485", "branch": "main", "dirty": false },
+    "git": {
+      "head": "abc1234",
+      "branch": "evolve/2026-05-07T11-30-00",
+      "dirty": false
+    },
     "provenance": {
       "source_artifacts": [
-        { "path": ".deep-evolve/evolve-2026-05-07-11-00/evolve-receipt.json", "run_id": "01J9X8EVV000000000000RCT00" }
+        { "path": "~/.claude/deep-evolve/meta-archive.jsonl" }
       ],
-      "tool_versions": { "node": "20.11.0" }
+      "tool_versions": { "node": "v20.11.0" }
     }
   },
   "payload": {
-    "insights": [
+    "updated_at": "2026-05-08T03:43:12.987Z",
+    "insights_for_deep_work": [
       {
-        "title": "Increasing parallelism beyond N=4 yields diminishing returns",
-        "evidence": "epoch 1..3: q_delta plateau ~0.18 across N=4,8,16",
-        "confidence": "medium"
+        "pattern": "early_termination_on_diverging_loss",
+        "evidence": "keep_rate 0.45 across 3 sessions; Q(v) +0.32 improvement",
+        "source_archive_ids": ["arch-2026-05-01-A", "arch-2026-05-04-B"],
+        "suggestion": "Add early termination guard in Phase 3 implement when loss diverges > 2σ within 3 epochs"
+      }
+    ],
+    "insights_for_deep_review": [
+      {
+        "pattern": "missing_boundary_checks_in_loop_init",
+        "evidence": "experiments crashed at boundary indices in 2/12 sessions",
+        "source_archive_ids": ["arch-2026-05-04-B"],
+        "suggestion": "Add boundary-init review criterion to deep-review checklist"
       }
     ]
   }

@@ -7,22 +7,13 @@
     "run_id": "01KR0J9PEM6E3K8H7XW2QFNB4M",
     "generated_at": "2026-05-07T10:00:00Z",
     "schema": { "name": "harnessability-report", "version": "1.0" },
-    "git": {
-      "head": "0123456789abcdef0123456789abcdef01234567",
-      "branch": "main",
-      "dirty": false
-    },
-    "provenance": {
-      "source_artifacts": [
-        { "path": "/path/to/project" }
-      ],
-      "tool_versions": { "node": "v20.11.0" }
-    }
+    "git": { "head": "abc1234", "branch": "main", "dirty": false },
+    "provenance": { "source_artifacts": [], "tool_versions": {} }
   },
   "payload": {
     "projectRoot": "/path/to/project",
     "total": 7.4,
-    "grade": "Good",
+    "grade": "Mediocre",
     "dimensions": [
       {
         "id": "type_safety",
@@ -34,8 +25,6 @@
         ]
       }
     ],
-    "recommendations": [],
-    "topology": null,
-    "topology_hints": null
+    "recommendations": []
   }
 }
