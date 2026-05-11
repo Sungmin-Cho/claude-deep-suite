@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/compaction-state.schema.json",
+  "title": "Deep Suite Compaction State Payload",
+  "description": "Payload shape for compaction-state artifacts emitted when a long-running session compacts its context window. MUST be wrapped in the M3 artifact-envelope (schemas/artifact-envelope.schema.json) with envelope.schema = { name: 'compaction-state', version: '1.0' } and envelope.artifact_kind = 'compaction-state'. The dashboard aggregator (claude-deep-dashboard) consumes these to populate suite.compaction.frequency and suite.compaction.preserved_artifact_ratio M4-deferred metrics.",
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": {
+    "^x-": { "description": "Forward-compat extension namespace. Reserved-and-ignored." }
+  },
+  "required": [
+    "schema_version",
+    "compacted_at",
+    "trigger",
+    "preserved_artifact_paths"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "description": "Payload schema version. Locked to 1.0 for v1; forward-compat via x-* patternProperties. Breaking change → publish compaction-state-v2.schema.json."
+    },
+    "compacted_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 timestamp when the compaction occurred."
+    },
+    "trigger": {
+      "type": "string",
+      "enum": [
+        "phase-transition",
+        "slice-green",
+        "loop-epoch-end",
+        "window-threshold",
+        "manual",
+        "session-stop"
+      ],
+      "description": "What caused compaction. 'phase-transition' = deep-work Phase boundary. 'slice-green' = inline compaction after a slice tests pass. 'loop-epoch-end' = deep-evolve epoch boundary. 'window-threshold' = auto compaction at >80% context window. 'manual' = user invoked /compact or equivalent. 'session-stop' = compaction at Stop hook time to serialize state for resume."
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Originating session identifier (e.g., deep-work session slug, deep-evolve session id). Required for dashboard's per-session frequency aggregation; recommended though not strictly enforced here."
+    },
+    "preserved_artifact_paths": {
+      "type": "array",
+      "description": "Concrete artifact paths the producer kept retrievable post-compaction. Cross-plugin readers (deep-dashboard) compute preserved_artifact_ratio = len(preserved) / (len(preserved) + len(discarded_artifact_paths)). Empty array means full reset (all artifacts discarded — only summary remains).",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "discarded_artifact_paths": {
+      "type": "array",
+      "description": "Optional. Concrete artifact paths the producer dropped from memory. Together with preserved_artifact_paths drives the dashboard's preserved_artifact_ratio metric. Producers MAY omit if tracking only preserved paths.",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "discarded_summary": {
+      "type": "string",
+      "description": "Human-readable summary of what was compacted away (e.g., 'Slice 1-3 RED/REFACTOR cycles, 47 tool calls, 12K tokens'). Audit-only — not machine-consumed."
+    },
+    "pre_compaction_tokens": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Optional. Estimated token count of context before compaction. Producer-side measurement (e.g., tokenizer on conversation log)."
+    },
+    "post_compaction_tokens": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Optional. Estimated token count of context after compaction. Together with pre_compaction_tokens drives compression ratio."
+    },
+    "compaction_strategy": {
+      "type": "string",
+      "enum": [
+        "key-artifacts-only",
+        "receipt-only",
+        "summary-only",
+        "selective-message-drop",
+        "full-reset",
+        "custom"
+      ],
+      "description": "How compaction was performed. Mirrors handoff.context_window_state.compaction_strategy enum but adds 'selective-message-drop' (preserve key turns, drop the rest) and 'full-reset' (drop everything; rely on session-receipt artifact for state)."
+    }
+  }
+}

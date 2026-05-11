@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "handoff_kind": "phase-9-to-mars",
+  "from": {
+    "producer": "deep-work",
+    "completed_at": "2026-05-11T16:20:00Z"
+  },
+  "to": {
+    "producer": "deep-evolve",
+    "intent": "performance-optimization"
+  },
+  "summary": "bad handoff_kind enum",
+  "next_action_brief": "should fail enum"
+}

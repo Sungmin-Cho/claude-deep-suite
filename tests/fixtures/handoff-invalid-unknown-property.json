@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "handoff_kind": "phase-5-to-evolve",
+  "from": {
+    "producer": "deep-work",
+    "completed_at": "2026-05-11T16:20:00Z"
+  },
+  "to": {
+    "producer": "deep-evolve",
+    "intent": "performance-optimization"
+  },
+  "summary": "non-x-prefixed unknown root field should fail",
+  "next_action_brief": "should fail additionalProperties",
+  "unknown_field": "this should be rejected"
+}

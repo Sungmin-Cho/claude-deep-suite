@@ -8,6 +8,8 @@ JSON Schema definitions for suite-level metadata and artifacts. **Not consumed b
 |---|---|---|
 | `suite-extensions.schema.json` | `.claude-plugin/suite-extensions.json` | **Active (M1)** — sidecar manifest with cross-plugin metadata |
 | `artifact-envelope.schema.json` | `<plugin>/<artifact>.json` (per-plugin migration) | **Forward-compat (M1 → M3)** — common envelope adopted by plugins during M3 |
+| `handoff.schema.json` | M3-envelope `payload` slot when `envelope.schema.name = "handoff"` | **Active (M5.2)** — payload contract for cross-plugin long-run handoff (deep-work Phase 5 ↔ deep-evolve, etc.) |
+| `compaction-state.schema.json` | M3-envelope `payload` slot when `envelope.schema.name = "compaction-state"` | **Active (M5.3)** — payload contract for context-compaction telemetry; dashboard consumes for `suite.compaction.*` M4-deferred metrics |
 
 ## Why a sidecar instead of extending marketplace.json?
 
@@ -74,6 +76,15 @@ This decision is recorded in `docs/backlog-m1-round2-deferred.md` §W-R3 (Option
 ## Artifact envelope `payload` validation delegation
 
 The envelope schema does not validate `payload` content (intentional). Each producer plugin owns a domain schema for its payload, identified by `envelope.schema.name`. Consumers (deep-dashboard aggregator, M3+ migration) look up the producer's payload schema in a **schema registry** (TBD in M3) keyed by `(envelope.producer, envelope.schema.name, envelope.schema.version)`. Until the registry exists, payload validation is producer-side only.
+
+### Shared cross-plugin payloads (M5)
+
+Two payload schemas are **not per-producer** but shared across plugins that emit them:
+
+- `handoff.schema.json` — produced by `deep-work` (Phase 5 Integrate) and `deep-evolve` (epoch end). Both producers wrap it in the M3 envelope with `envelope.artifact_kind = "handoff"` and `envelope.schema = { name: "handoff", version: "1.0" }`.
+- `compaction-state.schema.json` — produced by any plugin with a long-running loop (`deep-work`, `deep-evolve`, potentially `deep-wiki`). Wrapped with `envelope.artifact_kind = "compaction-state"` and `envelope.schema = { name: "compaction-state", version: "1.0" }`.
+
+Each producer that emits these MAY register a registry entry under `payload-registry/<producer>/<kind>/v1.0.schema.json` that simply $ref's the top-level shared schema (so `validate-artifact.js` finds it via the existing lookup), or the registry entry MAY duplicate the schema content inline. The top-level files in `schemas/` are the authoritative source; registry entries are forwarders. Plugin-side adoption is M5.7+ (separate per-plugin PRs).
 
 ## Validating
 

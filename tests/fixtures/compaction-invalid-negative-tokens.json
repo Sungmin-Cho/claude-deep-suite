@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "compacted_at": "2026-05-11T15:30:00Z",
+  "trigger": "window-threshold",
+  "preserved_artifact_paths": [],
+  "pre_compaction_tokens": -5
+}

@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "compacted_at": "2026-05-11T15:30:00Z",
+  "trigger": "phase-transition",
+  "preserved_artifact_paths": [
+    ".deep-work/2026-05-11-142500-jwt-middleware/research.md"
+  ]
+}

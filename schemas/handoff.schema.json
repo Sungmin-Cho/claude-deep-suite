@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/handoff.schema.json",
+  "title": "Deep Suite Long-Run Handoff Payload",
+  "description": "Payload shape for cross-plugin long-run handoff artifacts (e.g., deep-work Phase 5 → deep-evolve outer loop, or evolve epoch → deep-work resume). MUST be wrapped in the M3 artifact-envelope (schemas/artifact-envelope.schema.json) with envelope.schema = { name: 'handoff', version: '1.0' } and envelope.artifact_kind = 'handoff'. The envelope's run_id/parent_run_id forms the cross-plugin trace; this payload describes the handoff intent and continuation brief.",
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": {
+    "^x-": { "description": "Forward-compat extension namespace. Reserved-and-ignored — never breaks old validators." }
+  },
+  "required": [
+    "schema_version",
+    "handoff_kind",
+    "from",
+    "to",
+    "summary",
+    "next_action_brief"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "description": "Payload schema version. Locked to 1.0 for v1; forward-compat via x-* patternProperties. Breaking change → publish handoff-v2.schema.json."
+    },
+    "handoff_kind": {
+      "type": "string",
+      "enum": [
+        "phase-5-to-evolve",
+        "evolve-to-deep-work",
+        "slice-to-slice",
+        "session-resume",
+        "custom"
+      ],
+      "description": "Canonical handoff scenarios. 'phase-5-to-evolve' = deep-work Phase 5 Integrate hands off to deep-evolve outer loop. 'evolve-to-deep-work' = deep-evolve epoch end hands continuation back. 'slice-to-slice' = mid-session slice transition (rare; usually receipts cover this). 'session-resume' = handoff serialized for >24h dormant session resume. 'custom' = user-defined; producer SHOULD set a more specific kind in x-handoff-subkind."
+    },
+    "from": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {}
+      },
+      "required": ["producer", "completed_at"],
+      "properties": {
+        "producer": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "description": "Originating plugin (kebab-case; matches sidecar plugin keys + envelope.producer)."
+        },
+        "session_id": {
+          "type": "string",
+          "description": "Originating session identifier (e.g., deep-work session timestamp slug)."
+        },
+        "phase": {
+          "type": "string",
+          "description": "Phase or epoch name at handoff time (e.g., 'integrate', 'epoch-3-complete'). Producer-defined vocabulary."
+        },
+        "completed_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "RFC 3339 timestamp when the originating work reached the handoff point."
+        }
+      }
+    },
+    "to": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {}
+      },
+      "required": ["producer", "intent"],
+      "properties": {
+        "producer": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "description": "Target plugin expected to consume this handoff."
+        },
+        "intent": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Short label of what the receiver should do (e.g., 'performance-optimization', 'security-hardening', 'test-coverage-improvement'). Drives consumer's inner-loop seed prompt."
+        },
+        "scope_hint": {
+          "type": "string",
+          "description": "Optional scope narrowing (e.g., 'auth-middleware', 'src/lib/cache/*'). Consumer SHOULD respect this as a soft boundary."
+        }
+      }
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable summary of what the originating run accomplished. Should fit in a single paragraph; the receiver agent reads this verbatim."
+    },
+    "key_artifacts": {
+      "type": "array",
+      "description": "Concrete artifacts the receiver should read first. Path is repo-relative or, for wiki content, `<wiki_root>`-prefixed. The optional run_id chains to the M3 envelope of the referenced artifact when applicable.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "kind": {
+            "type": "string",
+            "description": "Optional. Producer-defined artifact kind (e.g., 'session-receipt', 'review-report', 'evolve-receipt', 'wiki-page')."
+          },
+          "run_id": {
+            "type": "string",
+            "description": "Optional. M3 envelope run_id of the referenced artifact, for trace reconstruction."
+          }
+        }
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Unresolved decisions the originating run flagged. The receiver should surface these to the user before deep work, not silently make a call."
+    },
+    "completed_actions": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Major actions the originating run completed (e.g., 'merged PR #123', 'committed slice 4/7 GREEN', 'wiki page jwt-auth updated'). Helps the receiver avoid re-doing work and recognize what context already exists in artifacts."
+    },
+    "next_action_brief": {
+      "type": "string",
+      "minLength": 1,
+      "description": "One-paragraph brief that becomes the receiver's seed prompt. Must contain the WHY (motivation), the CURRENT STATE (baseline metric / status), and the TARGET (numeric where possible). Example: 'Optimize token verification — current p99=180ms, target <50ms; consumer code in src/auth/jwt.ts; expensive verify call is on every middleware hop.'"
+    },
+    "context_window_state": {
+      "type": "object",
+      "description": "Optional. Records how the originating run compacted context before serializing the handoff. Consumers may use this to decide whether a full reset is needed (e.g., handoff older than 24h + key_artifacts referenced).",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {}
+      },
+      "properties": {
+        "compacted_at": { "type": "string", "format": "date-time" },
+        "compaction_strategy": {
+          "type": "string",
+          "enum": [
+            "key-artifacts-only",
+            "receipt-only",
+            "summary-only",
+            "full-history",
+            "custom"
+          ],
+          "description": "What was preserved in producer memory at handoff time. 'key-artifacts-only' = paths in key_artifacts[] are the only re-readable signal. 'receipt-only' = a session-receipt artifact summarizes everything. 'summary-only' = the summary field alone reconstructs context. 'full-history' = full conversation log retained (rare for long-run). 'custom' producer-specific (set x-compaction-strategy-detail)."
+        },
+        "preserved_artifact_paths": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Concrete artifact paths the producer kept in memory through compaction. Receiver SHOULD read these before initiating work."
+        }
+      }
+    }
+  }
+}
