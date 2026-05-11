@@ -1,0 +1,14 @@
+{
+  "schema_version": "2.0",
+  "handoff_kind": "phase-5-to-evolve",
+  "from": {
+    "producer": "deep-work",
+    "completed_at": "2026-05-11T16:20:00Z"
+  },
+  "to": {
+    "producer": "deep-evolve",
+    "intent": "performance-optimization"
+  },
+  "summary": "schema_version is locked at 1.0; 2.0 should fail const",
+  "next_action_brief": "should fail const"
+}

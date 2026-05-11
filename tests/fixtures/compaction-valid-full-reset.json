@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "compacted_at": "2026-05-11T15:30:00Z",
+  "trigger": "session-stop",
+  "preserved_artifact_paths": [],
+  "discarded_summary": "Full reset — only session-receipt remains as state anchor.",
+  "compaction_strategy": "full-reset"
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0",
+  "handoff_kind": "phase-5-to-evolve",
+  "from": {
+    "producer": "deep-work",
+    "completed_at": "2026-05-11T16:20:00Z"
+  },
+  "summary": "missing 'to' and 'next_action_brief' — should fail"
+}

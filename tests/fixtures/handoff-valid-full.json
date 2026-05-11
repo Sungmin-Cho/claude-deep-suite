@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "handoff_kind": "phase-5-to-evolve",
+  "from": {
+    "producer": "deep-work",
+    "session_id": "2026-05-11-142500-jwt-middleware",
+    "phase": "integrate",
+    "completed_at": "2026-05-11T16:20:00Z"
+  },
+  "to": {
+    "producer": "deep-evolve",
+    "intent": "performance-optimization",
+    "scope_hint": "src/auth/jwt.ts"
+  },
+  "summary": "JWT 미들웨어 8개 슬라이스 모두 GREEN. PR #123 머지. p99 latency 180ms.",
+  "key_artifacts": [
+    {
+      "path": ".deep-work/2026-05-11-142500-jwt-middleware/session-receipt.json",
+      "kind": "session-receipt",
+      "run_id": "01HX2VR8ABCDEFGHJKMNPQRSTV",
+      "x-priority": "high"
+    },
+    {
+      "path": ".deep-review/reports/2026-05-11-160000-review.md",
+      "kind": "review-report"
+    }
+  ],
+  "open_questions": [
+    "Token rotation 전략 미결정 (refresh-on-expiry vs sliding-window)",
+    "Redis vs JWT-internal expiry tracking"
+  ],
+  "completed_actions": [
+    "merged PR #123",
+    "8/8 slices GREEN with mutation score 0.87",
+    "wiki page 'jwt-auth-middleware' created"
+  ],
+  "next_action_brief": "deep-evolve로 JWT verify 성능 최적화 — current p99=180ms, target <50ms. Verify는 모든 미들웨어 hop마다 호출되므로 캐시 또는 batched verify 전략 후보.",
+  "context_window_state": {
+    "compacted_at": "2026-05-11T16:00:00Z",
+    "compaction_strategy": "key-artifacts-only",
+    "preserved_artifact_paths": [
+      ".deep-work/2026-05-11-142500-jwt-middleware/session-receipt.json",
+      ".deep-review/reports/2026-05-11-160000-review.md"
+    ]
+  },
+  "x-handoff-priority": "high"
+}

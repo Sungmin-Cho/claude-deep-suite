@@ -34,6 +34,8 @@ Harness Engineering 프레임워크(Agent = Model + Harness) 기반으로, Guide
 schemas/
   suite-extensions.schema.json    — Sidecar manifest JSON Schema (Draft 2020-12)
   artifact-envelope.schema.json   — M3 cross-plugin envelope (forward-compat, SemVer 2.0.0 strict)
+  handoff.schema.json             — M5 cross-plugin long-run handoff payload (Phase 5↔evolve 등; envelope payload slot)
+  compaction-state.schema.json    — M5 context compaction telemetry payload (dashboard M4-deferred 메트릭 source)
   payload-registry/<producer>/<artifact_kind>/v<MAJOR.MINOR>.schema.json — M3 Phase 1 payload schemas (8 seeds: deep-docs/last-scan, deep-dashboard/harnessability-report, deep-work/{session,slice}-receipt, deep-evolve/{evolve-receipt,evolve-insights}, deep-review/recurring-findings, deep-wiki/index)
   README.md                       — Schema 사용·기여·버전 정책
 scripts/
@@ -55,6 +57,7 @@ tests/
   validate-suite-extensions.test.js — schema/envelope/cross-ref 테스트 (W-R4 SemVer 2.0.0 추가)
   validate-artifact.test.js       — M3 validator CLI 시나리오 (envelope/payload phase + registry-miss)
   wrap-artifact.test.js           — M3 wrap helper roundtrip + override + kebab-case 거부
+  handoff-compaction-schemas.test.js — M5 handoff + compaction-state payload schema + envelope composition smoke test
   cli.test.js                     — validator CLI 시나리오 (exit code + stderr prefix)
   markers.test.js                 — markers.js round-trip 테스트
   generate-reference-sections.test.js — generator CLI 시나리오 (--check/--write/--id, fixture override)
@@ -65,6 +68,12 @@ package.json / package-lock.json  — Node 20+ ESM 프로젝트 (private, ajv + 
 guides/
   integrated-workflow-guide.md    — 6개 플러그인 통합 워크플로우 (EN)
   integrated-workflow-guide.ko.md — 6개 플러그인 통합 워크플로우 (KO)
+  hook-patterns.md                — M5 6 플러그인 hook 활용 패턴 + 안티패턴 + denylist 권장안 (EN)
+  hook-patterns.ko.md             — (KO)
+  long-run-handoff.md             — M5 cross-plugin handoff artifact (Phase 5↔evolve 시나리오) (EN)
+  long-run-handoff.ko.md          — (KO)
+  context-management.md           — M5 compaction / output offloading / full reset 정책 (4종) (EN)
+  context-management.ko.md        — (KO)
 docs/
   harness-engineering-*.md        — Böckeler/Fowler 기반 분석·로드맵 (8개 약점, 완료)
   deep-suite-harness-analysis.md  — Addy Osmani 기반 cross-plugin contract 분석

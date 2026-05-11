@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "compacted_at": "2026-05-11T15:30:00Z",
+  "trigger": "manual",
+  "preserved_artifact_paths": [],
+  "stray_field": "rejected by additionalProperties"
+}

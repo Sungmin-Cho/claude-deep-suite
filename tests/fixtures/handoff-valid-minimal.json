@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "handoff_kind": "phase-5-to-evolve",
+  "from": {
+    "producer": "deep-work",
+    "completed_at": "2026-05-11T16:20:00Z"
+  },
+  "to": {
+    "producer": "deep-evolve",
+    "intent": "performance-optimization"
+  },
+  "summary": "JWT 미들웨어 8개 슬라이스 모두 GREEN. PR #123 머지.",
+  "next_action_brief": "deep-evolve로 JWT verify 성능 최적화 — current p99=180ms, target <50ms; consumer code in src/auth/jwt.ts; verify는 모든 미들웨어 hop마다 호출."
+}
