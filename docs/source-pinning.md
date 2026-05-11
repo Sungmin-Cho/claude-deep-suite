@@ -8,12 +8,12 @@ Each plugin is fetched from the SHA below at install time. M2 CI re-checks daily
 
 | Plugin | Pinned Version | Repo | Pinned SHA |
 |---|---|---|---|
-| deep-work | 6.4.2 | [`Sungmin-Cho/claude-deep-work`](https://github.com/Sungmin-Cho/claude-deep-work) | [`df3ac9d`](https://github.com/Sungmin-Cho/claude-deep-work/commit/df3ac9d269626c32f743aa881b2a87dc4041879b) |
-| deep-wiki | 1.4.2 | [`Sungmin-Cho/claude-deep-wiki`](https://github.com/Sungmin-Cho/claude-deep-wiki) | [`257bb53`](https://github.com/Sungmin-Cho/claude-deep-wiki/commit/257bb53aaa197bca5c0e3f5ce66376fb08758d5d) |
-| deep-evolve | 3.1.1 | [`Sungmin-Cho/claude-deep-evolve`](https://github.com/Sungmin-Cho/claude-deep-evolve) | [`003a8cd`](https://github.com/Sungmin-Cho/claude-deep-evolve/commit/003a8cdf74e5511f020b11ce66cd95a11519a2fe) |
-| deep-review | 1.3.4 | [`Sungmin-Cho/claude-deep-review`](https://github.com/Sungmin-Cho/claude-deep-review) | [`e8514a1`](https://github.com/Sungmin-Cho/claude-deep-review/commit/e8514a10999dd46d1f2aab08b51bfd65d7769b4f) |
-| deep-docs | 1.1.0 | [`Sungmin-Cho/claude-deep-docs`](https://github.com/Sungmin-Cho/claude-deep-docs) | [`8a8164b`](https://github.com/Sungmin-Cho/claude-deep-docs/commit/8a8164bcffc5173a249a2c44a5417fc3d17ea04e) |
-| deep-dashboard | 1.1.1 | [`Sungmin-Cho/claude-deep-dashboard`](https://github.com/Sungmin-Cho/claude-deep-dashboard) | [`3c1c9f8`](https://github.com/Sungmin-Cho/claude-deep-dashboard/commit/3c1c9f8c439362e30e8f26d44c2b760cab06fbd9) |
+| deep-work | 6.5.0 | [`Sungmin-Cho/claude-deep-work`](https://github.com/Sungmin-Cho/claude-deep-work) | [`6f23e79`](https://github.com/Sungmin-Cho/claude-deep-work/commit/6f23e79a72af30c730e97f309167d060856fa697) |
+| deep-wiki | 1.5.0 | [`Sungmin-Cho/claude-deep-wiki`](https://github.com/Sungmin-Cho/claude-deep-wiki) | [`4f5cbf8`](https://github.com/Sungmin-Cho/claude-deep-wiki/commit/4f5cbf8c6a2c6cff352389c4f914cab678bcf4ad) |
+| deep-evolve | 3.2.0 | [`Sungmin-Cho/claude-deep-evolve`](https://github.com/Sungmin-Cho/claude-deep-evolve) | [`9b867b1`](https://github.com/Sungmin-Cho/claude-deep-evolve/commit/9b867b1e23c2c5b35cfca239fe691f3eb864b499) |
+| deep-review | 1.4.0 | [`Sungmin-Cho/claude-deep-review`](https://github.com/Sungmin-Cho/claude-deep-review) | [`a76473f`](https://github.com/Sungmin-Cho/claude-deep-review/commit/a76473fdbd540127f7c9492c76934a198dc9602b) |
+| deep-docs | 1.2.0 | [`Sungmin-Cho/claude-deep-docs`](https://github.com/Sungmin-Cho/claude-deep-docs) | [`3cc5229`](https://github.com/Sungmin-Cho/claude-deep-docs/commit/3cc522933916a9e54e920ef2b694a879e24a01b1) |
+| deep-dashboard | 1.2.0 | [`Sungmin-Cho/claude-deep-dashboard`](https://github.com/Sungmin-Cho/claude-deep-dashboard) | [`cfd07bd`](https://github.com/Sungmin-Cho/claude-deep-dashboard/commit/cfd07bd5c1feb37f85bc86d91b0987f1e8eb1910) |
 
 > Version reflects `plugin.json.version` at the pinned SHA. Click the SHA to see the upstream commit details.
 

@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-wiki",
+    "producer_version": "1.5.0",
+    "artifact_kind": "index",
+    "run_id": "01JTKZQ7N3ABCDEFGHJKMNPQRS",
+    "generated_at": "2026-05-11T10:00:00Z",
+    "schema": { "name": "index", "version": "1.0" },
+    "git": { "head": "abc1234", "branch": "main", "dirty": false },
+    "provenance": { "source_artifacts": [], "tool_versions": {} }
+  },
+  "payload": {
+    "pages": [
+      {
+        "file": "Bad Filename With Spaces.md",
+        "title": "Bad page"
+      }
+    ]
+  }
+}

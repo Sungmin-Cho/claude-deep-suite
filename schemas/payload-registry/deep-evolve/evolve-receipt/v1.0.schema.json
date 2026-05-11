@@ -1,11 +1,115 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-evolve/evolve-receipt/v1.0.schema.json",
-  "title": "deep-evolve evolve-receipt payload v1.0 (Phase 1 placeholder)",
-  "description": "Phase 1 placeholder schema. Phase 2 plugin migration PR will replace with the authoritative shape derived from live emit. Until then, validate-artifact accepts any object as payload — see docs/envelope-migration.md §4.1.",
+  "title": "deep-evolve evolve-receipt payload v1.0",
+  "description": "Authoritative payload schema for deep-evolve evolve-receipt envelope (artifact_kind=evolve-receipt, schema.version=1.0). Mirrors deep-evolve v3.2.0+ emit shape from Phase 2 envelope adoption. parent_run_id chains to deep-review recurring-findings consumed at session init (identity-gated extraction).",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "patternProperties": {
     "^x-": { "description": "Forward-compat extension namespace." }
+  },
+  "required": [
+    "plugin",
+    "version",
+    "receipt_schema_version",
+    "timestamp",
+    "session_id",
+    "goal",
+    "experiments",
+    "score"
+  ],
+  "properties": {
+    "plugin": {
+      "type": "string",
+      "const": "deep-evolve"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+      "description": "Plugin version (SemVer 2.0.0 strict)."
+    },
+    "receipt_schema_version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Payload-internal schema version (independent from envelope schema_version)."
+    },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "session_id": { "type": "string", "minLength": 1 },
+    "goal": { "type": "string" },
+    "eval_mode": { "type": "string" },
+    "experiments": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["total"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "kept": { "type": "integer", "minimum": 0 },
+        "discarded": { "type": "integer", "minimum": 0 },
+        "crashed": { "type": "integer", "minimum": 0 },
+        "keep_rate": { "type": "number" }
+      }
+    },
+    "score": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "baseline": { "type": "number" },
+        "current": { "type": "number" },
+        "best": { "type": "number" },
+        "improvement_pct": { "type": "number" }
+      }
+    },
+    "strategy_evolution": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "outer_loop_generations": { "type": "integer", "minimum": 0 },
+        "q_trajectory": {
+          "type": "array",
+          "description": "Q-value trajectory; tolerant of legacy object-array shape vs new numeric-array shape per handoff §4 R2-1 lesson.",
+          "items": {
+            "oneOf": [
+              { "type": "number" },
+              { "type": "object", "additionalProperties": true }
+            ]
+          }
+        },
+        "strategy_versions": { "type": "integer", "minimum": 0 },
+        "best_generation": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "program": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "versions": { "type": "integer", "minimum": 0 },
+        "meta_analyses": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "evaluation_epochs": { "type": "integer", "minimum": 0 },
+    "archives": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "meta_archive_updated": { "type": "boolean" },
+    "transfer": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "received_from": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }]
+        },
+        "adopted_patterns_kept": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "integer", "minimum": 0 },
+            { "type": "array" }
+          ]
+        }
+      }
+    },
+    "duration_minutes": { "type": "number", "minimum": 0 },
+    "quality_score": { "type": "number" },
+    "outcome": { "type": "string" }
   }
 }

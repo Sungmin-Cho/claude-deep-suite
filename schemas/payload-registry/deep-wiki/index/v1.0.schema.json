@@ -1,11 +1,51 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-wiki/index/v1.0.schema.json",
-  "title": "deep-wiki index payload v1.0 (Phase 1 placeholder)",
-  "description": "Phase 1 placeholder schema. Phase 2 plugin migration PR will replace with the authoritative shape derived from live emit. Until then, validate-artifact accepts any object as payload — see docs/envelope-migration.md §4.1.",
+  "title": "deep-wiki index payload v1.0",
+  "description": "Authoritative payload schema for deep-wiki index envelope (artifact_kind=index, schema.version=1.0). Mirrors deep-wiki v1.5.0+ emit shape from Phase 2 envelope adoption. Multi-source aggregator over <wiki_root>/pages/*.md — no parent_run_id; provenance.source_artifacts carries page paths (path-only, markdown not envelope-detectable). pages array MAY be empty (fresh wiki / post-wiki-setup case).",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "patternProperties": {
     "^x-": { "description": "Forward-compat extension namespace." }
+  },
+  "required": ["pages"],
+  "properties": {
+    "pages": {
+      "type": "array",
+      "description": "Catalog of pages under <wiki_root>/pages/. Defense-in-depth requirement on writer (round-2 HIGH-B) — non-array payload.pages is rejected at write boundary.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["file"],
+        "properties": {
+          "file": {
+            "type": "string",
+            "pattern": "^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.md$",
+            "description": "Page filename relative to <wiki_root>/pages/ (kebab-case .md)."
+          },
+          "slug": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "aliases": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "path": { "type": "string" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional payload-internal generation timestamp (envelope-level generated_at is canonical)."
+    },
+    "wiki_root": {
+      "type": "string",
+      "description": "Optional absolute path to the wiki root (legacy compat — newer emits favor envelope.git context)."
+    }
   }
 }

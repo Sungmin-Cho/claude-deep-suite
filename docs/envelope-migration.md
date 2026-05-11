@@ -235,18 +235,18 @@ npm run docs:sync     # check-semver-sha-sync + check-pinned-plugin-paths + chec
   warning으로 표시". **legacy 강제 차단은 별도 결정** — 본 문서에 명시 일정
   못 박지 않음.
 
-### 6.1 Adoption ledger (Phase 2 진행 시 갱신)
+### 6.1 Adoption ledger (Phase 3 갱신 — 2026-05-11)
 
 | Plugin | Envelope-emitting since (commit) | merged_at | timer notes |
 |---|---|---|---|
-| deep-docs | _pending_ | _pending_ | T+0 시작 후보 (권장 1순위) |
-| deep-dashboard | _pending_ | _pending_ | |
-| deep-work | _pending_ | _pending_ | |
-| deep-evolve | _pending_ | _pending_ | |
-| deep-review | _pending_ | _pending_ | |
-| deep-wiki | _pending_ | _pending_ | |
+| deep-docs | `3cc522933916a9e54e920ef2b694a879e24a01b1` | 2026-05-07 | **T+0 시작점 (first plugin merge)** |
+| deep-dashboard | `cfd07bd5c1feb37f85bc86d91b0987f1e8eb1910` | 2026-05-07 | |
+| deep-work | `6f23e79a72af30c730e97f309167d060856fa697` | 2026-05-07 | |
+| deep-evolve | `9b867b1e23c2c5b35cfca239fe691f3eb864b499` | 2026-05-08 | |
+| deep-review | `a76473fdbd540127f7c9492c76934a198dc9602b` | 2026-05-08 | |
+| deep-wiki | `4f5cbf8c6a2c6cff352389c4f914cab678bcf4ad` | 2026-05-11 | Phase 2 final (6/6 완료 트리거) |
 
-> _Phase 2 가 시작되면 첫 plugin merge 시 _T+0 = `<YYYY-MM-DD>`_ 한 줄을 위 표 옆에 별도 단락으로 추가하고, T+0+6mo 도달 시 dashboard warning 활성화 PR을 issue로 발행._
+> _T+0 = 2026-05-07 (deep-docs `3cc522933916a9e54e920ef2b694a879e24a01b1` first plugin merge). T+0+6mo = 2026-11-07 — 도달 시 dashboard warning 활성화 PR을 issue로 발행._
 
 ---
 

@@ -7,22 +7,13 @@
     "run_id": "01KR0J9PEM6E3K8H7XW2QFNB4M",
     "generated_at": "2026-05-07T10:00:00Z",
     "schema": { "name": "harnessability-report", "version": "1.0" },
-    "git": {
-      "head": "0123456789abcdef0123456789abcdef01234567",
-      "branch": "main",
-      "dirty": false
-    },
-    "provenance": {
-      "source_artifacts": [
-        { "path": "/path/to/project" }
-      ],
-      "tool_versions": { "node": "v20.11.0" }
-    }
+    "git": { "head": "abc1234", "branch": "main", "dirty": false },
+    "provenance": { "source_artifacts": [], "tool_versions": {} }
   },
   "payload": {
     "projectRoot": "/path/to/project",
     "total": 7.4,
-    "grade": "Good",
+    "grade": "Mediocre",
     "dimensions": [
       { "id": "type_safety", "label": "Type Safety", "weight": 0.25, "score": 10, "checks": [{ "id": "tsconfig_exists", "label": "tsconfig.json present", "passed": true }] },
       { "id": "module_boundaries", "label": "Module Boundaries", "weight": 0.20, "score": 6.7, "checks": [{ "id": "src_dir_exists", "label": "src/ dir", "passed": true }] },
@@ -31,8 +22,6 @@
       { "id": "linter_formatter", "label": "Linter & Formatter", "weight": 0.10, "score": 5, "checks": [{ "id": "linter_config_file", "label": "linter config", "passed": true }] },
       { "id": "ci_cd", "label": "CI/CD", "weight": 0.10, "score": 5, "checks": [{ "id": "ci_config_exists", "label": "CI config", "passed": true }] }
     ],
-    "recommendations": [],
-    "topology": null,
-    "topology_hints": null
+    "recommendations": []
   }
 }

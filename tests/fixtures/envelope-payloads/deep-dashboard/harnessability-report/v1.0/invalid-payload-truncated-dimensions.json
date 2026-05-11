@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-dashboard",
+    "producer_version": "1.2.0",
+    "artifact_kind": "harnessability-report",
+    "run_id": "01KR0J9PEM6E3K8H7XW2QFNB4M",
+    "generated_at": "2026-05-07T10:00:00Z",
+    "schema": { "name": "harnessability-report", "version": "1.0" },
+    "git": { "head": "abc1234", "branch": "main", "dirty": false },
+    "provenance": { "source_artifacts": [], "tool_versions": {} }
+  },
+  "payload": {
+    "projectRoot": "/path/to/project",
+    "total": 7.4,
+    "grade": "Good",
+    "dimensions": [
+      { "id": "type_safety", "label": "Type Safety", "weight": 0.25, "score": 10, "checks": [{ "id": "tsconfig_exists", "label": "tsconfig.json present", "passed": true }] }
+    ],
+    "recommendations": []
+  }
+}

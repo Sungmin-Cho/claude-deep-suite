@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-review",
+    "producer_version": "1.4.0",
+    "artifact_kind": "recurring-findings",
+    "run_id": "01JTKR9CD3EFGHJKMNPQRSTVWX",
+    "generated_at": "2026-05-08T11:30:42.123Z",
+    "schema": { "name": "recurring-findings", "version": "1.0" },
+    "git": { "head": "abc1234", "branch": "main", "dirty": false },
+    "provenance": { "source_artifacts": [], "tool_versions": {} }
+  },
+  "payload": {
+    "updated_at": "2026-05-08T11:30:42.123Z",
+    "findings": [
+      {
+        "category": "error-handling",
+        "severity": "blocker",
+        "occurrences": 1,
+        "description": "Some finding"
+      }
+    ]
+  }
+}

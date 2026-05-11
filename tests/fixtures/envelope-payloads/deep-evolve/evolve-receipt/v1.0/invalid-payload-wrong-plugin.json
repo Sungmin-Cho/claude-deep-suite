@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-evolve",
+    "producer_version": "3.2.0",
+    "artifact_kind": "evolve-receipt",
+    "run_id": "01JTKQ7AB2CDEFGHJKMNPQRSTV",
+    "generated_at": "2026-05-08T03:42:08.456Z",
+    "schema": { "name": "evolve-receipt", "version": "1.0" },
+    "git": { "head": "abc1234", "branch": "main", "dirty": false },
+    "provenance": { "source_artifacts": [], "tool_versions": {} }
+  },
+  "payload": {
+    "plugin": "other-tool",
+    "version": "3.2.0",
+    "receipt_schema_version": 2,
+    "timestamp": "2026-05-08T03:42:08.456Z",
+    "session_id": "2026-05-07T11-30-00",
+    "goal": "Optimize hot path",
+    "experiments": { "total": 0 },
+    "score": {}
+  }
+}

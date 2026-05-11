@@ -2,25 +2,40 @@
   "schema_version": "1.0",
   "envelope": {
     "producer": "deep-work",
-    "producer_version": "6.4.2",
+    "producer_version": "6.5.0",
     "artifact_kind": "session-receipt",
-    "run_id": "01J9X8W0RK0000000000SESS00",
-    "generated_at": "2026-05-07T10:15:00Z",
+    "run_id": "01JTKH22NHABCDEFGHJKMNPQRS",
+    "session_id": "dw-2026-05-07T10-00-00-000Z",
+    "parent_run_id": "01JTKEV0NHABCDEFGHJKMNPQRS",
+    "generated_at": "2026-05-07T11:42:08.456Z",
     "schema": { "name": "session-receipt", "version": "1.0" },
     "git": {
-      "head": "a6b3485",
-      "branch": "feat/auth-middleware",
-      "worktree": ".deep-work/.worktrees/session-1",
+      "head": "def5678",
+      "branch": "feat/m3-envelope-adoption",
       "dirty": false
     },
     "provenance": {
-      "source_artifacts": [],
-      "tool_versions": { "node": "20.11.0" }
+      "source_artifacts": [
+        { "path": ".deep-evolve/2026-05-07/evolve-insights.json", "run_id": "01JTKEV0NHABCDEFGHJKMNPQRS" }
+      ],
+      "tool_versions": { "node": "v20.11.0" }
     }
   },
   "payload": {
-    "session_id": "session-2026-05-07-10-15",
-    "phase": "implement",
-    "started_at": "2026-05-07T09:00:00Z"
+    "schema_version": "1.0",
+    "canonical": false,
+    "derived_from": "receipts/SLICE-*.json",
+    "session_id": "dw-2026-05-07T10-00-00-000Z",
+    "task_description": "Sample task for envelope adoption fixture",
+    "started_at": "2026-05-07T10:00:00.000Z",
+    "finished_at": "2026-05-07T11:42:00.000Z",
+    "worktree_branch": "feat/m3-envelope-adoption",
+    "worktree_base_commit": "abc1234",
+    "outcome": "merge",
+    "outcome_ref": null,
+    "slices": { "total": 1, "completed": 1, "spike": 0 },
+    "tdd_compliance": { "strict": 1, "relaxed": 0, "override": 0, "spike": 0 },
+    "quality_score": 8.7,
+    "quality_breakdown": { "tdd_compliance": 1.0, "sensor_clean": 0.9 }
   }
 }

@@ -1,11 +1,88 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-dashboard/harnessability-report/v1.0.schema.json",
-  "title": "deep-dashboard harnessability-report payload v1.0 (Phase 1 placeholder)",
-  "description": "Phase 1 placeholder schema. Phase 2 plugin migration PR will replace with the authoritative shape derived from live emit. Until then, validate-artifact accepts any object as payload — see docs/envelope-migration.md §4.1.",
+  "title": "deep-dashboard harnessability-report payload v1.0",
+  "description": "Authoritative payload schema for deep-dashboard harnessability-report envelope (artifact_kind=harnessability-report, schema.version=1.0). Mirrors deep-dashboard v1.2.0+ emit shape from Phase 2 envelope adoption. Multi-source aggregator (no parent_run_id) — provenance.source_artifacts carries upstream run_ids.",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "patternProperties": {
     "^x-": { "description": "Forward-compat extension namespace." }
+  },
+  "required": ["projectRoot", "total", "grade", "dimensions", "recommendations"],
+  "properties": {
+    "projectRoot": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Absolute path to the project that was scored."
+    },
+    "total": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10,
+      "description": "Weighted total harnessability score (0..10)."
+    },
+    "grade": {
+      "type": "string",
+      "enum": ["Excellent", "Good", "Fair", "Poor", "Critical"],
+      "description": "Categorical grade derived from total."
+    },
+    "dimensions": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "description": "Exactly 6 harnessability dimensions per producer invariant (claude-deep-dashboard@cfd07bd validate-envelope-emit.js + lib/harnessability/scorer.js): type_safety, module_boundaries, test_infra, sensor_readiness, linter_formatter, ci_cd.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["id", "label", "weight", "score", "checks"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "label": { "type": "string", "minLength": 1 },
+          "weight": { "type": "number", "minimum": 0, "maximum": 1 },
+          "score": { "type": "number", "minimum": 0, "maximum": 10 },
+          "checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "required": ["id", "label", "passed"],
+              "properties": {
+                "id": { "type": "string", "minLength": 1 },
+                "label": { "type": "string", "minLength": 1 },
+                "passed": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["dimension", "check", "action"],
+        "properties": {
+          "dimension": { "type": "string", "minLength": 1 },
+          "check": { "type": "string", "minLength": 1 },
+          "action": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "topology": {
+      "description": "Optional dependency graph topology (null when not computed).",
+      "oneOf": [
+        { "type": "null" },
+        { "type": "object", "additionalProperties": true }
+      ]
+    },
+    "topology_hints": {
+      "description": "Optional pre-graph hints (null when not computed).",
+      "oneOf": [
+        { "type": "null" },
+        { "type": "object", "additionalProperties": true },
+        { "type": "array" }
+      ]
+    }
   }
 }
