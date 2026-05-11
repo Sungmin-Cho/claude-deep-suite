@@ -58,6 +58,7 @@ tests/
   validate-artifact.test.js       — M3 validator CLI 시나리오 (envelope/payload phase + registry-miss)
   wrap-artifact.test.js           — M3 wrap helper roundtrip + override + kebab-case 거부
   handoff-compaction-schemas.test.js — M5 handoff + compaction-state payload schema + envelope composition smoke test
+  examples.test.js                — M5 example pack: bash -n + shellcheck + settings.json sanity + handoff template validate
   cli.test.js                     — validator CLI 시나리오 (exit code + stderr prefix)
   markers.test.js                 — markers.js round-trip 테스트
   generate-reference-sections.test.js — generator CLI 시나리오 (--check/--write/--id, fixture override)
@@ -74,6 +75,18 @@ guides/
   long-run-handoff.ko.md          — (KO)
   context-management.md           — M5 compaction / output offloading / full reset 정책 (4종) (EN)
   context-management.ko.md        — (KO)
+examples/
+  README.md                       — Example pack 사용법 + install 단계
+  hooks-suite-baseline/.claude/settings.json — M5 baseline hook 구성 (SessionStart/PreToolUse force-push gate/Stop)
+  hooks-suite-baseline/scripts/session-open.sh        — Stale 세션 state rotation
+  hooks-suite-baseline/scripts/pre-tool-guard.sh      — Force-push gate (exit 2 = block)
+  hooks-suite-baseline/scripts/stop-flush-metrics.sh  — NDJSON metric flush
+  hooks-strict-mode/.claude/settings.json — M5 strict-mode: 7 dangerous-command 가족 차단
+  hooks-strict-mode/scripts/denylist-guard.sh         — 7 family case-based guard (override env vars)
+  hooks-strict-mode/scripts/session-open.sh           — (baseline 미러)
+  hooks-strict-mode/scripts/stop-flush-metrics.sh     — (baseline 미러)
+  handoff-phase5-to-evolve/handoff-template.json — M3 envelope 으로 wrap 된 handoff payload 샘플
+  handoff-phase5-to-evolve/README.md — Phase 5 → deep-evolve 시나리오 walkthrough + 어댑테이션 가이드
 docs/
   harness-engineering-*.md        — Böckeler/Fowler 기반 분석·로드맵 (8개 약점, 완료)
   deep-suite-harness-analysis.md  — Addy Osmani 기반 cross-plugin contract 분석

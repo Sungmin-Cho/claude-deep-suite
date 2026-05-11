@@ -1,0 +1,97 @@
+{
+  "_comment": "Deep Suite strict-mode hooks pack. Defense-in-depth: blocks 7 families of dangerous Bash invocations. Each family has its own override env var (see scripts/denylist-guard.sh case statement). This is STANDALONE — do not also install the baseline pack; copy this .claude/ + scripts/ pair as a self-contained config. KNOWN LIMITATION: `Bash(<glob>)` matches the raw command string passed to the Bash tool — SQL family relies on UPPERCASE `DROP TABLE` / `TRUNCATE` keywords appearing in the visible command (catches `psql -c \"DROP TABLE\"` but NOT `psql -f drop.sql` nor lowercase). For richer matching, run the actual SQL through a guarded wrapper or extend denylist-guard.sh to parse stdin JSON.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/session-open.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh force-push",
+            "if": "Bash(git push --force *)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh force-push",
+            "if": "Bash(git push --force)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh force-push",
+            "if": "Bash(git push -f *)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh force-push",
+            "if": "Bash(git push -f)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh hard-reset-remote",
+            "if": "Bash(git reset --hard origin/*)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh rm-rf",
+            "if": "Bash(rm -rf *)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh sql-destructive",
+            "if": "Bash(* DROP TABLE *)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh sql-destructive",
+            "if": "Bash(* TRUNCATE *)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh kubectl-destructive",
+            "if": "Bash(kubectl delete *)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh kubectl-destructive",
+            "if": "Bash(kubectl drain *)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh npm-publish",
+            "if": "Bash(npm publish*)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh curl-pipe-shell",
+            "if": "Bash(curl * | sh*)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh curl-pipe-shell",
+            "if": "Bash(curl * | bash*)"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/stop-flush-metrics.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
