@@ -95,6 +95,9 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
+        "patternProperties": {
+          "^x-": { "description": "Forward-compat extension namespace at item level (e.g., x-priority, x-stale-after, x-kind-detail)." }
+        },
         "required": ["path"],
         "properties": {
           "path": { "type": "string", "minLength": 1 },
@@ -142,7 +145,7 @@
             "full-history",
             "custom"
           ],
-          "description": "What was preserved in producer memory at handoff time. 'key-artifacts-only' = paths in key_artifacts[] are the only re-readable signal. 'receipt-only' = a session-receipt artifact summarizes everything. 'summary-only' = the summary field alone reconstructs context. 'full-history' = full conversation log retained (rare for long-run). 'custom' producer-specific (set x-compaction-strategy-detail)."
+          "description": "What was preserved in producer memory at handoff time. 'key-artifacts-only' = paths in key_artifacts[] are the only re-readable signal. 'receipt-only' = a session-receipt artifact summarizes everything. 'summary-only' = the summary field alone reconstructs context. 'full-history' = full conversation log retained (rare for long-run). 'custom' producer-specific (set x-compaction-strategy-detail). Deliberately scoped to handoff-time snapshot — does NOT include compaction-state.schema.json's 'selective-message-drop' or 'full-reset' values (those describe a compaction event, not a snapshot)."
         },
         "preserved_artifact_paths": {
           "type": "array",

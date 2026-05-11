@@ -93,12 +93,15 @@ When deep-work reaches Phase 5 Integrate and the user opts to hand off to deep-e
 # inside deep-work Phase 5 (post-merge)
 node "${CLAUDE_PROJECT_DIR}/.claude/plugins/.../wrap-artifact.js" \
   --producer deep-work \
-  --kind handoff \
-  --schema 'handoff:1.0' \
+  --producer-version 6.5.0 \
+  --artifact-kind handoff \
+  --schema-version 1.0 \
   --parent-run-id "$(jq -r '.envelope.run_id' .deep-work/$SESSION/session-receipt.json)" \
-  --payload-file /tmp/handoff-payload.json \
-  --out ".deep-work/$SESSION/handoff.json"
+  --input /tmp/handoff-payload.json \
+  --output ".deep-work/$SESSION/handoff.json"
 ```
+
+> The wrapper sets `envelope.schema.name = envelope.artifact_kind` (see `scripts/wrap-artifact.js`), so passing `--artifact-kind handoff` yields the matching `envelope.schema.name = "handoff"` automatically. The receiver's identity-triplet check (§4.2) then succeeds.
 
 ### 4.2 User invokes deep-evolve from the handoff
 

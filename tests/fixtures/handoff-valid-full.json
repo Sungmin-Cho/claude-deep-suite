@@ -17,7 +17,8 @@
     {
       "path": ".deep-work/2026-05-11-142500-jwt-middleware/session-receipt.json",
       "kind": "session-receipt",
-      "run_id": "01HX2VR8ABCDEFGHJKMNPQRSTV"
+      "run_id": "01HX2VR8ABCDEFGHJKMNPQRSTV",
+      "x-priority": "high"
     },
     {
       "path": ".deep-review/reports/2026-05-11-160000-review.md",

@@ -147,7 +147,7 @@ deep-review, deep-docs, deep-dashboard ship `hooks_active: []` for the same trus
 | Offload to disk but never reference the path in the receipt | Future readers don't know to look there; the offload is invisible. |
 | Full-reset mid-session because "context feels long" | Discards live working memory unnecessarily; receipts may not capture in-flight intent. Save the reset for genuine boundaries. |
 | Emit compaction-state but no `parent_run_id` chain | Dashboard cannot attribute the compaction to the originating session. |
-| Use `compaction_strategy: "full-reset"` without writing a receipt first | The receiver has nothing to read; the reset is lossy. |
+| Use `compaction-state.compaction_strategy: "full-reset"` without writing a receipt first | The receiver has nothing to read; the reset is lossy. (Note: `full-reset` is valid only in `compaction-state.json` payloads — `handoff.json`'s `context_window_state.compaction_strategy` deliberately omits this value; use `"summary-only"` or `"receipt-only"` to denote a similar shape there.) |
 | Emit a `compaction-state.json` for every tool call (over-instrument) | Multiplies dashboard noise; emit on genuine boundaries only. |
 
 ---

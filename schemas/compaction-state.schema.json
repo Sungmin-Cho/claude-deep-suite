@@ -74,7 +74,7 @@
         "full-reset",
         "custom"
       ],
-      "description": "How compaction was performed. Mirrors handoff.context_window_state.compaction_strategy enum but adds 'selective-message-drop' (preserve key turns, drop the rest) and 'full-reset' (drop everything; rely on session-receipt artifact for state)."
+      "description": "How compaction was performed. Deliberately scoped to the compaction event (not the handoff snapshot): includes 'selective-message-drop' (preserve key turns, drop the rest) and 'full-reset' (drop everything; rely on session-receipt artifact for state). Does NOT include 'full-history' — that value only makes sense for handoff.context_window_state.compaction_strategy (which represents a snapshot at handoff time; a compaction event by definition discarded something). Producers SHOULD pick the closest match; use 'custom' + x-compaction-strategy-detail for novel strategies."
     }
   }
 }
