@@ -1,5 +1,5 @@
 {
-  "_comment": "Deep Suite strict-mode hooks pack. Defense-in-depth: blocks 7 families of dangerous Bash invocations. Each family has its own override env var (see scripts/denylist-guard.sh case statement). This is STANDALONE — do not also install the baseline pack; copy this .claude/ + scripts/ pair as a self-contained config. The denylist composes the baseline patterns (SessionStart stale-state recovery, Stop metric flush) plus an expanded PreToolUse matcher set.",
+  "_comment": "Deep Suite strict-mode hooks pack. Defense-in-depth: blocks 7 families of dangerous Bash invocations. Each family has its own override env var (see scripts/denylist-guard.sh case statement). This is STANDALONE — do not also install the baseline pack; copy this .claude/ + scripts/ pair as a self-contained config. KNOWN LIMITATION: `Bash(<glob>)` matches the raw command string passed to the Bash tool — SQL family relies on UPPERCASE `DROP TABLE` / `TRUNCATE` keywords appearing in the visible command (catches `psql -c \"DROP TABLE\"` but NOT `psql -f drop.sql` nor lowercase). For richer matching, run the actual SQL through a guarded wrapper or extend denylist-guard.sh to parse stdin JSON.",
   "hooks": {
     "SessionStart": [
       {
@@ -23,7 +23,17 @@
           {
             "type": "command",
             "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh force-push",
+            "if": "Bash(git push --force)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh force-push",
             "if": "Bash(git push -f *)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh force-push",
+            "if": "Bash(git push -f)"
           },
           {
             "type": "command",

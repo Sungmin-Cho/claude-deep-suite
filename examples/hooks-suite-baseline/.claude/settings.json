@@ -23,7 +23,17 @@
           {
             "type": "command",
             "command": "${CLAUDE_PROJECT_DIR}/scripts/pre-tool-guard.sh",
+            "if": "Bash(git push --force)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/pre-tool-guard.sh",
             "if": "Bash(git push -f *)"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/scripts/pre-tool-guard.sh",
+            "if": "Bash(git push -f)"
           }
         ]
       }

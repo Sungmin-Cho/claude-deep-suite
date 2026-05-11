@@ -140,20 +140,43 @@ for (const settingsFile of SETTINGS_FILES) {
   });
 }
 
-test('hooks-strict-mode/.claude/settings.json gates ≥7 dangerous-command families (M5 spec acceptance criteria)', () => {
+test('hooks-strict-mode/.claude/settings.json covers all 7 documented dangerous-command families (M5 spec acceptance criteria)', () => {
+  // Family-set assertion (not raw rule count) — prevents the regression where
+  // a future PR could delete a family while keeping ≥5 rules and still pass.
+  // The denylist-guard.sh `case` statement is the authoritative family list.
+  const EXPECTED_FAMILIES = new Set([
+    'force-push',
+    'hard-reset-remote',
+    'rm-rf',
+    'sql-destructive',
+    'kubectl-destructive',
+    'npm-publish',
+    'curl-pipe-shell'
+  ]);
   const data = readJson('examples/hooks-strict-mode/.claude/settings.json');
-  const ifValues = [];
+  const observedFamilies = new Set();
   for (const entry of data.hooks.PreToolUse || []) {
     for (const hook of entry.hooks || []) {
-      if (hook.if) ifValues.push(hook.if);
+      if (hook.type !== 'command' || !hook.command) continue;
+      // command shape: "${CLAUDE_PROJECT_DIR}/scripts/denylist-guard.sh <family>"
+      // The family is the last whitespace-separated token.
+      const parts = hook.command.trim().split(/\s+/);
+      if (parts.length < 2) continue;
+      observedFamilies.add(parts[parts.length - 1]);
     }
   }
-  // The roadmap spec §M5 acceptance criteria asks for "5+ dangerous-command patterns".
-  // We assert ≥5 distinct `if` rules. Counting distinct families is harder
-  // (force-push has 2 `if` variants: --force and -f), so we assert on the
-  // raw rule count.
-  assert.ok(
-    ifValues.length >= 5,
-    `expected ≥5 PreToolUse if-rules, found ${ifValues.length}: ${JSON.stringify(ifValues, null, 2)}`
-  );
+  for (const family of EXPECTED_FAMILIES) {
+    assert.ok(
+      observedFamilies.has(family),
+      `strict-mode settings.json missing family '${family}'. Observed: ${[...observedFamilies].sort().join(', ')}`
+    );
+  }
+  // Also assert no unknown families that denylist-guard.sh's case statement
+  // would reject (defense in depth — typo in settings.json caught here).
+  for (const family of observedFamilies) {
+    assert.ok(
+      EXPECTED_FAMILIES.has(family),
+      `strict-mode settings.json references unknown family '${family}' — add it to denylist-guard.sh case statement or fix the typo`
+    );
+  }
 });

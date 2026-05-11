@@ -11,6 +11,12 @@
 # Override: set CLAUDE_ALLOW_FORCE_PUSH=1 in the shell that ran `claude`.
 set -euo pipefail
 
+# Claude Code passes tool invocation JSON on stdin. We don't parse it here
+# (the `if` matcher already narrowed us to force-push). Drain stdin so the
+# JSON-producing side doesn't get SIGPIPE on our quick exit. Mirror the
+# strict-mode pack's identical pattern in denylist-guard.sh.
+cat >/dev/null || true
+
 if [[ "${CLAUDE_ALLOW_FORCE_PUSH:-0}" == "1" ]]; then
   exit 0
 fi

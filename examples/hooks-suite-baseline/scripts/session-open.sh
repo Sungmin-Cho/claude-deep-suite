@@ -27,7 +27,10 @@ while IFS= read -r -d '' f; do
   ts="$(date +%s)"
   mv "$f" "${f}.stale-${ts}"
   moved=$((moved + 1))
-done < <(find "$state_dir" -maxdepth 1 -type f -mtime +1 ! -name '*.stale-*' -print0 2>/dev/null)
+done < <(find "$state_dir" -maxdepth 1 -type f -mtime +1 \
+  ! -name '*.stale-*' \
+  ! -name 'metrics.jsonl' \
+  -print0 2>/dev/null)
 
 if (( moved > 0 )); then
   echo "session-open: rotated ${moved} stale state file(s) in ${state_dir}"

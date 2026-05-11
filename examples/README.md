@@ -24,6 +24,15 @@ Drop-in example packs you can copy into your own project and tweak. Each subdire
    ```
 4. Open Claude Code in `your-project/` — the hooks load automatically on next session start.
 
+## Known limitations of glob-based `if` matchers
+
+Claude Code's `Bash(<pattern>)` `if` rule matches the *visible command string* the model emits — not the semantic intent. Two consequences worth knowing:
+
+- **SQL family is best-effort**: `Bash(* DROP TABLE *)` catches `psql -c "DROP TABLE users"` but NOT `psql -f drop.sql` (file-redirected) nor `psql -c "drop table users"` (lowercase). Treat the strict-mode SQL guards as a "uppercase keyword tripwire" rather than a comprehensive shield.
+- **Bare-form completeness**: each force-push variant ships **both** the argumented form (`git push --force *`) AND the bare form (`git push --force`), so a model typing `git push --force` with no remote/branch is still blocked.
+
+Production hardening of these patterns belongs in a downstream tool (a wrapped `psql`, a CI gate, etc.), not in the hook layer.
+
 ## Why two packs?
 
 The baseline pack is **minimal trust**: SessionStart cleanup is informational; the only PreToolUse guard is force-push (an obvious foot-gun). Adopt this if you want a safety net without a lot of override env vars.
