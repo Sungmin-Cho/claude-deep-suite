@@ -240,7 +240,7 @@ npm run docs:sync     # check-semver-sha-sync + check-pinned-plugin-paths + chec
 | Plugin | Envelope-emitting since (commit) | merged_at | timer notes |
 |---|---|---|---|
 | deep-docs | `3cc522933916a9e54e920ef2b694a879e24a01b1` | 2026-05-07 | **T+0 시작점 (first plugin merge)** |
-| deep-dashboard | `cfd07bd5c1feb37f85bc86d91b0987f1e8eb1910` | 2026-05-07 | |
+| deep-dashboard | `cfd07bd5c1feb37f85bc86d91b0987f1e8eb1910` | 2026-05-07 | M4 close `3c3f417da81691bb8bf98aefd7adcc86610cda79` (2026-05-11) — suite telemetry + 16 metrics |
 | deep-work | `6f23e79a72af30c730e97f309167d060856fa697` | 2026-05-07 | |
 | deep-evolve | `9b867b1e23c2c5b35cfca239fe691f3eb864b499` | 2026-05-08 | |
 | deep-review | `a76473fdbd540127f7c9492c76934a198dc9602b` | 2026-05-08 | |
