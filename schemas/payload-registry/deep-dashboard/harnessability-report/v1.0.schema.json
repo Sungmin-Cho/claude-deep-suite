@@ -28,7 +28,9 @@
     },
     "dimensions": {
       "type": "array",
-      "minItems": 1,
+      "minItems": 6,
+      "maxItems": 6,
+      "description": "Exactly 6 harnessability dimensions per producer invariant (claude-deep-dashboard@cfd07bd validate-envelope-emit.js + lib/harnessability/scorer.js): type_safety, module_boundaries, test_infra, sensor_readiness, linter_formatter, ci_cd.",
       "items": {
         "type": "object",
         "additionalProperties": true,

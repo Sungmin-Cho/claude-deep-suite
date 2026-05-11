@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-work",
+    "producer_version": "6.5.0",
+    "artifact_kind": "slice-receipt",
+    "run_id": "01JTKGZQ7PABCDEFGHJKMNPQRT",
+    "session_id": "dw-2026-05-07T10-00-00-000Z",
+    "parent_run_id": "01JTKH22NHABCDEFGHJKMNPQRS",
+    "generated_at": "2026-05-07T10:15:43.000Z",
+    "schema": { "name": "slice-receipt", "version": "1.0" },
+    "git": { "head": "abc1234", "branch": "main", "dirty": false },
+    "provenance": { "source_artifacts": [], "tool_versions": { "node": "v20.11.0" } }
+  },
+  "payload": {
+    "schema_version": "1.0",
+    "slice_id": "SLICE-004",
+    "cluster_id": "_default",
+    "status": "blocked-upstream",
+    "tdd": {
+      "state_transitions": ["PENDING"]
+    }
+  }
+}

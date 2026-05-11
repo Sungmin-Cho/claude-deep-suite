@@ -26,6 +26,10 @@
         "worktree_hash": {
           "type": "string",
           "description": "Optional content-hash for non-git roots (path_check_enabled fallback)."
+        },
+        "path_check_enabled": {
+          "type": "boolean",
+          "description": "Optional. Emitted only when scan-filters/cli-whitelist.md $PATH check is ON (`true`); omitted when OFF. Used by reuse 4-factor rule to compare prov.path_check_enabled vs config.enable_path_check. Per claude-deep-docs@3cc5229 doc-scanner.md."
         }
       }
     },

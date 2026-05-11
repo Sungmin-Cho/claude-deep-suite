@@ -86,7 +86,7 @@ test('wrap respects --run-id, --parent-run-id, --session-id overrides', () => {
       '--producer', 'deep-docs',
       '--artifact-kind', 'last-scan',
       '--schema-version', '1.0',
-      '--producer-version', '1.1.0',
+      '--producer-version', '1.2.0',
       '--input', input,
       '--output', output,
       '--run-id', customRun,
@@ -115,7 +115,7 @@ test('wrap exits 1 when --producer violates kebab-case (envelope schema reject)'
       '--producer', 'Deep_Docs',
       '--artifact-kind', 'last-scan',
       '--schema-version', '1.0',
-      '--producer-version', '1.1.0',
+      '--producer-version', '1.2.0',
       '--input', input,
       '--output', output,
     ]);
@@ -132,7 +132,7 @@ test('wrap exits 2 on missing required flag', () => {
     '--producer', 'deep-docs',
     // missing --artifact-kind
     '--schema-version', '1.0',
-    '--producer-version', '1.1.0',
+    '--producer-version', '1.2.0',
     '--input', '/tmp/x.json',
     '--output', '/tmp/y.json',
   ]);
@@ -145,7 +145,7 @@ test('wrap exits 2 on bad input path', () => {
     '--producer', 'deep-docs',
     '--artifact-kind', 'last-scan',
     '--schema-version', '1.0',
-    '--producer-version', '1.1.0',
+    '--producer-version', '1.2.0',
     '--input', '/tmp/m3-does-not-exist.json',
     '--output', '/tmp/m3-out.json',
   ]);
@@ -170,7 +170,7 @@ test('wrap accepts --key=value GNU-style flags', () => {
       `--producer=deep-docs`,
       `--artifact-kind=last-scan`,
       `--schema-version=1.0`,
-      `--producer-version=1.1.0`,
+      `--producer-version=1.2.0`,
       `--input=${input}`,
       `--output=${output}`,
     ]);
@@ -196,7 +196,7 @@ test('wrap respects --git-head, --git-branch, --dirty overrides', () => {
       '--producer', 'deep-docs',
       '--artifact-kind', 'last-scan',
       '--schema-version', '1.0',
-      '--producer-version', '1.1.0',
+      '--producer-version', '1.2.0',
       '--input', input,
       '--output', output,
       '--git-head', 'deadbeefdeadbeef',
@@ -217,7 +217,7 @@ test('wrap respects --git-head, --git-branch, --dirty overrides', () => {
 test('wrap exits 2 on invalid --dirty value', () => {
   const wrapRes = runWrap([
     '--producer', 'deep-docs', '--artifact-kind', 'last-scan',
-    '--schema-version', '1.0', '--producer-version', '1.1.0',
+    '--schema-version', '1.0', '--producer-version', '1.2.0',
     '--input', '/tmp/x.json', '--output', '/tmp/y.json',
     '--dirty', 'yes',  // typo, not in allow-list
   ]);
@@ -231,7 +231,7 @@ test('wrap rejects --dirty value before reading input (fail-fast)', () => {
     // intentionally do not create input file
     const wrapRes = runWrap([
       '--producer', 'deep-docs', '--artifact-kind', 'last-scan',
-      '--schema-version', '1.0', '--producer-version', '1.1.0',
+      '--schema-version', '1.0', '--producer-version', '1.2.0',
       '--input', join(dir, 'does-not-exist.json'),
       '--output', join(dir, 'out.json'),
       '--dirty', 'maybe',
@@ -247,7 +247,7 @@ test('wrap rejects --dirty value before reading input (fail-fast)', () => {
 test('wrap exits 2 on unknown flag (typo guard)', () => {
   const wrapRes = runWrap([
     '--producer', 'deep-docs', '--artifact-kind', 'last-scan',
-    '--schema-version', '1.0', '--producer-version', '1.1.0',
+    '--schema-version', '1.0', '--producer-version', '1.2.0',
     '--input', '/tmp/x.json', '--output', '/tmp/y.json',
     '--gut-head', 'deadbeef',  // typo for --git-head
   ]);
@@ -277,7 +277,7 @@ test('wrap detects git context from process.cwd()', () => {
       '--producer', 'deep-docs',
       '--artifact-kind', 'last-scan',
       '--schema-version', '1.0',
-      '--producer-version', '1.1.0',
+      '--producer-version', '1.2.0',
       '--input', tmpInput,
       '--output', output,
     ], dir); // run with cwd=dir so process.cwd() is the tmp git repo

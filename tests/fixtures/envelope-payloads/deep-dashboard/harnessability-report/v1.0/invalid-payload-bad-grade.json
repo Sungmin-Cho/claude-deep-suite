@@ -15,15 +15,12 @@
     "total": 7.4,
     "grade": "Mediocre",
     "dimensions": [
-      {
-        "id": "type_safety",
-        "label": "Type Safety",
-        "weight": 0.25,
-        "score": 10,
-        "checks": [
-          { "id": "tsconfig_exists", "label": "tsconfig.json present", "passed": true }
-        ]
-      }
+      { "id": "type_safety", "label": "Type Safety", "weight": 0.25, "score": 10, "checks": [{ "id": "tsconfig_exists", "label": "tsconfig.json present", "passed": true }] },
+      { "id": "module_boundaries", "label": "Module Boundaries", "weight": 0.20, "score": 6.7, "checks": [{ "id": "src_dir_exists", "label": "src/ dir", "passed": true }] },
+      { "id": "test_infra", "label": "Test Infrastructure", "weight": 0.20, "score": 6.7, "checks": [{ "id": "test_framework", "label": "test framework declared", "passed": true }] },
+      { "id": "sensor_readiness", "label": "Sensor Readiness", "weight": 0.15, "score": 6.7, "checks": [{ "id": "linter_config", "label": "linter config", "passed": true }] },
+      { "id": "linter_formatter", "label": "Linter & Formatter", "weight": 0.10, "score": 5, "checks": [{ "id": "linter_config_file", "label": "linter config", "passed": true }] },
+      { "id": "ci_cd", "label": "CI/CD", "weight": 0.10, "score": 5, "checks": [{ "id": "ci_config_exists", "label": "CI config", "passed": true }] }
     ],
     "recommendations": []
   }
