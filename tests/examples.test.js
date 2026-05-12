@@ -140,6 +140,28 @@ for (const settingsFile of SETTINGS_FILES) {
   });
 }
 
+// --- denylist-guard.sh case-based execution (M5.5 #7 acceptance) ---
+// shellcheck above only proves the script parses cleanly. This block runs the
+// guard with each family argv and asserts exit code + stderr — i.e. proves the
+// case branches are wired correctly. Authoritative test lives in
+// tests/denylist.test.sh (bash 3.2 / GNU bash 5+ portable); this wrapper just
+// makes the .sh visible to `npm test` so CI runs both halves.
+
+test('tests/denylist.test.sh — denylist-guard.sh blocks all 7 families with correct override env vars', () => {
+  const sh = resolve(repoRoot, 'tests/denylist.test.sh');
+  assert.ok(existsSync(sh), `denylist.test.sh missing at ${sh}`);
+  const result = spawnSync('bash', [sh], { encoding: 'utf8' });
+  assert.equal(
+    result.status,
+    0,
+    `denylist.test.sh failed (exit ${result.status}):\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}`
+  );
+  // Sanity: the script's banner + summary line should be in stdout. Catches
+  // accidental silent exit-0 (e.g. set -e bailing before the assert loop).
+  assert.match(result.stdout, /denylist\.test\.sh — running 7 family blocks/);
+  assert.match(result.stdout, /Results: \d+ passed, 0 failed/);
+});
+
 test('hooks-strict-mode/.claude/settings.json covers all 7 documented dangerous-command families (M5 spec acceptance criteria)', () => {
   // Family-set assertion (not raw rule count) — prevents the regression where
   // a future PR could delete a family while keeping ≥5 rules and still pass.
