@@ -15,7 +15,7 @@ Harness Engineering 프레임워크(Agent = Model + Harness) 기반으로, Guide
 | deep-evolve | 3.3.2 | Autonomous Experimentation Protocol |
 | deep-review | 1.4.2 | Independent Evaluator |
 | deep-docs | 1.2.0 | Document gardening agent |
-| deep-dashboard | 1.3.1 | Cross-plugin harness diagnostics + suite telemetry |
+| deep-dashboard | 1.3.2 | Cross-plugin harness diagnostics + suite telemetry |
 
 <!-- deep-suite:auto-generated:plugin-table-claude:end -->
 
@@ -96,7 +96,7 @@ docs/
   capability-matrix.md            — M2 auto-generated capability matrix
   artifact-io-graph.md            — M2 auto-generated cross-plugin artifact I/O graph
   envelope-migration.md           — M3 Phase 2 plugin-maintainer migration guide (compat matrix + 6-month timer + chain example)
-  test-catalog.md                 — M5.5 cross-reference: 8개 테스트 위치·책임·실행법 (5/8 done, #3/#5 pending)
+  test-catalog.md                 — M5.5 cross-reference: 8개 테스트 위치·책임·실행법 (8/8 done, M5.5 acceptance ALL CLOSED 2026-05-12)
   backlog-*.md / next-session-*.md — 작업 백로그 및 세션 인계 노트
   superpowers/specs/              — 플러그인 설계 문서 (이력)
   superpowers/plans/              — 플러그인 구현 계획 (이력)
