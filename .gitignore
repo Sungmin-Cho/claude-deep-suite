@@ -11,3 +11,7 @@ docs/superpowers/
 !docs/envelope-migration.md
 node_modules/
 .deep-suite-cache/
+# Local Claude Code state (hook caches, sensor caches, session state) — runtime only, never committed.
+.claude/
+# Local /deep-review output (reports, responses, runtime config) — meant for audit, not public.
+.deep-review/

@@ -9,11 +9,11 @@
   "plugins": [
     {
       "name": "deep-work",
-      "description": "Evidence-Driven Development Protocol — emits envelope-wrapped session-receipt + slice-receipt + receipt-migration auto-call (v6.5.0+)",
+      "description": "Evidence-Driven Development Protocol — emits envelope-wrapped session-receipt + slice-receipt + handoff + compaction-state (v6.6.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
-        "sha": "6f23e79a72af30c730e97f309167d060856fa697"
+        "sha": "d2c2035cbc7d39d174ea959f6bc116e796c7db31"
       }
     },
     {
@@ -27,11 +27,11 @@
     },
     {
       "name": "deep-evolve",
-      "description": "Autonomous Experimentation Protocol — emits envelope-wrapped evolve-receipt + evolve-insights with identity-gated chain extraction (v3.2.0+)",
+      "description": "Autonomous Experimentation Protocol — emits envelope-wrapped evolve-receipt + evolve-insights + reverse handoff + compaction-state with identity-gated chain extraction (v3.3.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-evolve.git",
-        "sha": "9b867b1e23c2c5b35cfca239fe691f3eb864b499"
+        "sha": "dc3d85f4280f73847f16766f3c1c06c03287777d"
       }
     },
     {

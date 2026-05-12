@@ -254,8 +254,8 @@ M5.6 dashboard activation (2026-05-11) 은 a-priori — producer 가 아직 enve
 
 | Plugin | handoff emit | compaction-state emit | 비고 |
 |---|---|---|---|
-| deep-work | 🔴 미착수 | 🔴 미착수 | Phase 5 Integrate → handoff; phase transition / slice GREEN → compaction-state |
-| deep-evolve | 🔴 미착수 | 🔴 미착수 | epoch end → reverse handoff (`evolve-to-deep-work`); loop epoch end → compaction-state |
+| deep-work | ✅ v6.6.0 (`d2c2035`, PR #26 merged 2026-05-12) | ✅ v6.6.0 (`d2c2035`, PR #26 merged 2026-05-12) | `/deep-finish` §7-Z-A → handoff (`--handoff-to=<plugin>`); session-end.sh + phase-transition.sh → compaction-state (`session-stop`, `phase-transition`). 3 review rounds, 87 tests green. |
+| deep-evolve | ✅ v3.3.0 (`dc3d85f`, PR #12 merged 2026-05-12) | ✅ v3.3.0 (`dc3d85f`, PR #12 merged 2026-05-12) | `completion.md` M5.7.B sections → reverse handoff (`evolve-to-deep-work`, tiered correlation to forward handoff in `.deep-work/handoffs/`); `loop-epoch-end` compaction-state (`strategy: receipt-only`). 3 review rounds, 112 tests green. |
 
 상세 spec: `docs/deep-suite-harness-roadmap.md` §M5.7. 작업 시작 시 본 표 행을 PR/commit/날짜로 갱신.
 
