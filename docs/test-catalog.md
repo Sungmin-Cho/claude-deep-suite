@@ -4,14 +4,14 @@
 > 6 plugin repo에 분산 배치하기 위한 cross-reference. 새 testing framework 도입 없이
 > 기존 `node:test` 패턴(`phase-guard-hardening.test.js` 모범)을 plugin repo 별로 확산한다.
 >
-> **마지막 갱신**: 2026-05-12 (#7 dangerous-command denylist closure)
-> **상태**: **5/8 완료**, 남은 2 항목 (#3 hook golden, #5 stale-recovery)
-> **Spec**: `docs/deep-suite-harness-roadmap.md` §M5.5
+> **마지막 갱신**: 2026-05-12 (#9 cross-plugin e2e fixture roundtrip 추가, M5.7.B 회귀 가드)
+> **상태**: 8/8 M5.5 완료 + **§9 (M5.7.B e2e regression guard, suite-side)** 추가
+> **Spec**: `docs/deep-suite-harness-roadmap.md` §M5.5 / §M5.7
 > **Handoff**: `docs/superpowers/plans/2026-05-12-m5.5-remaining-tests-handoff.md` (gitignored)
 
 ---
 
-## Catalog (8 tests)
+## Catalog (8 M5.5 tests + 1 M5.7.B extension)
 
 | # | 테스트 | 책임 plugin | 위치 | 실행 | 상태 |
 |---|---|---|---|---|---|
@@ -23,6 +23,7 @@
 | 6 | null-signal redistribution | deep-dashboard | §6 below | `npm test` (in deep-dashboard) | ✅ 2026-05-11 (PR #11) |
 | 7 | dangerous-command denylist | suite + deep-work | §7 below | `npm test` 양쪽 | ✅ 2026-05-12 (this PR) |
 | 8 | context handoff round-trip | deep-work + deep-evolve | §8 below | `npm test` 양쪽 | ✅ 2026-05-12 (M5.7 absorbed) |
+| 9 | cross-plugin e2e fixture roundtrip | suite | §9 below | `npm test` (suite) | ✅ 2026-05-12 (M5.7.B regression guard) |
 
 ---
 
@@ -242,9 +243,48 @@ npm test
 
 ---
 
+## §9. cross-plugin e2e fixture roundtrip (M5.7.B regression guard, suite-side) ✅ 2026-05-12
+
+**Goal**: §8 의 plugin-side `tests/handoff-roundtrip.test.js` 가 각 plugin의 envelope **emission** 을 검증하는 반면, §9 는 양쪽 plugin이 emit한 결과물 **set** 이 cross-plugin contract (envelope schema + payload schema + identity-triplet + parent_run_id chain + dashboard metric shape) 를 만족하는지 suite 측에서 단일 회귀 가드로 잡는다.
+
+**무엇을 catch 하는가** (silent breakage 시):
+1. producer 가 `envelope.parent_run_id` 를 drop / mis-target → reverse handoff 가 더 이상 chain 안 닫힘 → `suite.handoff.roundtrip_success_rate` 가 다이버전스
+2. producer 가 payload field rename (예: `preserved_artifact_paths` → `preserved_paths`) → `suite.compaction.preserved_artifact_ratio` 가 계산 불가
+3. `envelope.schema.{name,version}` 가 `artifact_kind` 와 drift → `scripts/validate-artifact.js` identity check fail
+
+**Files**:
+- `tests/fixtures/handoff-roundtrip/` — 4 envelope-wrapped artifact (canonical Phase 5 → evolve → reverse 시나리오):
+  - `01-deep-work-forward-handoff.json` (handoff_kind: `phase-5-to-evolve`)
+  - `02-deep-work-compaction.json` (trigger: `phase-transition`)
+  - `03-deep-evolve-compaction.json` (trigger: `loop-epoch-end`)
+  - `04-deep-evolve-reverse-handoff.json` (handoff_kind: `evolve-to-deep-work`, `envelope.parent_run_id` chains to 01)
+- `tests/handoff-roundtrip-fixtures.test.js` — 17 assertions (envelope/payload schema pass, identity-triplet, schema_version pin, handoff kind coverage, parent_run_id chain, within-plugin git context, cross-plugin branch transition, **3 dashboard metric mirror values**: `roundtrip_success_rate=1.0`, `compaction.frequency=2`, fixture-derived `preserved_artifact_ratio mean=0.4`)
+
+**Scope clarification vs §8**:
+- §8 (plugin-side): "deep-work 가 valid한 handoff envelope 을 emit 하는가" + "deep-evolve 가 reverse emit 하는가" — plugin 내 `unwrapStrict` 계약 mirror
+- §9 (suite-side): "두 plugin emission 의 **결합** 이 dashboard collector 가 기대하는 4-artifact set + chain + metric shape 인가" — single point of regression detection
+
+**Out of scope**: dashboard collector + aggregator 실제 metric 계산 (수학적 reduction). 그건 `claude-deep-dashboard` repo의 e2e 책임. §9 는 fixture provider + structural contract 만 다룬다.
+
+**Run** (from suite root):
+```bash
+npm test                                                      # full suite (142 tests)
+node --test tests/handoff-roundtrip-fixtures.test.js          # this section only
+node scripts/validate-artifact.js tests/fixtures/handoff-roundtrip/01-deep-work-forward-handoff.json  # one fixture
+```
+
+**Fault injection 시나리오** (확인됨):
+- `04` 의 `envelope.parent_run_id` 를 임의 string 으로 변경 → chain test fail (`reverse handoff envelope.parent_run_id must equal forward handoff envelope.run_id`)
+- `02` 의 `preserved_artifact_paths` 에서 1개 path 제거 → mean ratio drift → metric mirror test fail
+- 새 fixture (5th) 추가 → `fixture set contains exactly 4 envelope-wrapped artifacts` test fail (의도된 cardinality 가드)
+
+**6-month timer (2026-11-07) 관련**: 이 회귀 가드는 timer trigger 이전에 plugin 측 emit pattern 의 silent drift 를 잡는 안전망 역할. timer date 가 되어 dashboard warning 이 활성화될 때, 이 fixture set 이 reference contract 로 사용 가능.
+
+---
+
 ## Maintenance
 
 - **Adding a test row**: keep this catalog 1:1 with `docs/deep-suite-harness-roadmap.md` §M5.5 §"8개 테스트 분배" table. Roadmap is the spec; this is the cross-reference.
 - **Plugin status change**: update both the §N section and the top-of-doc table row simultaneously. The `npm run docs:sync` checkers do **not** validate this doc — it's narrative.
-- **Catalog now complete (8/8 done)** as of 2026-05-12 suite PR. Future hook-IO contract additions (e.g. new Stop hooks for deep-work / deep-evolve when added) should extend §3 with the new fixture corpus + golden driver entry.
-- **6-month timer (2026-11-07)**: when triggered, this catalog must show how each plugin's tests verify the envelope adoption contract.
+- **Catalog state (2026-05-12)**: 8/8 M5.5 done + §9 (M5.7.B suite-side e2e regression guard) extension. Future hook-IO contract additions (e.g. new Stop hooks for deep-work / deep-evolve when added) should extend §3 with the new fixture corpus + golden driver entry. cross-plugin contract regressions extend §9.
+- **6-month timer (2026-11-07)**: when triggered, this catalog must show how each plugin's tests verify the envelope adoption contract. §9 fixture set is the canonical reference for "what a valid 4-artifact emit set looks like."

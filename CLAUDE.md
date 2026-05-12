@@ -64,8 +64,10 @@ tests/
   markers.test.js                 — markers.js round-trip 테스트
   generate-reference-sections.test.js — generator CLI 시나리오 (--check/--write/--id, fixture override)
   cli-sync-checkers.test.js       — 6 check-* 스크립트 spawnSync 시나리오
+  handoff-roundtrip-fixtures.test.js — M5.7.B suite-side e2e regression guard (4-artifact set × envelope schema × payload schema × identity-triplet × parent_run_id chain × 3 dashboard metric mirror)
   fixtures/                       — schema + envelope + plugin-cache fixture
   fixtures/envelope-payloads/<producer>/<kind>/v<v>/{valid-*,invalid-*}.json — M3 envelope fixture set (per-producer × kind)
+  fixtures/handoff-roundtrip/{01..04}-*.json — M5.7.B canonical cross-plugin roundtrip set (deep-work forward handoff + 2 compaction-state + deep-evolve reverse handoff with parent_run_id chain)
 package.json / package-lock.json  — Node 20+ ESM 프로젝트 (private, ajv + ajv-formats devDeps)
 guides/
   integrated-workflow-guide.md    — 6개 플러그인 통합 워크플로우 (EN)

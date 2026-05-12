@@ -1,0 +1,41 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/artifact-envelope.schema.json",
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-work",
+    "producer_version": "6.6.3",
+    "artifact_kind": "compaction-state",
+    "run_id": "01HX2VR8A0DWCMPCT0PHTR0001",
+    "session_id": "2026-05-11-142500-jwt-middleware",
+    "generated_at": "2026-05-11T15:30:00Z",
+    "schema": { "name": "compaction-state", "version": "1.0" },
+    "git": {
+      "head": "abc1234def5678abcdef0123456789abcdef0123",
+      "branch": "feature/jwt-middleware",
+      "dirty": false
+    },
+    "provenance": {
+      "source_artifacts": [],
+      "tool_versions": {
+        "node": "20.11.0",
+        "deep-work": "6.6.3"
+      }
+    }
+  },
+  "payload": {
+    "schema_version": "1.0",
+    "compacted_at": "2026-05-11T15:30:00Z",
+    "trigger": "phase-transition",
+    "session_id": "2026-05-11-142500-jwt-middleware",
+    "preserved_artifact_paths": [
+      ".deep-work/2026-05-11-142500-jwt-middleware/session-receipt.json",
+      ".deep-work/2026-05-11-142500-jwt-middleware/slices/slice-4-receipt.json"
+    ],
+    "discarded_artifact_paths": [
+      ".deep-work/2026-05-11-142500-jwt-middleware/slices/slice-1-receipt.json",
+      ".deep-work/2026-05-11-142500-jwt-middleware/slices/slice-2-receipt.json",
+      ".deep-work/2026-05-11-142500-jwt-middleware/slices/slice-3-receipt.json"
+    ],
+    "compaction_strategy": "key-artifacts-only"
+  }
+}
