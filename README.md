@@ -10,7 +10,7 @@ A unified [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin m
 
 | Plugin | Version | Description |
 |---|---|---|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.6.1 | Evidence-Driven Development Protocol |
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.6.2 | Evidence-Driven Development Protocol |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.5.0 | LLM-managed markdown wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.3.0 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.4.0 | Independent Evaluator |
