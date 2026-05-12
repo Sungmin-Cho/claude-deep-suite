@@ -10,7 +10,7 @@ Harness Engineering 프레임워크(Agent = Model + Harness) 기반으로, Guide
 
 | Plugin | Version | Description |
 |---|---|---|
-| deep-work | 6.6.0 | Evidence-Driven Development Protocol |
+| deep-work | 6.6.1 | Evidence-Driven Development Protocol |
 | deep-wiki | 1.5.0 | LLM-managed markdown wiki |
 | deep-evolve | 3.3.0 | Autonomous Experimentation Protocol |
 | deep-review | 1.4.0 | Independent Evaluator |
