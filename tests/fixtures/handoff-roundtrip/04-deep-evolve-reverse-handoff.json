@@ -1,0 +1,54 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/artifact-envelope.schema.json",
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-evolve",
+    "producer_version": "3.3.2",
+    "artifact_kind": "handoff",
+    "run_id": "01HX2VR8B0DEHNDFFREVERSE01",
+    "parent_run_id": "01HX2VR8A0DWPHS5HANDOFF001",
+    "session_id": "2026-05-11-180000-perf-opt",
+    "generated_at": "2026-05-11T19:00:00Z",
+    "schema": { "name": "handoff", "version": "1.0" },
+    "git": {
+      "head": "def5678abcdef0123456789abcdef0123456abc1",
+      "branch": "perf/jwt-verify-optimization",
+      "dirty": false
+    },
+    "provenance": {
+      "source_artifacts": [
+        {
+          "path": ".deep-evolve/2026-05-11-180000-perf-opt/evolve-receipt.json",
+          "run_id": "01HX2VR8B0DEEVOLVERCPT0001"
+        }
+      ],
+      "tool_versions": {
+        "node": "20.11.0",
+        "deep-evolve": "3.3.2"
+      }
+    }
+  },
+  "payload": {
+    "schema_version": "1.0",
+    "handoff_kind": "evolve-to-deep-work",
+    "from": {
+      "producer": "deep-evolve",
+      "session_id": "2026-05-11-180000-perf-opt",
+      "phase": "epoch-3-plateau",
+      "completed_at": "2026-05-11T19:00:00Z"
+    },
+    "to": {
+      "producer": "deep-work",
+      "intent": "structural-refactor",
+      "scope_hint": "src/auth/jwt.ts:verifyToken"
+    },
+    "summary": "deep-evolve 3 epochs 진행. Best candidate: Redis verify-cache, p99=42ms (target <50ms 달성). Cache invalidation + key-rotation 설계 미결정으로 deep-work 측 정리 권고.",
+    "next_action_brief": "Redis verify-cache 패턴 검증되었으나 cache invalidation (TTL vs event-driven) 및 async key-rotation hook 설계가 미해결. deep-work Phase 2-3에서 src/auth/jwt.ts:verifyToken() 호출 사이트들 + cache layer 정책 설계 및 구현 요청.",
+    "key_artifacts": [
+      {
+        "path": ".deep-evolve/2026-05-11-180000-perf-opt/evolve-insights.json",
+        "kind": "evolve-insights"
+      }
+    ]
+  }
+}

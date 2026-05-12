@@ -1,0 +1,41 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/artifact-envelope.schema.json",
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-evolve",
+    "producer_version": "3.3.2",
+    "artifact_kind": "compaction-state",
+    "run_id": "01HX2VR8B0DECMPCT0EPOCH001",
+    "session_id": "2026-05-11-180000-perf-opt",
+    "generated_at": "2026-05-11T18:45:00Z",
+    "schema": { "name": "compaction-state", "version": "1.0" },
+    "git": {
+      "head": "def5678abcdef0123456789abcdef0123456abc1",
+      "branch": "perf/jwt-verify-optimization",
+      "dirty": false
+    },
+    "provenance": {
+      "source_artifacts": [],
+      "tool_versions": {
+        "node": "20.11.0",
+        "deep-evolve": "3.3.2"
+      }
+    }
+  },
+  "payload": {
+    "schema_version": "1.0",
+    "compacted_at": "2026-05-11T18:45:00Z",
+    "trigger": "loop-epoch-end",
+    "session_id": "2026-05-11-180000-perf-opt",
+    "preserved_artifact_paths": [
+      ".deep-evolve/2026-05-11-180000-perf-opt/evolve-receipt.json",
+      ".deep-evolve/2026-05-11-180000-perf-opt/evolve-insights.json"
+    ],
+    "discarded_artifact_paths": [
+      ".deep-evolve/2026-05-11-180000-perf-opt/epoch-1-trace.log",
+      ".deep-evolve/2026-05-11-180000-perf-opt/epoch-2-trace.log",
+      ".deep-evolve/2026-05-11-180000-perf-opt/epoch-3-trace.log"
+    ],
+    "compaction_strategy": "receipt-only"
+  }
+}

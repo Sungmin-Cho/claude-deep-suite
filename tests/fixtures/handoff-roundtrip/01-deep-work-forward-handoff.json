@@ -1,0 +1,54 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/artifact-envelope.schema.json",
+  "schema_version": "1.0",
+  "envelope": {
+    "producer": "deep-work",
+    "producer_version": "6.6.3",
+    "artifact_kind": "handoff",
+    "run_id": "01HX2VR8A0DWPHS5HANDOFF001",
+    "session_id": "2026-05-11-142500-jwt-middleware",
+    "generated_at": "2026-05-11T16:20:00Z",
+    "schema": { "name": "handoff", "version": "1.0" },
+    "git": {
+      "head": "abc1234def5678abcdef0123456789abcdef0123",
+      "branch": "feature/jwt-middleware",
+      "dirty": false
+    },
+    "provenance": {
+      "source_artifacts": [
+        {
+          "path": ".deep-work/2026-05-11-142500-jwt-middleware/session-receipt.json",
+          "run_id": "01HX2VR8A0DWSESSIONRCPT001"
+        }
+      ],
+      "tool_versions": {
+        "node": "20.11.0",
+        "deep-work": "6.6.3"
+      }
+    }
+  },
+  "payload": {
+    "schema_version": "1.0",
+    "handoff_kind": "phase-5-to-evolve",
+    "from": {
+      "producer": "deep-work",
+      "session_id": "2026-05-11-142500-jwt-middleware",
+      "phase": "integrate",
+      "completed_at": "2026-05-11T16:20:00Z"
+    },
+    "to": {
+      "producer": "deep-evolve",
+      "intent": "performance-optimization",
+      "scope_hint": "src/auth/jwt.ts"
+    },
+    "summary": "JWT middleware 8/8 슬라이스 GREEN, mutation score 0.87. PR #123 merge. p99 baseline 180ms on auth-protected endpoints.",
+    "next_action_brief": "Optimize verifyToken — current p99=180ms (auth endpoints), target <50ms. Candidates: Redis verify-cache / batched verify / async key rotation. Scope src/auth/jwt.ts:verifyToken().",
+    "key_artifacts": [
+      {
+        "path": ".deep-work/2026-05-11-142500-jwt-middleware/session-receipt.json",
+        "kind": "session-receipt",
+        "run_id": "01HX2VR8A0DWSESSIONRCPT001"
+      }
+    ]
+  }
+}
