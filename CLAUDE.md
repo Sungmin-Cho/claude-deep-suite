@@ -58,7 +58,8 @@ tests/
   validate-artifact.test.js       — M3 validator CLI 시나리오 (envelope/payload phase + registry-miss)
   wrap-artifact.test.js           — M3 wrap helper roundtrip + override + kebab-case 거부
   handoff-compaction-schemas.test.js — M5 handoff + compaction-state payload schema + envelope composition smoke test
-  examples.test.js                — M5 example pack: bash -n + shellcheck + settings.json sanity + handoff template validate
+  examples.test.js                — M5 example pack: bash -n + shellcheck + settings.json sanity + handoff template validate + denylist.test.sh wrapper (M5.5 #7)
+  denylist.test.sh                — M5.5 #7 case-based assertions for 7 dangerous-command families (exit code + stderr + override env vars); cross-platform bash 3.2 / GNU bash 5+
   cli.test.js                     — validator CLI 시나리오 (exit code + stderr prefix)
   markers.test.js                 — markers.js round-trip 테스트
   generate-reference-sections.test.js — generator CLI 시나리오 (--check/--write/--id, fixture override)
@@ -95,6 +96,7 @@ docs/
   capability-matrix.md            — M2 auto-generated capability matrix
   artifact-io-graph.md            — M2 auto-generated cross-plugin artifact I/O graph
   envelope-migration.md           — M3 Phase 2 plugin-maintainer migration guide (compat matrix + 6-month timer + chain example)
+  test-catalog.md                 — M5.5 cross-reference: 8개 테스트 위치·책임·실행법 (5/8 done, #3/#5 pending)
   backlog-*.md / next-session-*.md — 작업 백로그 및 세션 인계 노트
   superpowers/specs/              — 플러그인 설계 문서 (이력)
   superpowers/plans/              — 플러그인 구현 계획 (이력)
