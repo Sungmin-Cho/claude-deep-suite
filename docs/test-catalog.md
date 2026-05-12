@@ -17,9 +17,9 @@
 |---|---|---|---|---|---|
 | 1 | manifest-doc sync | suite | §1 below | `npm test` + `npm run docs:sync` | ✅ M2 (2026-05-07, PR #7) |
 | 2 | artifact schema fixture | suite | §2 below | `npm run validate-artifact-fixtures` | ✅ M3 Phase 1 (2026-05-07, PR #8) |
-| 3 | hook golden | deep-work, deep-evolve, deep-wiki | §3 below (pending) | (TBD) | 🔴 M5.5 남음 |
+| 3 | hook golden | deep-work, deep-evolve, deep-wiki | §3 below | `npm test` in each plugin | ✅ 2026-05-12 (this PR) |
 | 4 | cross-platform CI matrix | deep-work, deep-evolve, deep-wiki, deep-review | §4 below | GH Actions (push + PR) | ✅ 2026-05-12 (suite PR #17) |
-| 5 | stale-recovery | deep-review, deep-wiki, deep-evolve | §5 below (pending) | (TBD) | 🔴 M5.5 남음 |
+| 5 | stale-recovery | deep-review, deep-wiki, deep-evolve | §5 below | `npm test` in each plugin (`bash …test-mutation-protocol.sh` for deep-review) | ✅ 2026-05-12 (this PR) |
 | 6 | null-signal redistribution | deep-dashboard | §6 below | `npm test` (in deep-dashboard) | ✅ 2026-05-11 (PR #11) |
 | 7 | dangerous-command denylist | suite + deep-work | §7 below | `npm test` 양쪽 | ✅ 2026-05-12 (this PR) |
 | 8 | context handoff round-trip | deep-work + deep-evolve | §8 below | `npm test` 양쪽 | ✅ 2026-05-12 (M5.7 absorbed) |
@@ -70,18 +70,35 @@ npm test                                 # full suite (includes both .test.js ab
 
 ---
 
-## §3. hook golden test (🔴 M5.5 남음)
+## §3. hook golden test (M5.5 #3) ✅ 2026-05-12
 
-**Goal**: PreToolUse / Stop / SessionStart hook의 stdout JSON + exit code + stderr를 fixture로 stabilize. 모범: deep-work `hooks/scripts/phase-guard-hardening.test.js`.
+**Goal**: PreToolUse / SessionStart hook의 stdout + exit code + stderr를 fixture로 stabilize. Fixture-input + expected-output pair 매칭. Half-commit (한쪽만 추가) 시 driver loader가 fail loud.
 
-**Pattern (when implemented)**: `tests/fixtures/hook-input-*.json` + `tests/expected/hook-output-*.json` 비교.
+**Pattern**: `tests/fixtures/golden/<name>.input.json` + `tests/fixtures/golden/<name>.expected.json` pair. Driver discovers by basename, materializes session state in `fs.mkdtempSync`, spawns hook with host-env scrub, asserts exit + decision + reason regex.
 
-**Per-plugin scope**:
-- **deep-work** — PreToolUse phase-guard + SessionStart fitness-sync
-- **deep-evolve** — PreToolUse experiment-guard (existence 확인 필요) + Stop
-- **deep-wiki** — SessionStart auto-ingest-candidate
+### deep-work side — `claude-deep-work` PR #29 (v6.6.3)
 
-**Effort**: plugin × (1-2d). Total ~5d. Parallelizable.
+- `tests/phase-guard-golden.test.js` (driver — 8 fixtures, 8 tests)
+- `tests/fixtures/golden/*.{input,expected}.json` (8 pairs + `README.md`)
+- `hooks/scripts/test-helpers/run-phase-guard.js` — `scrubHostEnv()` + `runPhaseGuard()` + `parseGuardOutput()` (consolidated from inline scrub in `phase-guard-denylist.test.js`)
+- **Scope**: PreToolUse `phase-guard.sh` only — SessionStart "fitness-sync" hook does not exist in v6.6.x; handoff §2 #3 reference was speculative.
+- **Bundled §9 rollup**: 9.1 (override-semantics comment) + 9.2 (5 sibling tests migrated to `scrubHostEnv()`) + 9.3 (per-family override loop + composition fall-through + scope-omission docblock). Tests 162 → 177 (+15).
+
+### deep-evolve side — `claude-deep-evolve` PR #14 (v3.3.1)
+
+- `tests/protect-readonly-golden.test.js` (driver — 8 fixtures, 8 tests)
+- `tests/fixtures/golden/*.{input,expected}.json` (8 pairs covering: no `.deep-evolve/`, `status: initializing`, active + `prepare.py`/`program.md`/`strategy.yaml` Edit, active + unrelated Edit, meta-mode bypass, seal-prepare Bash read)
+- `hooks/scripts/test-helpers/run-protect-readonly.js` (scrubs `CLAUDE_TOOL_USE_TOOL_NAME` / `CLAUDE_TOOL_NAME` / `DEEP_EVOLVE_HELPER` / `DEEP_EVOLVE_META_MODE` / `DEEP_EVOLVE_SEAL_PREPARE`)
+- **Scope**: PreToolUse `protect-readonly.sh` only — Stop / SessionStart hooks do not exist in v3.3.x.
+- **Template substitution**: fixtures use `{{SESSION_ROOT}}` / `{{PROJECT_ROOT}}` because protect-readonly does exact absolute-path equality. Tests 112 → 120 (+8).
+
+### deep-wiki side — `claude-deep-wiki` PR #15 (v1.5.1)
+
+- `tests/auto-ingest-golden.test.js` (driver — 8 fixtures)
+- `tests/fixtures/golden/*.{input,expected}.json` (8 pairs covering: empty vault, 3 new .md, `.obsidian/`+`.trash/` pruning, mtime filtering, `require_tag` filter, `ignore_globs`, missing config, valid `.pending-scan` preservation)
+- `hooks/scripts/test-helpers/run-scan-vault.js` — `HOME=tmpRoot` hermetic isolation; never touches real `~/.claude/deep-wiki-config.yaml` or real Obsidian vault
+- **Output parsing**: hook emits free-form Korean system message (not JSON), so driver uses header-count regex + file-list line parsing.
+- **Obsidian CLI**: not exercised (helper omits from PATH, `command -v obsidian` returns empty, recents-supplement branch naturally skipped). Tests 111 → 119 (+8).
 
 **Reference**: handoff §2 #3.
 
@@ -108,16 +125,37 @@ npm test                                 # full suite (includes both .test.js ab
 
 ---
 
-## §5. stale-recovery test (🔴 M5.5 남음)
+## §5. stale-recovery test (M5.5 #5) ✅ 2026-05-12
 
-**Goal**: pending-scan 미완료, mutation lock leftover, interrupted session 등 비정상 종료 후 자동 복구 검증. setup에서 lock 파일/pending state 인공 생성 → plugin entry point 실행 → clean recovery 확인.
+**Goal**: pending-scan 미완료, mutation lock leftover, interrupted session 등 비정상 종료 후 자동 복구 검증. setup에서 lock 파일 / pending state 인공 생성 → plugin entry point 실행 → clean recovery 확인.
 
-**Per-plugin scope**:
-- **deep-review** — `.deep-review/.mutation.lock` dir + `.pending-mutation.json` → `auto_recover()` 가 user staging 보존하면서 release
-- **deep-wiki** — `<wiki_root>/.wiki-meta/.pending-scan` → next scan이 detect + complete
-- **deep-evolve** — 중단된 session의 `current.json` + journal → `/deep-resume` clean restore
+### deep-review side — `claude-deep-review` PR #11 (v1.4.1)
 
-**Effort**: plugin × (1-2d). Total ~5d.
+- `hooks/scripts/test/test-mutation-protocol.sh` Tests 26 / 27 / 28 (+3 bash assertions, 51 → 54)
+- **Test 26 (M5.5 #5-A)**: leftover `.deep-review/.mutation.lock` dir + `.pending-mutation.json` + user-staged file from unrelated flow → `auto_recover()` releases orphan lock + removes our i-t-a + **preserves user staging** + cleans state file (all 5 contract properties simultaneously)
+- **Test 27 (M5.5 #5-B)**: defensive no-op when state file missing (auto_recover must not strip legitimate staging)
+- **Test 28 (M5.5 #5-C)**: 3 user-staged files survive recovery (off-by-one i-t-a filter regression guard)
+- **Closes integration gap** left by pre-existing Test 10 (`restore_mutation` user-staging filter alone) + Test 12 (stale state, no lock)
+- **CI deferred**: bash test ubuntu integration uncovered a pre-existing ubuntu-vs-macOS divergence between tests 5 → 6; CHANGELOG documents the follow-up.
+- **Run locally**: `bash hooks/scripts/test/test-mutation-protocol.sh` (54 assertions on macOS bash 3.2)
+
+### deep-evolve side — `claude-deep-evolve` PR #15 (v3.3.2, stacked on PR #14)
+
+- `tests/session-recovery.test.js` (+9 node:test cases, 112 → 121)
+- `resolve_current` error paths (Tests A–D) + happy path (E): `current.json` missing / null session_id / orphan pointer / session.yaml missing / valid resolution
+- `detect_orphan_experiment` recovery paths (Tests F–I): journal missing (no-op) / orphan committed (returns hash) / all resolved (empty) / only LAST committed checked
+- **Documents pre-existing contract quirk**: `detect_orphan_experiment` runs `jq -s` without `-r` → stdout JSON-quoted. Test pins both quoted form AND `tr -d '"'`-stripped form so future fix is intentional.
+- **Run**: `npm test`
+
+### deep-wiki side — `claude-deep-wiki` PR #16 (v1.5.2, stacked on PR #15)
+
+- `tests/pending-scan-recovery.test.js` (+7 node:test cases, 111 → 118)
+- Tests A–G covering `.pending-scan` contract: invalid content (overwrite) / valid (preserve verbatim) / older than `.last-scan` (both preserved) / no `.last-scan` (pending used) / fresh install / empty truncated / corrupt UTF-8 bytes
+- **Tests B / C** guard the H1 regression from ultrareview bug_006: every-fire overwrite would erase oldest-detection-window lower bound
+- **Test G** guards bash 3.2 regex on non-UTF-8 (subtle source of hook-budget overruns)
+- **Hermetic**: `HOME=tmpRoot` + tmpRoot config; never touches real `~/.claude/deep-wiki-config.yaml` or real Obsidian vault
+- **Executable companion** to wiki-lint.md Step 11 / 12 stale-detection-and-fix protocol (which is markdown protocol Claude follows, not directly testable)
+- **Run**: `npm test`
 
 **Reference**: handoff §2 #5.
 
@@ -208,5 +246,5 @@ npm test
 
 - **Adding a test row**: keep this catalog 1:1 with `docs/deep-suite-harness-roadmap.md` §M5.5 §"8개 테스트 분배" table. Roadmap is the spec; this is the cross-reference.
 - **Plugin status change**: update both the §N section and the top-of-doc table row simultaneously. The `npm run docs:sync` checkers do **not** validate this doc — it's narrative.
-- **When #3 or #5 ships**: replace `(pending)` / `(TBD)` cells with actual file paths + run commands + PR references.
+- **Catalog now complete (8/8 done)** as of 2026-05-12 suite PR. Future hook-IO contract additions (e.g. new Stop hooks for deep-work / deep-evolve when added) should extend §3 with the new fixture corpus + golden driver entry.
 - **6-month timer (2026-11-07)**: when triggered, this catalog must show how each plugin's tests verify the envelope adoption contract.
