@@ -9,38 +9,38 @@
   "plugins": [
     {
       "name": "deep-work",
-      "description": "Evidence-Driven Development Protocol — emits envelope-wrapped session-receipt + slice-receipt + handoff + compaction-state; non-implement dangerous-command denylist (v6.6.2+)",
+      "description": "Evidence-Driven Development Protocol — emits envelope-wrapped session-receipt + slice-receipt + handoff + compaction-state; non-implement dangerous-command denylist + phase-guard hook golden test (v6.6.3+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
-        "sha": "05f2b9237a8f88cbef44d6ddb74cffc492103149"
+        "sha": "3398a21711306ea3d84e8a48275ec1b025c0786b"
       }
     },
     {
       "name": "deep-wiki",
-      "description": "LLM-managed markdown wiki — emits envelope-wrapped index.json (multi-source aggregator) + 5 envelope-aware markdown command sites (v1.5.0+)",
+      "description": "LLM-managed markdown wiki — emits envelope-wrapped index.json (multi-source aggregator) + 5 envelope-aware markdown command sites + scan-vault hook golden + .pending-scan stale-recovery test (v1.5.2+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "750c4687b996f97f1b1a9c82236f9961f0ce9420"
+        "sha": "901b513c5244b84139687d7a49f08e67d8073df0"
       }
     },
     {
       "name": "deep-evolve",
-      "description": "Autonomous Experimentation Protocol — emits envelope-wrapped evolve-receipt + evolve-insights + reverse handoff + compaction-state with identity-gated chain extraction (v3.3.0+)",
+      "description": "Autonomous Experimentation Protocol — emits envelope-wrapped evolve-receipt + evolve-insights + reverse handoff + compaction-state with identity-gated chain extraction + protect-readonly hook golden + session stale-recovery test (v3.3.2+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-evolve.git",
-        "sha": "7acb0c6ef9ae313118c6f0849681c16fab870a38"
+        "sha": "abdda5d4e3ab45475d726fb9e3fd5c948577e441"
       }
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator — emits envelope-wrapped recurring-findings.json + envelope-aware session-receipt consumer (v1.4.0+)",
+      "description": "Independent Evaluator — emits envelope-wrapped recurring-findings.json + envelope-aware session-receipt consumer + mutation-lock stale-recovery integration test (v1.4.1+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "e278aff4452e9f39deb85f8705f130c626384a8d"
+        "sha": "2f782b6fff971f50019655328bf50ad4575ce99b"
       }
     },
     {
