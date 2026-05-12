@@ -9,11 +9,11 @@
   "plugins": [
     {
       "name": "deep-work",
-      "description": "Evidence-Driven Development Protocol — emits envelope-wrapped session-receipt + slice-receipt + handoff + compaction-state (v6.6.0+)",
+      "description": "Evidence-Driven Development Protocol — emits envelope-wrapped session-receipt + slice-receipt + handoff + compaction-state (v6.6.1+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
-        "sha": "d2c2035cbc7d39d174ea959f6bc116e796c7db31"
+        "sha": "954a1bc85698860443868dd5972cb70d1e697125"
       }
     },
     {
@@ -22,7 +22,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "4f5cbf8c6a2c6cff352389c4f914cab678bcf4ad"
+        "sha": "750c4687b996f97f1b1a9c82236f9961f0ce9420"
       }
     },
     {
@@ -31,7 +31,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-evolve.git",
-        "sha": "dc3d85f4280f73847f16766f3c1c06c03287777d"
+        "sha": "7acb0c6ef9ae313118c6f0849681c16fab870a38"
       }
     },
     {
@@ -40,7 +40,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "a76473fdbd540127f7c9492c76934a198dc9602b"
+        "sha": "e278aff4452e9f39deb85f8705f130c626384a8d"
       }
     },
     {
