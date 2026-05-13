@@ -18,11 +18,11 @@
     },
     {
       "name": "deep-wiki",
-      "description": "LLM-managed markdown wiki — emits envelope-wrapped index.json (multi-source aggregator) + 5 envelope-aware markdown command sites + scan-vault hook golden + .pending-scan stale-recovery test (v1.5.2+)",
+      "description": "LLM-managed markdown wiki — emits envelope-wrapped index.json (multi-source aggregator) + 5 envelope-aware markdown command sites + scan-vault hook golden + .pending-scan stale-recovery test + CLAUDE.md/wiki-schema skill drift closure (v1.5.2+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "901b513c5244b84139687d7a49f08e67d8073df0"
+        "sha": "a26ff98bd60f70dd21fe098a9aa0857316b2774c"
       }
     },
     {
