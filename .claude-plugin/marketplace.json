@@ -9,11 +9,11 @@
   "plugins": [
     {
       "name": "deep-work",
-      "description": "Evidence-Driven Development Protocol — emits envelope-wrapped session-receipt + slice-receipt + handoff + compaction-state; non-implement dangerous-command denylist + phase-guard hook golden test (v6.6.3+)",
+      "description": "Evidence-Driven Development Protocol — emits envelope-wrapped session-receipt + slice-receipt + handoff + compaction-state; non-implement dangerous-command denylist + phase-guard hook golden test + skill metadata 3rd-person triggers + slice DAG depends_on/cluster_id contract + M3 envelope writer/handoff docs (v6.6.3+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
-        "sha": "3398a21711306ea3d84e8a48275ec1b025c0786b"
+        "sha": "616bdd5a1ee067c8c6ef4946a65fc1a3f4411665"
       }
     },
     {
