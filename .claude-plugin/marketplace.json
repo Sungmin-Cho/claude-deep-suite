@@ -36,11 +36,11 @@
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator — emits envelope-wrapped recurring-findings.json + envelope-aware session-receipt consumer + mutation-lock stale-recovery integration test with cross-platform stat fix (v1.4.2+)",
+      "description": "Independent Evaluator — emits envelope-wrapped recurring-findings.json + envelope-aware session-receipt consumer + new /deep-review-loop wrapper auto-iterating review ↔ respond with main-agent termination policy + Codex per-call timeout 900s (v1.5.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "9488e92781dd05c79d10a85162b7b279fa19e6af"
+        "sha": "62676a1c1ab0be09e9be34b9e26a5cd5225618c3"
       }
     },
     {
