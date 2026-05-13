@@ -54,11 +54,11 @@
     },
     {
       "name": "deep-dashboard",
-      "description": "Cross-plugin harness diagnostics + suite telemetry — emits envelope-wrapped harnessability-report.json + envelope-aware collector + 16-metric aggregator (all M4-core post-M5.5: 3 M5-activated handoff/compaction + 1 M5.5-activated per-plugin test coverage from manifest mirror) + JSONL/markdown/OTLP exporters + catalog-drift CI guard (v1.3.3+)",
+      "description": "Cross-plugin harness diagnostics + suite telemetry — emits envelope-wrapped harnessability-report.json + envelope-aware collector + 16-metric aggregator (all M4-core post-M5.5: 3 M5-activated handoff/compaction + 1 M5.5-activated per-plugin test coverage from manifest mirror) + JSONL/markdown/OTLP exporters + catalog-drift CI guard + plugin-validator follow-ups (LICENSE, tests workflow, version-sync guard, activation-form skill descriptions) (v1.3.4+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git",
-        "sha": "1d349ec9f93559fc50fdce2602ea489e7d8c1768"
+        "sha": "a3859e363a6f7ffe5ec520fee630c58ffbfff33a"
       }
     }
   ]
