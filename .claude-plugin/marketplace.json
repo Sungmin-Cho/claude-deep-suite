@@ -45,11 +45,11 @@
     },
     {
       "name": "deep-docs",
-      "description": "Document gardening agent — emits envelope-wrapped last-scan.json (v1.2.0+)",
+      "description": "Document gardening agent — emits envelope-wrapped last-scan.json + plugin-dev validator round-1 followup (size-warning audit-only reclassification + 4+sub-prompt garden UX + path_check_enabled provenance emit) (v1.2.1+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git",
-        "sha": "3cc522933916a9e54e920ef2b694a879e24a01b1"
+        "sha": "a8d08474bad6a7619a797cf7c1631fc711480948"
       }
     },
     {

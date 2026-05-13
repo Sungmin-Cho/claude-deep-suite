@@ -14,7 +14,7 @@ Harness Engineering 프레임워크(Agent = Model + Harness) 기반으로, Guide
 | deep-wiki | 1.5.2 | LLM-managed markdown wiki |
 | deep-evolve | 3.3.2 | Autonomous Experimentation Protocol |
 | deep-review | 1.5.1 | Independent Evaluator |
-| deep-docs | 1.2.0 | Document gardening agent |
+| deep-docs | 1.2.1 | Document gardening agent |
 | deep-dashboard | 1.3.4 | Cross-plugin harness diagnostics + suite telemetry |
 
 <!-- deep-suite:auto-generated:plugin-table-claude:end -->
