@@ -36,11 +36,11 @@
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator — emits envelope-wrapped recurring-findings.json + envelope-aware session-receipt consumer + new /deep-review-loop wrapper auto-iterating review ↔ respond with main-agent termination policy + Codex per-call timeout 900s (v1.5.0+)",
+      "description": "Independent Evaluator — emits envelope-wrapped recurring-findings.json + envelope-aware session-receipt consumer + /deep-review-loop promoted from a slash command to a `user-invocable: true` skill for Codex / Copilot / Gemini CLI / Agent SDK parity (review↔respond auto-iteration with identical §0–§9 protocol) + Codex per-call timeout 900s (v1.6.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "f2721c2269120e96fc436db9c8e3e9e1bc33ea09"
+        "sha": "57ba278ffa50de9a0d728c2b89831a69661ecaca"
       }
     },
     {
