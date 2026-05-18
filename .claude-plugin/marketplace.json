@@ -9,56 +9,56 @@
   "plugins": [
     {
       "name": "deep-work",
-      "description": "Evidence-Driven Development Protocol — all 24 `/deep-*` slash commands promoted to `user-invocable: true` skills under skills/deep-{verb}/SKILL.md (Category A: 7 thin Skill() wrappers absorbed by their matching skill bodies; Category B: 17 new entry skills with frontmatter + Invocation/Inputs/Prerequisites head sections + byte-preserved bodies) for Codex / Copilot CLI / Gemini CLI / Agent SDK parity. **Fourth and final installment** of the suite-wide command→skill migration (after deep-docs v1.3.0 + deep-evolve v3.4.0 + deep-wiki v1.6.0 — closes cross-platform parity across the entire suite). Emits envelope-wrapped session-receipt + slice-receipt + handoff + compaction-state; non-implement dangerous-command denylist + phase-guard hook golden test + deep-status hub-spoke pattern (4 sub-skills dispatched via ${CLAUDE_PLUGIN_ROOT}/skills/deep-X/SKILL.md inline Read) + plugin-validator 0/0/0 + skill-reviewer × 24 PASS (v6.7.0+)",
+      "description": "Evidence-Driven Development Protocol — all 24 `/deep-*` slash commands promoted to `user-invocable: true` skills under skills/deep-{verb}/SKILL.md (Category A: 7 thin Skill() wrappers absorbed by their matching skill bodies; Category B: 17 new entry skills with frontmatter + Invocation/Inputs/Prerequisites head sections + byte-preserved bodies) for Codex / Copilot CLI / Gemini CLI / Agent SDK parity. **Fourth and final installment** of the suite-wide command→skill migration (after deep-docs v1.3.0 + deep-evolve v3.4.0 + deep-wiki v1.6.0 — closes cross-platform parity across the entire suite). Emits envelope-wrapped session-receipt + slice-receipt + handoff + compaction-state; non-implement dangerous-command denylist + phase-guard hook golden test + deep-status hub-spoke pattern (4 sub-skills dispatched via ${CLAUDE_PLUGIN_ROOT}/skills/deep-X/SKILL.md inline Read) + plugin-validator 0/0/0 + skill-reviewer × 24 PASS (v6.7.1+) v6.7.1 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, and Codex compatibility docs while preserving Claude Code metadata.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
-        "sha": "94fdb71406baf7d54179bb9d83dff8038e2210b8"
+        "sha": "c5ee24b24a9035d300de84ed9ccea7cf62a265dc"
       }
     },
     {
       "name": "deep-wiki",
-      "description": "LLM-managed markdown wiki — all 5 `/wiki-*` slash commands (ingest / lint / query / rebuild / setup) promoted to `user-invocable: true` skills under skills/wiki-{ingest,lint,query,rebuild,setup}/SKILL.md for Codex / Copilot CLI / Gemini CLI / Agent SDK parity (third installment of suite-wide command→skill migration after deep-docs v1.3.0 + deep-evolve v3.4.0; deep-wiki is the largest single conversion — 5 entry surfaces, 4,062 body lines, wiki-ingest alone is 2,841 lines) + body byte-equivalent (mechanical cp + sed retargeting) + plugin-validator 0/0/0 + skill-reviewer × 5 PASS. v1.6.1 quotes the wiki-setup frontmatter description to fix a Codex strict-YAML parse error (colon-space pattern was silently dropping the skill) (v1.6.1+)",
+      "description": "LLM-managed markdown wiki — all 5 `/wiki-*` slash commands (ingest / lint / query / rebuild / setup) promoted to `user-invocable: true` skills under skills/wiki-{ingest,lint,query,rebuild,setup}/SKILL.md for Codex / Copilot CLI / Gemini CLI / Agent SDK parity (third installment of suite-wide command→skill migration after deep-docs v1.3.0 + deep-evolve v3.4.0; deep-wiki is the largest single conversion — 5 entry surfaces, 4,062 body lines, wiki-ingest alone is 2,841 lines) + body byte-equivalent (mechanical cp + sed retargeting) + plugin-validator 0/0/0 + skill-reviewer × 5 PASS. v1.6.1 quotes the wiki-setup frontmatter description to fix a Codex strict-YAML parse error (colon-space pattern was silently dropping the skill) (v1.6.2+) v1.6.2 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, and Codex compatibility docs while preserving Claude Code metadata.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "08140409de9a22b654948171131ca981bcc599ab"
+        "sha": "40344c230f158a1397840b905c41e37f1e482b83"
       }
     },
     {
       "name": "deep-evolve",
-      "description": "Autonomous Experimentation Protocol — `/deep-evolve` promoted from a slash command to a `user-invocable: true` skill for Codex / Copilot CLI / Gemini CLI / Agent SDK parity (Step 0 / Step 0.5 / Step 1 parsing + Protocol Routing Summary unchanged); v3.4.1 trims `deep-evolve-workflow` description from 1137 → 905 chars to fit Codex's 1024-char skill description limit (Codex was silently dropping the workflow skill at load time). Emits envelope-wrapped evolve-receipt + evolve-insights + reverse handoff + compaction-state with identity-gated chain extraction + protect-readonly hook golden + 4-way manifest drift CI guard (v3.4.1+)",
+      "description": "Autonomous Experimentation Protocol — `/deep-evolve` promoted from a slash command to a `user-invocable: true` skill for Codex / Copilot CLI / Gemini CLI / Agent SDK parity (Step 0 / Step 0.5 / Step 1 parsing + Protocol Routing Summary unchanged); v3.4.1 trims `deep-evolve-workflow` description from 1137 → 905 chars to fit Codex's 1024-char skill description limit (Codex was silently dropping the workflow skill at load time). Emits envelope-wrapped evolve-receipt + evolve-insights + reverse handoff + compaction-state with identity-gated chain extraction + protect-readonly hook golden + 4-way manifest drift CI guard (v3.4.2+) v3.4.2 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, and Codex compatibility docs while preserving Claude Code metadata.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-evolve.git",
-        "sha": "cce9cde4c5749c6761c35c8cba746bfb25cdf56b"
+        "sha": "b203d2f9e007c11b67a2f1a037019872ff23da41"
       }
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator — emits envelope-wrapped recurring-findings.json + envelope-aware session-receipt consumer + /deep-review-loop promoted from a slash command to a `user-invocable: true` skill for Codex / Copilot / Gemini CLI / Agent SDK parity (review↔respond auto-iteration with identical §0–§9 protocol) + Codex per-call timeout 900s (v1.6.0+)",
+      "description": "Independent Evaluator — emits envelope-wrapped recurring-findings.json + envelope-aware session-receipt consumer + /deep-review-loop promoted from a slash command to a `user-invocable: true` skill for Codex / Copilot / Gemini CLI / Agent SDK parity (review↔respond auto-iteration with identical §0–§9 protocol) + Codex per-call timeout 900s (v1.6.1+) v1.6.1 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, and Codex compatibility docs while preserving Claude Code metadata.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "57ba278ffa50de9a0d728c2b89831a69661ecaca"
+        "sha": "39b8a8106523bc5f17529b0c7080deb0aada5443"
       }
     },
     {
       "name": "deep-docs",
-      "description": "Document gardening agent — emits envelope-wrapped last-scan.json + /deep-docs slash command → user-invocable skill conversion for cross-platform parity (Claude Code slash + Codex / Copilot CLI / Gemini CLI `Skill()` invocation) + verify-fixes.sh retargeted to skills/deep-docs/SKILL.md (43 grep checks) + plugin-dev validator round-2 PASS (v1.3.0+)",
+      "description": "Document gardening agent — emits envelope-wrapped last-scan.json + /deep-docs slash command → user-invocable skill conversion for cross-platform parity (Claude Code slash + Codex / Copilot CLI / Gemini CLI `Skill()` invocation) + verify-fixes.sh retargeted to skills/deep-docs/SKILL.md (43 grep checks) + plugin-dev validator round-2 PASS (v1.3.1+) v1.3.1 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, and Codex compatibility docs while preserving Claude Code metadata.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git",
-        "sha": "9ad093574059fb5fa3a1ebc5e46a1f3c83dc7ec7"
+        "sha": "cc28b5d02d2d5e6e40f4b889ce8f751c2d3347b1"
       }
     },
     {
       "name": "deep-dashboard",
-      "description": "Cross-plugin harness diagnostics + suite telemetry — emits envelope-wrapped harnessability-report.json + envelope-aware collector + 16-metric aggregator (all M4-core post-M5.5: 3 M5-activated handoff/compaction + 1 M5.5-activated per-plugin test coverage from manifest mirror) + JSONL/markdown/OTLP exporters + catalog-drift CI guard with horizon mechanism (suite §9+ extensions reported as info, not drift) + cross-shell `npm test` glob portability (v1.3.5+)",
+      "description": "Cross-plugin harness diagnostics + suite telemetry — emits envelope-wrapped harnessability-report.json + envelope-aware collector + 16-metric aggregator (all M4-core post-M5.5: 3 M5-activated handoff/compaction + 1 M5.5-activated per-plugin test coverage from manifest mirror) + JSONL/markdown/OTLP exporters + catalog-drift CI guard with horizon mechanism (suite §9+ extensions reported as info, not drift) + cross-shell `npm test` glob portability (v1.3.6+) v1.3.6 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, and Codex compatibility docs while preserving Claude Code metadata.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git",
-        "sha": "8e07d3e07e42447d09d1d37645efd7a6336019ce"
+        "sha": "bad2aa1fb6c30b9ae5a140a284546857870eacf9"
       }
     }
   ]
