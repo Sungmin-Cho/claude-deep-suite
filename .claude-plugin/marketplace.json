@@ -27,11 +27,11 @@
     },
     {
       "name": "deep-evolve",
-      "description": "Autonomous Experimentation Protocol — emits envelope-wrapped evolve-receipt + evolve-insights + reverse handoff + compaction-state with identity-gated chain extraction + protect-readonly hook golden + session stale-recovery test (v3.3.2+)",
+      "description": "Autonomous Experimentation Protocol — `/deep-evolve` promoted from a slash command to a `user-invocable: true` skill for Codex / Copilot CLI / Gemini CLI / Agent SDK parity (Step 0 / Step 0.5 / Step 1 parsing + Protocol Routing Summary unchanged) + emits envelope-wrapped evolve-receipt + evolve-insights + reverse handoff + compaction-state with identity-gated chain extraction + protect-readonly hook golden + 4-way manifest drift CI guard (v3.4.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-evolve.git",
-        "sha": "abdda5d4e3ab45475d726fb9e3fd5c948577e441"
+        "sha": "e16320445cefc9b2401ae2bcde1157d1f4996739"
       }
     },
     {
