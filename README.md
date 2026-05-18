@@ -252,7 +252,7 @@ Cross-plugin feedback is baked in: recurring findings from deep-review steer exp
 
 ## deep-review
 
-**Independent Evaluator** — reviews AI coding agent output with a separate Opus subagent. Runs 3-way cross-model verification when the Codex plugin is installed.
+**Independent Evaluator** — reviews AI coding agent output with a separate Claude reviewer. Claude Code uses the Agent tool path; Codex uses the Claude CLI reviewer bridge. Runs 3-way cross-model verification when the Codex plugin is installed.
 
 Inspired by Anthropic's [Harness Design](https://www.anthropic.com/engineering/harness-design-long-running-apps) — structurally eliminates self-approval bias through Generator-Evaluator separation.
 
@@ -260,7 +260,7 @@ Inspired by Anthropic's [Harness Design](https://www.anthropic.com/engineering/h
 
 ```
 Collect → Contract Check → Deep Review → Verdict
-                            ├─ Claude Opus (always)
+                            ├─ Claude reviewer (always)
                             ├─ codex:review (if available)
                             └─ codex:adversarial-review (if available)
 ```
@@ -277,7 +277,8 @@ Collect → Contract Check → Deep Review → Verdict
 
 ### Key features
 
-- **Independent evaluator** — separate Opus subagent with no Generator context
+- **Independent evaluator** — separate Claude reviewer with no Generator context
+- **Codex Claude bridge** — Codex runs the Claude reviewer through the plugin's CLI bridge instead of substituting a Codex subagent
 - **Cross-model verification** — 3-way parallel review when Codex is installed
 - **Phase 6 subagent delegation** — `/deep-review --respond` IMPLEMENT phase runs in a dedicated `phase6-implementer` subagent per severity group; main session keeps Phase 1~5 judgment and verifies with fail-closed content-aware delta + pathspec-limited commit
 - **Sprint Contract** — structured success criteria verification

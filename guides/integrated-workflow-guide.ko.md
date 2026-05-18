@@ -90,11 +90,11 @@ Phase 5 Integrate — 진행하시겠습니까, 아니면 /deep-finish로 바로
 /deep-review
 ```
 
-독립된 Opus 서브에이전트가 전체 diff를 검토한다:
+독립된 Claude reviewer가 전체 diff를 검토한다. Claude Code에서는 Agent tool 경로를 쓰고, Codex 및 non-Claude 클라이언트에서는 Claude CLI reviewer bridge를 쓴다:
 
 - **Stage 1** — git 상태 감지 (clean/staged/unstaged).
 - **Stage 2** — 프로젝트 규칙(`.deep-review/rules.yaml`) 로드.
-- **Stage 3** — Opus 서브에이전트가 diff 리뷰 (Codex 플러그인 설치 시 3-way 교차 검증).
+- **Stage 3** — Claude reviewer가 diff 리뷰 (Codex 플러그인 설치 시 3-way 교차 검증).
 - **Stage 4** — 판정: APPROVE / CONCERN / REQUEST_CHANGES.
 - **Stage 5.5** *(리뷰 리포트 2건 이상 누적된 후 발동)* — 과거 리포트에서 반복 패턴을 집계해 `.deep-review/recurring-findings.json`에 기록. 다음 deep-evolve 세션이 이 파일로 실험 방향을 조향한다.
 
@@ -456,7 +456,7 @@ deep-work + deep-review + deep-docs + wiki-ingest를 Phase 5가 조율.
 
 1. **Phase 5에 suite 조율을 맡겨라** — 통합 추천기는 이미 어떤 아티팩트가 있는지, 최신 diff가 무엇인지 안다. top-3를 무시할 때는 명확한 이유가 있을 때만.
 
-2. **deep-review는 PR 전에 실행하라** — 독립 Opus 서브에이전트가 self-review가 놓친 것을 잡는다. Codex 플러그인을 설치하면 3-way 교차 검증 가능.
+2. **deep-review는 PR 전에 실행하라** — 독립 Claude reviewer가 self-review가 놓친 것을 잡는다. Codex 플러그인을 설치하면 3-way 교차 검증 가능하며, Codex는 reviewer bridge로 Claude를 호출한다.
 
 3. **deep-evolve는 측정 가능한 목표로 써라** — "코드를 더 좋게"는 너무 모호. "val_bpb 최소화", "시나리오 suite 100% 통과"처럼 구체적 타겟을 주라.
 
