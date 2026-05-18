@@ -36,11 +36,11 @@
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator — emits envelope-wrapped recurring-findings.json + envelope-aware session-receipt consumer + /deep-review-loop promoted from a slash command to a `user-invocable: true` skill for Codex / Copilot / Gemini CLI / Agent SDK parity (review↔respond auto-iteration with identical §0–§9 protocol) + Codex per-call timeout 900s (v1.6.1+) v1.6.1 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, and Codex compatibility docs while preserving Claude Code metadata.",
+      "description": "Independent Evaluator — emits envelope-wrapped recurring-findings.json + envelope-aware session-receipt consumer + /deep-review-loop promoted from a slash command to a `user-invocable: true` skill for Codex / Copilot / Gemini CLI / Agent SDK parity (review↔respond auto-iteration with identical §0–§9 protocol) + Codex per-call timeout 900s (v1.6.1+) v1.6.1 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, Codex compatibility docs, and the Codex Claude CLI reviewer bridge while preserving Claude Code metadata.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "39b8a8106523bc5f17529b0c7080deb0aada5443"
+        "sha": "81fdcfec86ea4ac4ddc2e41cf1626bce1e554a5c"
       }
     },
     {
