@@ -18,11 +18,11 @@
     },
     {
       "name": "deep-wiki",
-      "description": "LLM-managed markdown wiki — emits envelope-wrapped index.json (multi-source aggregator) + 5 envelope-aware markdown command sites + scan-vault hook golden + .pending-scan stale-recovery test + wiki-schema skill description trimmed to fit 1024-char cap (v1.5.3+)",
+      "description": "LLM-managed markdown wiki — all 5 `/wiki-*` slash commands (ingest / lint / query / rebuild / setup) promoted to `user-invocable: true` skills under skills/wiki-{ingest,lint,query,rebuild,setup}/SKILL.md for Codex / Copilot CLI / Gemini CLI / Agent SDK parity (third installment of suite-wide command→skill migration after deep-docs v1.3.0 + deep-evolve v3.4.0; deep-wiki is the largest single conversion — 5 entry surfaces, 4,062 body lines, wiki-ingest alone is 2,841 lines) + body byte-equivalent (mechanical cp + sed retargeting) + plugin-validator 0/0/0 + skill-reviewer × 5 PASS (v1.6.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "16d0c94e7ce7fa3b173ec44940251841a790a71b"
+        "sha": "e50349406a637303f4213d275b504a04b58ffc2f"
       }
     },
     {
