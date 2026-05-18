@@ -3,6 +3,7 @@ name: Manifest Doc Sync
 on:
   pull_request:
     paths:
+      - '.agents/plugins/**'
       - '.claude-plugin/**'
       - 'README*.md'
       - 'CLAUDE.md'

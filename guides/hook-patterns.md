@@ -4,6 +4,8 @@
 
 This guide documents how the 6 Deep Suite plugins use Claude Code [hooks](https://code.claude.com/docs/en/hooks) — when to add a hook, when *not* to, and what patterns the suite considers idiomatic. It is **descriptive and recommended**, not enforced: plugins are free to deviate when the rationale is documented in their sidecar entry (`hooks_intentionally_empty_reason`).
 
+This guide is intentionally Claude Code-specific. Codex compatibility is exposed through `.agents/plugins/marketplace.json` and plugin skills, not through Claude Code hook files; when Codex behavior differs, prefer explicit skill invocation over trying to mirror hook automation.
+
 > The accompanying executable scaffold lives in `examples/hooks-suite-baseline/` and `examples/hooks-strict-mode/`. Copy either into your own project and tweak.
 
 > **Forward-references in this guide**: paths under `examples/`, the `schemas/handoff.schema.json` / `schemas/compaction-state.schema.json` files, and the paired `guides/long-run-handoff.md` / `guides/context-management.md` guides ship in **subsequent M5 PRs** (5.2 schemas + guides, 5.3 example pack). This document is the descriptive anchor and lands first; the cross-references resolve as those PRs merge.
