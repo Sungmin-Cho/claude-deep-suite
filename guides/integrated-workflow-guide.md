@@ -92,11 +92,11 @@ Choosing `proceed` triggers the recommendation loop (Scenario 5). Choosing `skip
 /deep-review
 ```
 
-deep-review runs an independent Opus subagent over the full diff:
+deep-review runs an independent Claude reviewer over the full diff. Claude Code uses its Agent tool path; Codex and other non-Claude clients use the Claude CLI reviewer bridge:
 
 - **Stage 1** — Detect git state (clean/staged/unstaged).
 - **Stage 2** — Load project rules (`.deep-review/rules.yaml`).
-- **Stage 3** — Opus subagent reviews the diff (optionally 3-way cross-verification when Codex plugin is installed).
+- **Stage 3** — Claude reviewer reviews the diff (optionally 3-way cross-verification when Codex plugin is installed).
 - **Stage 4** — Verdict: APPROVE / CONCERN / REQUEST_CHANGES.
 - **Stage 5.5** *(only once 2+ review reports exist)* — Aggregates recurring patterns across historical reports into `.deep-review/recurring-findings.json`. The next deep-evolve session reads this file to steer experiment direction.
 
@@ -458,7 +458,7 @@ Gets an AI recommendation for the current snapshot of artifacts — useful when 
 
 1. **Let Phase 5 drive the suite** — the integrated recommender already knows which artifacts exist and what the latest diff looks like. Override its top-3 only when you have a specific reason.
 
-2. **Run deep-review before PRs** — an independent Opus subagent catches what self-review misses. Install the Codex plugin for 3-way cross-verification.
+2. **Run deep-review before PRs** — an independent Claude reviewer catches what self-review misses. Install the Codex plugin for 3-way cross-verification; Codex invokes Claude through the reviewer bridge.
 
 3. **Use deep-evolve with measurable goals** — "make the code better" is too vague. "Minimize `val_bpb`" or "100% pass rate on scenario suite" gives the agent a clear target.
 
