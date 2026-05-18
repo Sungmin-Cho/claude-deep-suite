@@ -28,3 +28,13 @@ test('Codex marketplace mirrors Claude plugin pins with Codex policy fields', ()
     assert.ok(['Coding', 'Productivity'].includes(plugin.category));
   }
 });
+
+test('Manifest Doc Sync runs for Codex marketplace path changes', () => {
+  const workflow = readFileSync('.github/workflows/manifest-doc-sync.yml', 'utf8');
+
+  assert.match(
+    workflow,
+    /-\s+['"]?\.agents\/plugins\/\*\*['"]?/,
+    'pull_request paths must include .agents/plugins/** so Codex-only marketplace changes run CI'
+  );
+});

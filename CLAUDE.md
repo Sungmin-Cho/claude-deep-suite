@@ -15,7 +15,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | deep-evolve | 3.4.2 | Autonomous Experimentation Protocol |
 | deep-review | 1.6.1 | Independent Evaluator |
 | deep-docs | 1.3.1 | Document gardening agent |
-| deep-dashboard | 1.3.6 | Cross-plugin harness diagnostics + suite telemetry |
+| deep-dashboard | 1.3.7 | Cross-plugin harness diagnostics + suite telemetry |
 
 <!-- deep-suite:auto-generated:plugin-table-claude:end -->
 

@@ -90,7 +90,7 @@ function renderSourcePinning({ plugins, versions }) {
     '',
     '**Auto-generated** by `scripts/generate-reference-sections.js`. Do not hand-edit.',
     '',
-    'Each plugin is fetched from the SHA below at install time. M2 CI re-checks daily and on every PR that touches `.claude-plugin/`.',
+    'Each plugin is fetched from the SHA below at install time. M2 CI re-checks daily and on every PR that touches `.claude-plugin/` or `.agents/plugins/`.',
     '',
     '| Plugin | Pinned Version | Repo | Pinned SHA |',
     '|---|---|---|---|',

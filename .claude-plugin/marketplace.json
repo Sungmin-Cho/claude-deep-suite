@@ -4,7 +4,7 @@
     "name": "sungmin"
   },
   "metadata": {
-    "description": "Deep Suite — structured development, wiki, autonomous experimentation, independent code review, document gardening, and harness diagnostics plugins for Claude Code"
+    "description": "Deep Suite — structured development, wiki, autonomous experimentation, independent code review, document gardening, and harness diagnostics plugins for Claude Code and Codex"
   },
   "plugins": [
     {
@@ -54,11 +54,11 @@
     },
     {
       "name": "deep-dashboard",
-      "description": "Cross-plugin harness diagnostics + suite telemetry — emits envelope-wrapped harnessability-report.json + envelope-aware collector + 16-metric aggregator (all M4-core post-M5.5: 3 M5-activated handoff/compaction + 1 M5.5-activated per-plugin test coverage from manifest mirror) + JSONL/markdown/OTLP exporters + catalog-drift CI guard with horizon mechanism (suite §9+ extensions reported as info, not drift) + cross-shell `npm test` glob portability (v1.3.6+) v1.3.6 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, and Codex compatibility docs while preserving Claude Code metadata.",
+      "description": "Cross-plugin harness diagnostics + suite telemetry — emits envelope-wrapped harnessability-report.json + envelope-aware collector + 16-metric aggregator (all M4-core post-M5.5: 3 M5-activated handoff/compaction + 1 M5.5-activated per-plugin test coverage from manifest mirror) + JSONL/markdown/OTLP exporters + catalog-drift CI guard with horizon mechanism (suite §9+ extensions reported as info, not drift) + cross-shell `npm test` glob portability (v1.3.7+) v1.3.7 moves Codex skill surfaces to `skills/<skill>/SKILL.md` directory layout so Codex can discover `deep-harnessability` and `deep-harness-dashboard` from the plugin manifest.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git",
-        "sha": "bad2aa1fb6c30b9ae5a140a284546857870eacf9"
+        "sha": "45c0ebdaf12ea249f943713a134af2f40fd39c68"
       }
     }
   ]

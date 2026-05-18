@@ -75,7 +75,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git",
-        "sha": "bad2aa1fb6c30b9ae5a140a284546857870eacf9"
+        "sha": "45c0ebdaf12ea249f943713a134af2f40fd39c68"
       },
       "policy": {
         "installation": "AVAILABLE",
