@@ -9,11 +9,11 @@
   "plugins": [
     {
       "name": "deep-work",
-      "description": "Evidence-Driven Development Protocol — emits envelope-wrapped session-receipt + slice-receipt + handoff + compaction-state; non-implement dangerous-command denylist + phase-guard hook golden test + skill metadata 3rd-person triggers + slice DAG depends_on/cluster_id contract + M3 envelope writer/handoff docs (v6.6.3+)",
+      "description": "Evidence-Driven Development Protocol — all 24 `/deep-*` slash commands promoted to `user-invocable: true` skills under skills/deep-{verb}/SKILL.md (Category A: 7 thin Skill() wrappers absorbed by their matching skill bodies; Category B: 17 new entry skills with frontmatter + Invocation/Inputs/Prerequisites head sections + byte-preserved bodies) for Codex / Copilot CLI / Gemini CLI / Agent SDK parity. **Fourth and final installment** of the suite-wide command→skill migration (after deep-docs v1.3.0 + deep-evolve v3.4.0 + deep-wiki v1.6.0 — closes cross-platform parity across the entire suite). Emits envelope-wrapped session-receipt + slice-receipt + handoff + compaction-state; non-implement dangerous-command denylist + phase-guard hook golden test + deep-status hub-spoke pattern (4 sub-skills dispatched via ${CLAUDE_PLUGIN_ROOT}/skills/deep-X/SKILL.md inline Read) + plugin-validator 0/0/0 + skill-reviewer × 24 PASS (v6.7.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
-        "sha": "616bdd5a1ee067c8c6ef4946a65fc1a3f4411665"
+        "sha": "94fdb71406baf7d54179bb9d83dff8038e2210b8"
       }
     },
     {

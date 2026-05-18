@@ -12,7 +12,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 
 | Plugin | Version | Description |
 |---|---|---|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.6.3 | Evidence-Driven Development Protocol |
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.7.0 | Evidence-Driven Development Protocol |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.6.0 | LLM-managed markdown wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.4.0 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.6.0 | Independent Evaluator |
