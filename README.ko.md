@@ -12,12 +12,12 @@
 
 | 플러그인 | 버전 | 설명 |
 |---|---|---|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.7.0 | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.6.1 | LLM-managed markdown wiki |
-| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.4.1 | Autonomous Experimentation Protocol |
-| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.6.0 | Independent Evaluator |
-| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.3.0 | Document gardening agent |
-| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.3.5 | Cross-plugin harness diagnostics + suite telemetry |
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.7.1 | Evidence-Driven Development Protocol |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.6.2 | LLM-managed markdown wiki |
+| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.4.2 | Autonomous Experimentation Protocol |
+| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.6.1 | Independent Evaluator |
+| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.3.1 | Document gardening agent |
+| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.3.6 | Cross-plugin harness diagnostics + suite telemetry |
 
 <!-- deep-suite:auto-generated:plugin-table-ko:end -->
 
