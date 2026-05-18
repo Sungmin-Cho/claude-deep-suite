@@ -45,11 +45,11 @@
     },
     {
       "name": "deep-docs",
-      "description": "Document gardening agent — emits envelope-wrapped last-scan.json + plugin-dev validator round-1 followup (size-warning audit-only reclassification + 4+sub-prompt garden UX + path_check_enabled provenance emit) (v1.2.1+)",
+      "description": "Document gardening agent — emits envelope-wrapped last-scan.json + /deep-docs slash command → user-invocable skill conversion for cross-platform parity (Claude Code slash + Codex / Copilot CLI / Gemini CLI `Skill()` invocation) + verify-fixes.sh retargeted to skills/deep-docs/SKILL.md (43 grep checks) + plugin-dev validator round-2 PASS (v1.3.0+)",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git",
-        "sha": "a8d08474bad6a7619a797cf7c1631fc711480948"
+        "sha": "9ad093574059fb5fa3a1ebc5e46a1f3c83dc7ec7"
       }
     },
     {
