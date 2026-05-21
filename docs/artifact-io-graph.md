@@ -39,6 +39,22 @@ flowchart LR
   p23[".deep-docs/**"]-->|reads|deep-dashboard
   p24[".deep-evolve/**"]-->|reads|deep-dashboard
   p25["<wiki_root>/.wiki-meta/**"]-->|reads|deep-dashboard
+  deep-memory-->|writes|p26["~/.deep-memory/events/<YYYY-MM>.jsonl"]
+  deep-memory-->|writes|p27["~/.deep-memory/cards/<memory_type>/<global|project_id>/<memory_id>.json"]
+  deep-memory-->|writes|p28["~/.deep-memory/indexes/lexical.sqlite"]
+  deep-memory-->|writes|p29["~/.deep-memory/projects/<project_id>.json"]
+  deep-memory-->|writes|p30["~/.deep-memory/.leases/<project_id>.lease"]
+  deep-memory-->|writes|p31["~/.deep-memory/.lock/metadata.json"]
+  deep-memory-->|writes|p32["~/.deep-memory/.quarantine/empty-claim/<run_id>.json"]
+  deep-memory-->|writes|p33[".deep-memory/project-profile.json"]
+  deep-memory-->|writes|p34[".deep-memory/latest-harvest.json"]
+  deep-memory-->|writes|p35[".deep-memory/latest-brief.{json,md}"]
+  deep-memory-->|writes|p36[".deep-memory/latest-audit.json"]
+  p6[".deep-review/recurring-findings.json"]-->|reads|deep-memory
+  p5[".deep-evolve/<session>/evolve-insights.json"]-->|reads|deep-memory
+  p1[".deep-work/<session>/session-receipt.json"]-->|reads|deep-memory
+  p20[".deep-docs/last-scan.json"]-->|reads|deep-memory
+  p7["<wiki_root>/.wiki-meta/index.json"]-->|reads|deep-memory
 ```
 
 <!-- deep-suite:auto-generated:artifact-io-graph:end -->

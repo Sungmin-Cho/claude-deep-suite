@@ -60,6 +60,15 @@
         "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git",
         "sha": "45c0ebdaf12ea249f943713a134af2f40fd39c68"
       }
+    },
+    {
+      "name": "deep-memory",
+      "description": "Cross-project semantic operational memory — harvests sibling deep-suite artifacts (recurring-findings, evolve-insights, session-receipts, docs-scan, wiki-index), distills them through a Hybrid pipeline (rule-based Step A → 5 mapper kinds + LLM sub-agent Step B with graceful candidate fallback) and persists M3-envelope-wrapped memory cards under ~/.deep-memory/. `/deep-memory-brief <task>` surfaces top-N memory briefs via a 6-stage ranking pipeline (FTS5 BM25 → privacy-scope SQL filter → hard filter → Unicode-aware tokenize → project_sim Jaccard → evidence quality sigmoid → applicability guard → diversity). 4 user-invocable skills (init / harvest / brief / audit) + 1 reference (memory-schema). 3-pass redaction symmetric across cards/events/quarantine. Project-lease + global-lock + idempotent event_key. better-sqlite3 hard dep. Atomic write + readback validate. v0.1.0 ships single-project-safe (multi-project memory_id collision documented for v0.2.0 redesign). 244 tests PASS / 0 fail; closed via 5-round 3-way deep-review-loop convergence (Opus + Codex review + Codex adversarial) — 31 distinct fixes + 84 new regression tests.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Sungmin-Cho/claude-deep-memory.git",
+        "sha": "48010e151801f4792daf4654b37b394c05141c25"
+      }
     }
   ]
 }

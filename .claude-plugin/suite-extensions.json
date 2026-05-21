@@ -105,6 +105,42 @@
       },
       "hooks_active": [],
       "hooks_intentionally_empty_reason": "Aggregator는 user 명시 호출(/deep-harness-dashboard)에서만 보고서를 생성 — event-driven hook은 cross-plugin 집계 의미와 무관하게 noise를 만든다."
+    },
+    "deep-memory": {
+      "runtime": ["node", "bash"],
+      "capabilities": [
+        "cross-project-semantic-memory",
+        "hybrid-distill",
+        "fts5-lexical-retrieval",
+        "multi-pass-redaction",
+        "project-lease",
+        "atomic-write",
+        "envelope-compat-option-b"
+      ],
+      "artifacts": {
+        "writes": [
+          "~/.deep-memory/events/<YYYY-MM>.jsonl",
+          "~/.deep-memory/cards/<memory_type>/<global|project_id>/<memory_id>.json",
+          "~/.deep-memory/indexes/lexical.sqlite",
+          "~/.deep-memory/projects/<project_id>.json",
+          "~/.deep-memory/.leases/<project_id>.lease",
+          "~/.deep-memory/.lock/metadata.json",
+          "~/.deep-memory/.quarantine/empty-claim/<run_id>.json",
+          ".deep-memory/project-profile.json",
+          ".deep-memory/latest-harvest.json",
+          ".deep-memory/latest-brief.{json,md}",
+          ".deep-memory/latest-audit.json"
+        ],
+        "reads": [
+          ".deep-review/recurring-findings.json",
+          ".deep-evolve/<session>/evolve-insights.json",
+          ".deep-work/<session>/session-receipt.json",
+          ".deep-docs/last-scan.json",
+          "<wiki_root>/.wiki-meta/index.json"
+        ]
+      },
+      "hooks_active": [],
+      "hooks_intentionally_empty_reason": "User-invocation 기반 — 자동 SessionStart/Stop hook은 사용자 사전 동의 없이 cross-project memory를 변경할 위험이 있어 v0.1.0에서 의도적으로 제외 (privacy-by-default)."
     }
   },
   "data_flow": [
@@ -115,6 +151,12 @@
     { "from": "deep-evolve", "to": "deep-work", "via": "evolve-insights (Research context)" },
     { "from": "deep-dashboard", "to": "deep-work", "via": "harnessability-report.json (Phase 1 Research consumes)" },
     { "from": "deep-review", "to": "deep-evolve", "via": "recurring-findings.json" },
-    { "from": "deep-wiki", "to": "deep-work", "via": "index.json (Research reference)" }
+    { "from": "deep-wiki", "to": "deep-work", "via": "index.json (Research reference)" },
+    { "from": "deep-review", "to": "deep-memory", "via": "recurring-findings.json (harvest source)" },
+    { "from": "deep-evolve", "to": "deep-memory", "via": "evolve-insights.json (harvest source)" },
+    { "from": "deep-work", "to": "deep-memory", "via": "session-receipt.json (harvest source)" },
+    { "from": "deep-docs", "to": "deep-memory", "via": "last-scan.json (harvest source)" },
+    { "from": "deep-wiki", "to": "deep-memory", "via": "index.json ADR pages (harvest source)" },
+    { "from": "deep-memory", "to": "deep-work", "via": "latest-brief.md (Phase 1 Research recall — sibling consumers quote in research/planning prompts)" }
   ]
 }

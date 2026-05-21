@@ -82,6 +82,19 @@
         "authentication": "ON_USE"
       },
       "category": "Productivity"
+    },
+    {
+      "name": "deep-memory",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Sungmin-Cho/claude-deep-memory.git",
+        "sha": "48010e151801f4792daf4654b37b394c05141c25"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Productivity"
     }
   ]
 }

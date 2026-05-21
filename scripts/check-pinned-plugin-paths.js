@@ -74,6 +74,16 @@ const PER_PLUGIN_EXTRA = {
     'skills/deep-harness-dashboard/SKILL.md',
     'skills/deep-harnessability/SKILL.md',
   ],
+  'deep-memory': [
+    'scripts/init.js',
+    'scripts/harvest.js',
+    'scripts/audit.js',
+    'scripts/brief.js',
+    'skills/deep-memory-init/SKILL.md',
+    'skills/deep-memory-harvest/SKILL.md',
+    'skills/deep-memory-brief/SKILL.md',
+    'skills/deep-memory-audit/SKILL.md',
+  ],
 };
 
 // Sidecar paths the plugin's *own* source naturally references vs. paths that
