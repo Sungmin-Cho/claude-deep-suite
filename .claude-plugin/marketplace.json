@@ -18,12 +18,13 @@
     },
     {
       "name": "deep-wiki",
-      "description": "LLM-managed markdown wiki — all 5 `/wiki-*` slash commands (ingest / lint / query / rebuild / setup) promoted to `user-invocable: true` skills under skills/wiki-{ingest,lint,query,rebuild,setup}/SKILL.md for Codex / Copilot CLI / Gemini CLI / Agent SDK parity (third installment of suite-wide command→skill migration after deep-docs v1.3.0 + deep-evolve v3.4.0; deep-wiki is the largest single conversion — 5 entry surfaces, 4,062 body lines, wiki-ingest alone is 2,841 lines) + body byte-equivalent (mechanical cp + sed retargeting) + plugin-validator 0/0/0 + skill-reviewer × 5 PASS. v1.6.1 quotes the wiki-setup frontmatter description to fix a Codex strict-YAML parse error (colon-space pattern was silently dropping the skill) (v1.6.2+) v1.6.2 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, and Codex compatibility docs while preserving Claude Code metadata.",
+      "description": "v1.7.0 — large-wiki reader race fix + index.md dashboard (5-section, ~3-5KB stable token budget, explicit marker) + inbox stale cleanup (quarantine + partial_fail-protected) + npm test bare-discovery + wiki-setup dashboard seed",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "40344c230f158a1397840b905c41e37f1e482b83"
-      }
+        "sha": "089da96a766fb564592d33dc47dc25c6b9d89ed3"
+      },
+      "sha": "089da96a766fb564592d33dc47dc25c6b9d89ed3"
     },
     {
       "name": "deep-evolve",
