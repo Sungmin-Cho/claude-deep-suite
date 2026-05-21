@@ -16,7 +16,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | deep-review | 1.7.0 | Independent Evaluator |
 | deep-docs | 1.3.1 | Document gardening agent |
 | deep-dashboard | 1.3.7 | Cross-plugin harness diagnostics + suite telemetry |
-| deep-memory | 0.1.0 | Cross-project semantic operational memory |
+| deep-memory | 0.1.3 | Cross-project semantic operational memory |
 
 <!-- deep-suite:auto-generated:plugin-table-claude:end -->
 
