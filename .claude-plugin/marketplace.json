@@ -36,11 +36,11 @@
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator — emits envelope-wrapped recurring-findings.json + envelope-aware session-receipt consumer + /deep-review-loop promoted from a slash command to a `user-invocable: true` skill for Codex / Copilot / Gemini CLI / Agent SDK parity (review↔respond auto-iteration with identical §0–§9 protocol) + Codex per-call timeout 900s (v1.6.1+) v1.6.1 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, Codex compatibility docs, and the Codex Claude CLI reviewer bridge while preserving Claude Code metadata.",
+      "description": "Independent Evaluator — v1.7.0 adds Google Antigravity (`agy`, Gemini 3.5) as a 4th reviewer alongside Opus + Codex review + Codex adversarial, with fingerprint-based pre-spawn sensitive-file acknowledgment (`agy_sensitive_acked_fingerprint`), macOS-portable Perl fork-before-shift timeout shim, 4-way verdict synthesis with `dissenter`/`dissenter_family` annotations, `AGY_USER_DECLINED_THIS_RUN` session-flag honoring user opt-out, and orchestrator-side `AGY_EXCLUDE_FROM_SYNTHESIS` gate that drops mutated/truncated/non-success reviews. Validated through 8-round deep-review-loop convergence (2 unanimous 3/3 criticals surgically resolved; 8 v1.7.1 backlog items documented in CHANGELOG known-issues). Prior v1.6.1 additions (envelope-wrapped recurring-findings.json, envelope-aware session-receipt consumer, `/deep-review-loop` user-invocable skill for Codex / Copilot / Gemini CLI / Agent SDK parity, Codex per-call timeout 900s, native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, Codex Claude CLI reviewer bridge) preserved.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "81fdcfec86ea4ac4ddc2e41cf1626bce1e554a5c"
+        "sha": "6b2227b0ac8910e506ae82e2faa15da7ed47975c"
       }
     },
     {
