@@ -37,11 +37,11 @@
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator — v1.7.0 adds Google Antigravity (`agy`, Gemini 3.5) as a 4th reviewer alongside Opus + Codex review + Codex adversarial, with fingerprint-based pre-spawn sensitive-file acknowledgment (`agy_sensitive_acked_fingerprint`), macOS-portable Perl fork-before-shift timeout shim, 4-way verdict synthesis with `dissenter`/`dissenter_family` annotations, `AGY_USER_DECLINED_THIS_RUN` session-flag honoring user opt-out, and orchestrator-side `AGY_EXCLUDE_FROM_SYNTHESIS` gate that drops mutated/truncated/non-success reviews. Validated through 8-round deep-review-loop convergence (2 unanimous 3/3 criticals surgically resolved; 8 v1.7.1 backlog items documented in CHANGELOG known-issues). Prior v1.6.1 additions (envelope-wrapped recurring-findings.json, envelope-aware session-receipt consumer, `/deep-review-loop` user-invocable skill for Codex / Copilot / Gemini CLI / Agent SDK parity, Codex per-call timeout 900s, native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, Codex Claude CLI reviewer bridge) preserved.",
+      "description": "Independent Evaluator — v1.7.1 adds agy fingerprint **hybrid mode** as the new default (~100× faster than v1.7.0 full-walk on large repos): `git status -z` + per-dirty-file SHA-256 + HEAD-sha + sensitive-pattern walk via shared `lib/sensitive-patterns.list` (52 patterns, read by both Python `scan_sensitive_files` and Bash `run-agy-reviewer.sh`). 3-mode dispatcher (`hybrid` | `full-walk` | `git-status` | `off`) + `AGY_FINGERPRINT_MODE` env var override + `agy_fingerprint_mode` config field with auto-migration from v1.7.0. Path-safe via NUL-separated git porcelain + hex-encoded path bytes; pipefail-shielded sensitive scan with PIPESTATUS-equivalent guard; symlink-safe `_resolve_symlink` library resolution; startup probes for sha256 backend + library presence with stderr-tail-visible degrade. 15-case §7 test matrix + 5 new pattern-family assertions + cross-consumer parity test. Validated through 5 spec / 4 plan / 4 impl rounds of `/deep-review-loop` convergence. CHANGELOG documents the \"Behavior change (default)\" with 1-line opt-out (`agy_fingerprint_mode: full-walk`) and 5 v1.7.2 follow-ups. Prior v1.7.0 4-way review (Opus + Codex review + Codex adversarial + agy) preserved.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "6b2227b0ac8910e506ae82e2faa15da7ed47975c"
+        "sha": "8dd2629e0cc6a0447988297382db86d612ff9f6f"
       }
     },
     {
