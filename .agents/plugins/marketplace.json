@@ -51,7 +51,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "8dd2629e0cc6a0447988297382db86d612ff9f6f"
+        "sha": "e8a8076ad912e277c8ff61ce8f8aafef9b3e8c6f"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -90,7 +90,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-memory.git",
-        "sha": "cd739589c15f7e96c9fbd8af1a857515bd07fe60"
+        "sha": "c451aa9fee5c4eb653d874aa87759335f071d4b0"
       },
       "policy": {
         "installation": "AVAILABLE",

@@ -110,8 +110,14 @@
       "runtime": ["node", "bash"],
       "capabilities": [
         "cross-project-semantic-memory",
+        "cross-runtime-hook-capture",
         "hybrid-distill",
         "fts5-lexical-retrieval",
+        "vector-retrieval",
+        "rrf-fusion",
+        "mcp-server-stdio",
+        "gate2-slash-only-mutation",
+        "audit-log-envelope",
         "multi-pass-redaction",
         "project-lease",
         "atomic-write",
@@ -120,15 +126,21 @@
       "artifacts": {
         "writes": [
           "~/.deep-memory/events/<YYYY-MM>.jsonl",
+          "~/.deep-memory/audit-log/<YYYY-MM>.jsonl",
           "~/.deep-memory/cards/<memory_type>/<global|project_id>/<memory_id>.json",
           "~/.deep-memory/indexes/lexical.sqlite",
+          "~/.deep-memory/indexes/vector.sqlite",
           "~/.deep-memory/projects/<project_id>.json",
+          "~/.deep-memory/.last-distill-cursor/<project_id>",
+          "~/.deep-memory/.dedupe-window/<project_id>.jsonl",
+          "~/.deep-memory/.embed-model-version",
           "~/.deep-memory/.leases/<project_id>.lease",
           "~/.deep-memory/.lock/metadata.json",
           "~/.deep-memory/.quarantine/empty-claim/<run_id>.json",
           ".deep-memory/project-profile.json",
           ".deep-memory/latest-harvest.json",
           ".deep-memory/latest-brief.{json,md}",
+          ".deep-memory/latest-distill.json",
           ".deep-memory/latest-audit.json"
         ],
         "reads": [
@@ -139,8 +151,24 @@
           "<wiki_root>/.wiki-meta/index.json"
         ]
       },
-      "hooks_active": [],
-      "hooks_intentionally_empty_reason": "User-invocation 기반 — 자동 SessionStart/Stop hook은 사용자 사전 동의 없이 cross-project memory를 변경할 위험이 있어 v0.1.0에서 의도적으로 제외 (privacy-by-default)."
+      "hooks_active": [
+        "SessionStart",
+        "UserPromptSubmit",
+        "PostToolUse",
+        "PostToolUseFailure",
+        "PreCompact",
+        "SessionEnd"
+      ],
+      "hooks_active_reason": "v0.3.0 agentmemory-style hook capture — Tier-1 hooks ingest host events into ~/.deep-memory/events/. Each hook gates on config.capture.enabled BEFORE stdin read (R4-D privacy invariant); capture default OFF on non-interactive init. Codex runs 4-hook subset (no PostToolUseFailure, no SessionEnd per spec §3.5). Per-host detection via env-var probe (CURSOR_PLUGIN_ROOT/GEMINI_CLI_ROOT/CLINE_PLUGIN_ROOT/CLAUDE_PLUGIN_ROOT/CODEX_PLUGIN_ROOT).",
+      "mcp_server": {
+        "transport": "stdio",
+        "auto_spawn": true,
+        "config_path": ".mcp.json",
+        "tools": 10,
+        "resources": 5,
+        "prompts": 2,
+        "mutation_gate": "spec §6.3.1 Gate 2/3 — forget + audit(mode!=check) + export(scope=all) return slash_only_in_v030"
+      }
     }
   },
   "data_flow": [
