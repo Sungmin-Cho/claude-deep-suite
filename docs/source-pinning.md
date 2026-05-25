@@ -14,7 +14,7 @@ Each plugin is fetched from the SHA below at install time. M2 CI re-checks daily
 | deep-review | 1.8.0 | [`Sungmin-Cho/claude-deep-review`](https://github.com/Sungmin-Cho/claude-deep-review) | [`8da659e`](https://github.com/Sungmin-Cho/claude-deep-review/commit/8da659e03c1cfa77856cac0f52bb867162230f41) |
 | deep-docs | 1.3.1 | [`Sungmin-Cho/claude-deep-docs`](https://github.com/Sungmin-Cho/claude-deep-docs) | [`cc28b5d`](https://github.com/Sungmin-Cho/claude-deep-docs/commit/cc28b5d02d2d5e6e40f4b889ce8f751c2d3347b1) |
 | deep-dashboard | 1.3.7 | [`Sungmin-Cho/claude-deep-dashboard`](https://github.com/Sungmin-Cho/claude-deep-dashboard) | [`45c0ebd`](https://github.com/Sungmin-Cho/claude-deep-dashboard/commit/45c0ebdaf12ea249f943713a134af2f40fd39c68) |
-| deep-memory | 0.1.3 | [`Sungmin-Cho/claude-deep-memory`](https://github.com/Sungmin-Cho/claude-deep-memory) | [`cd73958`](https://github.com/Sungmin-Cho/claude-deep-memory/commit/cd739589c15f7e96c9fbd8af1a857515bd07fe60) |
+| deep-memory | 0.3.1 | [`Sungmin-Cho/claude-deep-memory`](https://github.com/Sungmin-Cho/claude-deep-memory) | [`41b1b6c`](https://github.com/Sungmin-Cho/claude-deep-memory/commit/41b1b6c346c47d382ed87357615fe864d53564ba) |
 
 > Version reflects `plugin.json.version` at the pinned SHA. Click the SHA to see the upstream commit details.
 

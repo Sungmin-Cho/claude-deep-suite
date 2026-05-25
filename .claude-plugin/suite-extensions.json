@@ -140,7 +140,6 @@
           ".deep-memory/project-profile.json",
           ".deep-memory/latest-harvest.json",
           ".deep-memory/latest-brief.{json,md}",
-          ".deep-memory/latest-distill.json",
           ".deep-memory/latest-audit.json"
         ],
         "reads": [
@@ -159,8 +158,8 @@
         "PreCompact",
         "SessionEnd"
       ],
-      "hooks_active_reason": "v0.3.0 agentmemory-style hook capture — Tier-1 hooks ingest host events into ~/.deep-memory/events/. Each hook gates on config.capture.enabled BEFORE stdin read (R4-D privacy invariant); capture default OFF on non-interactive init. Codex runs 4-hook subset (no PostToolUseFailure, no SessionEnd per spec §3.5). Per-host detection via env-var probe (CURSOR_PLUGIN_ROOT/GEMINI_CLI_ROOT/CLINE_PLUGIN_ROOT/CLAUDE_PLUGIN_ROOT/CODEX_PLUGIN_ROOT).",
-      "mcp_server": {
+      "x-hooks-active-reason": "v0.3.0 agentmemory-style hook capture — Tier-1 hooks ingest host events into ~/.deep-memory/events/. Each hook gates on config.capture.enabled BEFORE stdin read (R4-D privacy invariant); capture default OFF on non-interactive init. Codex runs 4-hook subset (no PostToolUseFailure, no SessionEnd per spec §3.5). Per-host detection via env-var probe (CURSOR_PLUGIN_ROOT/GEMINI_CLI_ROOT/CLINE_PLUGIN_ROOT/CLAUDE_PLUGIN_ROOT/CODEX_PLUGIN_ROOT).",
+      "x-mcp-server": {
         "transport": "stdio",
         "auto_spawn": true,
         "config_path": ".mcp.json",
