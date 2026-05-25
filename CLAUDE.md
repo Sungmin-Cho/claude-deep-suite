@@ -32,9 +32,13 @@ npm test                          # unit + spawnSync CLI tests
 npm run validate                  # validate .claude-plugin/suite-extensions.json (2-phase)
 npm run docs:write                # regenerate auto-generated marker regions in README/CLAUDE/guide
 npm run docs:sync                 # run all 6 doc-sync checkers (M2 CI gate)
+npm run preflight                 # full local CI mirror (validate + docs:check + docs:sync + fixtures + test)
+npm run release:bump -- <plugin> <sha40>   # one-command release: set sha → docs:write → preflight
 ```
 
 Node 20+ required (ESM project). All dependencies are devDeps only — runtime use of `validate-artifact.js` etc. is also zero-dep (Node built-ins + ajv).
+
+A `prepare`-installed git **pre-push hook** runs `npm run preflight` before every push so manifest/doc/sidecar drift never reaches `main` red (bypass: `SKIP_PREFLIGHT=1 git push` or `git push --no-verify`).
 
 ---
 
@@ -65,6 +69,9 @@ scripts/
   check-semver-sha-sync.js        — M2 marketplace.sha → plugin.json.version → docs marker consistency
   check-pinned-plugin-paths.js    — M2 sidecar artifacts paths ↔ pinned plugin source grep
   check-memory-hierarchy.js       — M2 cross-plugin policy keyword conflict check
+  release-bump.js                 — one-command release: set marketplace sha → docs:write → preflight gate
+  install-hooks.js                — prepare-lifecycle git hook installer (best-effort; never breaks npm ci)
+  hooks/pre-push                  — pre-push preflight gate (managed hook; SKIP_PREFLIGHT=1 / --no-verify bypass)
   lib/markers.js                  — auto-generated marker parser/replacer
   lib/fetch-plugin-files.js       — gh api + .deep-suite-cache fetcher
   README.md                       — script conventions and inventory
@@ -79,6 +86,7 @@ tests/
   markers.test.js                 — markers.js round-trip test
   generate-reference-sections.test.js — generator CLI scenarios (--check/--write/--id, fixture override)
   cli-sync-checkers.test.js       — 6 check-* script spawnSync scenarios
+  release-bump.test.js            — release-bump pure-fn (applyBump/isFullSha) + no-side-effect CLI (dry-run/validation) tests
   handoff-roundtrip-fixtures.test.js — suite-side e2e regression guard (4-artifact set × envelope × payload × identity-triplet × parent_run_id chain × 3 dashboard metric mirror)
   fixtures/                       — schema + envelope + plugin-cache fixtures
   fixtures/envelope-payloads/<producer>/<kind>/v<v>/{valid-*,invalid-*}.json — M3 envelope fixture set
@@ -144,16 +152,20 @@ README.md / README.ko.md               — project introduction (EN / KO)
 
 ## Release workflow
 
-When a plugin is released, this repo must be updated to reflect the new version:
+When a plugin is released, this repo must be updated to reflect the new version.
+
+**Preferred (automated):**
 
 1. Capture the merge commit SHA on the plugin's `main`: `git -C ../<plugin> rev-parse main`
-2. Update `marketplace.json` — set the plugin's `source.sha` to the new commit (full 40 chars).
-3. Update narrative description in `marketplace.json` if the headline feature changed.
-4. Run `npm run docs:write` to refresh the auto-generated marker regions in README.md / README.ko.md / CLAUDE.md / guides.
-5. Run `npm run docs:sync` to verify all 6 checkers pass.
-6. Commit: `chore: bump <plugin> to vX.Y.Z — <one-line summary>` and push.
+2. `npm run release:bump -- <plugin> <sha40>` — sets `marketplace.json` `source.sha` (canonical pin, plus the redundant top-level `sha` mirror if present), runs `docs:write`, then runs the full `preflight` gate. Add `--description="…"` to also replace the marketplace blurb.
+3. If preflight fails, reconcile the surfaced drift (guide narrative version mentions, `suite-extensions.json` artifacts/schema) and re-run `npm run preflight`.
+4. Commit: `chore: bump <plugin> to vX.Y.Z — <one-line summary>` and push. The **pre-push hook** re-runs `preflight` as a backstop.
 
-The plugin repo itself owns the CHANGELOG and version bump in its own `plugin.json` / `package.json` — this repo just pins the SHA.
+**Manual fallback (equivalent):** edit `marketplace.json` `source.sha` (+ description if the headline feature changed) → `npm run docs:write` → `npm run docs:sync` (or `npm run preflight`) → commit + push.
+
+> Why automated: the `release:bump` + pre-push pair exists because a SHA bump landing on `main` without steps `docs:write`/`docs:sync` + sidecar reconcile turned the CI gate red for days. The automation makes the regen un-skippable; the hook stops a partial bump from being pushed red.
+
+The plugin repo itself owns the CHANGELOG and version bump in its own `plugin.json` / `package.json` — this repo just pins the SHA. Cross-plugin sidecar artifacts (`suite-extensions.json` `writes`/`reads`) must match the **pinned** source — only advertise a path the plugin actually emits at that SHA (`check-pinned-plugin-paths.js` enforces this), and forward-compat keys use the `^x-` namespace (schema locked at 1.0).
 
 ---
 

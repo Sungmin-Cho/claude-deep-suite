@@ -1,0 +1,28 @@
+#!/bin/sh
+# deep-suite:managed-hook  (installed by scripts/install-hooks.js)
+#
+# Pre-push gate: run the full local CI mirror (`npm run preflight`) before any
+# push, so manifest/doc/sidecar drift never reaches main red. This is the
+# enforcement half of the recurrence-prevention pair; `npm run release:bump` is
+# the automation half.
+#
+# Bypass (use sparingly):
+#   SKIP_PREFLIGHT=1 git push …      # skip just this gate
+#   git push --no-verify             # skip all client hooks
+set -e
+
+if [ "${SKIP_PREFLIGHT:-}" = "1" ]; then
+  echo "[pre-push] SKIP_PREFLIGHT=1 — skipping preflight gate." >&2
+  exit 0
+fi
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+
+if [ ! -d node_modules ]; then
+  echo "[pre-push] node_modules missing — run 'npm install' first (or 'git push --no-verify' to bypass)." >&2
+  exit 1
+fi
+
+echo "[pre-push] running preflight — bypass with SKIP_PREFLIGHT=1 or --no-verify…" >&2
+npm run --silent preflight

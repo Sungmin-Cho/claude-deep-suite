@@ -17,6 +17,8 @@ Suite-level tooling. Each script is self-contained and runnable from the repo ro
 | `validate-artifact.js` | Validate a JSON artifact against `schemas/artifact-envelope.schema.json` + (when registered) `schemas/payload-registry/<producer>/<kind>/v<v>.schema.json`. M3 Phase 1. | `0` valid (envelope passes; payload either passes or registry-miss warning), `1` validation fail (envelope vs payload phase via stderr prefix), `2` IO/usage |
 | `validate-artifact-fixtures.js` | Walk `tests/fixtures/envelope-payloads/` and assert every `valid-*` fixture exits 0 and every `invalid-*` fixture exits 1. CI gate for envelope contract. | `0` clean, `1` mismatch |
 | `wrap-artifact.js` | Wrap a legacy JSON file into the envelope format. Auto-generates ULID `run_id`, detects git head/branch/dirty, fills `tool_versions.node`. M3 Phase 2 plugin-maintainer helper. | `0` wrapped, `1` envelope schema reject, `2` IO/usage |
+| `release-bump.js` | One-command release: set `marketplace.json` `source.sha` for `<plugin>` (+ top-level `sha` mirror, optional `--description=`) → `docs:write` → `preflight`. `--dry-run` validates only; `--no-verify` skips the gate. Pure `applyBump`/`isFullSha` are unit-tested. | `0` ok, `1` usage/verify fail, `2` IO |
+| `install-hooks.js` | Best-effort `prepare`-lifecycle installer that copies `scripts/hooks/*` into the clone's git hooks dir (`git rev-parse --git-path hooks`). Refuses to clobber an unmanaged hook; never fails `npm install`/`npm ci`. | always `0` |
 
 ## Library
 
@@ -24,6 +26,12 @@ Suite-level tooling. Each script is self-contained and runnable from the repo ro
 |---|---|
 | `lib/markers.js` | `<!-- deep-suite:auto-generated:<id>:start -->` marker parser/replacer used by generator and check-* scripts |
 | `lib/fetch-plugin-files.js` | `gh api` + `.deep-suite-cache/<plugin>-<sha>/` cached fetcher; honours `M2_TEST_FIXTURES_DIR` for test overrides |
+
+## Git hooks
+
+| File | Purpose |
+|---|---|
+| `hooks/pre-push` | Managed pre-push gate (`deep-suite:managed-hook` marker) that runs `npm run preflight`. Installed by `install-hooks.js` via the `prepare` lifecycle. Bypass with `SKIP_PREFLIGHT=1 git push` or `git push --no-verify`. |
 
 ## Conventions
 
