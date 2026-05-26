@@ -64,11 +64,11 @@
     },
     {
       "name": "deep-memory",
-      "description": "Cross-project semantic memory + agentmemory-style cross-runtime hook capture (v0.3.0). 6 Tier-1 hooks (SessionStart/UserPromptSubmit/PostToolUse/PostToolUseFailure/PreCompact/SessionEnd; Codex: 4-subset) capture host events into ~/.deep-memory/events/YYYY-MM.jsonl; Lazy distill (Stage 0a) runs 5 deterministic Step A detectors (pattern/failure-case/decision/style/session-summary) + LLM Step B refine into M3-envelope cards. MCP server auto-spawned via .mcp.json — 10 tools (brief/recall/smart_search/save/harvest/audit/forget/sessions/profile/export); 6 mutation calls return slash_only_in_v030 (spec §6.3.1 Gate 2/3). Audit-log envelope with R4-K mutation-consent dual emission. Vector index (@xenova/transformers MiniLM-L6-v2, 384-dim) + FTS5 + RRF k=60 + sessionDiversify with COMPOSITE (memory_id, project_id) key. 4-pass redaction promoted (homedir + env-var + stack-trace shared rules). Byte-offset cursor with cross-month rollover + token-cap deferred-line protection. G-α p95=72ms / G-β p95=66ms latency gates. 342 tests pass. Capture default OFF on non-interactive init (privacy-by-default). v0.1.x readers compatible via legacy-adapter (R4-H). v0.3.1 backlog: FTS5 widening, init.js multi-marker, card body persistence, Gate 1 scope flag, NFS append-only invariant doc.",
+      "description": "Cross-project semantic memory + agentmemory-style cross-runtime hook capture. 6 Tier-1 hooks (SessionStart/UserPromptSubmit/PostToolUse/PostToolUseFailure/PreCompact/SessionEnd; Codex: 4-subset) capture host events into ~/.deep-memory/events/YYYY-MM.jsonl; Lazy distill runs 5 deterministic Step A detectors (pattern/failure-case/decision/style/session-summary) + LLM Step B refine into M3-envelope cards. MCP server auto-spawned via .mcp.json — 10 tools (brief/recall/smart_search/save/harvest/audit/forget/sessions/profile/export); 6 mutation calls return slash_only_in_v030 (Gate 2/3). Vector index (@xenova/transformers MiniLM-L6-v2, 384-dim) + FTS5 + RRF k=60 + sessionDiversify with COMPOSITE (memory_id, project_id) key. 4-pass redaction. Capture default OFF (privacy-by-default); v0.3.2 adds /deep-memory-init --enable-capture/--disable-capture — a global, audit-logged toggle (audit-first + fail-closed on enable) hardened through a 6-round deep-review-loop (column-0 block-scoped config edit, sync-locked transitions). 377 tests pass.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-memory.git",
-        "sha": "41b1b6c346c47d382ed87357615fe864d53564ba"
+        "sha": "cf68f25c44391bc74733c6196eb6380fb6f772b8"
       }
     }
   ]
