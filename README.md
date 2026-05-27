@@ -2,7 +2,7 @@
 
 # Deep Suite
 
-Cross-runtime plugin marketplace bundling six plugins for structured development, knowledge management, autonomous experimentation, independent code review, documentation gardening, and harness diagnostics across Claude Code and Codex.
+Cross-runtime plugin marketplace bundling eight plugins for structured development, knowledge management, autonomous experimentation, independent code review, documentation gardening, harness diagnostics, cross-project memory, and goal-driven long-running execution across Claude Code and Codex.
 
 Built on the [Harness Engineering](https://martinfowler.com/articles/harness-engineering.html) framework (Böckeler/Fowler, 2026) — `Agent = Model + Harness` — mapping Guides (feedforward) × Sensors (feedback) across Computational and Inferential control.
 
