@@ -70,6 +70,15 @@
         "url": "https://github.com/Sungmin-Cho/claude-deep-memory.git",
         "sha": "cf68f25c44391bc74733c6196eb6380fb6f772b8"
       }
+    },
+    {
+      "name": "deep-goal",
+      "description": "Goal condition compiler — evaluate, reshape, scout prerequisites, and compile long-running task requests into ready-to-paste native /goal conditions for Claude Code / Codex; self-contained cross-platform core + 3 synergy recipes (robust-implementation / autonomous-evolution / ship-and-document) + verify-plugin.sh release-lint + verify-selftest.sh negative self-test. v1.0.0 first release.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Sungmin-Cho/claude-deep-goal.git",
+        "sha": "4114615b56a358b83a5d9eae999ccdced506e1c3"
+      }
     }
   ]
 }

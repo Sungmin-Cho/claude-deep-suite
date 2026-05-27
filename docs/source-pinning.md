@@ -15,6 +15,7 @@ Each plugin is fetched from the SHA below at install time. M2 CI re-checks daily
 | deep-docs | 1.3.1 | [`Sungmin-Cho/claude-deep-docs`](https://github.com/Sungmin-Cho/claude-deep-docs) | [`cc28b5d`](https://github.com/Sungmin-Cho/claude-deep-docs/commit/cc28b5d02d2d5e6e40f4b889ce8f751c2d3347b1) |
 | deep-dashboard | 1.3.7 | [`Sungmin-Cho/claude-deep-dashboard`](https://github.com/Sungmin-Cho/claude-deep-dashboard) | [`45c0ebd`](https://github.com/Sungmin-Cho/claude-deep-dashboard/commit/45c0ebdaf12ea249f943713a134af2f40fd39c68) |
 | deep-memory | 0.3.2 | [`Sungmin-Cho/claude-deep-memory`](https://github.com/Sungmin-Cho/claude-deep-memory) | [`cf68f25`](https://github.com/Sungmin-Cho/claude-deep-memory/commit/cf68f25c44391bc74733c6196eb6380fb6f772b8) |
+| deep-goal | 1.0.0 | [`Sungmin-Cho/claude-deep-goal`](https://github.com/Sungmin-Cho/claude-deep-goal) | [`4114615`](https://github.com/Sungmin-Cho/claude-deep-goal/commit/4114615b56a358b83a5d9eae999ccdced506e1c3) |
 
 > Version reflects `plugin.json.version` at the pinned SHA. Click the SHA to see the upstream commit details.
 

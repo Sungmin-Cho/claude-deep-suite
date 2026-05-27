@@ -19,6 +19,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.3.1 | Document gardening agent |
 | [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.3.7 | Cross-plugin harness diagnostics + suite telemetry |
 | [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 0.3.2 | Cross-project semantic memory + agentmemory-style cross-runtime hook capture |
+| [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.0.0 | Goal condition compiler |
 
 <!-- deep-suite:auto-generated:plugin-table-en:end -->
 

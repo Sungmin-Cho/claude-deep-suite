@@ -15,5 +15,6 @@ Capability strings come from `.claude-plugin/suite-extensions.json` `plugins.<na
 | deep-docs |  |  |  |  |  |  |  |  |  | ✓ |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ✓ | ✓ |  |  |  |  |
 | deep-dashboard |  |  |  |  |  |  | ✓ |  |  |  | ✓ |  |  |  |  | ✓ |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 | deep-memory |  | ✓ | ✓ |  |  |  |  | ✓ | ✓ |  |  | ✓ |  | ✓ | ✓ |  | ✓ |  |  | ✓ | ✓ |  |  |  |  |  |  | ✓ |  |  | ✓ |  |  |  |  |  | ✓ |
+| deep-goal |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 
 <!-- deep-suite:auto-generated:capability-matrix:end -->
