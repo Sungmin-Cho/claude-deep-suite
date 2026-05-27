@@ -2,6 +2,8 @@
 
 # Deep Suite
 
+[![License: MIT](https://img.shields.io/github/license/Sungmin-Cho/claude-deep-suite)](LICENSE) ![Plugins](https://img.shields.io/badge/plugins-8-5b8def) ![Runtimes](https://img.shields.io/badge/runtimes-Claude%20Code%20%2B%20Codex-blue)
+
 구조화된 개발, 지식 관리, 자율 실험, 독립 코드 리뷰, 문서 가드닝, 하네스 진단, 크로스-프로젝트 메모리, 목표 기반 장기 실행을 위한 8개 플러그인을 Claude Code와 Codex에서 함께 쓸 수 있게 묶어 제공하는 cross-runtime 플러그인 마켓플레이스.
 
 [Harness Engineering](https://martinfowler.com/articles/harness-engineering.html) 프레임워크 (Böckeler/Fowler, 2026) 기반 — `Agent = Model + Harness` — Guides(feedforward) × Sensors(feedback) 축을 Computational/Inferential 제어와 교차 매핑한다.

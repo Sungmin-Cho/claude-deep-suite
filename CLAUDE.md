@@ -125,6 +125,7 @@ README.md / README.ko.md               — project introduction (EN / KO)
 
 - This repository contains **marketplace metadata, integration guides, and analysis docs only**. Plugin source code lives in each plugin's repository.
 - Documentation is bilingual (Korean / English). README and `guides/integrated-workflow-guide` are kept in sync across both.
+- 📄 **Doc maintenance** follows [`docs/DOCS_RULE.md`](docs/DOCS_RULE.md) — the local maintainer rulebook for README / CHANGELOG / CLAUDE.md / AGENTS.md single-source-of-truth and the auto-generated marker policy. It is gitignored (local-only).
 
 ### Version policy — plugin SemVer + marketplace SHA pinning
 

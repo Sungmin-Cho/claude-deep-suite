@@ -1,6 +1,8 @@
-[한국어 README](README.ko.md)
+**English** | [한국어](./README.ko.md)
 
 # Deep Suite
+
+[![License: MIT](https://img.shields.io/github/license/Sungmin-Cho/claude-deep-suite)](LICENSE) ![Plugins](https://img.shields.io/badge/plugins-8-5b8def) ![Runtimes](https://img.shields.io/badge/runtimes-Claude%20Code%20%2B%20Codex-blue)
 
 Cross-runtime plugin marketplace bundling eight plugins for structured development, knowledge management, autonomous experimentation, independent code review, documentation gardening, harness diagnostics, cross-project memory, and goal-driven long-running execution across Claude Code and Codex.
 

@@ -27,6 +27,9 @@ current plugin keys while Codex receives native policy metadata.
 - Preserve all existing plugin entries unless the user explicitly removes one.
 - Do not commit `.deep-review/`, `.deep-suite-cache/`, `.claude/`, or
   `node_modules/` runtime artifacts.
+- Documentation maintenance follows `docs/DOCS_RULE.md` (local maintainer guide;
+  gitignored). It is the single-source-of-truth rulebook for README / CHANGELOG /
+  CLAUDE.md / AGENTS.md and the auto-generated marker policy.
 
 ## Verification
 
