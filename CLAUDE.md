@@ -1,6 +1,6 @@
 # Claude Deep Suite — Project Guide for Claude
 
-This is the marketplace repository for the six Deep Suite plugins. It holds the marketplace manifest, suite-side schemas, integration guides, analysis docs, and CI tooling — **no plugin source code**. Each plugin lives in its own repository at `github.com/Sungmin-Cho/claude-deep-{name}`.
+This is the marketplace repository for the eight Deep Suite plugins. It holds the marketplace manifest, suite-side schemas, integration guides, analysis docs, and CI tooling — **no plugin source code**. Each plugin lives in its own repository at `github.com/Sungmin-Cho/claude-deep-{name}`.
 
 Built on the [Harness Engineering](https://martinfowler.com/articles/harness-engineering.html) framework (Böckeler/Fowler, 2026): `Agent = Model + Harness`, with Guides (feedforward) × Sensors (feedback) on Computational/Inferential axes.
 
