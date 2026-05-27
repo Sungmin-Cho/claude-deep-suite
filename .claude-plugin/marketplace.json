@@ -4,12 +4,12 @@
     "name": "sungmin"
   },
   "metadata": {
-    "description": "Deep Suite — structured development, wiki, autonomous experimentation, independent code review, document gardening, and harness diagnostics plugins for Claude Code and Codex"
+    "description": "Deep Suite — eight plugins for structured development, knowledge wiki, autonomous experimentation, independent code review, document gardening, harness diagnostics, cross-project memory, and goal-driven execution across Claude Code and Codex."
   },
   "plugins": [
     {
       "name": "deep-work",
-      "description": "Evidence-Driven Development Protocol — all 24 command-equivalent entry surfaces promoted to `user-invocable: true` skills under skills/deep-{verb}/SKILL.md (Category A: 7 thin Skill() wrappers absorbed by their matching skill bodies; Category B: 17 new entry skills with frontmatter + Invocation/Inputs/Prerequisites head sections + byte-preserved bodies) for Claude Code skills / Codex / Copilot CLI / Gemini CLI / Agent SDK parity. **Fourth and final installment** of the suite-wide command→skill migration (after deep-docs v1.3.0 + deep-evolve v3.4.0 + deep-wiki v1.6.0 — closes cross-platform parity across the entire suite). Emits envelope-wrapped session-receipt + slice-receipt + handoff + compaction-state; non-implement dangerous-command denylist + phase-guard hook golden test + deep-status hub-spoke pattern (4 sub-skills dispatched via ${CLAUDE_PLUGIN_ROOT}/skills/deep-X/SKILL.md inline Read) + plugin-validator 0/0/0 + skill-reviewer × 24 PASS (v6.7.1+) v6.7.1 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, Codex compatibility docs, and the skill-native `$deep-work:deep-work` primary entry alias while preserving Claude Code metadata. **v6.8.0** ships three coordinated themes — (1) plan-quality contract enforcement: every non-inline S/M/L slice now requires `failing_test`, `verification_cmd`, `expected_output`, `code_sketch`, `steps`, and the plan review-gate (`skills/shared/references/review-gate.md`) is aligned with that contract (v5.8 fallback removed); (2) CI hardening: advisory shellcheck step on `hooks/scripts/**/*.sh` (`continue-on-error: true`), test discovery widened to 6 subtree globs run sequentially via `--test-concurrency=1`, CI Node bumped 20 → 22 (LTS); (3) receipt-tracker robustness: pre-lock receipt init restored with `O_CREAT | O_EXCL` (`fs.writeFileSync` `flag: 'wx'`) so single-write slices keep canonical `SLICE-NNN.json` even on stale-lock timeout. Three new contract test files (`plan-quality-contract`, `ci-workflow-contract`, `file-tracker-lock-timeout`) pin all surfaces against silent drift. `npm test` 901/901 pass; three iterative 3-way deep-review rounds (Opus + Codex review + Codex adversarial) converged with APPROVE. **v6.9.0** wires deep-work as a read-only consumer of the new `deep-memory` v0.1.0 plugin via two opt-in affordances — (1) Phase 1 Research recall: `skills/deep-research/SKILL.md` cites `.deep-memory/latest-brief.md` verbatim under a new `## Cross-project Memory` section in `research.md` when the brief exists; absent → research artifact stays deep-memory-agnostic (privacy invariant — never auto-invoke, never write to artifact); provenance tokens (`mem-<ULID>` Crockford-base32 uppercase) extracted into `cross_project_memory.cited_memory_ids[]` state field for the Phase 4+ feedback hook; (2) Phase 5 Integrate harvest: `skills/deep-integrate/SKILL.md` proposes `/deep-memory-harvest` in the top-3 LLM recommendations + B-fallback list when `deep-memory ∈ plugins.installed` and the session changed > 0 files. `detect-plugins.sh` extended (TARGETS now 6 plugins) so the gate's `plugins.installed`/`plugins.missing` signal correctly enumerates deep-memory. `tests/deep-memory-integration.test.js` (12 fixture-based contract tests) + `detect-plugins.test.js` regression test pin every documented invariant. 3-round internal deep-review-loop converged to APPROVE. `npm test` 850/850 pass.",
+      "description": "Evidence-Driven Development Protocol — a single-command Brainstorm → Research → Plan → Implement → Test → Integrate workflow with TDD enforcement, receipt-based evidence, and a hard separation between planning and coding, for Claude Code and Codex.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
@@ -18,7 +18,7 @@
     },
     {
       "name": "deep-wiki",
-      "description": "v1.7.0 — large-wiki reader race fix + index.md dashboard (5-section, ~3-5KB stable token budget, explicit marker) + inbox stale cleanup (quarantine + partial_fail-protected) + npm test bare-discovery + wiki-setup dashboard seed",
+      "description": "LLM-native knowledge wiki — ingest sources (files, URLs, notes, Obsidian vaults) into linked Markdown pages with source provenance, then query the accumulated knowledge; self-linting and self-healing, for Claude Code and Codex.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
@@ -28,7 +28,7 @@
     },
     {
       "name": "deep-evolve",
-      "description": "Autonomous Experimentation Protocol — `/deep-evolve` promoted from a slash command to a `user-invocable: true` skill for Codex / Copilot CLI / Gemini CLI / Agent SDK parity (Step 0 / Step 0.5 / Step 1 parsing + Protocol Routing Summary unchanged); v3.4.1 trims `deep-evolve-workflow` description from 1137 → 905 chars to fit Codex's 1024-char skill description limit (Codex was silently dropping the workflow skill at load time). Emits envelope-wrapped evolve-receipt + evolve-insights + reverse handoff + compaction-state with identity-gated chain extraction + protect-readonly hook golden + 4-way manifest drift CI guard (v3.4.2+) v3.4.2 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, and Codex compatibility docs while preserving Claude Code metadata.",
+      "description": "Autonomous Experimentation Protocol — a measured outer loop that proposes, runs, and selects code changes against a fitness metric, with lineage and session history, for Claude Code and Codex.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-evolve.git",
@@ -37,7 +37,7 @@
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator — v1.8.1 (patch) enforces read-only review for the agy reviewer. agy ran as a general-purpose agent with --dangerously-skip-permissions and a review prompt that contained no read-only directive, so it modified the workspace during Stage 3 — before the Stage 4 synthesis where fixes belong (the other three reviewers are structurally read-only: Opus code-reviewer is tools-restricted, Codex review/adversarial are read-only diff passes). Empirically confirmed agy CLI has no read-only mode: pure `agy -p` (no permission flag) and `--sandbox` both allow file writes. run-agy-reviewer.sh now prepends a strict read-only preamble at a single bridge choke point, independent of the orchestrator prompt; body limit lowered 200KB→198KB for argv headroom. The pre/post worktree fingerprint is retained as the defense-in-depth backstop (mutation → AGY_STATUS=mutated → excluded from N-way synthesis). Tests: new Test 1b (preamble prepend + body preserved) + full 36-case bridge matrix + envelope/mutation-protocol(59)/phase6(12)/detect-environment(11) all green.",
+      "description": "Independent Evaluator — reviews your changes in a separate agent context (Claude, with optional Codex review and adversarial passes) and returns an APPROVE / CONCERN / REQUEST_CHANGES verdict plus an evidence-based response protocol.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
@@ -46,7 +46,7 @@
     },
     {
       "name": "deep-docs",
-      "description": "Document gardening agent — emits envelope-wrapped last-scan.json + /deep-docs slash command → user-invocable skill conversion for cross-platform parity (Claude Code slash + Codex / Copilot CLI / Gemini CLI `Skill()` invocation) + verify-fixes.sh retargeted to skills/deep-docs/SKILL.md (43 grep checks) + plugin-dev validator round-2 PASS (v1.3.1+) v1.3.1 adds native `.codex-plugin/plugin.json` metadata, Codex-facing `AGENTS.md`, and Codex compatibility docs while preserving Claude Code metadata.",
+      "description": "Document gardening agent — scans agent-instruction docs (CLAUDE.md, AGENTS.md, and friends) for drift against the code, auto-fixes the safe subset, and reports a freshness audit, for Claude Code and Codex.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git",
@@ -55,7 +55,7 @@
     },
     {
       "name": "deep-dashboard",
-      "description": "Cross-plugin harness diagnostics + suite telemetry — emits envelope-wrapped harnessability-report.json + envelope-aware collector + 16-metric aggregator (all M4-core post-M5.5: 3 M5-activated handoff/compaction + 1 M5.5-activated per-plugin test coverage from manifest mirror) + JSONL/markdown/OTLP exporters + catalog-drift CI guard with horizon mechanism (suite §9+ extensions reported as info, not drift) + cross-shell `npm test` glob portability (v1.3.7+) v1.3.7 moves Codex skill surfaces to `skills/<skill>/SKILL.md` directory layout so Codex can discover `deep-harnessability` and `deep-harness-dashboard` from the plugin manifest.",
+      "description": "Cross-plugin harness diagnostics + suite telemetry — aggregates receipts, health reports, and harnessability metrics emitted by sibling deep-suite plugins into one dashboard, with optional OTLP export.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git",
@@ -64,7 +64,7 @@
     },
     {
       "name": "deep-memory",
-      "description": "Cross-project semantic memory + agentmemory-style cross-runtime hook capture. 6 Tier-1 hooks (SessionStart/UserPromptSubmit/PostToolUse/PostToolUseFailure/PreCompact/SessionEnd; Codex: 4-subset) capture host events into ~/.deep-memory/events/YYYY-MM.jsonl; Lazy distill runs 5 deterministic Step A detectors (pattern/failure-case/decision/style/session-summary) + LLM Step B refine into M3-envelope cards. MCP server auto-spawned via .mcp.json — 10 tools (brief/recall/smart_search/save/harvest/audit/forget/sessions/profile/export); 6 mutation calls return slash_only_in_v030 (Gate 2/3). Vector index (@xenova/transformers MiniLM-L6-v2, 384-dim) + FTS5 + RRF k=60 + sessionDiversify with COMPOSITE (memory_id, project_id) key. 4-pass redaction. Capture default OFF (privacy-by-default); v0.3.2 adds /deep-memory-init --enable-capture/--disable-capture — a global, audit-logged toggle (audit-first + fail-closed on enable) hardened through a 6-round deep-review-loop (column-0 block-scoped config edit, sync-locked transitions). 377 tests pass.",
+      "description": "Cross-project semantic memory — harvests sibling-plugin artifacts into reusable memory cards (rule-based plus LLM distillation) and surfaces task-specific briefs, with opt-in cross-runtime hook capture and multi-pass redaction.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-memory.git",
@@ -73,7 +73,7 @@
     },
     {
       "name": "deep-goal",
-      "description": "Goal condition compiler — evaluate, reshape, scout prerequisites, and compile long-running task requests into ready-to-paste native /goal conditions for Claude Code / Codex; self-contained cross-platform core + 3 synergy recipes (robust-implementation / autonomous-evolution / ship-and-document) + verify-plugin.sh release-lint + verify-selftest.sh negative self-test. v1.0.0 first release.",
+      "description": "Goal condition compiler — evaluates a long-running task, reshapes it to fit, scouts prerequisites, and compiles a ready-to-paste native /goal condition for Claude Code and Codex, with multi-plugin synergy recipes.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-goal.git",

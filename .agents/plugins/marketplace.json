@@ -7,6 +7,7 @@
   "plugins": [
     {
       "name": "deep-work",
+      "description": "Evidence-Driven Development Protocol — a single-command Brainstorm → Research → Plan → Implement → Test → Integrate workflow with TDD enforcement, receipt-based evidence, and a hard separation between planning and coding, for Claude Code and Codex.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
@@ -20,6 +21,7 @@
     },
     {
       "name": "deep-wiki",
+      "description": "LLM-native knowledge wiki — ingest sources (files, URLs, notes, Obsidian vaults) into linked Markdown pages with source provenance, then query the accumulated knowledge; self-linting and self-healing, for Claude Code and Codex.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
@@ -30,11 +32,11 @@
         "authentication": "ON_USE"
       },
       "category": "Productivity",
-      "sha": "5daaa4fce84bc305a89f16272897abb50bed4fbb",
-      "description": "v1.7.0 — large-wiki reader race fix + index.md dashboard (5-section, ~3-5KB stable token budget, explicit marker) + inbox stale cleanup (quarantine + partial_fail-protected) + npm test bare-discovery + wiki-setup dashboard seed"
+      "sha": "5daaa4fce84bc305a89f16272897abb50bed4fbb"
     },
     {
       "name": "deep-evolve",
+      "description": "Autonomous Experimentation Protocol — a measured outer loop that proposes, runs, and selects code changes against a fitness metric, with lineage and session history, for Claude Code and Codex.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-evolve.git",
@@ -48,6 +50,7 @@
     },
     {
       "name": "deep-review",
+      "description": "Independent Evaluator — reviews your changes in a separate agent context (Claude, with optional Codex review and adversarial passes) and returns an APPROVE / CONCERN / REQUEST_CHANGES verdict plus an evidence-based response protocol.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
@@ -61,6 +64,7 @@
     },
     {
       "name": "deep-docs",
+      "description": "Document gardening agent — scans agent-instruction docs (CLAUDE.md, AGENTS.md, and friends) for drift against the code, auto-fixes the safe subset, and reports a freshness audit, for Claude Code and Codex.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git",
@@ -74,6 +78,7 @@
     },
     {
       "name": "deep-dashboard",
+      "description": "Cross-plugin harness diagnostics + suite telemetry — aggregates receipts, health reports, and harnessability metrics emitted by sibling deep-suite plugins into one dashboard, with optional OTLP export.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git",
@@ -87,6 +92,7 @@
     },
     {
       "name": "deep-memory",
+      "description": "Cross-project semantic memory — harvests sibling-plugin artifacts into reusable memory cards (rule-based plus LLM distillation) and surfaces task-specific briefs, with opt-in cross-runtime hook capture and multi-pass redaction.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-memory.git",
@@ -100,7 +106,7 @@
     },
     {
       "name": "deep-goal",
-      "description": "Goal condition compiler — evaluate, reshape, scout prerequisites, and compile long-running task requests into ready-to-paste native /goal conditions for Claude Code / Codex; self-contained cross-platform core + 3 synergy recipes (robust-implementation / autonomous-evolution / ship-and-document) + verify-plugin.sh release-lint + verify-selftest.sh negative self-test. v1.0.0 first release.",
+      "description": "Goal condition compiler — evaluates a long-running task, reshapes it to fit, scouts prerequisites, and compiles a ready-to-paste native /goal condition for Claude Code and Codex, with multi-plugin synergy recipes.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-goal.git",
