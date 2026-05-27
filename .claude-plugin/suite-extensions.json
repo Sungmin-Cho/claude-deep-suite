@@ -168,6 +168,16 @@
         "prompts": 2,
         "mutation_gate": "spec §6.3.1 Gate 2/3 — forget + audit(mode!=check) + export(scope=all) return slash_only_in_v030"
       }
+    },
+    "deep-goal": {
+      "runtime": ["node", "bash"],
+      "capabilities": ["goal-compilation", "prerequisite-scouting", "goal-reshaping", "synergy-recipes", "release-lint"],
+      "artifacts": {
+        "writes": [],
+        "reads": []
+      },
+      "hooks_active": [],
+      "hooks_intentionally_empty_reason": "Goal compiler는 user 명시 호출(/deep-goal) 기반 — event-driven hooks는 goal condition 컴파일 워크플로와 무관하게 noise를 만든다."
     }
   },
   "data_flow": [
