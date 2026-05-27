@@ -18,7 +18,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.7.0 | LLM-native knowledge wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.4.2 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.8.1 | Independent Evaluator |
-| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.3.1 | Document gardening agent |
+| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.4.0 | Document gardening + authoring |
 | [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.3.7 | Cross-plugin harness diagnostics + suite telemetry |
 | [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 0.3.2 | Cross-project semantic memory |
 | [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.0.1 | Goal condition compiler |
@@ -315,7 +315,7 @@ Collect → Contract Check → Deep Review → Verdict
 
 ## deep-docs
 
-**Document Gardening Agent** — validates freshness and auto-repairs agent instruction documents like `CLAUDE.md` and `AGENTS.md`.
+**Document Gardening + Authoring Agent** — validates freshness and auto-repairs agent instruction documents like `CLAUDE.md` and `AGENTS.md`, and (v1.4.0) generates or restructures missing/thin docs such as `ARCHITECTURE.md`.
 
 Inspired by OpenAI's [Harness Engineering](https://openai.com/index/harness-engineering/) — "a doc-gardening agent runs repeatedly, finds stale docs, and opens fix PRs."
 
@@ -323,14 +323,15 @@ Inspired by OpenAI's [Harness Engineering](https://openai.com/index/harness-engi
 
 | Command | Description |
 |---------|-------------|
-| `/deep-docs scan` | Detect stale references, moved paths, outdated examples |
-| `/deep-docs garden` | Auto-fix with user confirmation |
+| `/deep-docs scan` | Detect stale references, moved paths, outdated examples, and missing/thin doc gaps |
+| `/deep-docs garden` | Auto-fix with user confirmation; generate·restructure docs for detected authoring gaps |
 | `/deep-docs audit` | Quantitative document health report |
 
 ### Key features
 
 - **Path-scoped freshness** — checks if referenced code paths changed after the doc was last updated
 - **Auto-fix / audit-only separation** — mechanical fixes only; subjective checks are audit-only
+- **Document authoring (v1.4.0)** — detects missing/thin docs (`missing-doc` / `thin-doc` gaps) and generates or restructures `CLAUDE.md` / `AGENTS.md` / `ARCHITECTURE.md`
 - **Durable scan artifact** — `.deep-docs/last-scan.json` with provenance (HEAD SHA, branch)
 - **Scoring** — size, freshness, reference accuracy, duplication
 

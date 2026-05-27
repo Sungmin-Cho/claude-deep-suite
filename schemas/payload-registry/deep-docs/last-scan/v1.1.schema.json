@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-docs/last-scan/v1.1.schema.json",
+  "title": "deep-docs last-scan payload v1.1",
+  "description": "Authoritative payload schema for deep-docs last-scan envelope (artifact_kind=last-scan, schema.version=1.1). Additive minor bump over v1.0 for deep-docs v1.4.0 document-authoring: adds `payload.gaps[]` (missing/thin doc gap detection with authoring_spec), `payload.summary.authoring` (authoring gap count), the `missing-doc`/`thin-doc` issue `type` values, and the `authoring` issue `category`. All v1.0 shapes remain valid. Forward-compat additions use `^x-*` patternProperties; further breaking changes require a v2.0 schema file.",
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": {
+    "^x-": { "description": "Forward-compat extension namespace." }
+  },
+  "required": ["provenance", "documents", "summary"],
+  "properties": {
+    "provenance": {
+      "type": "object",
+      "description": "Plugin-internal provenance for cache/reuse decisions. NOT the envelope-level provenance.",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {}
+      },
+      "required": ["is_git"],
+      "properties": {
+        "is_git": {
+          "type": "boolean",
+          "description": "Whether the scanned root is a git repository (affects reuse gate)."
+        },
+        "worktree_hash": {
+          "type": "string",
+          "description": "Optional content-hash for non-git roots (path_check_enabled fallback)."
+        },
+        "path_check_enabled": {
+          "type": "boolean",
+          "description": "Optional. Emitted only when scan-filters/cli-whitelist.md $PATH check is ON (`true`); omitted when OFF. Used by reuse 4-factor rule to compare prov.path_check_enabled vs config.enable_path_check. Per claude-deep-docs@3cc5229 doc-scanner.md."
+        }
+      }
+    },
+    "documents": {
+      "type": "array",
+      "description": "Per-document scan results.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["path", "issues", "metrics"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "required": ["type", "category", "severity"],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Issue type. v1.0 values: dead-reference, moved-path, stale-example, duplicate-block, size-warning. v1.1 adds the authoring gap types: missing-doc, thin-doc. Free-form (minLength 1) for forward-compat with future heuristics."
+                },
+                "category": {
+                  "type": "string",
+                  "enum": ["auto-fix", "audit-only", "authoring"],
+                  "description": "v1.1 adds `authoring` for document-generation gaps (missing-doc/thin-doc) alongside the v1.0 auto-fix/audit-only split."
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": ["high", "medium", "low", "info"]
+                },
+                "line": { "type": "integer", "minimum": 0 },
+                "current_value": { "type": "string" },
+                "suggested_value": { "type": "string" },
+                "evidence": { "type": "string" }
+              }
+            }
+          },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "size_lines": { "type": "integer", "minimum": 0 },
+              "freshness_score": { "type": "number" },
+              "reference_accuracy": { "type": "number" },
+              "duplication_count": { "type": "integer", "minimum": 0 }
+            }
+          }
+        }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "description": "v1.1 — document-authoring gaps. Each entry is a missing or thin document that authoring (`/deep-docs` generate/restructure) can create or expand. Distinct from `documents[].issues[]` because a gap has no source document to attach to.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "patternProperties": {
+          "^x-": {}
+        },
+        "required": ["type", "category", "severity", "target_path", "exists", "evidence", "authoring_spec"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["missing-doc", "thin-doc"],
+            "description": "missing-doc — the target document does not exist; thin-doc — it exists but is below the substance threshold."
+          },
+          "category": {
+            "type": "string",
+            "enum": ["authoring"],
+            "description": "Gaps are always authoring-category (document generation/restructure)."
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["high", "medium", "low", "info"]
+          },
+          "target_path": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Repo-relative path of the document to create or expand (e.g. ARCHITECTURE.md)."
+          },
+          "exists": {
+            "type": "boolean",
+            "description": "Whether target_path currently exists on disk. false ⇒ missing-doc; true ⇒ thin-doc."
+          },
+          "evidence": {
+            "type": "string",
+            "description": "Why this gap was flagged (e.g. '12k LOC, no ARCHITECTURE.md')."
+          },
+          "authoring_spec": {
+            "type": "object",
+            "description": "The authoring recipe used to generate/restructure the document.",
+            "additionalProperties": true,
+            "patternProperties": {
+              "^x-": {}
+            },
+            "required": ["doc_kind", "mode", "rationale"],
+            "properties": {
+              "doc_kind": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Document archetype to author (e.g. architecture-md, claude-md, agents-md)."
+              },
+              "mode": {
+                "type": "string",
+                "enum": ["create", "restructure"],
+                "description": "create — generate a new document; restructure — rewrite/expand an existing thin document."
+              },
+              "rationale": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Human-readable justification for the authoring action."
+              }
+            }
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {}
+      },
+      "required": ["total_issues", "auto_fixable", "audit_only"],
+      "properties": {
+        "total_issues": { "type": "integer", "minimum": 0 },
+        "auto_fixable": { "type": "integer", "minimum": 0 },
+        "audit_only": { "type": "integer", "minimum": 0 },
+        "authoring": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "v1.1 — count of authoring gaps (matches gaps[].length). Optional for forward-compat with payloads that detected no gaps."
+        }
+      }
+    }
+  }
+}

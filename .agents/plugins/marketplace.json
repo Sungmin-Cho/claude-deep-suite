@@ -64,11 +64,11 @@
     },
     {
       "name": "deep-docs",
-      "description": "Document gardening agent — scans agent-instruction docs (CLAUDE.md, AGENTS.md, and friends) for drift against the code, auto-fixes the safe subset, and reports a freshness audit, for Claude Code and Codex.",
+      "description": "Document gardening + authoring — scan/garden/audit + generate·restructure CLAUDE/AGENTS/ARCHITECTURE docs, for Claude Code and Codex.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git",
-        "sha": "6f4dc3cfa47d4ab9bf0014f8efc989e8302e6a16"
+        "sha": "5383845ab0be8cc7022129d11ccd51b22ad65a2f"
       },
       "policy": {
         "installation": "AVAILABLE",
