@@ -50,11 +50,11 @@
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator — reviews your changes in a separate agent context (Claude/ultracode multi-agent fan-out + optional Codex review/adversarial + agy) and returns an APPROVE / CONCERN / REQUEST_CHANGES verdict plus an evidence-based response protocol. v1.11.0: Security 6th review lens + severity (impact x reachability) + anti-criteria.",
+      "description": "Independent Evaluator — reviews your changes in a separate agent context (Claude/ultracode multi-agent fan-out + optional Codex review/adversarial + agy) and returns an APPROVE / CONCERN / REQUEST_CHANGES verdict plus an evidence-based response protocol. v1.12.0: fp_doctrine uniform propagation to Opus/ultracode/agy + change_files cross-file manifest.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "4e1b2f99718729ce35a0fcf6275c1821264fa6e8"
+        "sha": "13522ddcb48897e858d83564da17646000833538"
       },
       "policy": {
         "installation": "AVAILABLE",
