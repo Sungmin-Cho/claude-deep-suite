@@ -50,11 +50,11 @@
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator — reviews your changes in a separate agent context (Claude/ultracode multi-agent fan-out + optional Codex review/adversarial + agy) and returns an APPROVE / CONCERN / REQUEST_CHANGES verdict plus an evidence-based response protocol. v1.12.0: fp_doctrine uniform propagation to Opus/ultracode/agy + change_files cross-file manifest.",
+      "description": "Independent Evaluator — reviews your changes in a separate agent context (Claude/ultracode multi-agent fan-out + optional Codex review/adversarial + agy) and returns an APPROVE / CONCERN / REQUEST_CHANGES verdict plus an evidence-based response protocol. v1.12.1: thin-dispatcher Phase A — --respond/init bodies extracted to on-demand references (behavior-preserving; command 1628→1136 lines).",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "13522ddcb48897e858d83564da17646000833538"
+        "sha": "868fe64ee5b6499e3a960841e9bb697986ea4754"
       },
       "policy": {
         "installation": "AVAILABLE",
