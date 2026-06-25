@@ -53,6 +53,13 @@ const PER_PLUGIN_EXTRA = {
     'commands/deep-finish.md',
     'commands/deep-work.md',
   ],
+  'deep-loop': [
+    'skills/deep-loop-handoff/SKILL.md',
+    'skills/deep-loop-finish/SKILL.md',
+    'skills/deep-loop-workflow/references/handoff-respawn.md',
+    'scripts/lib/handoff.mjs',
+    'scripts/lib/finish.mjs',
+  ],
   'deep-wiki': [
     'skills/wiki-schema/SKILL.md',
     'commands/wiki-ingest.md',
