@@ -60,6 +60,16 @@ flowchart LR
   p1[".deep-work/<session>/session-receipt.json"]-->|reads|deep-memory
   p20[".deep-docs/last-scan.json"]-->|reads|deep-memory
   p7["<wiki_root>/.wiki-meta/index.json"]-->|reads|deep-memory
+  deep-loop-->|writes|p42[".deep-loop/runs/<run-id>/loop.json"]
+  deep-loop-->|writes|p43[".deep-loop/runs/<run-id>/event-log.jsonl"]
+  deep-loop-->|writes|p44[".deep-loop/runs/<run-id>/handoffs/<ts>-next-session.md"]
+  deep-loop-->|writes|p45[".deep-loop/runs/<run-id>/final-report.md"]
+  deep-loop-->|writes|p46[".deep-loop/current"]
+  p1[".deep-work/<session>/session-receipt.json"]-->|reads|deep-loop
+  p47[".deep-review/reports/*.md"]-->|reads|deep-loop
+  p20[".deep-docs/last-scan.json"]-->|reads|deep-loop
+  p48[".deep-evolve/evolve-receipt.json"]-->|reads|deep-loop
+  p4[".deep-dashboard/harnessability-report.json"]-->|reads|deep-loop
 ```
 
 <!-- deep-suite:auto-generated:artifact-io-graph:end -->
