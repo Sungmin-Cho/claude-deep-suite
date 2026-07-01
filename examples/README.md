@@ -9,6 +9,8 @@ Drop-in example packs you can copy into your own project and tweak. Each subdire
 | [`hooks-suite-baseline/`](./hooks-suite-baseline/) | Minimal Claude Code hooks: SessionStart stale-state recovery, PreToolUse force-push guard, Stop metric flush. Drop-in safe for any project. | `.claude/settings.json` + 3 shell scripts |
 | [`hooks-strict-mode/`](./hooks-strict-mode/) | Defense-in-depth: 7 dangerous-command families blocked (force-push, hard-reset-to-remote, recursive-rm, SQL DROP/TRUNCATE, kubectl-delete/drain, npm-publish, curl-pipe-shell). Self-contained — do NOT also install baseline. | `.claude/settings.json` + 3 shell scripts |
 | [`handoff-phase5-to-evolve/`](./handoff-phase5-to-evolve/) | Filled-out handoff artifact template — the deep-work Phase 5 → deep-evolve canonical scenario. Copy + tweak placeholders. | `handoff-template.json` + `README.md` |
+| [`handoff-phase5-to-evolve/`](./handoff-phase5-to-evolve/) | Filled-out handoff artifact template — the deep-work Phase 5 → deep-evolve canonical scenario. Copy + tweak placeholders. | `handoff-template.json` + `README.md` |
+| [`deep-loop-walkthrough/`](./deep-loop-walkthrough/) | Minimal runnable example showing a durable multi-session loop lifecycle (start → continue → resume → finish). | `index.js` + `README.md` |
 
 ## How to install a hooks pack
 
@@ -57,6 +59,8 @@ The template is constructed to pass both the M3 envelope validator AND the hando
 | Baseline | M5.3 ✅ Active | `pre-tool-guard.sh` covers force-push; add more `if` rules to extend. |
 | Strict-mode | M5.3 ✅ Active | 7 families. Add families by extending `denylist-guard.sh` `case` block + adding a `PreToolUse[].if` rule in `.claude/settings.json`. |
 | Phase 5 → evolve handoff | M5.3 ✅ Template ready | Plugin-side emission is M5.7+ (deep-work + deep-evolve repos). |
+| Phase 5 → evolve handoff | M5.3 ✅ Template ready | Plugin-side emission is M5.7+ (deep-work + deep-evolve repos). |
+| Deep-Loop Walkthrough | M5.3 ✅ Example ready | Minimal self-contained lifecycle trace. |
 
 ## Reference
 
