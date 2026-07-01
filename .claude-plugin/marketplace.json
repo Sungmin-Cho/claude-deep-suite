@@ -13,7 +13,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
-        "sha": "ba901197615559af4086bec952383c650d541fb9"
+        "sha": "f1355cc38fe3bca1bd76a94050f6baa3c69dbdf7"
       }
     },
     {
@@ -22,9 +22,9 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "5daaa4fce84bc305a89f16272897abb50bed4fbb"
+        "sha": "da13e0a78c4ab1e5aa71b49ba372cf5c791e84a6"
       },
-      "sha": "5daaa4fce84bc305a89f16272897abb50bed4fbb"
+      "sha": "da13e0a78c4ab1e5aa71b49ba372cf5c791e84a6"
     },
     {
       "name": "deep-evolve",
@@ -32,7 +32,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-evolve.git",
-        "sha": "6ed43121579acebab8475311073478566324b4c8"
+        "sha": "820c4298431678bbac8f83b459e3b8a00af4e667"
       }
     },
     {
@@ -77,7 +77,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-goal.git",
-        "sha": "c098892004e9ae75636e032c641d543053714b2c"
+        "sha": "8ea9a0c47a6a33d3d163a6f6f3b03a84a6d76c58"
       }
     },
     {
@@ -86,7 +86,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-loop.git",
-        "sha": "5c182722444014d4072c67ab46bc8b9305693a6f"
+        "sha": "671233ef7e4111a9424b3dedc1de06704b44ae16"
       }
     }
   ]
