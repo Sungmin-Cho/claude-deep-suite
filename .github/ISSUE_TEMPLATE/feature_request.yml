@@ -1,0 +1,49 @@
+name: 💡 Feature / idea
+description: Suggest an improvement to the suite, a new integration, or a new plugin.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an open-ended idea or want to gauge interest first? Consider
+        [Discussions → Ideas](https://github.com/Sungmin-Cho/claude-deep-suite/discussions/categories/ideas).
+        Use this form when you have a concrete proposal.
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Which plugin(s) or the suite?
+      multiple: true
+      options:
+        - Suite / marketplace (cross-cutting)
+        - deep-work
+        - deep-wiki
+        - deep-evolve
+        - deep-review
+        - deep-docs
+        - deep-dashboard
+        - deep-memory
+        - deep-goal
+        - deep-loop
+        - New plugin idea
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: The failure mode or friction you hit today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What you'd like to see. Sketches, commands, or API shapes welcome.
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false

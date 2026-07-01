@@ -1,0 +1,57 @@
+name: 🐛 Suite / install bug
+description: A problem with the marketplace, installation, cross-plugin integration, or the hub docs.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report! This repo covers the **marketplace, install, and cross-plugin integration**.
+        For a bug in a **single plugin's behavior** (e.g. deep-work's TDD flow, deep-review's verdict), please
+        file it in that plugin's own repo — you'll get a faster, more accurate fix.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Marketplace / plugin install
+        - Cross-plugin integration (M3 envelope / handoff / dashboard telemetry)
+        - Hub docs (README / guides)
+        - Suite tooling / CI scripts
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: runtime
+    attributes:
+      label: Runtime
+      options:
+        - Claude Code
+        - Codex
+        - Both
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what actually happened.
+      placeholder: |
+        Steps to reproduce:
+        1.
+        Expected:
+        Actual:
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: OS, Node version, plugin + version, and how you installed.
+      placeholder: |
+        - OS:
+        - Node:
+        - Plugin + version:
+        - Install method:
+    validations:
+      required: false

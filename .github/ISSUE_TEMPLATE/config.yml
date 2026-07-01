@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Questions & help
+    url: https://github.com/Sungmin-Cho/claude-deep-suite/discussions/categories/q-a
+    about: "How do I use X? Not sure whether it's a bug? Ask in Discussions — fastest way to get an answer."
+  - name: 🗺️ Ideas & roadmap
+    url: https://github.com/Sungmin-Cho/claude-deep-suite/discussions/categories/ideas
+    about: Discuss directions or propose something new before filing a formal feature request.
+  - name: 🐛 Bug in one plugin's behavior
+    url: https://github.com/Sungmin-Cho?tab=repositories&q=claude-deep
+    about: "Each plugin (deep-work, deep-review, …) is versioned in its own repo. File plugin-specific bugs there — this repo covers the marketplace, install, and cross-plugin integration."
