@@ -4,7 +4,25 @@
 
 [![License: MIT](https://img.shields.io/github/license/Sungmin-Cho/claude-deep-suite)](LICENSE) ![Plugins](https://img.shields.io/badge/plugins-9-5b8def) ![Runtimes](https://img.shields.io/badge/runtimes-Claude%20Code%20%2B%20Codex-blue)
 
-구조화된 개발, 지식 관리, 자율 실험, 독립 코드 리뷰, 문서 가드닝, 하네스 진단, 크로스-프로젝트 메모리, 목표 기반 장기 실행, 루프 엔지니어링 오케스트레이션을 위한 9개 플러그인을 Claude Code와 Codex에서 함께 쓸 수 있게 묶어 제공하는 cross-runtime 플러그인 마켓플레이스.
+**AI 코딩 에이전트는 강력하지만, 예측 가능한 방식으로 실패합니다** — 리서치를 건너뛰고, 과도하게 수정하고, 아키텍처에서 벗어나고, 자기 작업을 스스로 승인하고, 세션 사이에 맥락을 잃습니다.
+
+Deep Suite는 Claude Code와 Codex 위에서 AI 코딩을 **구조화·검증 가능·지속 가능**하게 만드는 **하네스 레이어**입니다. 코딩 전에 계획하게 하고, 작성한 코드를 독립 평가자가 리뷰하며, 지식을 잃지 않고 축적하고, 장기 작업을 여러 세션에 걸쳐 이어갑니다.
+
+### 여기서 시작하세요 — 9개 다 말고, 하나만 설치
+
+| 플러그인 | 무엇을 고치나 |
+|---|---|
+| **[deep-work](https://github.com/Sungmin-Cho/claude-deep-work)** | 생각보다 먼저 코딩하는 문제. 계획 우선 · TDD 기반 흐름을 강제: 브레인스토밍 → 리서치 → 계획 → 구현 → 테스트. |
+| **[deep-review](https://github.com/Sungmin-Cho/claude-deep-review)** | 자가 승인 편향. 별도 평가자 에이전트가 AI가 작성한 코드를 리뷰 — 작성자가 자기 diff를 스스로 승인하지 못하게. |
+| **[deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop)** | 긴 작업에서 맥락을 잃는 문제. proposal-only 안전성으로 다중 세션 작업을 끊김 없이 진행. |
+
+```text
+Before:  Claude가 바로 수정  →  테스트 누락  →  자기 diff를 스스로 승인
+After:   deep-work가 리서치 → 계획 → TDD → 리시트 실행,
+         이후 deep-review가 독립적으로 승인
+```
+
+나머지 6개 — **wiki, memory, docs, dashboard, evolve, goal** — 는 지식 축적, 크로스-프로젝트 메모리, 문서 가드닝, 하네스 텔레메트리, 자율 실험, 목표 컴파일이 필요해질 때 스위트를 확장합니다.
 
 [Harness Engineering](https://martinfowler.com/articles/harness-engineering.html) 프레임워크 (Böckeler/Fowler, 2026) 기반 — `Agent = Model + Harness` — Guides(feedforward) × Sensors(feedback) 축을 Computational/Inferential 제어와 교차 매핑한다.
 

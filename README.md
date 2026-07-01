@@ -4,7 +4,25 @@
 
 [![License: MIT](https://img.shields.io/github/license/Sungmin-Cho/claude-deep-suite)](LICENSE) ![Plugins](https://img.shields.io/badge/plugins-9-5b8def) ![Runtimes](https://img.shields.io/badge/runtimes-Claude%20Code%20%2B%20Codex-blue)
 
-Cross-runtime plugin marketplace bundling nine plugins for structured development, knowledge management, autonomous experimentation, independent code review, documentation gardening, harness diagnostics, cross-project memory, goal-driven long-running execution, and loop-engineered orchestration across Claude Code and Codex.
+**AI coding agents are powerful, but they fail in predictable ways** — they skip research, over-edit, drift from the architecture, approve their own work, and lose context between sessions.
+
+Deep Suite is a **harness layer for Claude Code and Codex** that makes agentic coding structured, verifiable, and durable: the agent plans before it codes, an independent evaluator reviews what it wrote, knowledge is captured instead of lost, and long-running work carries across sessions.
+
+### Start here — install one plugin, not nine
+
+| Plugin | What it fixes |
+|---|---|
+| **[deep-work](https://github.com/Sungmin-Cho/claude-deep-work)** | Coding before thinking. Enforces a plan-first, TDD-driven flow: Brainstorm → Research → Plan → Implement → Test. |
+| **[deep-review](https://github.com/Sungmin-Cho/claude-deep-review)** | Self-approval bias. A separate evaluator agent reviews AI-written code, so the author never signs off on its own diff. |
+| **[deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop)** | Losing the thread on long tasks. Durable, proposal-only orchestration that keeps multi-session work moving safely. |
+
+```text
+Before:  Claude edits straight away  →  skips tests  →  approves its own diff
+After:   deep-work runs research → plan → TDD → receipt,
+         then deep-review signs off independently
+```
+
+The remaining six plugins — **wiki, memory, docs, dashboard, evolve, goal** — extend the suite with knowledge capture, cross-project memory, doc gardening, harness telemetry, autonomous experimentation, and goal compilation once you need them.
 
 Built on the [Harness Engineering](https://martinfowler.com/articles/harness-engineering.html) framework (Böckeler/Fowler, 2026) — `Agent = Model + Harness` — mapping Guides (feedforward) × Sensors (feedback) across Computational and Inferential control.
 
