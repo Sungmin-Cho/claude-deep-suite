@@ -53,18 +53,34 @@ Each plugin lives in its own Git repository: `github.com/Sungmin-Cho/claude-deep
 ### Claude Code
 
 ```bash
-# Install all plugins
+# 1. Add the marketplace
 /plugin marketplace add Sungmin-Cho/claude-deep-suite
-/plugin install deep-work@Sungmin-Cho-claude-deep-suite
-/plugin install deep-wiki@Sungmin-Cho-claude-deep-suite
-/plugin install deep-evolve@Sungmin-Cho-claude-deep-suite
-/plugin install deep-review@Sungmin-Cho-claude-deep-suite
-/plugin install deep-docs@Sungmin-Cho-claude-deep-suite
-/plugin install deep-dashboard@Sungmin-Cho-claude-deep-suite
 
-# Or install only what you need — they work independently
-/plugin install deep-work@Sungmin-Cho-claude-deep-suite
+# 2. Install one plugin to start — they work independently
+/plugin install deep-work@claude-deep-suite
+
+# 3. Try it
+/deep-work "fix the flaky auth test"
 ```
+
+> The marketplace is added by its GitHub `owner/repo` slug, but plugins install by the
+> marketplace **name** (`claude-deep-suite`) — hence `deep-work@claude-deep-suite`.
+
+<details>
+<summary>Install the whole suite (all nine)</summary>
+
+```bash
+/plugin install deep-work@claude-deep-suite
+/plugin install deep-review@claude-deep-suite
+/plugin install deep-loop@claude-deep-suite
+/plugin install deep-wiki@claude-deep-suite
+/plugin install deep-memory@claude-deep-suite
+/plugin install deep-docs@claude-deep-suite
+/plugin install deep-dashboard@claude-deep-suite
+/plugin install deep-evolve@claude-deep-suite
+/plugin install deep-goal@claude-deep-suite
+```
+</details>
 
 ### Codex
 

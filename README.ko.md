@@ -57,19 +57,34 @@ After:   deep-work가 리서치 → 계획 → TDD → 리시트 실행,
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI 설치 및 설정 완료
 
 ```bash
+# 1. 마켓플레이스 추가
 /plugin marketplace add Sungmin-Cho/claude-deep-suite
 
-# 전체 설치
-/plugin install deep-work@Sungmin-Cho-claude-deep-suite
-/plugin install deep-wiki@Sungmin-Cho-claude-deep-suite
-/plugin install deep-evolve@Sungmin-Cho-claude-deep-suite
-/plugin install deep-review@Sungmin-Cho-claude-deep-suite
-/plugin install deep-docs@Sungmin-Cho-claude-deep-suite
-/plugin install deep-dashboard@Sungmin-Cho-claude-deep-suite
+# 2. 하나만 설치해서 시작 — 각 플러그인은 독립적으로 동작
+/plugin install deep-work@claude-deep-suite
 
-# 필요한 것만 설치 (각 플러그인은 독립적으로 동작)
-/plugin install deep-work@Sungmin-Cho-claude-deep-suite
+# 3. 실행해보기
+/deep-work "flaky 인증 테스트 고쳐줘"
 ```
+
+> 마켓플레이스는 GitHub `owner/repo` 슬러그로 추가하지만, 플러그인 설치는 마켓플레이스
+> **name**(`claude-deep-suite`) 기준이다 — 그래서 `deep-work@claude-deep-suite`.
+
+<details>
+<summary>전체 설치 (9개 모두)</summary>
+
+```bash
+/plugin install deep-work@claude-deep-suite
+/plugin install deep-review@claude-deep-suite
+/plugin install deep-loop@claude-deep-suite
+/plugin install deep-wiki@claude-deep-suite
+/plugin install deep-memory@claude-deep-suite
+/plugin install deep-docs@claude-deep-suite
+/plugin install deep-dashboard@claude-deep-suite
+/plugin install deep-evolve@claude-deep-suite
+/plugin install deep-goal@claude-deep-suite
+```
+</details>
 
 ### Codex
 
