@@ -2,9 +2,9 @@
 
 # Deep Suite
 
-[![License: MIT](https://img.shields.io/github/license/Sungmin-Cho/claude-deep-suite)](LICENSE) ![Plugins](https://img.shields.io/badge/plugins-8-5b8def) ![Runtimes](https://img.shields.io/badge/runtimes-Claude%20Code%20%2B%20Codex-blue)
+[![License: MIT](https://img.shields.io/github/license/Sungmin-Cho/claude-deep-suite)](LICENSE) ![Plugins](https://img.shields.io/badge/plugins-9-5b8def) ![Runtimes](https://img.shields.io/badge/runtimes-Claude%20Code%20%2B%20Codex-blue)
 
-Cross-runtime plugin marketplace bundling eight plugins for structured development, knowledge management, autonomous experimentation, independent code review, documentation gardening, harness diagnostics, cross-project memory, and goal-driven long-running execution across Claude Code and Codex.
+Cross-runtime plugin marketplace bundling nine plugins for structured development, knowledge management, autonomous experimentation, independent code review, documentation gardening, harness diagnostics, cross-project memory, goal-driven long-running execution, and loop-engineered orchestration across Claude Code and Codex.
 
 Built on the [Harness Engineering](https://martinfowler.com/articles/harness-engineering.html) framework (Böckeler/Fowler, 2026) — `Agent = Model + Harness` — mapping Guides (feedforward) × Sensors (feedback) across Computational and Inferential control.
 
