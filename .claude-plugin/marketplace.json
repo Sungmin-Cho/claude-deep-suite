@@ -50,7 +50,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git",
-        "sha": "5383845ab0be8cc7022129d11ccd51b22ad65a2f"
+        "sha": "d7ad5935c4045a229dc3f2cb5da7fd511f0dbcd2"
       }
     },
     {
@@ -59,7 +59,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git",
-        "sha": "e78fd7d227ced76854475bdf33ede6e00fcba1e7"
+        "sha": "b6819afe48e3a3ca4be34cf0b3725fadd53904b2"
       }
     },
     {
@@ -86,7 +86,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-loop.git",
-        "sha": "abd4dd05e453e1b1c4fba60875b0041f299cd79c"
+        "sha": "52c438041f85ce85b7507d023eea43c65c04924d"
       }
     }
   ]
