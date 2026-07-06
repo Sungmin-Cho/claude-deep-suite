@@ -2,7 +2,7 @@
 
 # Deep Suite Hook 패턴 가이드
 
-이 문서는 Deep Suite 6개 플러그인이 Claude Code [hook](https://code.claude.com/docs/en/hooks)을 어떻게 활용하는지 — 언제 hook을 추가하고, 언제 *추가하지 말아야* 하며, suite가 권장하는 패턴은 무엇인지 — 를 정리한다. 본 가이드는 **권고 (descriptive + recommended)** 이며 강제되지 않는다. 플러그인이 다른 선택을 할 때는 sidecar entry의 `hooks_intentionally_empty_reason`에 사유를 기록한다.
+이 문서는 Deep Suite 9개 플러그인이 Claude Code [hook](https://code.claude.com/docs/en/hooks)을 어떻게 활용하는지 — 언제 hook을 추가하고, 언제 *추가하지 말아야* 하며, suite가 권장하는 패턴은 무엇인지 — 를 정리한다. 본 가이드는 **권고 (descriptive + recommended)** 이며 강제되지 않는다. 플러그인이 다른 선택을 할 때는 sidecar entry의 `hooks_intentionally_empty_reason`에 사유를 기록한다.
 
 이 가이드는 의도적으로 Claude Code 전용이다. Codex 호환성은 Claude Code hook 파일이 아니라 `.agents/plugins/marketplace.json` 및 플러그인 skill로 노출된다. Codex 동작이 달라지는 경우 hook 자동화를 억지로 미러링하기보다 명시적 skill 호출을 우선한다.
 

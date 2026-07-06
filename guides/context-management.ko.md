@@ -2,7 +2,7 @@
 
 # Deep Suite Context Management 정책
 
-이 문서는 **compaction**, **output offloading**, **full context reset** 의 세 가지 — 장시간 실행 작업에서 agent 추론 품질을 보존하는 핵심 레버 — 에 대한 suite 차원 정책을 정리한다. Addy Osmani 와 Anthropic 팀이 long-running agent 의 반복적인 실패 모드로 명시한 영역; Deep Suite 는 6개 플러그인이 일관되게 동작하도록 정책을 여기로 모은다.
+이 문서는 **compaction**, **output offloading**, **full context reset** 의 세 가지 — 장시간 실행 작업에서 agent 추론 품질을 보존하는 핵심 레버 — 에 대한 suite 차원 정책을 정리한다. Addy Osmani 와 Anthropic 팀이 long-running agent 의 반복적인 실패 모드로 명시한 영역; Deep Suite 는 9개 플러그인이 일관되게 동작하도록 정책을 여기로 모은다.
 
 이 정책은 runtime-neutral 하다. Claude Code와 Codex 모두 context pressure를 견디기 위해 durable artifact에 의존한다. 다만 runtime별 trigger는 다르므로, 이 문서에서 Claude Code hook 또는 auto-compaction을 언급하는 부분은 그 메커니즘이 실제 이벤트 소스인 경우로 한정된다.
 

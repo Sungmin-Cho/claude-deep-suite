@@ -2,7 +2,7 @@
 
 # Context Management Across Deep Suite
 
-This guide codifies the suite-level policy for **compaction**, **output offloading**, and **full context reset** — the three levers that preserve agent reasoning quality during long-running work. Addy Osmani and the Anthropic team explicitly call this out as a recurring failure mode for long-running agents; the Deep Suite consolidates the policy here so the six plugins behave consistently.
+This guide codifies the suite-level policy for **compaction**, **output offloading**, and **full context reset** — the three levers that preserve agent reasoning quality during long-running work. Addy Osmani and the Anthropic team explicitly call this out as a recurring failure mode for long-running agents; the Deep Suite consolidates the policy here so the nine plugins behave consistently.
 
 The policy is runtime-neutral: Claude Code and Codex both rely on durable artifacts to survive context pressure. Runtime-specific triggers still differ, so this guide calls out Claude Code hooks and auto-compaction only where that mechanism is the actual source of the event.
 

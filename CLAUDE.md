@@ -95,8 +95,8 @@ tests/
   fixtures/handoff-roundtrip/{01..04}-*.json — canonical cross-plugin roundtrip set
 package.json / package-lock.json  — Node 20+ ESM project (private, ajv + ajv-formats devDeps)
 guides/
-  integrated-workflow-guide.md         — 6-plugin integrated workflow (EN)
-  integrated-workflow-guide.ko.md      — 6-plugin integrated workflow (KO)
+  integrated-workflow-guide.md         — 7-plugin integrated workflow (EN)
+  integrated-workflow-guide.ko.md      — 7-plugin integrated workflow (KO)
   hook-patterns.md / .ko.md            — hook usage patterns + anti-patterns + denylist recommendations
   long-run-handoff.md / .ko.md         — cross-plugin handoff artifact (Phase 5 ↔ evolve scenarios)
   context-management.md / .ko.md       — compaction / output offloading / full reset policies

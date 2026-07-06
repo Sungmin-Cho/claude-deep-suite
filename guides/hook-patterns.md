@@ -2,7 +2,7 @@
 
 # Hook Patterns Across Deep Suite
 
-This guide documents how the 6 Deep Suite plugins use Claude Code [hooks](https://code.claude.com/docs/en/hooks) — when to add a hook, when *not* to, and what patterns the suite considers idiomatic. It is **descriptive and recommended**, not enforced: plugins are free to deviate when the rationale is documented in their sidecar entry (`hooks_intentionally_empty_reason`).
+This guide documents how the 9 Deep Suite plugins use Claude Code [hooks](https://code.claude.com/docs/en/hooks) — when to add a hook, when *not* to, and what patterns the suite considers idiomatic. It is **descriptive and recommended**, not enforced: plugins are free to deviate when the rationale is documented in their sidecar entry (`hooks_intentionally_empty_reason`).
 
 This guide is intentionally Claude Code-specific. Codex compatibility is exposed through `.agents/plugins/marketplace.json` and plugin skills, not through Claude Code hook files; when Codex behavior differs, prefer explicit skill invocation over trying to mirror hook automation.
 
