@@ -11,6 +11,7 @@ docs/superpowers/
 !docs/envelope-migration.md
 !docs/test-catalog.md
 node_modules/
+node_modules
 .deep-suite-cache/
 # Local Claude Code state (hook caches, sensor caches, session state) — runtime only, never committed.
 .claude/
