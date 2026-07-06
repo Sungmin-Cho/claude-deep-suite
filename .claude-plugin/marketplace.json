@@ -4,7 +4,7 @@
     "name": "sungmin"
   },
   "metadata": {
-    "description": "Deep Suite — eight plugins for structured development, knowledge wiki, autonomous experimentation, independent code review, document gardening, harness diagnostics, cross-project memory, and goal-driven execution across Claude Code and Codex."
+    "description": "Deep Suite — nine plugins for structured development, knowledge wiki, autonomous experimentation, independent code review, document gardening, harness diagnostics, cross-project memory, goal-driven execution, and cross-plugin loop orchestration across Claude Code and Codex."
   },
   "plugins": [
     {
