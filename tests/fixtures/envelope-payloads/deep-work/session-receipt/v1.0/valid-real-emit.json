@@ -3,7 +3,7 @@
   "x-provenance": {
     "producer": "deep-work",
     "source": "skills/deep-finish/SKILL.md",
-    "captured_at_sha": "e64e31336160a12cfd6be49839c32381c3e1bfdb"
+    "captured_at_sha": "3e965018d79beefc2a03e165bdb0dcdeffab148a"
   },
   "envelope": {
     "producer": "deep-work",
@@ -13,7 +13,10 @@
     "session_id": "dw-2026-05-07T10-00-00-000Z",
     "parent_run_id": "01JTKEV0NHABCDEFGHJKMNPQRS",
     "generated_at": "2026-05-07T11:42:08.456Z",
-    "schema": { "name": "session-receipt", "version": "1.0" },
+    "schema": {
+      "name": "session-receipt",
+      "version": "1.0"
+    },
     "git": {
       "head": "def5678",
       "branch": "feat/m3-envelope-adoption",
@@ -21,9 +24,14 @@
     },
     "provenance": {
       "source_artifacts": [
-        { "path": ".deep-evolve/2026-05-07/evolve-insights.json", "run_id": "01JTKEV0NHABCDEFGHJKMNPQRS" }
+        {
+          "path": ".deep-evolve/2026-05-07/evolve-insights.json",
+          "run_id": "01JTKEV0NHABCDEFGHJKMNPQRS"
+        }
       ],
-      "tool_versions": { "node": "v20.11.0" }
+      "tool_versions": {
+        "node": "v20.11.0"
+      }
     }
   },
   "payload": {
@@ -39,21 +47,42 @@
     "phase": "integrate",
     "outcome": "merge",
     "outcome_ref": null,
-    "slices": { "total": 3, "completed": 3, "spike": 0 },
-    "tdd_compliance": { "strict": 3, "relaxed": 0, "override": 0, "spike": 0, "coaching": 0 },
-    "model_usage": { "haiku": 2, "sonnet": 14, "opus": 1, "main": 8 },
+    "slices": {
+      "total": 3,
+      "completed": 3,
+      "spike": 0
+    },
+    "tdd_compliance": {
+      "strict": 3,
+      "relaxed": 0,
+      "override": 0,
+      "spike": 0,
+      "coaching": 0
+    },
+    "model_usage": {
+      "haiku": 2,
+      "sonnet": 14,
+      "opus": 1,
+      "main": 8
+    },
     "total_estimated_cost": null,
     "total_files_changed": 12,
     "total_tests": 48,
     "total_tests_passed": 48,
-    "quality_gates": { "receipt_completeness": "PASS", "verification_evidence": "PASS" },
+    "quality_gates": {
+      "receipt_completeness": "PASS",
+      "verification_evidence": "PASS"
+    },
     "evaluation": {
       "evaluator_model": "sonnet",
       "plan_review_retries": 0,
       "test_retry_count": 0,
       "assumption_adjustments": []
     },
-    "contract_compliance": { "total_contracts": 3, "contracts_met": 3 },
+    "contract_compliance": {
+      "total_contracts": 3,
+      "contracts_met": 3
+    },
     "deep_work_version": "6.9.1",
     "quality_score": 92,
     "quality_breakdown": {
@@ -63,6 +92,9 @@
       "sensor_clean_rate": 95,
       "mutation_score": 80
     },
-    "quality_diagnostics": { "code_efficiency": 80, "phase_balance": 100 }
+    "quality_diagnostics": {
+      "code_efficiency": 80,
+      "phase_balance": 100
+    }
   }
 }

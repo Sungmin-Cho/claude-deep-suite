@@ -32,15 +32,15 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 
 | Plugin | Version | Description |
 |---|---|---|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.9.1 | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.7.0 | LLM-native knowledge wiki |
-| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.4.2 | Autonomous Experimentation Protocol |
-| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.12.2 | Independent Evaluator |
-| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.4.0 | Document gardening + authoring |
-| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.3.7 | Cross-plugin harness diagnostics + suite telemetry |
-| [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 0.3.2 | Cross-project semantic memory |
-| [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.0.1 | Goal condition compiler |
-| [deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop) | 1.2.0 | Loop Engineering control plane over the deep-suite |
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.9.2 | Evidence-Driven Development Protocol |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.7.1 | LLM-native knowledge wiki |
+| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.4.3 | Autonomous Experimentation Protocol |
+| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.12.3 | Independent Evaluator |
+| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.4.1 | Document gardening + authoring |
+| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.4.0 | Cross-plugin harness diagnostics + suite telemetry |
+| [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 0.4.0 | Cross-project semantic memory |
+| [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.1.0 | Goal condition compiler |
+| [deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop) | 1.3.0 | Loop Engineering control plane over the deep-suite |
 
 <!-- deep-suite:auto-generated:plugin-table-en:end -->
 

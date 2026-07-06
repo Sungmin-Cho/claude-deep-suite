@@ -220,14 +220,18 @@ test('CLI exits 1 with session-identity prefix on evolve-receipt session_id mism
   assert.match(res.stderr, /must match when both present/);
 });
 
-test('CLI exits 0 on evolve-receipt real-emit — session_id in envelope only, payload omits it (identity preserved)', () => {
+test('CLI exits 0 on evolve-receipt real-emit — session_id mirrored in envelope AND payload, values equal (identity preserved)', () => {
+  // deep-evolve v3.4.3 (pin f4f34ee) emits payload.session_id mirroring the envelope value
+  // (completion.md: "REQUIRED by suite evolve-receipt v1.0 payload schema ... Mirrors the
+  // envelope-level --session-id"). The prior pin (820c429) omitted it — the provenance
+  // checker forced this fixture+assert refresh when the pin moved.
   const fixture = resolve(
     FIXTURE_ROOT,
     'deep-evolve/evolve-receipt/v1.0/valid-real-emit.json',
   );
   const doc = JSON.parse(readFileSync(fixture, 'utf8'));
   assert.ok(doc.envelope.session_id, 'fixture must carry envelope.session_id');
-  assert.equal(doc.payload.session_id, undefined, 'fixture payload must omit session_id (real emit shape)');
+  assert.equal(doc.payload.session_id, doc.envelope.session_id, 'payload.session_id must mirror envelope (real emit shape at pin f4f34ee)');
   const res = runCli([fixture]);
   assert.equal(res.status, 0, `stderr=${res.stderr}\nstdout=${res.stdout}`);
 });
