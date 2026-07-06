@@ -16,3 +16,5 @@ node_modules/
 .claude/
 # Local /deep-review output (reports, responses, runtime config) — meant for audit, not public.
 .deep-review/
+# Local deep-loop orchestration run state (run ids, episode payloads, event log) — runtime only, never committed.
+.deep-loop/
