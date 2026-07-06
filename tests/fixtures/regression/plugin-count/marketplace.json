@@ -1,0 +1,7 @@
+{
+  "name": "claude-deep-suite",
+  "metadata": {
+    "description": "Deep Suite — eight plugins for structured development, knowledge wiki, and more across Claude Code and Codex."
+  },
+  "plugins": []
+}

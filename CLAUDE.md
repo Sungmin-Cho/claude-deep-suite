@@ -33,7 +33,7 @@ npm install                       # ajv + ajv-formats (devDeps only)
 npm test                          # unit + spawnSync CLI tests
 npm run validate                  # validate .claude-plugin/suite-extensions.json (2-phase)
 npm run docs:write                # regenerate auto-generated marker regions in README/CLAUDE/guide
-npm run docs:sync                 # run all 6 doc-sync checkers (M2 CI gate)
+npm run docs:sync                 # run all 8 doc-sync checkers (M2 CI gate)
 npm run preflight                 # full local CI mirror (validate + docs:check + docs:sync + fixtures + test)
 npm run release:bump -- <plugin> <sha40>   # one-command release: set sha → docs:write → preflight
 ```
@@ -51,7 +51,7 @@ A `prepare`-installed git **pre-push hook** runs `npm run preflight` before ever
   marketplace.json                — marketplace manifest (official Claude schema)
   suite-extensions.json           — suite sidecar manifest (M1, suite tooling only)
 .github/workflows/
-  manifest-doc-sync.yml           — M2 CI (PR + push + daily cron, 6 check-* + generate --check)
+  manifest-doc-sync.yml           — M2 CI (PR + push + daily cron, 8 check-* + generate --check)
 schemas/
   suite-extensions.schema.json    — Sidecar manifest JSON Schema (Draft 2020-12)
   artifact-envelope.schema.json   — M3 cross-plugin envelope (forward-compat, SemVer 2.0.0 strict)
@@ -71,6 +71,8 @@ scripts/
   check-semver-sha-sync.js        — M2 marketplace.sha → plugin.json.version → docs marker consistency
   check-pinned-plugin-paths.js    — M2 sidecar artifacts paths ↔ pinned plugin source grep
   check-memory-hierarchy.js       — M2 cross-plugin policy keyword conflict check
+  check-plugin-count.js           — M2 plugin-count narrative coherence (totals vs marketplace.plugins.length; curated subsets)
+  check-fixture-provenance.js     — M2 real-emit fixture x-provenance ↔ marketplace pin SHA guard
   release-bump.js                 — one-command release: set marketplace sha → docs:write → preflight gate
   install-hooks.js                — prepare-lifecycle git hook installer (best-effort; never breaks npm ci)
   hooks/pre-push                  — pre-push preflight gate (managed hook; SKIP_PREFLIGHT=1 / --no-verify bypass)
@@ -87,7 +89,7 @@ tests/
   cli.test.js                     — validator CLI scenarios (exit code + stderr prefix)
   markers.test.js                 — markers.js round-trip test
   generate-reference-sections.test.js — generator CLI scenarios (--check/--write/--id, fixture override)
-  cli-sync-checkers.test.js       — 6 check-* script spawnSync scenarios
+  cli-sync-checkers.test.js       — 8 check-* script spawnSync scenarios
   release-bump.test.js            — release-bump pure-fn (applyBump/isFullSha) + no-side-effect CLI (dry-run/validation) tests
   handoff-roundtrip-fixtures.test.js — suite-side e2e regression guard (4-artifact set × envelope × payload × identity-triplet × parent_run_id chain × 3 dashboard metric mirror)
   fixtures/                       — schema + envelope + plugin-cache fixtures

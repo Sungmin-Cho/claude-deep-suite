@@ -93,3 +93,58 @@ test('check-memory-hierarchy.js exits 0 against committed plugin docs', () => {
   const res = run('check-memory-hierarchy.js');
   assert.equal(res.status, 0, res.stderr);
 });
+
+// --- check-plugin-count.js ---
+
+test('check-plugin-count.js exits 0 on clean repo (subsets self-consistent)', () => {
+  const res = run('check-plugin-count.js');
+  assert.equal(res.status, 0, res.stderr);
+  // The clean run tolerates the integrated-workflow curated subset (7) and the
+  // README "remaining six" subset without flagging them.
+  assert.match(res.stdout, /subsets self-consistent/);
+});
+
+test('check-plugin-count.js exits 2 with arguments', () => {
+  const res = run('check-plugin-count.js', ['extra']);
+  assert.equal(res.status, 2);
+  assert.match(res.stderr, /takes no arguments/);
+});
+
+test('check-plugin-count.js exits 1 when marketplace description says "eight"', () => {
+  const res = run('check-plugin-count.js', [], {
+    M2_TEST_PLUGIN_COUNT_DIR: resolve(repoRoot, 'tests/fixtures/regression/plugin-count'),
+  });
+  assert.equal(res.status, 1, `expected drift; stderr: ${res.stderr}`);
+  assert.match(res.stderr, /marketplace metadata\.description/);
+  assert.match(res.stderr, /count "eight" != expected 9/);
+});
+
+// --- check-fixture-provenance.js ---
+
+test('check-fixture-provenance.js exits 0 against committed real-emit fixtures', () => {
+  const res = run('check-fixture-provenance.js');
+  assert.equal(res.status, 0, res.stderr);
+});
+
+test('check-fixture-provenance.js exits 2 with arguments', () => {
+  const res = run('check-fixture-provenance.js', ['extra']);
+  assert.equal(res.status, 2);
+  assert.match(res.stderr, /takes no arguments/);
+});
+
+test('check-fixture-provenance.js exits 1 on captured_at_sha ↔ pin mismatch (with remediation)', () => {
+  const res = run('check-fixture-provenance.js', [], {
+    M2_TEST_PROVENANCE_FIXTURE_DIR: resolve(repoRoot, 'tests/fixtures/regression/provenance-badsha'),
+  });
+  assert.equal(res.status, 1, `expected drift; stderr: ${res.stderr}`);
+  assert.match(res.stderr, /captured_at_sha .* != marketplace pin/);
+  assert.match(res.stderr, /git show .*:skills\/deep-finish\/SKILL\.md/);
+});
+
+test('check-fixture-provenance.js exits 1 when a real-emit fixture is missing x-provenance', () => {
+  const res = run('check-fixture-provenance.js', [], {
+    M2_TEST_PROVENANCE_FIXTURE_DIR: resolve(repoRoot, 'tests/fixtures/regression/provenance-missing'),
+  });
+  assert.equal(res.status, 1, `expected drift; stderr: ${res.stderr}`);
+  assert.match(res.stderr, /real-emit fixture missing root x-provenance/);
+});

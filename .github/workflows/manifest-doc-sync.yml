@@ -69,6 +69,12 @@ jobs:
       - name: Cross-plugin memory-hierarchy conflicts
         run: node scripts/check-memory-hierarchy.js
 
+      - name: Plugin-count narrative coherence
+        run: node scripts/check-plugin-count.js
+
+      - name: Fixture provenance ↔ pin SHA
+        run: node scripts/check-fixture-provenance.js
+
       - name: Validate envelope fixtures (M3 Phase 1)
         run: npm run validate-artifact-fixtures
 
