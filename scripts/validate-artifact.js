@@ -179,22 +179,32 @@ function main() {
   }
 
   // Cross-field invariant (evolve-receipt): session identity must live in at least
-  // one of envelope.session_id / payload.session_id. The v1.0 payload schema no
-  // longer requires payload.session_id (real emit carries it only in the envelope),
-  // and the envelope schema makes session_id optional — nothing forces at least one
-  // to exist, so we enforce it here (same pattern as the identity check above) to
-  // keep evolve-receipt traceability (M4 telemetry / parent_run_id chain) intact.
-  if (
-    data.envelope.artifact_kind === 'evolve-receipt' &&
-    !data.envelope.session_id &&
-    !data.payload?.session_id
-  ) {
-    console.error(
-      `✗ ${target} fails session-identity check: evolve-receipt requires session_id in ` +
-      `envelope.session_id or payload.session_id (both absent)`,
-    );
-    process.exitCode = 1;
-    return;
+  // one of envelope.session_id / payload.session_id, and when it appears in both
+  // they must be equal — otherwise a single receipt advertises two identities and
+  // corrupts downstream trace joins. The v1.0 payload schema no longer requires
+  // payload.session_id (real emit carries it only in the envelope), and the
+  // envelope schema makes session_id optional — nothing forces either constraint,
+  // so we enforce them here (same pattern as the identity check above) to keep
+  // evolve-receipt traceability (M4 telemetry / parent_run_id chain) intact.
+  if (data.envelope.artifact_kind === 'evolve-receipt') {
+    const envSessionId = data.envelope.session_id;
+    const payloadSessionId = data.payload?.session_id;
+    if (!envSessionId && !payloadSessionId) {
+      console.error(
+        `✗ ${target} fails session-identity check: evolve-receipt requires session_id in ` +
+        `envelope.session_id or payload.session_id (both absent)`,
+      );
+      process.exitCode = 1;
+      return;
+    }
+    if (envSessionId && payloadSessionId && envSessionId !== payloadSessionId) {
+      console.error(
+        `✗ ${target} fails session-identity check: evolve-receipt envelope.session_id ` +
+        `"${envSessionId}" != payload.session_id "${payloadSessionId}" (must match when both present)`,
+      );
+      process.exitCode = 1;
+      return;
+    }
   }
 
   // Envelope passed → registry lookup for payload schema.

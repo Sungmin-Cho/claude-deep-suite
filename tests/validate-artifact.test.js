@@ -208,6 +208,18 @@ test('CLI exits 1 with session-identity prefix on evolve-receipt missing session
   assert.match(res.stderr, /envelope\.session_id or payload\.session_id/);
 });
 
+test('CLI exits 1 with session-identity prefix on evolve-receipt session_id mismatch (envelope != payload)', () => {
+  const fixture = resolve(
+    FIXTURE_ROOT,
+    'deep-evolve/evolve-receipt/v1.0/invalid-session-identity-mismatch.json',
+  );
+  const res = runCli([fixture]);
+  assert.equal(res.status, 1, res.stderr);
+  assert.match(res.stderr, /fails session-identity check/);
+  assert.match(res.stderr, /envelope\.session_id.*!=.*payload\.session_id/);
+  assert.match(res.stderr, /must match when both present/);
+});
+
 test('CLI exits 0 on evolve-receipt real-emit — session_id in envelope only, payload omits it (identity preserved)', () => {
   const fixture = resolve(
     FIXTURE_ROOT,
