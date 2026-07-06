@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-evolve/evolve-receipt/v1.0.schema.json",
   "title": "deep-evolve evolve-receipt payload v1.0",
-  "description": "Authoritative payload schema for deep-evolve evolve-receipt envelope (artifact_kind=evolve-receipt, schema.version=1.0). Mirrors deep-evolve v3.2.0+ emit shape from Phase 2 envelope adoption. parent_run_id chains to deep-review recurring-findings consumed at session init (identity-gated extraction).",
+  "description": "Authoritative payload schema for deep-evolve evolve-receipt envelope (artifact_kind=evolve-receipt, schema.version=1.0). Mirrors the evolve-receipt payload emitted by deep-evolve at the pinned SHA; session_id lives in the envelope (`envelope.session_id`), so payload session_id is optional here. A cross-field invariant in validate-artifact.js requires session_id in at least one of envelope/payload. parent_run_id chains to deep-review recurring-findings consumed at session init (identity-gated extraction).",
   "type": "object",
   "additionalProperties": false,
   "patternProperties": {
@@ -13,7 +13,6 @@
     "version",
     "receipt_schema_version",
     "timestamp",
-    "session_id",
     "goal",
     "experiments",
     "score"

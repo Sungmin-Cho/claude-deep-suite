@@ -197,6 +197,29 @@ test('CLI exits 1 with identity-check prefix on schema.name vs artifact_kind mis
   assert.match(res.stderr, /schema\.name.*artifact_kind/);
 });
 
+test('CLI exits 1 with session-identity prefix on evolve-receipt missing session_id everywhere', () => {
+  const fixture = resolve(
+    FIXTURE_ROOT,
+    'deep-evolve/evolve-receipt/v1.0/invalid-no-session-identity.json',
+  );
+  const res = runCli([fixture]);
+  assert.equal(res.status, 1, res.stderr);
+  assert.match(res.stderr, /fails session-identity check/);
+  assert.match(res.stderr, /envelope\.session_id or payload\.session_id/);
+});
+
+test('CLI exits 0 on evolve-receipt real-emit — session_id in envelope only, payload omits it (identity preserved)', () => {
+  const fixture = resolve(
+    FIXTURE_ROOT,
+    'deep-evolve/evolve-receipt/v1.0/valid-real-emit.json',
+  );
+  const doc = JSON.parse(readFileSync(fixture, 'utf8'));
+  assert.ok(doc.envelope.session_id, 'fixture must carry envelope.session_id');
+  assert.equal(doc.payload.session_id, undefined, 'fixture payload must omit session_id (real emit shape)');
+  const res = runCli([fixture]);
+  assert.equal(res.status, 0, `stderr=${res.stderr}\nstdout=${res.stdout}`);
+});
+
 test('all valid-* fixtures use 26-char Crockford ULID for run_id / parent_run_id / source_artifacts.run_id', () => {
   const ULID_RE = /^[0-9A-HJKMNP-TV-Z]{26}$/;
   const valids = walkFixtures(FIXTURE_ROOT).filter((p) => /\bvalid-/.test(p));

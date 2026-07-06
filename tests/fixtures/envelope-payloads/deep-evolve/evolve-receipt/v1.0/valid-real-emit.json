@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "x-provenance": {
+    "producer": "deep-evolve",
+    "source": "skills/deep-evolve-workflow/protocols/completion.md",
+    "captured_at_sha": "820c4298431678bbac8f83b459e3b8a00af4e667"
+  },
+  "envelope": {
+    "producer": "deep-evolve",
+    "producer_version": "3.4.2",
+    "artifact_kind": "evolve-receipt",
+    "run_id": "01JTKQ7AB2CDEFGHJKMNPQRSTV",
+    "session_id": "2026-05-07T11-30-00",
+    "parent_run_id": "01JTKEV0NHABCDEFGHJKMNPQRS",
+    "generated_at": "2026-05-08T03:42:08.456Z",
+    "schema": { "name": "evolve-receipt", "version": "1.0" },
+    "git": {
+      "head": "abc1234",
+      "branch": "evolve/2026-05-07T11-30-00",
+      "dirty": false
+    },
+    "provenance": {
+      "source_artifacts": [
+        { "path": ".deep-review/recurring-findings.json", "run_id": "01JTKEV0NHABCDEFGHJKMNPQRS" }
+      ],
+      "tool_versions": { "node": "v20.11.0" }
+    }
+  },
+  "payload": {
+    "plugin": "deep-evolve",
+    "version": "3.4.2",
+    "receipt_schema_version": 2,
+    "timestamp": "2026-05-08T03:42:08.456Z",
+    "goal": "Optimize hot path in inner-loop scheduler",
+    "eval_mode": "cli",
+    "experiments": {
+      "total": 12,
+      "kept": 4,
+      "discarded": 7,
+      "crashed": 1,
+      "keep_rate": 0.333
+    },
+    "score": {
+      "baseline": 0.998,
+      "current": 0.812,
+      "best": 0.789,
+      "improvement_pct": 20.94
+    },
+    "strategy_evolution": {
+      "outer_loop_generations": 3,
+      "q_trajectory": [0.45, 0.62, 0.78],
+      "strategy_versions": 3,
+      "best_generation": 3
+    },
+    "program": { "versions": 4, "meta_analyses": 2 },
+    "evaluation_epochs": 1,
+    "archives": { "strategy_archive_size": 3, "code_archive_size": 5, "code_forks_used": 1 },
+    "meta_archive_updated": true,
+    "transfer": { "received_from": null, "adopted_patterns_kept": null },
+    "duration_minutes": 132,
+    "quality_score": 78,
+    "outcome": "merged"
+  }
+}
