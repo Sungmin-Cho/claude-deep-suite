@@ -16,7 +16,7 @@ Each plugin is fetched from the SHA below at install time. M2 CI re-checks daily
 | deep-dashboard | 1.4.0 | [`Sungmin-Cho/claude-deep-dashboard`](https://github.com/Sungmin-Cho/claude-deep-dashboard) | [`cecf162`](https://github.com/Sungmin-Cho/claude-deep-dashboard/commit/cecf162c9fedb6d841b3ae99e437004ccde4454a) |
 | deep-memory | 0.4.0 | [`Sungmin-Cho/claude-deep-memory`](https://github.com/Sungmin-Cho/claude-deep-memory) | [`6b1a0bc`](https://github.com/Sungmin-Cho/claude-deep-memory/commit/6b1a0bc002e02db436720aa95f3ab14911172f20) |
 | deep-goal | 1.1.0 | [`Sungmin-Cho/claude-deep-goal`](https://github.com/Sungmin-Cho/claude-deep-goal) | [`9572ff0`](https://github.com/Sungmin-Cho/claude-deep-goal/commit/9572ff0e5768155547104c1608cf7abff74e37a3) |
-| deep-loop | 1.4.0 | [`Sungmin-Cho/claude-deep-loop`](https://github.com/Sungmin-Cho/claude-deep-loop) | [`a3e702d`](https://github.com/Sungmin-Cho/claude-deep-loop/commit/a3e702d76a0503309b521388458369404dfa3e0c) |
+| deep-loop | 1.5.0 | [`Sungmin-Cho/claude-deep-loop`](https://github.com/Sungmin-Cho/claude-deep-loop) | [`c0d832e`](https://github.com/Sungmin-Cho/claude-deep-loop/commit/c0d832e9ec25075e677a49f871e3dfb0ef8b68b5) |
 
 > Version reflects `plugin.json.version` at the pinned SHA. Click the SHA to see the upstream commit details.
 

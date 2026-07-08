@@ -1,6 +1,6 @@
 {
   "name": "claude-deep-suite",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
   "description": "Deep Suite marketplace + sidecar metadata + validators",
