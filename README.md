@@ -40,7 +40,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.4.0 | Cross-plugin harness diagnostics + suite telemetry |
 | [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 0.4.0 | Cross-project semantic memory |
 | [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.1.0 | Goal condition compiler |
-| [deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop) | 1.5.0 | Loop Engineering control plane over the deep-suite |
+| [deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop) | 1.6.0 | Loop Engineering control plane over the deep-suite |
 
 <!-- deep-suite:auto-generated:plugin-table-en:end -->
 
