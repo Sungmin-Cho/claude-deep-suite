@@ -16,7 +16,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | deep-review | 1.12.3 | Independent Evaluator |
 | deep-docs | 1.4.1 | Document gardening + authoring |
 | deep-dashboard | 1.4.0 | Cross-plugin harness diagnostics + suite telemetry |
-| deep-memory | 1.0.0 | Cross-project semantic memory |
+| deep-memory | 1.0.1 | Cross-project semantic memory |
 | deep-goal | 1.1.0 | Goal condition compiler |
 | deep-loop | 1.7.0 | Loop Engineering control plane over the deep-suite |
 
