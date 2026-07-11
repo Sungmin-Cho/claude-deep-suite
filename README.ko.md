@@ -40,7 +40,7 @@ After:   deep-work가 리서치 → 계획 → TDD → 리시트 실행,
 | [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.4.0 | Cross-plugin harness diagnostics + suite telemetry |
 | [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 1.0.1 | Cross-project semantic memory |
 | [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.1.0 | Goal condition compiler |
-| [deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop) | 1.7.0 | Loop Engineering control plane over the deep-suite |
+| [deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop) | 1.7.1 | Loop Engineering control plane over the deep-suite |
 
 <!-- deep-suite:auto-generated:plugin-table-ko:end -->
 
