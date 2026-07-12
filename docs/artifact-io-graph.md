@@ -63,12 +63,16 @@ flowchart LR
   deep-loop-->|writes|p42[".deep-loop/runs/<run-id>/loop.json"]
   deep-loop-->|writes|p43[".deep-loop/runs/<run-id>/event-log.jsonl"]
   deep-loop-->|writes|p44[".deep-loop/runs/<run-id>/handoffs/<ts>-next-session.md"]
-  deep-loop-->|writes|p45[".deep-loop/runs/<run-id>/final-report.md"]
-  deep-loop-->|writes|p46[".deep-loop/current"]
+  deep-loop-->|writes|p45[".deep-loop/runs/<run-id>/reviews/<sha256>.json"]
+  deep-loop-->|writes|p46[".deep-loop/runs/<run-id>/preflight/cache/<cache-key>.json"]
+  deep-loop-->|writes|p47[".deep-loop/runs/<run-id>/preflight/accounting/<cache-key>.json"]
+  deep-loop-->|writes|p48[".deep-loop/runs/<run-id>/preflight/process-receipts/<receipt>.json"]
+  deep-loop-->|writes|p49[".deep-loop/runs/<run-id>/final-report.md"]
+  deep-loop-->|writes|p50[".deep-loop/current"]
   p1[".deep-work/<session>/session-receipt.json"]-->|reads|deep-loop
-  p47[".deep-review/reports/*.md"]-->|reads|deep-loop
+  p51[".deep-review/reports/*.md"]-->|reads|deep-loop
   p20[".deep-docs/last-scan.json"]-->|reads|deep-loop
-  p48[".deep-evolve/evolve-receipt.json"]-->|reads|deep-loop
+  p52[".deep-evolve/evolve-receipt.json"]-->|reads|deep-loop
   p4[".deep-dashboard/harnessability-report.json"]-->|reads|deep-loop
 ```
 

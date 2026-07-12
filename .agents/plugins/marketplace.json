@@ -124,7 +124,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-loop.git",
-        "sha": "a75eb84af617ccf04f6d440a15ba9c1e32d99162"
+        "sha": "56e737335104c56f5c645b3ec9ef84cbc138e1d4"
       },
       "policy": {
         "installation": "AVAILABLE",
