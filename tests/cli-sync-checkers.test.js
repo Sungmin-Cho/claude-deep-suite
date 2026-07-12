@@ -10,16 +10,41 @@ import { dirname, resolve } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '..');
 
+const DEFAULT_CHECKER_TIMEOUT_MS = 30_000;
+const COLD_CACHE_CHECKER_TIMEOUT_MS = 120_000;
+const COLD_CACHE_CHECKERS = new Set([
+  'check-pinned-plugin-paths.js',
+  'check-memory-hierarchy.js',
+]);
+
+function timeoutFor(script) {
+  return COLD_CACHE_CHECKERS.has(script)
+    ? COLD_CACHE_CHECKER_TIMEOUT_MS
+    : DEFAULT_CHECKER_TIMEOUT_MS;
+}
+
 function run(script, args = [], env = {}) {
   return spawnSync('node', [resolve(repoRoot, `scripts/${script}`), ...args], {
     cwd: repoRoot,
     encoding: 'utf8',
     env: { ...process.env, ...env },
-    timeout: 30_000,
+    timeout: timeoutFor(script),
   });
 }
 
 const fixtureDir = resolve(repoRoot, 'tests/fixtures/plugin-cache');
+
+test('cold-cache network checkers outlive one 30-second GitHub request budget', () => {
+  const expectedColdCacheCheckers = [
+    'check-memory-hierarchy.js',
+    'check-pinned-plugin-paths.js',
+  ];
+  assert.deepEqual([...COLD_CACHE_CHECKERS].sort(), expectedColdCacheCheckers);
+  for (const script of expectedColdCacheCheckers) {
+    assert.equal(timeoutFor(script), 120_000, script);
+  }
+  assert.equal(timeoutFor('check-readme-plugin-table.js'), 30_000);
+});
 
 // --- check-readme-plugin-table.js ---
 
@@ -84,14 +109,14 @@ test('check-pinned-plugin-paths.js exits 0 against committed sidecar', () => {
   // Uses real cache — depends on .deep-suite-cache being populated locally OR
   // gh CLI being available. CI populates via gh; local dev relies on cache.
   const res = run('check-pinned-plugin-paths.js');
-  assert.equal(res.status, 0, res.stderr);
+  assert.equal(res.status, 0, res.error?.message ?? res.stderr);
 });
 
 // --- check-memory-hierarchy.js ---
 
 test('check-memory-hierarchy.js exits 0 against committed plugin docs', () => {
   const res = run('check-memory-hierarchy.js');
-  assert.equal(res.status, 0, res.stderr);
+  assert.equal(res.status, 0, res.error?.message ?? res.stderr);
 });
 
 // --- check-plugin-count.js ---

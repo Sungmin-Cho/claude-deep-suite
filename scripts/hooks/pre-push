@@ -17,6 +17,17 @@ if [ "${SKIP_PREFLIGHT:-}" = "1" ]; then
 fi
 
 ROOT="$(git rev-parse --show-toplevel)"
+
+# Git exports repository-local variables (for example GIT_DIR and
+# GIT_WORK_TREE) to hooks. Leaving them set makes preflight subprocesses that
+# intentionally create a foreign temporary repository operate on this
+# worktree instead, even when they pass a different cwd. Preserve the root
+# resolved above, then clear only Git's documented local environment before
+# running the test suite.
+for name in $(git rev-parse --local-env-vars); do
+  unset "$name"
+done
+
 cd "$ROOT"
 
 if [ ! -d node_modules ]; then
