@@ -36,10 +36,10 @@ After:   deep-work가 리서치 → 계획 → TDD → 리시트 실행,
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.7.1 | LLM-native knowledge wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.5.0 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.12.3 | Independent Evaluator |
-| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.4.1 | Document gardening + authoring |
-| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.4.0 | Cross-plugin harness diagnostics + suite telemetry |
-| [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 1.0.1 | Cross-project semantic memory |
-| [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.1.0 | Goal condition compiler |
+| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.5.0 | Document gardening + authoring |
+| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.5.0 | Cross-plugin harness diagnostics + suite telemetry |
+| [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 1.0.2 | Cross-project semantic memory |
+| [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.2.0 | Goal condition compiler |
 | [deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop) | 1.8.2 | Loop Engineering control plane over the deep-suite |
 
 <!-- deep-suite:auto-generated:plugin-table-ko:end -->
