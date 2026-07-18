@@ -12,7 +12,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 |---|---|---|
 | deep-work | 6.9.4 | Evidence-Driven Development Protocol |
 | deep-wiki | 1.7.1 | LLM-native knowledge wiki |
-| deep-evolve | 3.4.3 | Autonomous Experimentation Protocol |
+| deep-evolve | 3.5.0 | Autonomous Experimentation Protocol |
 | deep-review | 1.12.3 | Independent Evaluator |
 | deep-docs | 1.4.1 | Document gardening + authoring |
 | deep-dashboard | 1.4.0 | Cross-plugin harness diagnostics + suite telemetry |

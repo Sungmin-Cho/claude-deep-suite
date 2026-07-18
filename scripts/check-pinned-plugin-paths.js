@@ -67,6 +67,7 @@ const PER_PLUGIN_EXTRA = {
   'deep-evolve': [
     'skills/deep-evolve-workflow/SKILL.md',
     'skills/deep-evolve-workflow/protocols/init.md',
+    'hooks/scripts/deep-evolve-runtime.cjs',
     'commands/deep-evolve.md',
   ],
   'deep-review': [
