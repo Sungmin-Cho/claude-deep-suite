@@ -3,11 +3,11 @@
   "x-provenance": {
     "producer": "deep-work",
     "source": "skills/deep-finish/SKILL.md",
-    "captured_at_sha": "d24f5f1cb5377791ff5a2c542af5f77732588b19"
+    "captured_at_sha": "6d7698121829657dd4e57a02a6f0837813d83441"
   },
   "envelope": {
     "producer": "deep-work",
-    "producer_version": "6.9.1",
+    "producer_version": "6.10.0",
     "artifact_kind": "session-receipt",
     "run_id": "01JTKH22NHABCDEFGHJKMNPQRS",
     "session_id": "dw-2026-05-07T10-00-00-000Z",
@@ -83,7 +83,7 @@
       "total_contracts": 3,
       "contracts_met": 3
     },
-    "deep_work_version": "6.9.1",
+    "deep_work_version": "6.10.0",
     "quality_score": 92,
     "quality_breakdown": {
       "test_pass_rate": 100,

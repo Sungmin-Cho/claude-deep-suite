@@ -10,7 +10,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 
 | Plugin | Version | Description |
 |---|---|---|
-| deep-work | 6.9.4 | Evidence-Driven Development Protocol |
+| deep-work | 6.10.0 | Evidence-Driven Development Protocol |
 | deep-wiki | 1.8.0 | LLM-native knowledge wiki |
 | deep-evolve | 3.5.0 | Autonomous Experimentation Protocol |
 | deep-review | 1.13.0 | Independent Evaluator |
