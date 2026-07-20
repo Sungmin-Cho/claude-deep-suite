@@ -22,9 +22,9 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "9ca438000b25a5d1b2491434bd8fb79cd86db42b"
+        "sha": "1f8d92abd5909afac705cb0827640c1f8efe0c78"
       },
-      "sha": "9ca438000b25a5d1b2491434bd8fb79cd86db42b"
+      "sha": "1f8d92abd5909afac705cb0827640c1f8efe0c78"
     },
     {
       "name": "deep-evolve",
