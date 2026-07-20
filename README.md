@@ -38,7 +38,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.13.0 | Independent Evaluator |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.5.0 | Document gardening + authoring |
 | [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.5.0 | Cross-plugin harness diagnostics + suite telemetry |
-| [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 1.0.3 | Cross-project semantic memory |
+| [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 1.0.4 | Cross-project semantic memory |
 | [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.2.0 | Goal condition compiler |
 | [deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop) | 1.9.0 | Loop Engineering control plane over the deep-suite |
 

@@ -96,7 +96,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-memory.git",
-        "sha": "bf405faf565e6572d0581d1f3048b202048355a2"
+        "sha": "a3c39945b6d8a2355ef53fc9ccff9cbd478562d1"
       },
       "policy": {
         "installation": "AVAILABLE",

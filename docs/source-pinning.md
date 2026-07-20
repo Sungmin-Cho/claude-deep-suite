@@ -14,7 +14,7 @@ Each plugin is fetched from the SHA below at install time. M2 CI re-checks daily
 | deep-review | 1.13.0 | [`Sungmin-Cho/claude-deep-review`](https://github.com/Sungmin-Cho/claude-deep-review) | [`c96e9ea`](https://github.com/Sungmin-Cho/claude-deep-review/commit/c96e9ea52c531a2e794d73e1003fc5a2444d4fa0) |
 | deep-docs | 1.5.0 | [`Sungmin-Cho/claude-deep-docs`](https://github.com/Sungmin-Cho/claude-deep-docs) | [`ba19c7f`](https://github.com/Sungmin-Cho/claude-deep-docs/commit/ba19c7f5c275b2de12729a50805deb2358ef3581) |
 | deep-dashboard | 1.5.0 | [`Sungmin-Cho/claude-deep-dashboard`](https://github.com/Sungmin-Cho/claude-deep-dashboard) | [`5291fab`](https://github.com/Sungmin-Cho/claude-deep-dashboard/commit/5291fabbd8227dfe6cc0ec2737bb89eac3054cf5) |
-| deep-memory | 1.0.3 | [`Sungmin-Cho/claude-deep-memory`](https://github.com/Sungmin-Cho/claude-deep-memory) | [`bf405fa`](https://github.com/Sungmin-Cho/claude-deep-memory/commit/bf405faf565e6572d0581d1f3048b202048355a2) |
+| deep-memory | 1.0.4 | [`Sungmin-Cho/claude-deep-memory`](https://github.com/Sungmin-Cho/claude-deep-memory) | [`a3c3994`](https://github.com/Sungmin-Cho/claude-deep-memory/commit/a3c39945b6d8a2355ef53fc9ccff9cbd478562d1) |
 | deep-goal | 1.2.0 | [`Sungmin-Cho/claude-deep-goal`](https://github.com/Sungmin-Cho/claude-deep-goal) | [`32ee242`](https://github.com/Sungmin-Cho/claude-deep-goal/commit/32ee242a52165a0b32423570deaf2308b529fcd1) |
 | deep-loop | 1.9.0 | [`Sungmin-Cho/claude-deep-loop`](https://github.com/Sungmin-Cho/claude-deep-loop) | [`c60a124`](https://github.com/Sungmin-Cho/claude-deep-loop/commit/c60a12418dac930202931f17bbc326d5e6f430f3) |
 
