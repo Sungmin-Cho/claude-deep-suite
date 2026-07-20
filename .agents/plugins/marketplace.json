@@ -54,7 +54,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "c96e9ea52c531a2e794d73e1003fc5a2444d4fa0"
+        "sha": "e1ee02b20a6096ef59108b2c51cfa33af73d504a"
       },
       "policy": {
         "installation": "AVAILABLE",
