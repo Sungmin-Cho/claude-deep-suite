@@ -64,11 +64,11 @@
     },
     {
       "name": "deep-docs",
-      "description": "Document gardening + authoring — scan/garden/audit + generate·restructure CLAUDE/AGENTS/ARCHITECTURE docs, for Claude Code and Codex.",
+      "description": "Document gardening + authoring — AGENTS-first single source (AGENTS.md primary, CLAUDE.md thin @AGENTS.md wrapper); scan/garden/audit for Claude Code and Codex.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git",
-        "sha": "ba19c7f5c275b2de12729a50805deb2358ef3581"
+        "sha": "3256cfbac4964bd1c9d486fd7434a74648b6f292"
       },
       "policy": {
         "installation": "AVAILABLE",

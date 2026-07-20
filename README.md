@@ -36,7 +36,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.8.0 | LLM-native knowledge wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.0 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.13.0 | Independent Evaluator |
-| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.5.0 | Document gardening + authoring |
+| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.6.0 | Document gardening + authoring |
 | [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.5.0 | Cross-plugin harness diagnostics + suite telemetry |
 | [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 1.0.4 | Cross-project semantic memory |
 | [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.2.0 | Goal condition compiler |
@@ -367,6 +367,7 @@ Inspired by OpenAI's [Harness Engineering](https://openai.com/index/harness-engi
 - **Path-scoped freshness** — checks if referenced code paths changed after the doc was last updated
 - **Auto-fix / audit-only separation** — mechanical fixes only; subjective checks are audit-only
 - **Document authoring (v1.4.0)** — detects missing/thin docs (`missing-doc` / `thin-doc` gaps) and generates or restructures `CLAUDE.md` / `AGENTS.md` / `ARCHITECTURE.md`
+- **AGENTS-first single source (v1.6.0)** — `AGENTS.md` is the primary managed document; `CLAUDE.md` is kept as a thin `@AGENTS.md` wrapper holding Claude Code-specific notes only
 - **Durable scan artifact** — `.deep-docs/last-scan.json` with provenance (HEAD SHA, branch)
 - **Scoring** — size, freshness, reference accuracy, duplication
 
