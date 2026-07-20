@@ -12,11 +12,11 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 |---|---|---|
 | deep-work | 6.10.0 | Evidence-Driven Development Protocol |
 | deep-wiki | 1.8.0 | LLM-native knowledge wiki |
-| deep-evolve | 3.5.0 | Autonomous Experimentation Protocol |
+| deep-evolve | 3.6.0 | Autonomous Experimentation Protocol |
 | deep-review | 1.13.0 | Independent Evaluator |
 | deep-docs | 1.5.0 | Document gardening + authoring |
 | deep-dashboard | 1.5.0 | Cross-plugin harness diagnostics + suite telemetry |
-| deep-memory | 1.0.2 | Cross-project semantic memory |
+| deep-memory | 1.0.3 | Cross-project semantic memory |
 | deep-goal | 1.2.0 | Goal condition compiler |
 | deep-loop | 1.9.0 | Loop Engineering control plane over the deep-suite |
 
