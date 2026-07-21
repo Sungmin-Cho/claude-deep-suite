@@ -33,7 +33,7 @@ After:   deep-work가 리서치 → 계획 → TDD → 리시트 실행,
 | 플러그인 | 버전 | 설명 |
 |---|---|---|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.10.0 | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.8.1 | LLM-native knowledge wiki |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.8.2 | LLM-native knowledge wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.0 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.15.0 | Independent Evaluator |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.6.0 | Document gardening + authoring |
@@ -283,6 +283,7 @@ Raw Sources  →  Wiki (markdown pages)  →  Schema (management rules)
 - **Trust-boundary 폐쇄** — 활성 synthesizer 에이전트의 tool manifest에서 `Write`/`Edit` 물리적 제거; main 세션이 단일 global lock 아래 유일한 writer
 - **Auto-ingest 훅** — Claude Code에서는 `SessionStart` hook이 vault 수정 `.md` 감지 후 `/wiki-ingest` 자동 트리거; `auto_ingest:` config로 opt-in. Codex에서는 명시적으로 `$deep-wiki:wiki-ingest` skill entry를 호출한다.
 - **M3 envelope 채택** — `index.json`이 cross-plugin envelope로 wrap; legacy payload는 forward-compat 위해 그대로 보존
+- **네이티브 Windows lock 신뢰성 (v1.8.2)** — atomic write 소유권 seal이 Windows 11 24H2 / Server 2025의 libuv ≥1.49 fstat/lstat `st_dev` 비대칭을 방향성 device-compatibility 술어로 허용하여, wiki lock 획득 영구 실패를 수정
 
 [전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-wiki)
 

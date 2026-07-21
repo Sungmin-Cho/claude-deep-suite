@@ -33,7 +33,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | Plugin | Version | Description |
 |---|---|---|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.10.0 | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.8.1 | LLM-native knowledge wiki |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.8.2 | LLM-native knowledge wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.0 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.15.0 | Independent Evaluator |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.6.0 | Document gardening + authoring |
@@ -279,6 +279,7 @@ Raw Sources  →  Wiki (markdown pages)  →  Schema (management rules)
 - **Trust-boundary closure** — active synthesizer agents have `Write`/`Edit` physically removed from their tool manifests; main session is the sole writer under a single global lock
 - **Auto-ingest hook** — in Claude Code, the `SessionStart` hook detects modified `.md` files in the vault and triggers `/wiki-ingest` automatically; opt-in via `auto_ingest:` config block. Codex uses the explicit `$deep-wiki:wiki-ingest` skill entry.
 - **M3 envelope adoption** — `index.json` is wrapped in the cross-plugin envelope for traceability; legacy payload preserved verbatim for forward-compat
+- **Native Windows lock reliability (v1.8.2)** — the atomic-write ownership seal tolerates the libuv ≥1.49 fstat/lstat `st_dev` asymmetry on Windows 11 24H2 / Server 2025 via a directional device-compatibility predicate, fixing permanent wiki-lock-acquisition failure
 
 [Full documentation →](https://github.com/Sungmin-Cho/claude-deep-wiki)
 
