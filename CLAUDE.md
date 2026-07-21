@@ -14,7 +14,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | deep-wiki | 1.8.2 | LLM-native knowledge wiki |
 | deep-evolve | 3.6.0 | Autonomous Experimentation Protocol |
 | deep-review | 1.15.0 | Independent Evaluator |
-| deep-docs | 1.6.0 | Document gardening + authoring |
+| deep-docs | 1.6.1 | Document gardening + authoring |
 | deep-dashboard | 1.5.0 | Cross-plugin harness diagnostics + suite telemetry |
 | deep-memory | 1.0.4 | Cross-project semantic memory |
 | deep-goal | 1.2.0 | Goal condition compiler |

@@ -64,11 +64,11 @@
     },
     {
       "name": "deep-docs",
-      "description": "Document gardening + authoring — AGENTS-first single source (AGENTS.md primary, CLAUDE.md thin @AGENTS.md wrapper); scan/garden/audit for Claude Code and Codex.",
+      "description": "Document gardening + authoring — v1.6.1 fixes the native Windows atomic-write identity false-positive (path-lstat dev:0); scan/garden/audit for Claude Code and Codex.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git",
-        "sha": "3256cfbac4964bd1c9d486fd7434a74648b6f292"
+        "sha": "b1ca58364fec61d6f21fc410d0a433c1b5f329c7"
       },
       "policy": {
         "installation": "AVAILABLE",
