@@ -33,7 +33,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | Plugin | Version | Description |
 |---|---|---|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.10.0 | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.0 | LLM-native knowledge wiki |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.1 | LLM-native knowledge wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.0 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.15.0 | Independent Evaluator |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.6.1 | Document gardening + authoring |
