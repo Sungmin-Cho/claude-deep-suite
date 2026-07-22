@@ -21,18 +21,18 @@
     },
     {
       "name": "deep-wiki",
-      "description": "LLM-native knowledge wiki — ingest sources (files, URLs, notes, Obsidian vaults) into linked Markdown pages with source provenance, then query the accumulated knowledge; self-linting and self-healing, with reliable atomic writes and locking on native Windows (libuv st_dev asymmetry fix), for Claude Code and Codex.",
+      "description": "LLM-native knowledge wiki — ingest sources (files, URLs, notes, Obsidian vaults) into linked Markdown pages with source provenance, then query the accumulated knowledge; self-linting and self-healing, with O(diff) commit scaling (hash-only catalog seal) that keeps large-vault commits within the per-call deadline budget plus a crash-safe cancel path, for Claude Code and Codex.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "3ebe6bdd9ced679a70986d3050039ecd470ffc33"
+        "sha": "3cf46049d6528af999058424955078daff1f3422"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_USE"
       },
       "category": "Productivity",
-      "sha": "3ebe6bdd9ced679a70986d3050039ecd470ffc33"
+      "sha": "3cf46049d6528af999058424955078daff1f3422"
     },
     {
       "name": "deep-evolve",
