@@ -181,12 +181,21 @@
     },
     "deep-loop": {
       "runtime": ["node"],
-      "capabilities": ["orchestration", "loop-state", "durable-state", "handoff", "respawn", "cross-plugin-routing", "budget-breaker-gates"],
+      "capabilities": ["orchestration", "loop-state", "durable-state", "checkpoint", "handoff", "respawn", "cross-plugin-routing", "budget-breaker-gates", "project-root-recovery"],
       "artifacts": {
         "writes": [
           ".deep-loop/runs/<run-id>/loop.json",
           ".deep-loop/runs/<run-id>/event-log.jsonl",
           ".deep-loop/runs/<run-id>/handoffs/<ts>-next-session.md",
+          ".deep-loop/runs/<run-id>/checkpoints/<checkpoint-key>-compact.json",
+          ".deep-loop/runs/<run-id>/transactions/<operation-id>/prepared.json",
+          ".deep-loop/runs/<run-id>/transactions/<operation-id>/committed.json",
+          ".deep-loop/runs/<run-id>/recoveries/<child-run-id>-affinity-recovery.json",
+          ".deep-loop/runs/<run-id>/recoveries/<child-run-id>-boundary-recovery.json",
+          ".deep-loop/runs/<run-id>/recoveries/root/<replacement-session-id>.json",
+          ".deep-loop/runs/<run-id>/recoveries/root-operations/<operation-id>.json",
+          ".deep-loop/runs/<run-id>/terminal/launch-command.txt",
+          ".deep-loop/runs/<run-id>/terminal/launch-command.meta.json",
           ".deep-loop/runs/<run-id>/reviews/<sha256>.json",
           ".deep-loop/runs/<run-id>/preflight/cache/<cache-key>.json",
           ".deep-loop/runs/<run-id>/preflight/accounting/<cache-key>.json",
@@ -202,7 +211,8 @@
           ".deep-dashboard/harnessability-report.json"
         ]
       },
-      "hooks_active": ["PreCompact"]
+      "hooks_active": ["PreCompact", "SessionStart"],
+      "x-session-start-sources": ["compact"]
     }
   },
   "data_flow": [
