@@ -18,7 +18,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | deep-dashboard | 1.5.0 | Cross-plugin harness diagnostics + suite telemetry |
 | deep-memory | 1.0.5 | Cross-project semantic memory |
 | deep-goal | 1.2.0 | Goal condition compiler |
-| deep-loop | 1.10.0 | Loop Engineering control plane over the deep-suite |
+| deep-loop | 1.11.0 | Loop Engineering control plane over the deep-suite |
 
 <!-- deep-suite:auto-generated:plugin-table-claude:end -->
 
