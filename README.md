@@ -35,7 +35,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.13.1 | Evidence-Driven Development Protocol |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.1 | LLM-native knowledge wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.0 | Autonomous Experimentation Protocol |
-| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 1.15.0 | Independent Evaluator |
+| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 2.0.0 | Independent Evaluator |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.6.1 | Document gardening + authoring |
 | [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.5.0 | Cross-plugin harness diagnostics + suite telemetry |
 | [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 1.0.5 | Cross-project semantic memory |
