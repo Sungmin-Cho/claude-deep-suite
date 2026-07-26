@@ -50,11 +50,11 @@
     },
     {
       "name": "deep-review",
-      "description": "Independent Evaluator — reviews your changes in a separate agent context (Claude/ultracode multi-agent fan-out + optional Codex review/adversarial + agy) and returns an APPROVE / CONCERN / REQUEST_CHANGES verdict plus an evidence-based response protocol. v1.12.2: thin-dispatcher Phase B — review-mode body extracted to on-demand references; the command is now a route-first thin router (1136→53 lines) and respond/init no longer load the workflow skill (behavior-preserving).",
+      "description": "Independent Evaluator for AI coding agents. v2.1.0 routes Claude-hosted Codex reviewers through generic codex exec with explicit model/reasoning controls, and Codex-hosted reviewers through fresh native subagents with fail-closed report admission and mutation-safety checks.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
-        "sha": "99849d74cb65388b6ec9022931db03559eba44a8"
+        "sha": "bba765738b6c8ea2071a6676053a98c38e95c610"
       },
       "policy": {
         "installation": "AVAILABLE",
