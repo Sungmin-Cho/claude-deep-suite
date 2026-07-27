@@ -102,6 +102,7 @@ guides/
   hook-patterns.md / .ko.md            — hook usage patterns + anti-patterns + denylist recommendations
   long-run-handoff.md / .ko.md         — cross-plugin handoff artifact (Phase 5 ↔ evolve scenarios)
   context-management.md / .ko.md       — compaction / output offloading / full reset policies
+  context-engineering.md / .ko.md      — Claude 5 context-diet standard (4 buckets, KEEP-absolute, per-repo runbook)
 examples/
   README.md                            — example pack usage + install steps
   hooks-suite-baseline/                — baseline hook config (SessionStart / PreToolUse force-push gate / Stop)
