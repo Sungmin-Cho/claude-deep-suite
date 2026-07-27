@@ -59,7 +59,7 @@ The checker uses a small explicit dictionary rather than sentence-level NLP. Eac
 | Policy keyword | Suite rule | Plugin must … | Failure phrasing |
 |---|---|---|---|
 | `marketplace-version-field` | Plugin entry in `marketplace.json` does not declare `version` | Not require `version` in plugin entries from its README/CHANGELOG examples | "plugin doc claims marketplace entry must have `version` field" |
-| `schema_version-locked` | Sidecar `schema_version` is locked at `"1.0"` (forward-compat via `x-*`) | Not advertise `schema_version: "1.1"` migration plans | "plugin doc proposes bumping `schema_version` MAJOR/MINOR" |
+| `schema_version-locked` | Sidecar/envelope `schema_version` is locked at `"1.0"` (forward-compat via `x-*`) | Not advertise `schema_version: "1.1"` migration plans. Payload-schema versions (`envelope.schema.version`, payload-registry `v<MAJOR.MINOR>`) are a different axis and exempt — lines naming `envelope.schema.version` are permitted | "plugin doc proposes bumping `schema_version` MAJOR/MINOR" |
 | `data_flow-authoritative` | `data_flow` is **non-authoritative** | Not advertise itself as exhaustive truth | "plugin doc claims `data_flow` enumerates all cross-plugin reads" |
 | `wiki_root-prefix` | `<wiki_root>/` (underscore) is the canonical wiki path prefix | Use the same prefix in any path advertised in suite docs / sidecar | "plugin doc uses `<wiki-root>/` (hyphen) instead of `<wiki_root>/`" |
 | `hooks-empty-with-reason` | `hooks_active: []` requires `hooks_intentionally_empty_reason` | Document its trust-boundary rationale | "plugin doc says hooks empty without reason; sidecar will reject" |

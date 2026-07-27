@@ -36,7 +36,7 @@ After:   deep-work가 리서치 → 명세 → 계획 → TDD → 리시트 실�
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.1 | LLM-native knowledge wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.1 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 2.1.0 | Independent Evaluator for AI coding agents |
-| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.6.1 | Document gardening + authoring |
+| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.6.2 | Document gardening + authoring |
 | [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.5.1 | Cross-plugin harness diagnostics + suite telemetry |
 | [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 1.0.5 | Cross-project semantic memory |
 | [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.2.0 | Goal condition compiler |

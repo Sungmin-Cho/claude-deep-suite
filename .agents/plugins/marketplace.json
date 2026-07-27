@@ -68,7 +68,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git",
-        "sha": "b1ca58364fec61d6f21fc410d0a433c1b5f329c7"
+        "sha": "3bc742886ce18aa252d3897f497df58a278b93a7"
       },
       "policy": {
         "installation": "AVAILABLE",

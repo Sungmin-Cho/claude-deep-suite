@@ -37,8 +37,8 @@ const POLICIES = [
     id: 'schema_version-bump',
     file: '*',
     match: /schema_version[^\n]{0,40}\b1\.1\b/i,
-    permit: /(forbidden|locked|never|do not|don't|x-\*)/i,
-    message: 'plugin doc proposes schema_version > 1.0 — suite policy locks at 1.0 (forward-compat via x-* patternProperties)',
+    permit: /(forbidden|locked|never|do not|don't|x-\*|envelope\.schema\.version)/i,
+    message: 'plugin doc proposes schema_version > 1.0 — suite policy locks at 1.0 (forward-compat via x-* patternProperties; payload-schema versions cited as envelope.schema.version are exempt)',
   },
   {
     id: 'data_flow-authoritative',
