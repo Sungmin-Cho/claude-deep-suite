@@ -12,13 +12,13 @@ Deep Suite는 Claude Code와 Codex 위에서 AI 코딩을 **구조화·검증 �
 
 | 플러그인 | 무엇을 고치나 |
 |---|---|
-| **[deep-work](https://github.com/Sungmin-Cho/claude-deep-work)** | 생각보다 먼저 코딩하는 문제. 계획 우선 · TDD 기반 흐름을 강제: 브레인스토밍 → 리서치 → 계획 → 구현 → 테스트. |
+| **[deep-work](https://github.com/Sungmin-Cho/claude-deep-work)** | 생각보다 먼저 코딩하는 문제. 명세 우선 · TDD 기반 흐름을 강제: 브레인스토밍 → 리서치 → 명세 → 계획 → 구현 → 테스트. |
 | **[deep-review](https://github.com/Sungmin-Cho/claude-deep-review)** | 자가 승인 편향. 별도 평가자 에이전트가 AI가 작성한 코드를 리뷰 — 작성자가 자기 diff를 스스로 승인하지 못하게. |
 | **[deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop)** | 긴 작업에서 맥락을 잃는 문제. proposal-only 안전성으로 다중 세션 작업을 끊김 없이 진행. |
 
 ```text
 Before:  Claude가 바로 수정  →  테스트 누락  →  자기 diff를 스스로 승인
-After:   deep-work가 리서치 → 계획 → TDD → 리시트 실행,
+After:   deep-work가 리서치 → 명세 → 계획 → TDD → 리시트 실행,
          이후 deep-review가 독립적으로 승인
 ```
 
@@ -32,7 +32,7 @@ After:   deep-work가 리서치 → 계획 → TDD → 리시트 실행,
 
 | 플러그인 | 버전 | 설명 |
 |---|---|---|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.13.1 | Evidence-Driven Development Protocol |
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 7.0.0 | Evidence-Driven Development Protocol |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.1 | LLM-native knowledge wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.0 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 2.1.0 | Independent Evaluator for AI coding agents |
@@ -183,12 +183,12 @@ Deep Suite는 Harness Engineering 프레임워크를 구현합니다: 각 플러
 **복잡도별 예시:**
 
 ```bash
-# 빠른 수정 (30분) — deep-work 단독, Phase 5 skip
+# 빠른 수정 (30분) — deep-work 단독, Phase 6 skip
 /deep-work --skip-integrate "로그인 500 에러 수정"
 
-# 중간 기능 (2-4시간) — Phase 5 가 review/docs/wiki orchestrate
+# 중간 기능 (2-4시간) — Phase 6 가 review/docs/wiki orchestrate
 /deep-work "Stripe 결제 통합 추가"
-# → Phase 5 가 /deep-review, /deep-docs scan, /wiki-ingest 추천 (top-3 loop)
+# → Phase 6 가 /deep-review, /deep-docs scan, /wiki-ingest 추천 (top-3 loop)
 
 # 대규모 최적화 (반나절+) — 전체 플러그인 스택
 /deep-harness-dashboard                                  # 프로젝트 건강 진단
@@ -204,21 +204,22 @@ Deep Suite는 Harness Engineering 프레임워크를 구현합니다: 각 플러
 
 **Evidence-Driven Development Protocol** — 단일 명령 자동 흐름으로 구조화·증거 기반 개발을 강제하는 오케스트레이터.
 
-Claude Code에서는 `/deep-work "task"`, Codex에서는 `$deep-work:deep-work "task"` 하나로 **Brainstorm → Research → Plan → Implement → Test → Integrate** 전체 파이프라인을 자동 진행. Claude Code는 hook으로 phase를 물리적으로 강제하고, Codex는 동일한 skill protocol과 verification gate를 Codex skill surface에서 사용한다.
+Claude Code에서는 `/deep-work "task"`, Codex에서는 `$deep-work:deep-work "task"` 하나로 **Brainstorm → Research → Spec → Plan → Implement → Test → Integrate** 전체 파이프라인을 자동 진행. Claude Code는 hook으로 phase를 물리적으로 강제하고, Codex는 동일한 skill protocol과 verification gate를 Codex skill surface에서 사용한다.
 
 ### 주요 명령
 
 | 명령 | 설명 |
 |---|---|
 | `/deep-work <task>` | 자동 흐름 오케스트레이션 — 전체 파이프라인. Plan 승인만 사용자 인터랙션 |
-| `/deep-work --skip-integrate <task>` | Phase 5 skip 후 바로 `/deep-finish` |
-| `/deep-integrate` | 수동 Phase 5 — 설치된 플러그인 artifact에서 top-3 다음 액션 |
+| `/deep-work --skip-integrate <task>` | Phase 6 skip 후 바로 `/deep-finish` |
+| `/deep-integrate` | 수동 Phase 6 — 설치된 플러그인 artifact에서 top-3 다음 액션 |
 | `/deep-status` | 통합 뷰 — 진행도, 보고서, receipt, 히스토리, 가정 |
 | `/deep-debug` | 근본 원인 조사 기반 체계적 디버깅 |
 | `/deep-research` | 수동 Phase 1 — 코드베이스 심층 분석 |
-| `/deep-plan` | 수동 Phase 2 — slice 기반 구현 계획 |
-| `/deep-implement` | 수동 Phase 3 — TDD 강제 slice 실행 |
-| `/deep-test` | Phase 4 — 검증 + 품질 게이트 |
+| `/deep-spec` | 수동 Phase 2 — 실행 가능한 requirement, failure mode, evidence gate |
+| `/deep-plan` | 수동 Phase 3 — slice 기반 구현 계획 |
+| `/deep-implement` | 수동 Phase 4 — TDD 강제 slice 실행 |
+| `/deep-test` | Phase 5 — 검증 + 품질 게이트 |
 | `/deep-sensor-scan` | Computational sensor scan — linter, type checker, coverage |
 | `/deep-mutation-test` | Mutation testing — AI 생성 테스트 품질 검증 |
 
@@ -227,25 +228,26 @@ Claude Code에서는 `/deep-work "task"`, Codex에서는 `$deep-work:deep-work "
 ```
 Phase 0  Brainstorm    설계 탐색 — "why before how" (skip 가능)
 Phase 1  Research      코드베이스 심층 분석 + 문서화
-Phase 2  Plan          Slice 기반 구현 계획 (사용자 승인 필요)
-Phase 3  Implement     TDD 강제 실행 — 실패 테스트 → 구현 → receipt
-Phase 4  Test          Receipt 점검, spec 준수, 품질 게이트
-Phase 5  Integrate     설치된 플러그인 artifact 읽기 → LLM 다음 액션 랭킹
+Phase 2  Spec          실행 가능한 requirement, invariant, evidence gate
+Phase 3  Plan          Slice 기반 구현 계획 (사용자 승인 필요)
+Phase 4  Implement     TDD 강제 실행 — 실패 테스트 → 구현 → receipt
+Phase 5  Test          Receipt 점검, spec 준수, 품질 게이트
+Phase 6  Integrate     설치된 플러그인 artifact 읽기 → LLM 다음 액션 랭킹
                        → 사용자 top-3 선택 (≤5 라운드, skip 가능)
 ```
 
 ### 주요 기능
 
-- **Phase-locked 파일 편집** — Phase 3 외 코드 변경 차단
+- **Phase-locked 파일 편집** — Phase 4 외 코드 변경 차단
 - **TDD 강제** — 실패 테스트 먼저, 그 다음 구현
 - **Receipt 기반 증거** — 모든 slice에 완료 증거 (M3 cross-plugin envelope)
 - **품질 게이트** — drift check, SOLID review, insight analysis, Sensor Clean, Mutation Score
 - **Computational sensor** — linter / type checker / coverage 자동 실행 + 자가 보정 루프 (SENSOR_RUN → SENSOR_FIX → SENSOR_CLEAN)
 - **Mutation testing** — AI 생성 테스트 품질 자동 검증; 생존 mutant → 자동 테스트 재생성 (최대 3 라운드)
 - **Slice review** — sensor 파이프라인 직후 slice별 2-stage 독립 리뷰 (spec 준수 + 코드 품질)
-- **Phase 5 integrate** — Test 이후 AI 추천 top-3 다음 액션 (review / docs / wiki / dashboard / evolve), 인터랙티브 루프
+- **Phase 6 integrate** — Test 이후 AI 추천 top-3 다음 액션 (review / docs / wiki / dashboard / evolve), 인터랙티브 루프
 - **Team/solo 위임** — Research/Implement는 항상 subagent에 위임; team 모드는 3-way 병렬 Research
-- **Profile schema v3** — 세션마다 항목별 ask; atomic write + flock + idempotent v2→v3 마이그레이션
+- **Profile schema v4** — methodology policy가 routing, review strength, verification gate의 단일 authority이며 v3에서 atomic migration
 
 [전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-work)
 

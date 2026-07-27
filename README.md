@@ -12,13 +12,13 @@ Deep Suite is a **harness layer for Claude Code and Codex** that makes agentic c
 
 | Plugin | What it fixes |
 |---|---|
-| **[deep-work](https://github.com/Sungmin-Cho/claude-deep-work)** | Coding before thinking. Enforces a plan-first, TDD-driven flow: Brainstorm → Research → Plan → Implement → Test. |
+| **[deep-work](https://github.com/Sungmin-Cho/claude-deep-work)** | Coding before thinking. Enforces a spec-first, TDD-driven flow: Brainstorm → Research → Spec → Plan → Implement → Test. |
 | **[deep-review](https://github.com/Sungmin-Cho/claude-deep-review)** | Self-approval bias. A separate evaluator agent reviews AI-written code, so the author never signs off on its own diff. |
 | **[deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop)** | Losing the thread on long tasks. Durable, proposal-only orchestration that keeps multi-session work moving safely. |
 
 ```text
 Before:  Claude edits straight away  →  skips tests  →  approves its own diff
-After:   deep-work runs research → plan → TDD → receipt,
+After:   deep-work runs research → spec → plan → TDD → receipt,
          then deep-review signs off independently
 ```
 
@@ -32,7 +32,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 
 | Plugin | Version | Description |
 |---|---|---|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 6.13.1 | Evidence-Driven Development Protocol |
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 7.0.0 | Evidence-Driven Development Protocol |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.1 | LLM-native knowledge wiki |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.0 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 2.1.0 | Independent Evaluator for AI coding agents |
@@ -179,12 +179,12 @@ Each plugin works independently, but the real power comes from using them togeth
 **Examples by complexity:**
 
 ```bash
-# Quick fix (30 min) — deep-work alone, skip Phase 5
+# Quick fix (30 min) — deep-work alone, skip Phase 6
 /deep-work --skip-integrate "fix login 500 error"
 
-# Medium feature (2-4 hours) — Phase 5 orchestrates review/docs/wiki
+# Medium feature (2-4 hours) — Phase 6 orchestrates review/docs/wiki
 /deep-work "add Stripe payment integration"
-# → Phase 5 recommends /deep-review, /deep-docs scan, /wiki-ingest (top-3 loop)
+# → Phase 6 recommends /deep-review, /deep-docs scan, /wiki-ingest (top-3 loop)
 
 # Large optimization (half-day+) — full plugin stack
 /deep-harness-dashboard                                  # diagnose project health
@@ -200,21 +200,22 @@ For detailed scenarios see the [Integrated Workflow Guide](guides/integrated-wor
 
 **Evidence-Driven Development Protocol** — a single-command auto-flow orchestration that enforces structured, evidence-based software development.
 
-`/deep-work "task"` in Claude Code, or `$deep-work:deep-work "task"` in Codex, runs the entire **Brainstorm → Research → Plan → Implement → Test → Integrate** pipeline automatically. Claude Code uses hooks for physical phase enforcement; Codex uses the same skill protocol and verification gates through the Codex skill surface.
+`/deep-work "task"` in Claude Code, or `$deep-work:deep-work "task"` in Codex, runs the entire **Brainstorm → Research → Spec → Plan → Implement → Test → Integrate** pipeline automatically. Claude Code uses hooks for physical phase enforcement; Codex uses the same skill protocol and verification gates through the Codex skill surface.
 
 ### Key commands
 
 | Command | Description |
 |---------|-------------|
 | `/deep-work <task>` | Auto-flow orchestration — runs the full pipeline. Plan approval is the only required interaction. |
-| `/deep-work --skip-integrate <task>` | Same, but skip Phase 5 and go straight to `/deep-finish` |
-| `/deep-integrate` | Manual Phase 5 — top-3 next actions from installed plugin artifacts |
+| `/deep-work --skip-integrate <task>` | Same, but skip Phase 6 and go straight to `/deep-finish` |
+| `/deep-integrate` | Manual Phase 6 — top-3 next actions from installed plugin artifacts |
 | `/deep-status` | Unified view — progress, report, receipts, history, assumptions |
 | `/deep-debug` | Systematic debugging with root cause investigation |
 | `/deep-research` | Manual Phase 1 — deep codebase analysis |
-| `/deep-plan` | Manual Phase 2 — slice-based implementation planning |
-| `/deep-implement` | Manual Phase 3 — TDD-enforced slice execution |
-| `/deep-test` | Phase 4 — verification with quality gates |
+| `/deep-spec` | Manual Phase 2 — executable requirements, failure modes, and evidence gates |
+| `/deep-plan` | Manual Phase 3 — slice-based implementation planning |
+| `/deep-implement` | Manual Phase 4 — TDD-enforced slice execution |
+| `/deep-test` | Phase 5 — verification with quality gates |
 | `/deep-sensor-scan` | Computational sensor scan — linter, type checker, coverage |
 | `/deep-mutation-test` | Mutation testing — AI-generated test quality verification |
 
@@ -223,25 +224,26 @@ For detailed scenarios see the [Integrated Workflow Guide](guides/integrated-wor
 ```
 Phase 0  Brainstorm    Design exploration — "why before how" (skippable)
 Phase 1  Research      Deep codebase analysis and documentation
-Phase 2  Plan          Slice-based implementation plan (requires user approval)
-Phase 3  Implement     TDD-enforced execution — failing test → code → receipt
-Phase 4  Test          Receipt check, spec compliance, quality gates
-Phase 5  Integrate     Reads installed plugin artifacts → LLM ranks next actions
+Phase 2  Spec          Executable requirements, invariants, and evidence gates
+Phase 3  Plan          Slice-based implementation plan (requires user approval)
+Phase 4  Implement     TDD-enforced execution — failing test → code → receipt
+Phase 5  Test          Receipt check, spec compliance, quality gates
+Phase 6  Integrate     Reads installed plugin artifacts → LLM ranks next actions
                        → user picks from top-3 (≤5 rounds, skippable)
 ```
 
 ### Key features
 
-- **Phase-locked file editing** — code changes blocked outside Phase 3
+- **Phase-locked file editing** — code changes blocked outside Phase 4
 - **TDD enforcement** — failing test first, then implementation
 - **Receipt-based evidence** — every slice collects proof of completion (M3 cross-plugin envelope)
 - **Quality gates** — drift check, SOLID review, insight analysis, Sensor Clean, Mutation Score
 - **Computational sensors** — auto-run linter / type checker / coverage with self-correction loop (SENSOR_RUN → SENSOR_FIX → SENSOR_CLEAN)
 - **Mutation testing** — auto-verify AI-generated test quality; survived mutants trigger automatic test regeneration (up to 3 rounds)
 - **Slice review** — per-slice two-stage independent review (spec compliance + code quality) immediately after the sensor pipeline
-- **Phase 5 integrate** — AI-recommended top-3 next actions (review / docs / wiki / dashboard / evolve) after Test, with an interactive loop
+- **Phase 6 integrate** — AI-recommended top-3 next actions (review / docs / wiki / dashboard / evolve) after Test, with an interactive loop
 - **Team/solo delegation** — Research and Implement always delegate to subagents; team mode runs 3-way parallel Research
-- **Profile schema v3** — per-item ask each session; atomic write + flock + idempotent migration from v2
+- **Profile schema v4** — methodology policy is the single authority for routing, review strength, and verification gates, with atomic migration from v3
 
 [Full documentation →](https://github.com/Sungmin-Cho/claude-deep-work)
 

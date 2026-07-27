@@ -29,7 +29,7 @@ Plugins should compact at one of these boundaries. The **recommended action** co
 
 | Trigger | Recommended action | Why |
 |---|---|---|
-| **Phase transition** (Research → Plan → Implement → Test → Integrate in deep-work) | Manual compaction at the boundary; Phase artifact (research.md, plan.md, ...) becomes the next Phase's only input. | Each Phase's working memory pollutes the next; the Phase artifact is the curated handoff. |
+| **Phase transition** (Research → Spec → Plan → Implement → Test → Integrate in deep-work) | Manual compaction at the boundary; Phase artifact (research.md, spec.md, plan.md, ...) becomes the next Phase's only input. | Each Phase's working memory pollutes the next; the Phase artifact is the curated handoff. |
 | **Slice GREEN** (after RED → GREEN → REFACTOR in TDD slice) | Inline compaction: drop the slice's RED/REFACTOR conversation; keep only the slice receipt. | RED-cycle exploration is rarely useful past the slice boundary. |
 | **Loop epoch end** (deep-evolve epoch terminates) | Full handoff + reset recommended (Policy 3). | Epochs are designed boundaries; the receipt + insights summarize what to remember. |
 | **Window > 80%** | Auto compaction (Claude Code default). Plugins MAY emit a `compaction-state.json` on this trigger to surface frequency to the dashboard. | Hard cap. The dashboard's `suite.compaction.frequency` metric is most actionable here — sessions hitting this trigger often suggest scope creep. |
