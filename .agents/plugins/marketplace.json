@@ -7,11 +7,11 @@
   "plugins": [
     {
       "name": "deep-work",
-      "description": "Evidence-Driven Development Protocol — a single-command Brainstorm → Research → Plan → Implement → Test → Integrate workflow with TDD enforcement, executable spec contracts, risk-based evidence gating, per-phase model selection (Claude Code / Codex), and a hard separation between planning and coding.",
+      "description": "Evidence-Driven Development Protocol — a single-command Brainstorm → Research → Spec → Plan → Implement → Test → Integrate workflow with TDD enforcement, governed specification and methodology authority, adaptive risk-based review and verification, per-phase model selection (Claude Code / Codex), and a hard separation between planning and coding.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
-        "sha": "ac4c2c7c56fe760b1666f07633a0ddcd0218ac28"
+        "sha": "b76c41f9948e04c2c486d9bbbd318bdc3a41db0f"
       },
       "policy": {
         "installation": "AVAILABLE",

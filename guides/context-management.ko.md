@@ -29,7 +29,7 @@
 
 | 트리거 | 권장 동작 | 왜 |
 |---|---|---|
-| **Phase 전환** (deep-work 의 Research → Plan → Implement → Test → Integrate) | 경계에서 manual compaction; Phase artifact (research.md, plan.md, ...) 가 다음 Phase 의 유일한 입력. | 각 Phase 의 working memory 가 다음 Phase 를 오염; Phase artifact 가 큐레이션된 handoff. |
+| **Phase 전환** (deep-work 의 Research → Spec → Plan → Implement → Test → Integrate) | 경계에서 manual compaction; Phase artifact (research.md, spec.md, plan.md, ...) 가 다음 Phase 의 유일한 입력. | 각 Phase 의 working memory 가 다음 Phase 를 오염; Phase artifact 가 큐레이션된 handoff. |
 | **Slice GREEN** (TDD slice 의 RED → GREEN → REFACTOR 직후) | Inline compaction: slice 의 RED/REFACTOR 대화 폐기; slice receipt 만 보존. | RED-cycle 탐색은 slice 경계 너머에서 거의 무용. |
 | **Loop epoch 종료** (deep-evolve epoch 종료) | Full handoff + reset 권장 (정책 3). | Epoch 는 설계된 경계; receipt + insights 가 무엇을 기억할지 요약. |
 | **Window > 80%** | Auto compaction (Claude Code 기본). 이 트리거에서 `compaction-state.json` 을 emit 해 dashboard 가 빈도를 surface 하도록 권장. | Hard cap. Dashboard 의 `suite.compaction.frequency` 메트릭이 여기서 가장 actionable — 이 트리거에 자주 도달하는 세션은 scope creep 의심. |
