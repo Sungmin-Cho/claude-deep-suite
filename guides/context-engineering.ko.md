@@ -39,7 +39,7 @@ deep-dashboard의 26줄짜리 "🚨 CRITICAL — Plugin Update Workflow"는 `mar
 
 코드만 봐서는 알 수 없는 제약(`marketplace.json` 수정 금지, `<wiki_root>/` underscore 규칙, 단일-writer 불변식, 멱등성·락 계약), 안전 게이트(phase-guard, TDD 게이트, denylist), 크로스 플러그인 계약(M3 envelope 필드, state file 스키마, `suite-extensions.json` 광고 경로).
 
-KEEP은 그대로 두라는 뜻이 아니다. 파일럿의 "Loaded-SKILL routing handoff"는 호스트별 튜토리얼 bullet 두 개와 주의 문단 하나를 제약 문단 하나로 합쳐 34줄에서 20줄이 됐다. 제약은 전부 살아남았다 — `dirname` 유도, Codex에는 `CLAUDE_*`가 없다는 사실, "cwd로 root를 추론하지 말 것", fallback 커맨드 두 줄 verbatim. 사라진 것은 그 주변의 튜토리얼뿐이다.
+KEEP은 그대로 두라는 뜻이 아니다. 파일럿의 "Loaded-SKILL routing handoff" 섹션은 호스트별 튜토리얼 bullet 두 개와 주의 문단 하나를 제약 문단 하나로 합치고 같은 파일이 이미 하던 상호 참조 한 줄을 덜어내 36줄에서 20줄이 됐다. 제약은 전부 살아남았다 — `dirname` 유도, Codex에는 `CLAUDE_*`가 없다는 사실, "cwd로 root를 추론하지 말 것", fallback 커맨드 두 줄 verbatim. 사라진 것은 그 주변의 튜토리얼뿐이다.
 
 ### MOVE
 
@@ -67,9 +67,9 @@ KEEP은 그대로 두라는 뜻이 아니다. 파일럿의 "Loaded-SKILL routing
 | 진입 `SKILL.md` | ≤ ~10 KB / 500줄 |
 | 스킬 `description` | 이전 크기의 절반 이하 |
 
-**계약 충실도가 바이트보다 우선한다.** deep-dashboard는 합산 11.1 KB로 릴리스됐다 — 사전에 허용받은 ~6 KB조차 넘겼다. 잔여분은 전부 KEEP 텍스트다: 열거된 `EXPECTED_SOURCES` 15개, envelope read guard 5개와 silent-null 정책, gotcha 8개. 목표에 도달할 수 있었던 유일한 레버 — `EXPECTED_SOURCES`를 포인터로 — 는 의도적으로 당기지 않고 PR에 기록했다. Ruling: **수치 가이드는 soft, KEEP 목록은 hard.** 초과분과 당기지 않은 레버를 기록하되, 숫자를 억지로 맞추지 않는다.
+**계약 충실도가 바이트보다 우선한다.** deep-dashboard는 합산 11.1 KB로 릴리스됐다 — 사전에 허용받은 ~6 KB조차 약 5 KB 넘겼다. 잔여분은 전부 KEEP 텍스트다: 열거된 `EXPECTED_SOURCES` 15개, envelope read guard 5개와 silent-null 정책, gotcha 9개. 식별된 유일한 레버 — `EXPECTED_SOURCES`를 포인터로 — 는 의도적으로 당기지 않고 PR에 기록했지만, 그 값어치는 ~0.4 KB뿐이라 목표 근처에도 가지 못한다. 이 초과의 정직한 형태는 이렇다: **5 KB 초과이고 그것을 메울 레버가 없다.** 누군가 깜빡한 재량 감량이 아니다. Ruling: **수치 가이드는 soft, KEEP 목록은 hard.** 초과분과 당기지 않은 레버를 기록하되, 숫자를 억지로 맞추지 않는다.
 
-**description 절반 감량에는 바닥이 있다.** 트리거 목록은 움직일 수 없고, 파일럿에서 description 바이트의 약 30%였다. 두 description이 49.8%·49.9%에 도달한 것은 프레이밍까지 줄였기 때문이다(`Trigger phrases include ` → `Triggers on `, "This skill should be used when the user…" 서문 → 동사 선행 절 하나). 트리거 목록이 더 긴 repo에서는 트리거를 자르지 않는 한 절반이 산술적으로 불가능하며, 자르는 것은 §3이 금지한다. 대신 초과를 기록한다.
+**description 절반 감량에는 바닥이 있다.** 트리거 목록은 움직일 수 없고, 파일럿에서 description 바이트의 약 30%였다. 두 description이 −50.2%·−50.1%에 도달한 것은 프레이밍까지 줄였기 때문이다(`Trigger phrases include ` → `Triggers on `, "This skill should be used when the user…" 서문 → 동사 선행 절 하나). 트리거 목록이 더 긴 repo에서는 트리거를 자르지 않는 한 절반이 산술적으로 불가능하며, 자르는 것은 §3이 금지한다. 대신 초과를 기록한다.
 
 ---
 
@@ -92,7 +92,7 @@ KEEP은 그대로 두라는 뜻이 아니다. 파일럿의 "Loaded-SKILL routing
 2. **4-버킷을 적용한다** — `CLAUDE.md`, `AGENTS.md`, 스킬 본문, description.
 3. **재진술한 모든 계약을 한 번의 sweep으로 코드와 대조한다**(§7). 리뷰 대응이 아니라 리뷰 **전에** 한다.
 4. **기계 게이트** green: repo 자체 테스트 스위트와 문서 checker.
-5. **`/deep-review` 수렴.** 오케스트레이션 산출물은 scratchpad에 두고 `.deep-review/tmp` 아래에는 절대 쓰지 않는다 — run fingerprint가 untracked 파일을 포함하므로, 거기에 쓰면 라운드가 무효화된다.
+5. **`/deep-review` 수렴.** 오케스트레이션 산출물은 scratchpad에 둔다 — run fingerprint가 untracked 파일을 포함하므로 `.deep-review/tmp` 아래에 쓰면 라운드가 무효화된다. 거기에 놓일 수 있는 것은 SSOT가 지정한 statics(routing plan, context, diff)뿐이며, 그것도 pre-capture 이전에 기록된 경우에 한한다. 파일럿에서 라운드 전체를 날린 운영 실패 두 가지: 리뷰어 어댑터가 승인-공백 섹션을 지역화하면(`"(없음)"`) strict canonical 파서가 그것을 배제해, 리뷰어가 APPROVE했는데도 확장 라운드가 무효가 된다. 그리고 codex-cli 버전 드리프트는 `--output-last-message` 캡처를 깨뜨리는데, 이 경우 canonical 리포트는 브리지 stdout에서 verbatim으로 복구할 수 있다.
 6. **버전 bump.** 다이어트만이면 patch, `references/` 분할이 생기면 minor. 그다음 버전 표면 **전체**를 훑는다: 파일럿의 `check:version-sync`는 매니페스트 3개만 커버했고 실제 표면은 7개 파일이었으며, 3개만 올린 결과 브랜치가 red가 됐다.
 
    | 위치 | checker 커버? |
@@ -120,7 +120,7 @@ KEEP은 그대로 두라는 뜻이 아니다. 파일럿의 "Loaded-SKILL routing
 
 모든 다이어트 PR은 세 가지를 첨부한다: before/after 바이트 표, 행별 판정이 붙은 계약 인벤토리, 버킷별 삭제/이동 요약. §4의 초과분도 근거와 함께 여기에 넣는다.
 
-CHANGELOG 항목은 각 repo의 `docs/DOCS_RULE.md`에 따라 사용자 관점에서 간결하게 유지한다. 바이트 수치, 인벤토리 집계, 리뷰 이력은 PR 본문 소관이다 — 파일럿의 첫 항목이 이것들을 CHANGELOG에 넣었다가 리뷰에서 덜어냈다.
+CHANGELOG 항목은 각 repo에 `docs/DOCS_RULE.md`가 있다면 그에 따라 사용자 관점에서 간결하게 유지한다(deep-loop에는 없다). 바이트 수치, 인벤토리 집계, 리뷰 이력은 PR 본문 소관이다 — 파일럿의 첫 항목이 이것들을 CHANGELOG에 넣었다가 리뷰에서 덜어냈다.
 
 ---
 
@@ -136,6 +136,6 @@ CHANGELOG 항목은 각 repo의 `docs/DOCS_RULE.md`에 따라 사용자 관점�
 
 트리거 문구 16개 전부 verbatim 보존, 인벤토리 64행 전부 매핑, 미결 0.
 
-흥미로운 숫자는 거꾸로 움직인 쪽이다. 리뷰 2라운드 직후 두 대상은 9,396 B와 13,219 B였다 — 실제 릴리스보다 더 깎인 상태였다. 3~5라운드에서 **약 1.7 KB가 되돌아왔고**, 전부 코드와 모순되던 주장을 대체한 수정된 계약 텍스트였다. APPROVE에 도달하는 데 `/deep-review` 5라운드가 걸렸고, task 단위 리뷰 2회까지 합쳐 수용된 warning이 13건이었는데, CHANGELOG 스타일 위반 1건을 빼면 전부 코드와 맞지 않는 재진술 계약이었다. 4라운드의 sweep 하나만으로 그런 주장 27건을 점검해 7건을 고치고 20건을 확인했다.
+흥미로운 숫자는 거꾸로 움직인 쪽이다. 리뷰 2라운드 직후 두 대상은 9,645 B와 13,878 B였다 — 실제 릴리스보다 더 깎인 상태였다. 3~5라운드에서 **약 1.7 KB가 되돌아왔고**, 전부 코드와 모순되던 주장을 대체한 수정된 계약 텍스트였다. APPROVE에 도달하는 데 `/deep-review` 5라운드가 걸렸고, task 단위 리뷰 2회까지 합쳐 수용된 warning이 13건이었는데, CHANGELOG 스타일 위반 1건을 빼면 전부 코드와 맞지 않는 재진술 계약이었다. 4라운드의 sweep 하나만으로 그런 주장 27건을 점검해 7건을 고치고 20건을 확인했다.
 
 이것이 파일럿의 핵심이자 §7이 존재하는 이유다: 다이어트는 쌌고, 비용은 전부 검증에 있었다.

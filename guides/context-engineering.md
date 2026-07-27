@@ -39,7 +39,7 @@ Also deleted: a six-row bar-label → dimension-id → weight table, because the
 
 Constraints invisible in the code ("never modify `marketplace.json`", the `<wiki_root>/` underscore rule, single-writer invariants, idempotency and lock contracts); safety gates (phase-guard, TDD gates, denylist); cross-plugin contracts (M3 envelope fields, state-file schemas, advertised `suite-extensions.json` paths).
 
-KEEP is not keep-verbatim. The pilot's "Loaded-SKILL routing handoff" went from 34 lines to 20 by collapsing two per-host tutorial bullets and a caution paragraph into one constraint paragraph. Every constraint survived — the `dirname` derivation, the Codex-has-no-`CLAUDE_*` fact, "never infer a root from cwd", both fallback command lines verbatim — only the tutorial around them went.
+KEEP is not keep-verbatim. The pilot's "Loaded-SKILL routing handoff" section went from 36 lines to 20 by collapsing two per-host tutorial bullets and a caution paragraph into one constraint paragraph, and dropping a cross-reference the same file already made. Every constraint survived — the `dirname` derivation, the Codex-has-no-`CLAUDE_*` fact, "never infer a root from cwd", both fallback command lines verbatim — only the tutorial around them went.
 
 ### MOVE
 
@@ -67,9 +67,9 @@ Never remove, never paraphrase, never replace with a pointer: skill trigger phra
 | Entry `SKILL.md` | ≤ ~10 KB / 500 lines |
 | Skill `description` | ≤ half its previous size |
 
-**Contract fidelity beats bytes.** deep-dashboard shipped at 11.1 KB combined, over even the ~6 KB it was granted up front. All the residual is KEEP text: fifteen enumerated `EXPECTED_SOURCES`, five envelope read guards plus the silent-null policy, eight gotchas. The one lever that would have hit the target — `EXPECTED_SOURCES` as a pointer — was deliberately left unpulled and recorded in the PR. The ruling: **size guides are soft, the KEEP list is hard.** Record the overrun and any lever you declined; do not force the number.
+**Contract fidelity beats bytes.** deep-dashboard shipped at 11.1 KB combined — roughly 5 KB over even the ~6 KB it was granted up front. All the residual is KEEP text: fifteen enumerated `EXPECTED_SOURCES`, five envelope read guards plus the silent-null policy, nine gotchas. The one lever identified — `EXPECTED_SOURCES` as a pointer — was deliberately left unpulled and recorded in the PR, but it is worth only ~0.4 KB and would not have come close to the target. That is the honest shape of the overrun: **5 KB over with no lever that closes it**, not a discretionary trim someone forgot to make. The ruling: **size guides are soft, the KEEP list is hard.** Record the overrun and any lever you declined; do not force the number.
 
-**Description halving has a floor.** Trigger lists are immovable and were ~30% of description bytes in the pilot. Both reached 49.8% and 49.9% only because the framing shrank too (`Trigger phrases include ` → `Triggers on `; the "This skill should be used when the user…" preamble → one verb-first clause). Where the trigger list is longer, half is arithmetically unreachable without cutting triggers, which §3 forbids. Record the overage instead.
+**Description halving has a floor.** Trigger lists are immovable and were ~30% of description bytes in the pilot. Both reached −50.2% and −50.1% only because the framing shrank too (`Trigger phrases include ` → `Triggers on `; the "This skill should be used when the user…" preamble → one verb-first clause). Where the trigger list is longer, half is arithmetically unreachable without cutting triggers, which §3 forbids. Record the overage instead.
 
 ---
 
@@ -92,7 +92,7 @@ Where a repo already has an `AGENTS.md` "Codex Project Guide", merge `CLAUDE.md`
 2. **Apply the four buckets** to `CLAUDE.md`, `AGENTS.md`, skill bodies, descriptions.
 3. **Verify every restated contract against code in one sweep** (§7) — before review, not in response to it.
 4. **Machine gates** green: the repo's test suite and doc checkers.
-5. **`/deep-review` convergence.** Keep orchestration artifacts in a scratchpad, never under `.deep-review/tmp` — the run fingerprint counts untracked files, so writing there invalidates the round.
+5. **`/deep-review` convergence.** Keep orchestration artifacts in a scratchpad — the run fingerprint counts untracked files, so writing under `.deep-review/tmp` invalidates the round. Only the SSOT-mandated statics belong there (routing plan, context, diff), and only written before pre-capture. Two operational failures cost the pilot whole rounds: a reviewer adapter that localizes its approve-empty section (`"(없음)"`) is dropped by the strict canonical parser, which voids an expansion round even though the reviewer approved; and codex-cli version drift breaks `--output-last-message` capture, in which case the canonical report is recoverable verbatim from the bridge's stdout.
 6. **Version bump.** Diet only is a patch; adding a `references/` split is a minor. Then sweep the **whole** version surface: the pilot's `check:version-sync` covered three manifests, the real surface was seven files, and bumping only three left the branch red.
 
    | Site | Covered by the checker? |
@@ -120,7 +120,7 @@ Where a repo already has an `AGENTS.md` "Codex Project Guide", merge `CLAUDE.md`
 
 Every diet PR carries three attachments: the before/after byte table, the contract inventory with a disposition per row, and the per-bucket delete/move summary. Any §4 overrun goes here with its justification.
 
-The CHANGELOG entry stays user-observable and concise, per each repo's own `docs/DOCS_RULE.md`. Byte counts, inventory tallies and review history belong in the PR body — the pilot's first entry carried them into the CHANGELOG and was slimmed in review.
+The CHANGELOG entry stays user-observable and concise, per each repo's own `docs/DOCS_RULE.md` where present (deep-loop has none). Byte counts, inventory tallies and review history belong in the PR body — the pilot's first entry carried them into the CHANGELOG and was slimmed in review.
 
 ---
 
@@ -136,6 +136,6 @@ The CHANGELOG entry stays user-observable and concise, per each repo's own `docs
 
 All 16 trigger phrases survived verbatim; 64 inventory rows mapped, none unaccounted for.
 
-The interesting number is the one that moved backwards. After review round 2 the two surfaces stood at 9,396 B and 13,219 B — a deeper cut than what shipped. Rounds 3 to 5 **added about 1.7 KB back**, all of it corrected contract text replacing claims the code contradicted. Reaching APPROVE took five `/deep-review` rounds; with the two task-level reviews they produced 13 accepted warnings, and all but one (a CHANGELOG style violation) were restated contracts that did not match the code. The round-4 sweep alone checked 27 such claims, corrected 7 and confirmed 20.
+The interesting number is the one that moved backwards. After review round 2 the two surfaces stood at 9,645 B and 13,878 B — a deeper cut than what shipped. Rounds 3 to 5 **added about 1.7 KB back**, all of it corrected contract text replacing claims the code contradicted. Reaching APPROVE took five `/deep-review` rounds; with the two task-level reviews they produced 13 accepted warnings, and all but one (a CHANGELOG style violation) were restated contracts that did not match the code. The round-4 sweep alone checked 27 such claims, corrected 7 and confirmed 20.
 
 That is the pilot's headline, and why §7 exists: the diet was cheap and the verification was the whole cost.
