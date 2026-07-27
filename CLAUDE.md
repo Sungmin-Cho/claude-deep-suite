@@ -15,7 +15,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | deep-evolve | 3.6.1 | Autonomous Experimentation Protocol |
 | deep-review | 2.1.0 | Independent Evaluator for AI coding agents |
 | deep-docs | 1.6.1 | Document gardening + authoring |
-| deep-dashboard | 1.5.0 | Cross-plugin harness diagnostics + suite telemetry |
+| deep-dashboard | 1.5.1 | Cross-plugin harness diagnostics + suite telemetry |
 | deep-memory | 1.0.5 | Cross-project semantic memory |
 | deep-goal | 1.2.0 | Goal condition compiler |
 | deep-loop | 1.12.0 | Loop Engineering control plane over the deep-suite |
