@@ -4,7 +4,7 @@
 
 상시 로드되는 컨텍스트 — `CLAUDE.md`, `AGENTS.md`, 스킬 본문, 스킬 `description` frontmatter — 를 Claude 5세대 모델이 전부 읽을 만큼 작게, 그러면서 load-bearing 한 내용은 하나도 잃지 않을 만큼 조밀하게 유지하는 방법.
 
-출처는 [The New Rules of Context Engineering for Claude 5-Generation Models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) (Thariq Shihipar, Anthropic, 2026-07-24), deep-dashboard 파일럿(§9)으로 검증했다. 설계 기록: [`docs/superpowers/specs/2026-07-27-context-engineering-refactor-design.md`](../docs/superpowers/specs/2026-07-27-context-engineering-refactor-design.md).
+출처는 [The New Rules of Context Engineering for Claude 5-Generation Models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) (Thariq Shihipar, Anthropic, 2026-07-24), deep-dashboard 파일럿(§9)으로 검증했다. 설계 기록: `docs/superpowers/specs/2026-07-27-context-engineering-refactor-design.md` — 메인테이너 로컬 파일이며 gitignore 대상이라 clone에는 존재하지 않는다.
 
 ---
 
@@ -104,7 +104,7 @@ KEEP은 그대로 두라는 뜻이 아니다. 파일럿의 "Loaded-SKILL routing
 
    릴리스 커밋 전에 자기 repo의 위치를 직접 열거한다 — lockfile, 추가 fixture 등. checker는 바닥이지 지도가 아니다.
 7. **PR 후 squash 머지.**
-8. **suite re-pin**: `npm run release:bump -- <plugin> <sha40>` 후 `npm run preflight`. `scripts/release-bump.js`는 `.claude-plugin/marketplace.json`만 쓴다 — **`.agents/plugins/marketplace.json`은 수동으로 동기화해야 한다.** `tests/codex-marketplace-contract.test.js`가 누락을 잡아내지만, preflight 시점에야 잡는다.
+8. **suite re-pin**: `npm run release:bump -- <plugin> <sha40>` 후 `npm run preflight`. `scripts/release-bump.js`는 `source.sha`를 **두 manifest 모두** — `.claude-plugin/marketplace.json`과 Codex 미러 `.agents/plugins/marketplace.json` — 에 쓰며, 둘 다 검증한 뒤에야 쓰기를 시작한다. 따라서 한쪽 manifest에 없는 플러그인 때문에 두 파일이 서로 다른 커밋에 pin되는 일은 생기지 않는다. `tests/codex-marketplace-contract.test.js`가 `source`와 `description`을 deep-compare 하는 backstop이다.
 
 ---
 

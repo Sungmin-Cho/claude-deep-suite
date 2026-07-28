@@ -4,7 +4,7 @@
 
 How to keep always-loaded context — `CLAUDE.md`, `AGENTS.md`, skill bodies, skill `description` frontmatter — small enough that a Claude 5-generation model reads all of it, and dense enough that nothing load-bearing is lost.
 
-From [The New Rules of Context Engineering for Claude 5-Generation Models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) (Thariq Shihipar, Anthropic, 2026-07-24), validated on the deep-dashboard pilot (§9). Design record: [`docs/superpowers/specs/2026-07-27-context-engineering-refactor-design.md`](../docs/superpowers/specs/2026-07-27-context-engineering-refactor-design.md).
+From [The New Rules of Context Engineering for Claude 5-Generation Models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) (Thariq Shihipar, Anthropic, 2026-07-24), validated on the deep-dashboard pilot (§9). Design record: `docs/superpowers/specs/2026-07-27-context-engineering-refactor-design.md` — maintainer-local, gitignored, not present in a clone.
 
 ---
 
@@ -104,7 +104,7 @@ Where a repo already has an `AGENTS.md` "Codex Project Guide", merge `CLAUDE.md`
 
    Enumerate your own repo's sites — a lockfile, extra fixtures — before the release commit. The checker is a floor, not the map.
 7. **PR, then squash merge.**
-8. **Suite re-pin**: `npm run release:bump -- <plugin> <sha40>`, then `npm run preflight`. `scripts/release-bump.js` writes `.claude-plugin/marketplace.json` only — **`.agents/plugins/marketplace.json` must be synced by hand.** `tests/codex-marketplace-contract.test.js` catches the omission, but not until preflight.
+8. **Suite re-pin**: `npm run release:bump -- <plugin> <sha40>`, then `npm run preflight`. `scripts/release-bump.js` writes `source.sha` into **both** manifests — `.claude-plugin/marketplace.json` and the Codex mirror `.agents/plugins/marketplace.json` — and validates both before writing either, so a plugin missing from one manifest cannot leave the two pinned to different commits. `tests/codex-marketplace-contract.test.js` deep-compares `source` and `description` as the backstop.
 
 ---
 
