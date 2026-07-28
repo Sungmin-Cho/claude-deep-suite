@@ -8,8 +8,8 @@ Suite-level tooling. Each script is self-contained and runnable from the repo ro
 |---|---|---|
 | `validate-suite-extensions.js` | Validate `.claude-plugin/suite-extensions.json` against `schemas/suite-extensions.schema.json` + post-schema referential integrity (`data_flow.from`/`to` ↔ `plugins` keys) | `0` valid, `1` validation fail (phase via stderr prefix), `2` IO/usage/compile |
 | `generate-reference-sections.js` | Regenerate marker-bounded plugin tables, data-flow diagrams, source-pinning table, capability matrix, artifact I/O graph in suite docs from `marketplace.json` + `suite-extensions.json` + pinned `plugin.json.version`. Modes: `--check` / `--write`. | `0` up to date / wrote, `1` drift in `--check`, `2` usage/IO/fetch |
-| `check-readme-plugin-table.js` | Flag plugin-version literals outside marker blocks in README.md / README.ko.md / CLAUDE.md (drift trap) | `0` clean, `1` drift, `2` IO/usage |
-| `check-claude-md-paths.js` | Verify CLAUDE.md §Project Structure paths exist on disk | `0` clean, `1` missing path, `2` IO/usage |
+| `check-readme-plugin-table.js` | Flag plugin-version literals outside marker blocks in README.md / README.ko.md / AGENTS.md / CLAUDE.md (drift trap) | `0` clean, `1` drift, `2` IO/usage |
+| `check-agents-md-paths.js` | Verify AGENTS.md §Project Structure paths exist on disk | `0` clean, `1` missing path, `2` IO/usage |
 | `check-guide-version.js` | Verify `**<plugin> vX.Y.Z**` claims in guides match pinned plugin.json.version | `0` clean, `1` mismatch, `2` IO/usage/fetch |
 | `check-semver-sha-sync.js` | Verify marketplace.entry.sha → plugin.json.version → suite docs marker tables agree (cache-key drift guard) | `0` clean, `1` drift, `2` IO/usage/fetch |
 | `check-pinned-plugin-paths.js` | Verify sidecar artifact paths appear in pinned plugin source (W-R1, W-R2 absorber) | `0` clean, `1` drift, `2` IO/fetch |

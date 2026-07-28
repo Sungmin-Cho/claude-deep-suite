@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Lints README.md / README.ko.md / CLAUDE.md for plugin-table drift outside markers.
+// Lints README.md / README.ko.md / AGENTS.md / CLAUDE.md for plugin-table drift
+// outside markers.
 //
 // Why: a future hand-editor might add a "v6.4.3" mention in the *narrative* part
 // of README, but forget to bump marketplace.json. Our generator only refreshes
@@ -24,7 +25,10 @@ const REPO_ROOT = resolve(__dirname, '..');
 const TARGETS = [
   { file: 'README.md', markerIds: ['plugin-table-en'] },
   { file: 'README.ko.md', markerIds: ['plugin-table-ko'] },
-  { file: 'CLAUDE.md', markerIds: ['plugin-table-claude'] },
+  { file: 'AGENTS.md', markerIds: ['plugin-table-agents'] },
+  // CLAUDE.md is an `@AGENTS.md` stub with no generated table — it is scanned
+  // with no mask so a hand-added version literal there is still caught.
+  { file: 'CLAUDE.md', markerIds: [] },
 ];
 
 function maskMarkerBlocks(content, markerIds) {

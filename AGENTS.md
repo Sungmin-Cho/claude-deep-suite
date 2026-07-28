@@ -1,32 +1,104 @@
-# Deep Suite - Codex Project Guide
+# Deep Suite — Agent Guide
 
-This repository is the marketplace and integration layer for the Deep Suite
-plugin family. It contains marketplace manifests, suite-side schemas,
-integration guides, analysis docs, and CI tooling. It does not contain the
-implementation source for individual plugins.
+Registry and integration layer for the Deep Suite plugin family: marketplace manifests, suite-side schemas, integration guides, analysis docs, CI tooling. **No plugin source code** — each plugin lives in its own repo at `github.com/Sungmin-Cho/claude-deep-{name}`. Treat this repo as a registry, not a monorepo.
 
-## Runtime Surfaces
+Repo and marketplace identifiers stay on the `claude-deep-*` / `claude-deep-suite` namespace so installed users keep their plugin keys; Codex parity comes from the mirror manifest, not a rename.
 
-- Codex marketplace: `.agents/plugins/marketplace.json`
-- Claude Code marketplace: `.claude-plugin/marketplace.json`
-- Suite sidecar metadata: `.claude-plugin/suite-extensions.json`
-- Plugin implementation repos: `github.com/Sungmin-Cho/claude-deep-{name}`
-- Local Claude runtime state: `.claude/` is ignored and must not be committed.
+## Plugins
 
-Keep repo and marketplace names unchanged for now. The Codex marketplace uses
-the existing `claude-deep-suite` namespace so installed users can keep their
-current plugin keys while Codex receives native policy metadata.
+<!-- deep-suite:auto-generated:plugin-table-agents:start -->
 
-## Maintenance Rules
+| Plugin | Version | Description |
+|---|---|---|
+| deep-work | 7.1.0 | Evidence-Driven Development Protocol |
+| deep-wiki | 1.9.2 | LLM-native knowledge wiki |
+| deep-evolve | 3.6.1 | Autonomous Experimentation Protocol |
+| deep-review | 2.1.0 | Independent Evaluator for AI coding agents |
+| deep-docs | 1.6.2 | Document gardening + authoring |
+| deep-dashboard | 1.5.1 | Cross-plugin harness diagnostics + suite telemetry |
+| deep-memory | 1.0.5 | Cross-project semantic memory |
+| deep-goal | 1.2.0 | Goal condition compiler |
+| deep-loop | 1.12.0 | Loop Engineering control plane over the deep-suite |
 
-- Treat this repo as a registry, not a plugin monorepo.
-- When a plugin release lands, update both marketplace manifests to the same
-  released plugin SHA.
-- Keep pin data in the manifest files. Do not mirror SHA pins into README
-  tables unless explicitly requested.
-- Preserve all existing plugin entries unless the user explicitly removes one.
-- Do not commit `.deep-review/`, `.deep-suite-cache/`, `.claude/`, or
-  `node_modules/` runtime artifacts.
+<!-- deep-suite:auto-generated:plugin-table-agents:end -->
+
+> Auto-generated from the marketplace manifest + each plugin's pinned `plugin.json.version`. Everything outside the markers is hand-curated.
+
+## Quick Start
+
+```bash
+npm install                              # ajv + ajv-formats, devDeps only
+npm test                                 # node:test — unit + spawnSync CLI
+npm run validate                         # sidecar: schema + referential integrity
+npm run docs:write                       # regenerate marker regions
+npm run docs:sync                        # 8 doc-sync checkers
+npm run preflight                        # the gate: validate + docs:check + docs:sync + fixtures + test
+npm run release:bump -- <plugin> <sha40> # pin → docs:write → preflight
+```
+
+Node 20+, ESM. A `prepare`-installed pre-push hook runs `preflight` before every push (bypass: `SKIP_PREFLIGHT=1 git push`).
+
+## Project Structure
+
+```
+.claude-plugin/
+  marketplace.json          — Claude manifest; pins every plugin to a commit SHA
+  suite-extensions.json     — suite sidecar (M1); all cross-plugin metadata
+.agents/plugins/
+  marketplace.json          — Codex mirror; same pins behind extra policy fields
+schemas/                    — sidecar + M3 artifact-envelope + payload-registry/<producer>/<kind>/
+scripts/                    — validators, marker generator, 8 check-*.js gates, release-bump
+tests/                      — node:test suite covering every script above
+guides/                     — 7-plugin integrated workflow, hook patterns, context management
+examples/                   — installable hook configs + a handoff walkthrough
+docs/
+  memory-hierarchy.md       — cross-plugin memory hierarchy contract
+  test-catalog.md           — where each cross-plugin test lives and what it owns
+  envelope-migration.md     — M3 Phase 2 migration guide for plugin maintainers
+```
+
+The rest of `docs/` is gitignored working notes. `.claude/`, `.deep-review/`, `.deep-loop/`, `.deep-suite-cache/`, `node_modules/` are runtime artifacts — never commit them.
+
+## Conventions
+
+### Version policy — plugin SemVer, marketplace SHA pinning
+
+- `marketplace.json` plugin entries carry **no `version` field**. `plugin.json.version` at the pinned SHA is the single source of truth, and each plugin's cache key (official priority: `plugin.json.version` → marketplace `entry.version` → commit SHA → unknown).
+- `source.sha` is source pinning — which commit to fetch.
+- The two manifests must move together: `tests/codex-marketplace-contract.test.js` deep-compares `source` and `description`, so bumping one side alone is red.
+
+### Suite sidecar (M1)
+
+- All cross-plugin metadata goes into `.claude-plugin/suite-extensions.json` only. **Never modify `marketplace.json`** to carry it — that file stays conformant to the official schema.
+- Sidecar schema is locked at `1.0`. Forward-compatible additions go through `x-*` patternProperties only; a breaking change requires a new file (`*-v2.schema.json`). See `schemas/README.md`.
+- Sidecar `artifacts.writes` / `reads` must match the **pinned** source — only advertise a path the plugin actually emits at that SHA (`check-pinned-plugin-paths.js` greps the pinned tree for it).
+- `data_flow` is **non-authoritative** (intent only) and `data_flow[].via` is a display label, not validated. The machine-readable cross-plugin trace lives in the M3 envelope.
+- The envelope's `producer_version` is strict SemVer 2.0.0 — prerelease and build metadata allowed, leading-zero numerics and empty prerelease ids rejected.
+
+### Manifest-doc sync (M2)
+
+- Generated content lives **only** inside `<!-- deep-suite:auto-generated:<id>:start -->` … `:end` markers; everything outside them is hand-curated. A plugin version literal outside a marker is drift (`check-readme-plugin-table.js`).
+- After any `marketplace.json` SHA change: `npm run docs:write`, then `npm run docs:sync`.
+- `<wiki_root>/` (underscore) is the canonical prefix for wiki paths. `<wiki-root>/` (hyphen) is forbidden.
+- Adding a cross-plugin policy requires updating both the table in `docs/memory-hierarchy.md` **and** the `POLICIES` array in `scripts/check-memory-hierarchy.js`.
+- §Project Structure above is path-checked on disk by `check-agents-md-paths.js` — every entry must exist or be gitignored.
+
+## Release workflow
+
+The plugin repo owns its own CHANGELOG and `plugin.json` bump; this repo only pins the SHA.
+
+1. `git -C ../<plugin> rev-parse main` — the merge commit on the plugin's `main`.
+2. `npm run release:bump -- <plugin> <sha40>` — writes `source.sha` into **both** manifests (plus the redundant top-level `sha` where an entry carries one), then runs `docs:write`, then `preflight`. `--description="…"` also replaces the marketplace blurb.
+3. If preflight fails, reconcile the drift it names — guide narrative version mentions, sidecar `artifacts` paths, sidecar schema namespace — and re-run `npm run preflight`.
+4. Commit `chore: bump <plugin> to vX.Y.Z — <summary>` and push. The pre-push hook re-runs `preflight` as a backstop.
+
+Manual fallback is the same sequence by hand: edit both manifests → `docs:write` → `docs:sync` → commit. Never land a SHA bump without the regen — that is what turned the CI gate red for days, and why the automation exists.
+
+## Maintenance rules
+
+- Preserve existing plugin entries unless the user explicitly removes one.
+- Keep pin data in the manifests. Do not mirror SHA pins into README tables unless asked.
+- Documentation is bilingual: `README.md` / `README.ko.md` and `guides/*.md` / `guides/*.ko.md` are kept in sync.
 - Documentation maintenance follows `docs/DOCS_RULE.md` (local maintainer guide;
   gitignored). It is the single-source-of-truth rulebook for README / CHANGELOG /
   CLAUDE.md / AGENTS.md and the auto-generated marker policy.
@@ -36,10 +108,7 @@ current plugin keys while Codex receives native policy metadata.
 Run these checks before finishing changes:
 
 ```bash
-npm test
-npm run validate
-npm run docs:sync
-node --test tests/codex-marketplace-contract.test.js
+npm run preflight
 tmp_home=$(mktemp -d)
 mkdir -p "$tmp_home/.codex"
 CODEX_HOME="$tmp_home/.codex" HOME="$tmp_home" \
@@ -47,6 +116,4 @@ CODEX_HOME="$tmp_home/.codex" HOME="$tmp_home" \
 rm -rf "$tmp_home"
 ```
 
-Keep local marketplace smoke isolated unless the user explicitly wants to
-modify `~/.codex/config.toml`. If it fails, separate schema failures from
-network or auth failures.
+Keep the local marketplace smoke isolated unless the user explicitly wants to modify `~/.codex/config.toml`. If it fails, separate schema failures from network or auth failures.

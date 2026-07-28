@@ -4,7 +4,7 @@
 // Algorithm (per plugin):
 //   1. Fetch the plugin's plugin.json at the pinned SHA.
 //   2. Compare against the version that suite docs claim — sourced from
-//      generated marker blocks in README.md / README.ko.md / CLAUDE.md.
+//      generated marker blocks in README.md / README.ko.md / AGENTS.md.
 //   3. Fail if any of:
 //      - plugin.json.version absent at that SHA
 //      - version mismatches what marker blocks say
@@ -25,7 +25,7 @@ const REPO_ROOT = resolve(__dirname, '..');
 const TARGETS = [
   { file: 'README.md', id: 'plugin-table-en' },
   { file: 'README.ko.md', id: 'plugin-table-ko' },
-  { file: 'CLAUDE.md', id: 'plugin-table-claude' },
+  { file: 'AGENTS.md', id: 'plugin-table-agents' },
 ];
 
 // Pull `<plugin>` and version from a row like `| [name](url) | 6.4.2 | desc |`

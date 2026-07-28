@@ -29,13 +29,13 @@
 
 ## §1. manifest-doc sync (M2-absorbed)
 
-**Goal**: marketplace SHA → `plugin.json.version` → suite docs(README/CLAUDE/guides) → sidecar(`suite-extensions.json`) → memory hierarchy 5개 layer 일관성.
+**Goal**: marketplace SHA → `plugin.json.version` → suite docs(README/AGENTS/guides) → sidecar(`suite-extensions.json`) → memory hierarchy 5개 layer 일관성.
 
 **Files**:
 - `tests/cli-sync-checkers.test.js` — 6 `check-*` 스크립트 spawnSync 시나리오
 - `tests/markers.test.js` — auto-generated marker round-trip
 - `tests/generate-reference-sections.test.js` — `generate-reference-sections.js --check/--write/--id` CLI
-- `scripts/check-readme-plugin-table.js` / `check-claude-md-paths.js` / `check-guide-version.js` / `check-semver-sha-sync.js` / `check-pinned-plugin-paths.js` / `check-memory-hierarchy.js`
+- `scripts/check-readme-plugin-table.js` / `check-agents-md-paths.js` / `check-guide-version.js` / `check-semver-sha-sync.js` / `check-pinned-plugin-paths.js` / `check-memory-hierarchy.js`
 
 **Run**:
 ```bash

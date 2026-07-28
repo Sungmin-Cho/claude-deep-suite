@@ -14,7 +14,7 @@
 // Markers managed by this generator:
 //   plugin-table-en       → README.md
 //   plugin-table-ko       → README.ko.md
-//   plugin-table-claude   → CLAUDE.md
+//   plugin-table-agents   → AGENTS.md
 //   data-flow-en          → guides/integrated-workflow-guide.md
 //   data-flow-ko          → guides/integrated-workflow-guide.ko.md
 //   source-pinning        → docs/source-pinning.md (whole file managed)
@@ -178,7 +178,7 @@ const TARGETS = [
   // marker-id, file, renderer-name (the generator's section table maps these)
   { id: 'plugin-table-en', file: 'README.md', kind: 'plugin-table', locale: 'en', linkify: true },
   { id: 'plugin-table-ko', file: 'README.ko.md', kind: 'plugin-table', locale: 'ko', linkify: true },
-  { id: 'plugin-table-claude', file: 'CLAUDE.md', kind: 'plugin-table', locale: 'en', linkify: false },
+  { id: 'plugin-table-agents', file: 'AGENTS.md', kind: 'plugin-table', locale: 'en', linkify: false },
   { id: 'data-flow-en', file: 'guides/integrated-workflow-guide.md', kind: 'data-flow' },
   { id: 'data-flow-ko', file: 'guides/integrated-workflow-guide.ko.md', kind: 'data-flow' },
   { id: 'source-pinning', file: 'docs/source-pinning.md', kind: 'source-pinning', wholeFile: true },
