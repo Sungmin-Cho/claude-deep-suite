@@ -20,6 +20,11 @@ test('Codex marketplace mirrors Claude plugin pins with Codex policy fields', ()
     const claudePlugin = claudeByName.get(plugin.name);
     assert.ok(claudePlugin, `missing Claude source for ${plugin.name}`);
     assert.deepEqual(plugin.source, claudePlugin.source);
+    assert.equal(
+      plugin.description,
+      claudePlugin.description,
+      `${plugin.name}: Codex mirror description drifted from the Claude manifest`
+    );
     assert.equal(plugin.source.source, 'url');
     assert.match(plugin.source.url, /^https:\/\/github\.com\/Sungmin-Cho\/claude-deep-/);
     assert.match(plugin.source.sha, /^[0-9a-f]{40}$/);

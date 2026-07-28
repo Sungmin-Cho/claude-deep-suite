@@ -6,9 +6,10 @@
 // docs:sync) + sidecar reconcile (see CLAUDE.md §Release workflow). This script
 // makes the correct path a single command so the regen can't be skipped:
 //
-//   1. set marketplace.json `source.sha` (canonical pin) for <plugin> to <sha>
-//      (and the redundant top-level `sha` mirror, if the entry carries one),
-//      optionally updating the narrative description;
+//   1. set `source.sha` (canonical pin) for <plugin> to <sha> in BOTH manifests
+//      — .claude-plugin/marketplace.json and the Codex mirror
+//      .agents/plugins/marketplace.json — plus the redundant top-level `sha`
+//      mirror if an entry carries one, optionally updating the description;
 //   2. run `npm run docs:write` to regenerate the auto-generated marker regions;
 //   3. run `npm run preflight` (full local CI gate) to verify — surfacing any
 //      sidecar artifact / guide-narrative drift the bump introduced.
@@ -38,6 +39,10 @@ import { spawnSync } from 'node:child_process';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..');
 const MARKET_PATH = resolve(REPO_ROOT, '.claude-plugin/marketplace.json');
+// The Codex mirror carries the same pins behind extra policy/category fields.
+// Both manifests must move together: `codex-marketplace-contract.test.js`
+// deep-compares `source` and `description`, so bumping one side alone is red.
+const MIRROR_PATH = resolve(REPO_ROOT, '.agents/plugins/marketplace.json');
 
 const SHA_RE = /^[0-9a-f]{40}$/;
 
@@ -126,47 +131,59 @@ function main() {
     return;
   }
 
-  let marketText;
-  try {
-    marketText = readFileSync(MARKET_PATH, 'utf8');
-  } catch (err) {
-    console.error(`error: cannot read marketplace.json: ${err.message}`);
-    process.exitCode = 2;
-    return;
-  }
+  const MANIFESTS = [
+    { label: '.claude-plugin/marketplace.json', path: MARKET_PATH },
+    { label: '.agents/plugins/marketplace.json', path: MIRROR_PATH },
+  ];
 
-  let result;
-  try {
-    result = applyBump(marketText, plugin, sha, { description: parsed.flags.description });
-  } catch (err) {
-    console.error(`error: ${err.message}`);
-    process.exitCode = 1;
-    return;
+  const planned = [];
+  for (const m of MANIFESTS) {
+    let text;
+    try {
+      text = readFileSync(m.path, 'utf8');
+    } catch (err) {
+      console.error(`error: cannot read ${m.label}: ${err.message}`);
+      process.exitCode = 2;
+      return;
+    }
+    try {
+      planned.push({ ...m, ...applyBump(text, plugin, sha, { description: parsed.flags.description }) });
+    } catch (err) {
+      console.error(`error: ${m.label}: ${err.message}`);
+      process.exitCode = 1;
+      return;
+    }
   }
 
   const short = sha.slice(0, 7);
-  const oldShort = (result.oldSha ?? '???????').slice(0, 7);
+  const alreadyPinned = planned.every((p) => p.oldSha === sha);
 
   if (parsed.flags.dryRun) {
-    console.log(`[dry-run] ${plugin}: source.sha ${oldShort} → ${short}`);
-    if (parsed.flags.description) console.log('[dry-run] description would be replaced');
+    for (const p of planned) {
+      console.log(`[dry-run] ${p.label}: ${plugin} source.sha ${(p.oldSha ?? '???????').slice(0, 7)} → ${short}`);
+    }
+    if (parsed.flags.description) console.log('[dry-run] description would be replaced in both manifests');
     console.log('[dry-run] no files written, no sub-commands run.');
     process.exitCode = 0;
     return;
   }
 
-  if (result.oldSha === sha && !parsed.flags.description) {
+  if (alreadyPinned && !parsed.flags.description) {
     console.error(`note: ${plugin} source.sha is already ${short} — regenerating docs anyway.`);
   }
 
-  try {
-    writeFileSync(MARKET_PATH, result.text);
-  } catch (err) {
-    console.error(`error: cannot write marketplace.json: ${err.message}`);
-    process.exitCode = 2;
-    return;
+  // Write only after both bumps validated, so a bad plugin name or a missing
+  // mirror entry cannot leave the two manifests pinned to different commits.
+  for (const p of planned) {
+    try {
+      writeFileSync(p.path, p.text);
+    } catch (err) {
+      console.error(`error: cannot write ${p.label}: ${err.message}`);
+      process.exitCode = 2;
+      return;
+    }
+    console.log(`✓ ${p.label}: ${plugin} source.sha ${(p.oldSha ?? '???????').slice(0, 7)} → ${short}`);
   }
-  console.log(`✓ marketplace.json: ${plugin} source.sha ${oldShort} → ${short}`);
 
   console.log('→ npm run docs:write (regenerate marker regions)');
   const docsStatus = run('npm', ['run', '--silent', 'docs:write']);
