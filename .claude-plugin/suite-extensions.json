@@ -170,7 +170,7 @@
       }
     },
     "deep-goal": {
-      "runtime": ["node", "bash"],
+      "runtime": ["node"],
       "capabilities": ["goal-compilation", "prerequisite-scouting", "goal-reshaping", "synergy-recipes", "release-lint"],
       "artifacts": {
         "writes": [],
@@ -228,7 +228,7 @@
     { "from": "deep-evolve", "to": "deep-memory", "via": "evolve-insights.json (harvest source)" },
     { "from": "deep-work", "to": "deep-memory", "via": "session-receipt.json (harvest source)" },
     { "from": "deep-docs", "to": "deep-memory", "via": "last-scan.json (harvest source)" },
-    { "from": "deep-wiki", "to": "deep-memory", "via": "index.json ADR pages (harvest source)" },
+    { "from": "deep-wiki", "to": "deep-memory", "via": "index.json (harvest source — intent only; the payload contract does not currently align)" },
     { "from": "deep-memory", "to": "deep-work", "via": "latest-brief.md (Phase 1 Research recall — sibling consumers quote in research/planning prompts)" }
   ]
 }

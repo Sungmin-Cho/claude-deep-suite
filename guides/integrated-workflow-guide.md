@@ -391,7 +391,7 @@ flowchart LR
   deep-evolve -- "evolve-insights.json (harvest source)" --> deep-memory
   deep-work -- "session-receipt.json (harvest source)" --> deep-memory
   deep-docs -- "last-scan.json (harvest source)" --> deep-memory
-  deep-wiki -- "index.json ADR pages (harvest source)" --> deep-memory
+  deep-wiki -- "index.json (harvest source — intent only; the payload contract does not currently align)" --> deep-memory
   deep-memory -- "latest-brief.md (Phase 1 Research recall — sibling consumers quote in research/planning prompts)" --> deep-work
 ```
 
