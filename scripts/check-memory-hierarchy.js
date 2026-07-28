@@ -162,7 +162,7 @@ function main() {
     console.error('');
     console.error('Fix options:');
     console.error('  - Plugin doc wrong → PR to plugin upstream + bump marketplace.json sha');
-    console.error('  - Suite policy outdated → update CLAUDE.md §Conventions + POLICIES dictionary in this script');
+    console.error('  - Suite policy outdated → update AGENTS.md §Conventions + POLICIES dictionary in this script');
     console.error('  - Historical mention → add a "permit" phrase (deprecated, removed, etc.) to the line');
     process.exitCode = 1;
     return;

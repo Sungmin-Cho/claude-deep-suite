@@ -40,7 +40,7 @@ Top-level `schema_version: "1.0"` — **locked via JSON Schema `const`**.
 |---|---|---|---|
 | `schema_version` (sidecar) | `.claude-plugin/suite-extensions.json` | `const "1.0"` | `schemas/suite-extensions.schema.json` |
 | `schema_version` (envelope) | wraps every artifact | `const "1.0"` | `schemas/artifact-envelope.schema.json` (locked symmetrically) |
-| `producer_version` (envelope) | wraps every artifact | SemVer 2.0.0 (official recommended regex — accepts `1.0.0+commit.abc` build metadata, rejects `01.0.0` leading-zero numerics and `1.2.3-..` empty prerelease ids) | The plugin's `plugin.json.version` (per CLAUDE.md §Conventions) |
+| `producer_version` (envelope) | wraps every artifact | SemVer 2.0.0 (official recommended regex — accepts `1.0.0+commit.abc` build metadata, rejects `01.0.0` leading-zero numerics and `1.2.3-..` empty prerelease ids) | The plugin's `plugin.json.version` (per AGENTS.md §Conventions) |
 | `envelope.schema.version` | wraps every artifact (payload schema id) | `^\d+\.\d+$` | The producer's domain schema (registry lookup, M3+) |
 
 Why `schema.version` is *not* locked: it identifies the producer's payload schema, which evolves independently per producer's domain. The envelope frame itself is locked (`schema_version: const "1.0"`); the payload contract underneath can rev.

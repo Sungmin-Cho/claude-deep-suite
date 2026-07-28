@@ -3,7 +3,7 @@
 //
 // Why: the manifest-doc-sync CI gate went red for days because a plugin SHA
 // bump landed on main without the follow-up regeneration steps (docs:write →
-// docs:sync) + sidecar reconcile (see CLAUDE.md §Release workflow). This script
+// docs:sync) + sidecar reconcile (see AGENTS.md §Release workflow). This script
 // makes the correct path a single command so the regen can't be skipped:
 //
 //   1. set `source.sha` (canonical pin) for <plugin> to <sha> in BOTH manifests
