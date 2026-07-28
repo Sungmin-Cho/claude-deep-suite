@@ -99,21 +99,24 @@ Manual fallback is the same sequence by hand: edit both manifests → `docs:writ
 - Preserve existing plugin entries unless the user explicitly removes one.
 - Keep pin data in the manifests. Do not mirror SHA pins into README tables unless asked.
 - Documentation is bilingual: `README.md` / `README.ko.md` and `guides/*.md` / `guides/*.ko.md` are kept in sync.
-- Documentation maintenance follows `docs/DOCS_RULE.md` (local maintainer guide;
-  gitignored). It is the single-source-of-truth rulebook for README / CHANGELOG /
-  CLAUDE.md / AGENTS.md and the auto-generated marker policy.
+- `docs/DOCS_RULE.md` is the maintainer rulebook for README / CHANGELOG / AGENTS.md and the marker policy. It is **not shipped** — gitignored, present only on a maintainer checkout, absent from every clone and from CI. Do not try to read it at runtime; when it is absent, the rules in this file are the whole contract.
 
 ## Verification
 
-Run these checks before finishing changes:
+Run before finishing changes. From the deep-suite checkout:
 
 ```bash
 npm run preflight
+```
+
+Codex marketplace smoke test, isolated from `~/.codex/config.toml` — also from the deep-suite checkout:
+
+```bash
 tmp_home=$(mktemp -d)
 mkdir -p "$tmp_home/.codex"
 CODEX_HOME="$tmp_home/.codex" HOME="$tmp_home" \
-  codex plugin marketplace add /Users/sungmin/Dev/claude-plugins/deep-suite
+  codex plugin marketplace add "$PWD"
 rm -rf "$tmp_home"
 ```
 
-Keep the local marketplace smoke isolated unless the user explicitly wants to modify `~/.codex/config.toml`. If it fails, separate schema failures from network or auth failures.
+Keep the smoke isolated unless the user explicitly wants to modify `~/.codex/config.toml`. If it fails, separate schema failures from network or auth failures.
