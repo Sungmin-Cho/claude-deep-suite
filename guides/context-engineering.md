@@ -108,17 +108,35 @@ Where a repo already has an `AGENTS.md` "Codex Project Guide", merge `CLAUDE.md`
 
 ---
 
-## 7. Two verification rules
+## 7. Verification
 
 **An inventory row is a claim, not evidence.** The inventory records what a document *says* the code does, but reviewers read it as a warrant that the behaviour was checked — so a diet that copies rows forward propagates any error into every new site. Verify each row against the source in one pass before review. Cross-repo claims require opening the consumer repo's current source, not reasoning from memory: two pilot rows carried a false 24-hour freshness claim into four sites because the consumer file was never opened, and removing it took three review rounds.
 
 **Every restatement is an attack surface.** A restated contract can only be right or wrong; it can never be more right than the code. Prefer a pointer to the authoritative file — `lib/suite-constants.js`, a `checklist.json`, a schema — and restate only when the reader cannot act without the value in front of them, or when §3 makes it mandatory. That is why REPLACE is worth reaching for even when it saves few bytes: it removes something that can rot.
 
+**"Not independently verified" is a blocker, not a disclosure — when the row feeds an emitted artifact.** Honest bookkeeping is not a substitute for verification. deep-goal's first pass marked two rows unverified and low-risk; the second pass checked them and found one was not merely unverified but flatly wrong, and it had already been compiled into two shipped conditions.
+
+**Name which axes you checked.** A cross-plugin row has five: path, producer, `artifact_kind`, `schema.version`, payload shape. A bare "MATCH" hides which of the five you looked at. deep-memory's `wiki-index` row verified the path, wrote MATCH, and was read for months as a warrant that the contract had been checked; the integration had never worked.
+
+**For a consumer of unattended output, interactivity is a sixth axis.** Ask explicitly: *does this sibling stop and ask mid-run?* Four of six defects in one deep-goal round fell out of that single question. It fails silently — no exception, no red test, just a run parked at a prompt burning its cap.
+
+**Copy cross-plugin fixtures from the producer.** A fixture hand-written to the consumer's assumption produces a green test over a dead integration. `sample-wiki-index.json` disagreed with its producer on all three axes and `harvest-golden.test.js` asserted two cards from it — passing every day, proving nothing.
+
+**Run a closing sweep.** After the last correction commit, grep the whole repo for the claim you just corrected — not the files you just edited. Per-file verification of the files a commit *touched* cannot find the file a commit *forgot*. deep-goal's recipe index was skipped by three consecutive correction passes and accumulated three stale claims, one per round, while every pass verified the file beside it. Both the implementer and the reviewer missed it; one repo-wide grep would have caught all three, in every round.
+
+**Mutate every assertion you add.** An axis that is produced but never asserted looks like coverage and is not — the shape that let 38 anchoring violations sit unnoticed in the first place. Two live instances were found in one ported guard by mutation and neither by reading: a symlink check emitted at two sites and asserted at zero, and a caveat regex that pinned a provenance label so the protective sentence beneath it could be deleted with every test still green.
+
+**Never trust a single green run — repeat it.** One run misses races. A guard that planted its symlink fixture inside the repository tree passed alone but was **5/20 flaky** under repetition: parallel test processes copy the tree, and the copy walked a directory being created and deleted. A security guard that fails a quarter of the time is worse than none, because it trains you to re-run until green — and that habit passes real regressions. Plant fixtures in `tmpdir`, not in the repository tree.
+
+**Everyone gets corrected.** Across one wave, seven assertions were overturned by verification: four from the controller, two implementer self-retractions, two reviewer self-corrections. No role is exempt, and a complying implementer would have shipped every one of the controller's. The loop's value is not that the controller is right — it is that both directions get checked.
+
 ---
 
 ## 8. PR attachments and the CHANGELOG
 
-Every diet PR carries three attachments: the before/after byte table, the contract inventory with a disposition per row, and the per-bucket delete/move summary. Any §4 overrun goes here with its justification.
+Every diet PR carries three attachments: the before/after byte table, the contract inventory with a disposition per row, and the per-bucket delete/move summary. Any §4 overrun goes here with its justification, and with the unit stated — 4 KiB and 4,000 decimal give visibly different overrun percentages.
+
+**Generate the byte table last, after the final commit lands, and record the HEAD it was measured at.** Every correction changes it. One repo's figure was revised twice — reduction, then flat, then growth — and all three were correct at the tree they were measured against; the fault was measuring before the last commit. The same slip happened four times in one wave, once inside the very commit written to fix it. State the honest direction even when it is growth: on two repos the corrections cancelled the diet outright, and saying so is more useful than a number that was true for an hour.
 
 The CHANGELOG entry stays user-observable and concise, per each repo's own `docs/DOCS_RULE.md` where present (deep-loop has none). Byte counts, inventory tallies and review history belong in the PR body — the pilot's first entry carried them into the CHANGELOG and was slimmed in review.
 
