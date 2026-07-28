@@ -1,6 +1,6 @@
 # Cross-Plugin Memory Hierarchy
 
-> **Status**: Active (M2). Defines how project-memory documents (CLAUDE.md / AGENTS.md / SKILL.md) at the suite level and inside each plugin compose. Owners: suite maintainers + plugin maintainers.
+> **Status**: Active (M2). Defines how project-memory documents (AGENTS.md / CLAUDE.md / SKILL.md) at the suite level and inside each plugin compose. Owners: suite maintainers + plugin maintainers.
 
 `scripts/check-memory-hierarchy.js` enforces the contract on PR + daily cron.
 
@@ -10,7 +10,7 @@
 
 | Level | Location | Owner | Scope | Override priority |
 |---|---|---|---|---|
-| **Suite-wide** | `<suite>/CLAUDE.md` § Conventions | suite maintainer | Cross-plugin policy, version pinning policy, sidecar contract | broadest |
+| **Suite-wide** | `<suite>/AGENTS.md` § Conventions | suite maintainer | Cross-plugin policy, version pinning policy, sidecar contract | broadest |
 | **Plugin manifest** | `<plugin-repo>/.claude-plugin/plugin.json` | plugin maintainer | Component declaration (commands, hooks, skills, agents) | broad |
 | **Plugin agent rules** | `<plugin-repo>/AGENTS.md`, or fallback to `<plugin-repo>/CLAUDE.md`, or `README.md § Conventions` | plugin maintainer | Plugin-internal task rules (TDD policy, code style, hook expectations) | medium |
 | **Skill-scoped** | `<plugin-repo>/skills/<id>/SKILL.md` frontmatter + body | skill author | Per-invocation behavior when the skill activates | narrowest |
@@ -23,7 +23,7 @@ Reasoning: ergonomics decisions (terse vs verbose comments, naming preferences) 
 
 ## What goes where
 
-### Suite-wide CLAUDE.md (this repo)
+### Suite-wide AGENTS.md (this repo)
 
 Cross-plugin invariants. Examples currently codified:
 
@@ -64,7 +64,7 @@ The checker uses a small explicit dictionary rather than sentence-level NLP. Eac
 | `wiki_root-prefix` | `<wiki_root>/` (underscore) is the canonical wiki path prefix | Use the same prefix in any path advertised in suite docs / sidecar | "plugin doc uses `<wiki-root>/` (hyphen) instead of `<wiki_root>/`" |
 | `hooks-empty-with-reason` | `hooks_active: []` requires `hooks_intentionally_empty_reason` | Document its trust-boundary rationale | "plugin doc says hooks empty without reason; sidecar will reject" |
 
-If a plugin needs an exception, the suite policy must change first (PR to suite CLAUDE.md), then the plugin doc.
+If a plugin needs an exception, the suite policy must change first (PR to suite AGENTS.md), then the plugin doc.
 
 ---
 
@@ -88,9 +88,9 @@ The check fetches via `scripts/lib/fetch-plugin-files.js`, so it shares the `.de
 1. Append a row to the conflict catalog above with rule + failure phrasing.
 2. Append a corresponding rule to `scripts/check-memory-hierarchy.js` `POLICIES` array.
 3. Add a fixture under `tests/fixtures/plugin-cache/<plugin>/` that triggers + passes the new rule.
-4. Add a test case to `tests/cli-sync-checkers.test.js` (the spawn-based suite that covers all six checkers; a dedicated `tests/check-memory-hierarchy.test.js` is **not** maintained — keep the test surface unified).
+4. Add a test case to `tests/cli-sync-checkers.test.js` (the spawn-based suite that covers all eight checkers; a dedicated `tests/check-memory-hierarchy.test.js` is **not** maintained — keep the test surface unified).
 
-If the new policy is *security-shaped*, also bump CLAUDE.md § Conventions to record the rationale (so future maintainers don't relax it without history).
+If the new policy is *security-shaped*, also bump AGENTS.md § Conventions to record the rationale (so future maintainers don't relax it without history).
 
 ---
 

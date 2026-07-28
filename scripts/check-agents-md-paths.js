@@ -1,5 +1,8 @@
 #!/usr/bin/env node
-// Verifies CLAUDE.md §Project Structure references real on-disk paths.
+// Verifies AGENTS.md §Project Structure references real on-disk paths.
+//
+// AGENTS.md is the suite's single agent-instruction source (CLAUDE.md is an
+// `@AGENTS.md` stub), so §Project Structure lives there.
 //
 // Strategy: find `^## Project Structure` heading, read until next `^## ` heading,
 // extract paths from the fenced code block (we look for lines containing patterns
@@ -108,21 +111,21 @@ function main() {
     process.exitCode = 2;
     return;
   }
-  // M2_TEST_CLAUDE_MD overrides the target file (test scaffolding). Existence
+  // M2_TEST_AGENTS_MD overrides the target file (test scaffolding). Existence
   // checks for paths inside the override still resolve relative to REPO_ROOT,
   // so fixtures can describe real-or-bogus paths against the live repo tree.
-  const claudePath = process.env.M2_TEST_CLAUDE_MD
-    ? resolve(process.env.M2_TEST_CLAUDE_MD)
-    : resolve(REPO_ROOT, 'CLAUDE.md');
-  if (!existsSync(claudePath)) {
-    console.error(`error: CLAUDE.md not found at ${claudePath}`);
+  const agentsPath = process.env.M2_TEST_AGENTS_MD
+    ? resolve(process.env.M2_TEST_AGENTS_MD)
+    : resolve(REPO_ROOT, 'AGENTS.md');
+  if (!existsSync(agentsPath)) {
+    console.error(`error: AGENTS.md not found at ${agentsPath}`);
     process.exitCode = 2;
     return;
   }
-  const md = readFileSync(claudePath, 'utf8');
+  const md = readFileSync(agentsPath, 'utf8');
   const block = extractStructureBlock(md);
   if (!block) {
-    console.error('error: CLAUDE.md has no "## Project Structure" fenced block');
+    console.error('error: AGENTS.md has no "## Project Structure" fenced block');
     process.exitCode = 2;
     return;
   }
@@ -145,7 +148,7 @@ function main() {
       continue;
     }
     const lineNo = lineCountToBlock + c.lineNo;
-    console.error(`✗ CLAUDE.md:${lineNo} — Project Structure references missing path: ${c.token}`);
+    console.error(`✗ AGENTS.md:${lineNo} — Project Structure references missing path: ${c.token}`);
     drift++;
   }
 

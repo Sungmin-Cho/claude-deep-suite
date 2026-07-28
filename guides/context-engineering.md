@@ -4,7 +4,7 @@
 
 How to keep always-loaded context — `CLAUDE.md`, `AGENTS.md`, skill bodies, skill `description` frontmatter — small enough that a Claude 5-generation model reads all of it, and dense enough that nothing load-bearing is lost.
 
-From [The New Rules of Context Engineering for Claude 5-Generation Models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) (Thariq Shihipar, Anthropic, 2026-07-24), validated on the deep-dashboard pilot (§9). Design record: [`docs/superpowers/specs/2026-07-27-context-engineering-refactor-design.md`](../docs/superpowers/specs/2026-07-27-context-engineering-refactor-design.md).
+From [The New Rules of Context Engineering for Claude 5-Generation Models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) (Thariq Shihipar, Anthropic, 2026-07-24), validated on the deep-dashboard pilot (§9). Design record: `docs/superpowers/specs/2026-07-27-context-engineering-refactor-design.md` — maintainer-local, gitignored, not present in a clone.
 
 ---
 
@@ -104,7 +104,7 @@ Where a repo already has an `AGENTS.md` "Codex Project Guide", merge `CLAUDE.md`
 
    Enumerate your own repo's sites — a lockfile, extra fixtures — before the release commit. The checker is a floor, not the map.
 7. **PR, then squash merge.**
-8. **Suite re-pin**: `npm run release:bump -- <plugin> <sha40>`, then `npm run preflight`. `scripts/release-bump.js` writes `.claude-plugin/marketplace.json` only — **`.agents/plugins/marketplace.json` must be synced by hand.** `tests/codex-marketplace-contract.test.js` catches the omission, but not until preflight.
+8. **Suite re-pin**: `npm run release:bump -- <plugin> <sha40>`, then `npm run preflight`. `scripts/release-bump.js` writes `source.sha` into **both** manifests — `.claude-plugin/marketplace.json` and the Codex mirror `.agents/plugins/marketplace.json` — and validates both before writing either, so a plugin missing from one manifest cannot leave the two pinned to different commits. `tests/codex-marketplace-contract.test.js` deep-compares `source` and `description` as the backstop.
 
 ---
 
@@ -122,7 +122,9 @@ Where a repo already has an `AGENTS.md` "Codex Project Guide", merge `CLAUDE.md`
 
 **Copy cross-plugin fixtures from the producer.** A fixture hand-written to the consumer's assumption produces a green test over a dead integration. `sample-wiki-index.json` disagreed with its producer on all three axes and `harvest-golden.test.js` asserted two cards from it — passing every day, proving nothing.
 
-**Run a closing sweep.** After the last correction commit, grep the whole repo for the claim you just corrected — not the files you just edited. Per-file verification of the files a commit *touched* cannot find the file a commit *forgot*. deep-goal's recipe index was skipped by three consecutive correction passes and accumulated three stale claims, one per round, while every pass verified the file beside it. Both the implementer and the reviewer missed it; one repo-wide grep would have caught all three, in every round.
+**Run a closing sweep.** After the last correction commit, grep the whole repo for the claim you just corrected — not the files you just edited. Per-file verification of the files a commit *touched* cannot find the file a commit *forgot*. deep-goal's recipe index was skipped by three consecutive correction passes and accumulated three stale claims, one per round, while every pass verified the file beside it. Both the implementer and the reviewer missed it. The first sweep run under this rule found **14 more sites across six files that had already been called done**.
+
+The scope is every repo that *quotes* the claim, not the repo that *owns* it. One stale sentence about a release script was corrected in this repo and survived in four plugins that had copied it, three of them already released. And the sweep must enumerate files, not patterns you expect: the sweep for that same correction ran a list of greps and never touched `CONTRIBUTING.md`, so the one file written for people who only have a clone kept telling them to read a rulebook that is not in a clone. `git grep -n <term>` finds what a curated pattern list does not.
 
 **Mutate every assertion you add.** An axis that is produced but never asserted looks like coverage and is not — the shape that let 38 anchoring violations sit unnoticed in the first place. Two live instances were found in one ported guard by mutation and neither by reading: a symlink check emitted at two sites and asserted at zero, and a caveat regex that pinned a provenance label so the protective sentence beneath it could be deleted with every test still green.
 
@@ -157,3 +159,31 @@ All 16 trigger phrases survived verbatim; 64 inventory rows mapped, none unaccou
 The interesting number is the one that moved backwards. After review round 2 the two surfaces stood at 9,645 B and 13,878 B — a deeper cut than what shipped. Rounds 3 to 5 **added about 1.7 KB back**, all of it corrected contract text replacing claims the code contradicted. Reaching APPROVE took five `/deep-review` rounds; with the two task-level reviews they produced 13 accepted warnings, and all but one (a CHANGELOG style violation) were restated contracts that did not match the code. The round-4 sweep alone checked 27 such claims, corrected 7 and confirmed 20.
 
 That is the pilot's headline, and why §7 exists: the diet was cheap and the verification was the whole cost.
+
+---
+
+## 10. Wave result — nine repos, and what the numbers actually say
+
+| Repo | Always-loaded before | after | Δ |
+|---|---:|---:|---:|
+| deep-suite | 16,243 B | 8,026 B | **−50.6%** |
+| deep-dashboard | 35,206 B | 25,249 B | −28.3% |
+| deep-goal | 26,999 B | 21,728 B | −19.5% |
+| deep-evolve | 13,386 B | 14,581 B | **+8.9%** |
+| deep-memory | 31,618 B | 38,503 B | **+21.8%** |
+
+Five repos measured at their final commit, and the spread is the result. Do not read the negatives as success and the positives as failure — read the ordering.
+
+**What shrank was framing; what grew was contract.** deep-suite fell by half because it carried an annotated directory tree, a duplicated release procedure and a `CLAUDE.md` that had never been split — all DELETE-bucket. deep-memory grew by a fifth because verification found five cross-plugin claims the code contradicted, one integration that had never worked, and a skill description promising to erase data the script does not touch. The buckets found roughly 1.2 KB of framing to remove there; the corrections put roughly 4.5 KB back.
+
+So the honest statement of what this method does: **it is a verification pass with a diet attached, not the other way round.** Budget accordingly. On a young or metadata-heavy repo expect a real cut. On a mature plugin with many sibling contracts, expect growth, and expect the growth to be the valuable part.
+
+**The second-order result is stronger than the byte counts.** Across the wave, verification overturned assertions from every role — the controller's, the implementers', and the reviewers' — repeatedly, and in both directions. A reviewer's Critical was refuted by probe; a controller's adjudication was refuted by opening the one file it had not opened; implementers retracted their own claims mid-round. No role's output was reliable on its own, and the loop's value was never that any participant was right. It was that both directions got checked.
+
+The recurring shapes, each of which cost at least one round to learn:
+
+- A layer that still fires **hides** the layer that stopped. Count failures and you will call a regression "caught"; name the tests that fired and you will see which one went quiet.
+- A test can be **implemented but unproven** — an axis produced and asserted nowhere. Only per-axis mutation finds it, and defence in depth is what conceals it.
+- A **non-vacuity mutation must move in the direction the assertion guards against.** An assertion that nothing is flagged is proven only by making something get flagged.
+- A claim corrected in the repo that **owns** it survives in every repo that **quoted** it. One stale sentence about a release script reached four plugins, three of them already released, in a few hours.
+- **Never trust a single green run.** One guard was 5/20 flaky; a guard that fails a quarter of the time trains you to re-run until green, which is the habit that passes real regressions.

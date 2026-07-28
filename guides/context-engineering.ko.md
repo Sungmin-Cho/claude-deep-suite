@@ -4,7 +4,7 @@
 
 상시 로드되는 컨텍스트 — `CLAUDE.md`, `AGENTS.md`, 스킬 본문, 스킬 `description` frontmatter — 를 Claude 5세대 모델이 전부 읽을 만큼 작게, 그러면서 load-bearing 한 내용은 하나도 잃지 않을 만큼 조밀하게 유지하는 방법.
 
-출처는 [The New Rules of Context Engineering for Claude 5-Generation Models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) (Thariq Shihipar, Anthropic, 2026-07-24), deep-dashboard 파일럿(§9)으로 검증했다. 설계 기록: [`docs/superpowers/specs/2026-07-27-context-engineering-refactor-design.md`](../docs/superpowers/specs/2026-07-27-context-engineering-refactor-design.md).
+출처는 [The New Rules of Context Engineering for Claude 5-Generation Models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) (Thariq Shihipar, Anthropic, 2026-07-24), deep-dashboard 파일럿(§9)으로 검증했다. 설계 기록: `docs/superpowers/specs/2026-07-27-context-engineering-refactor-design.md` — 메인테이너 로컬 파일이며 gitignore 대상이라 clone에는 존재하지 않는다.
 
 ---
 
@@ -104,7 +104,7 @@ KEEP은 그대로 두라는 뜻이 아니다. 파일럿의 "Loaded-SKILL routing
 
    릴리스 커밋 전에 자기 repo의 위치를 직접 열거한다 — lockfile, 추가 fixture 등. checker는 바닥이지 지도가 아니다.
 7. **PR 후 squash 머지.**
-8. **suite re-pin**: `npm run release:bump -- <plugin> <sha40>` 후 `npm run preflight`. `scripts/release-bump.js`는 `.claude-plugin/marketplace.json`만 쓴다 — **`.agents/plugins/marketplace.json`은 수동으로 동기화해야 한다.** `tests/codex-marketplace-contract.test.js`가 누락을 잡아내지만, preflight 시점에야 잡는다.
+8. **suite re-pin**: `npm run release:bump -- <plugin> <sha40>` 후 `npm run preflight`. `scripts/release-bump.js`는 `source.sha`를 **두 manifest 모두** — `.claude-plugin/marketplace.json`과 Codex 미러 `.agents/plugins/marketplace.json` — 에 쓰며, 둘 다 검증한 뒤에야 쓰기를 시작한다. 따라서 한쪽 manifest에 없는 플러그인 때문에 두 파일이 서로 다른 커밋에 pin되는 일은 생기지 않는다. `tests/codex-marketplace-contract.test.js`가 `source`와 `description`을 deep-compare 하는 backstop이다.
 
 ---
 
@@ -123,6 +123,8 @@ KEEP은 그대로 두라는 뜻이 아니다. 파일럿의 "Loaded-SKILL routing
 **크로스 플러그인 픽스처는 생산자 쪽에서 복사한다.** 소비자의 가정에 맞춰 손으로 쓴 픽스처는 죽은 통합 위에 green 테스트를 만든다. `sample-wiki-index.json`은 생산자와 세 축 모두에서 어긋났는데 `harvest-golden.test.js`가 거기서 카드 2건을 단언했다 — 매일 통과하면서 아무것도 증명하지 않았다.
 
 **종결 스윕을 돌린다.** 마지막 정정 커밋 뒤에, 방금 편집한 파일이 아니라 **저장소 전체**에 방금 고친 주장을 grep한다. 커밋이 *건드린* 파일에 대한 파일 단위 검증은 커밋이 *잊은* 파일을 찾을 수 없다. deep-goal의 레시피 인덱스는 세 번의 연속된 정정 패스에서 건너뛰어져 라운드마다 하나씩 낡은 주장 3개를 쌓았고, 그 동안 모든 패스가 바로 옆 파일을 검증하고 있었다. 구현자도 리뷰어도 놓쳤다. 규칙을 적용한 첫 스윕은 **이미 끝났다고 본 6개 파일에서 14곳**을 더 찾아냈다.
+
+범위는 주장을 *소유한* repo가 아니라 그것을 *인용한* 모든 repo다. 릴리스 스크립트에 관한 낡은 문장 하나를 이 repo에서 고쳤지만, 그것을 복사해 간 플러그인 네 곳에 그대로 남았고 그중 셋은 이미 릴리스된 상태였다. 그리고 스윕은 예상한 패턴이 아니라 **파일을 열거**해야 한다: 같은 정정에 대한 스윕이 grep 목록을 돌리면서 `CONTRIBUTING.md`를 한 번도 건드리지 않았고, 그래서 clone만 가진 사람을 위해 쓰인 유일한 파일이 clone에 없는 규칙집을 읽으라고 계속 지시하고 있었다. `git grep -n <용어>`는 손으로 고른 패턴 목록이 놓치는 것을 찾아낸다.
 
 **추가한 단언은 전부 뮤테이션한다.** 생성되지만 단언되지 않는 축은 커버리지처럼 보이지만 아니다 — 애초에 앵커링 위반 38건이 눈에 띄지 않게 만든 바로 그 형태다. 이식된 가드 하나에서 두 건이 뮤테이션으로 발견됐고 둘 다 읽기로는 보이지 않았다: 두 곳에서 생성되고 0곳에서 단언되는 symlink 검사, 그리고 출처 라벨만 고정해서 그 아래 보호 문장을 지워도 전 테스트가 green인 caveat 정규식.
 
@@ -157,3 +159,31 @@ CHANGELOG 항목은 각 repo에 `docs/DOCS_RULE.md`가 있다면 그에 따라 �
 흥미로운 숫자는 거꾸로 움직인 쪽이다. 리뷰 2라운드 직후 두 대상은 9,645 B와 13,878 B였다 — 실제 릴리스보다 더 깎인 상태였다. 3~5라운드에서 **약 1.7 KB가 되돌아왔고**, 전부 코드와 모순되던 주장을 대체한 수정된 계약 텍스트였다. APPROVE에 도달하는 데 `/deep-review` 5라운드가 걸렸고, task 단위 리뷰 2회까지 합쳐 수용된 warning이 13건이었는데, CHANGELOG 스타일 위반 1건을 빼면 전부 코드와 맞지 않는 재진술 계약이었다. 4라운드의 sweep 하나만으로 그런 주장 27건을 점검해 7건을 고치고 20건을 확인했다.
 
 이것이 파일럿의 핵심이자 §7이 존재하는 이유다: 다이어트는 쌌고, 비용은 전부 검증에 있었다.
+
+---
+
+## 10. 웨이브 결과 — 아홉 repo, 그리고 숫자가 실제로 말하는 것
+
+| Repo | 상시 로드 before | after | Δ |
+|---|---:|---:|---:|
+| deep-suite | 16,243 B | 8,026 B | **−50.6%** |
+| deep-dashboard | 35,206 B | 25,249 B | −28.3% |
+| deep-goal | 26,999 B | 21,728 B | −19.5% |
+| deep-evolve | 13,386 B | 14,581 B | **+8.9%** |
+| deep-memory | 31,618 B | 38,503 B | **+21.8%** |
+
+다섯 repo를 최종 커밋에서 실측했고, 이 **편차 자체가 결과**다. 음수를 성공으로 양수를 실패로 읽지 말고, **순서**를 읽어야 한다.
+
+**줄어든 것은 겉치레고, 늘어난 것은 계약이다.** deep-suite가 절반으로 준 이유는 주석 달린 디렉터리 트리, 중복된 릴리스 절차, 한 번도 분리되지 않은 `CLAUDE.md`를 갖고 있었기 때문이다 — 전부 DELETE 버킷. deep-memory가 5분의 1 늘어난 이유는 검증이 코드와 어긋나는 크로스 플러그인 주장 다섯 개, 한 번도 동작한 적 없는 통합 하나, 스크립트가 건드리지도 않는 데이터를 지운다고 약속하는 스킬 description을 찾아냈기 때문이다. 버킷이 찾아낸 겉치레는 약 1.2 KB, 정정이 되돌려놓은 것은 약 4.5 KB다.
+
+그러므로 이 방법이 실제로 하는 일을 정직하게 쓰면 이렇다: **다이어트가 딸린 검증 패스이지, 그 반대가 아니다.** 예산도 그렇게 잡아야 한다. 어리거나 메타데이터 위주인 repo에서는 실제 감량을 기대해도 좋다. 형제 계약이 많은 성숙한 플러그인에서는 증가를 예상하고, **그 증가분이 가치 있는 쪽**임을 예상해야 한다.
+
+**2차 결과가 바이트 수치보다 강하다.** 이 웨이브에서 검증은 모든 역할의 단언을 — 컨트롤러, 구현자, 리뷰어 것을 가리지 않고 — 반복적으로, 양방향으로 뒤집었다. 리뷰어의 Critical이 프로브로 반증됐고, 컨트롤러의 판정이 열어보지 않은 파일 하나 때문에 뒤집혔고, 구현자들은 라운드 도중 자기 주장을 철회했다. 어느 역할의 산출물도 단독으로는 신뢰할 수 없었고, 이 루프의 가치는 누군가가 옳다는 데 있던 적이 없다. **양방향이 모두 검사된다**는 데 있었다.
+
+반복해서 나타난 형태들, 각각 최소 한 라운드를 치르고 배운 것:
+
+- 여전히 발동하는 층이 **멈춘 층을 가린다.** 실패 횟수를 세면 회귀를 "잡혔다"고 부르게 되고, 발동한 테스트 이름을 부르면 어느 쪽이 조용해졌는지 보인다.
+- 테스트는 **구현됐지만 증명되지 않은** 상태일 수 있다 — 생성되지만 어디서도 단언되지 않는 축. 축별 뮤테이션만이 그것을 찾아내고, 그것을 숨기는 것이 바로 defence in depth다.
+- **비공허성 뮤테이션은 그 단언이 막으려는 방향으로 움직여야 한다.** "아무것도 플래그되지 않는다"는 단언은 무언가가 플래그되게 만들어야만 증명된다.
+- 주장을 **소유한** repo에서 고쳐도, 그것을 **인용한** 모든 repo에는 남는다. 릴리스 스크립트에 관한 낡은 문장 하나가 몇 시간 만에 플러그인 네 곳에 도달했고 그중 셋은 이미 릴리스된 상태였다.
+- **단 한 번의 green을 믿지 마라.** 어떤 가드는 20회 중 5회 실패했다. 4분의 1 확률로 실패하는 가드는 green이 날 때까지 재실행하는 습관을 길러주고, 그 습관이 진짜 회귀를 통과시킨다.

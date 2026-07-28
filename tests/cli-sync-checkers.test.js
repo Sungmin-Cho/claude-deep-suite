@@ -59,22 +59,37 @@ test('check-readme-plugin-table.js exits 2 with arguments', () => {
   assert.match(res.stderr, /takes no arguments/);
 });
 
-// --- check-claude-md-paths.js ---
+// --- check-agents-md-paths.js ---
 
-test('check-claude-md-paths.js exits 0 against committed CLAUDE.md', () => {
-  const res = run('check-claude-md-paths.js');
+test('check-agents-md-paths.js exits 0 against committed AGENTS.md', () => {
+  const res = run('check-agents-md-paths.js');
   assert.equal(res.status, 0, res.stderr);
 });
 
 // Closes review C1: the prior soft-skip predicate accepted any non-tracked
 // path, so a typo in §Project Structure exited 0 silently. The hardened
 // predicate fails on missing-and-not-gitignored paths.
-test('check-claude-md-paths.js exits 1 when CLAUDE.md references a missing non-gitignored path (regression for C1)', () => {
-  const res = run('check-claude-md-paths.js', [], {
-    M2_TEST_CLAUDE_MD: resolve(repoRoot, 'tests/fixtures/regression/CLAUDE-with-bogus-path.md'),
+test('check-agents-md-paths.js exits 1 when AGENTS.md references a missing non-gitignored path (regression for C1)', () => {
+  const res = run('check-agents-md-paths.js', [], {
+    M2_TEST_AGENTS_MD: resolve(repoRoot, 'tests/fixtures/regression/AGENTS-with-bogus-path.md'),
   });
   assert.equal(res.status, 1, `expected drift; stderr: ${res.stderr}`);
   assert.match(res.stderr, /nonexistent-typo-file\.md/);
+  // The drift label names the file actually read. A checker repointed back at
+  // CLAUDE.md would still find the fixture via the override but mislabel it.
+  assert.match(res.stderr, /^✗ AGENTS\.md:\d+ —/m);
+});
+
+// §Project Structure moved CLAUDE.md → AGENTS.md when AGENTS.md became the
+// single agent-instruction source. CLAUDE.md is now an `@AGENTS.md` stub; if it
+// ever regrows a §Project Structure block, that is a second source of truth the
+// checker does not read. Pin the split from the CLAUDE.md side.
+test('CLAUDE.md stub carries no §Project Structure block (it lives in AGENTS.md)', () => {
+  const res = run('check-agents-md-paths.js', [], {
+    M2_TEST_AGENTS_MD: resolve(repoRoot, 'CLAUDE.md'),
+  });
+  assert.equal(res.status, 2, `expected IO/usage; stderr: ${res.stderr}`);
+  assert.match(res.stderr, /AGENTS\.md has no "## Project Structure" fenced block/);
 });
 
 // --- check-guide-version.js ---

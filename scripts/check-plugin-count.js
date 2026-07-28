@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Verifies that plugin-COUNT narrative ("N plugins" / "N개 플러그인" / "N-plugin")
-// across the marketplace description, the suite guides, CLAUDE.md, and the README
+// across the marketplace description, the suite guides, AGENTS.md, and the README
 // matches the authoritative count.
 //
 // Why: no prior M2 checker compared a count phrase to marketplace.plugins.length,
@@ -22,7 +22,7 @@
 // fix, not a sensor target.
 //
 // Test override: M2_TEST_PLUGIN_COUNT_DIR points to a directory of drift copies
-// keyed by basename (marketplace.json / <guide>.md / CLAUDE.md / README*.md);
+// keyed by basename (marketplace.json / <guide>.md / AGENTS.md / README*.md);
 // when present the checker reads that file's text instead of the repo's. The
 // authoritative total is always taken from the repo marketplace.json.
 //
@@ -118,9 +118,9 @@ const TARGETS = [
     note: 'curated M3-adopter subset (KO)',
   },
   {
-    id: 'CLAUDE.md',
-    file: 'CLAUDE.md',
-    markerIds: ['plugin-table-claude'],
+    id: 'AGENTS.md',
+    file: 'AGENTS.md',
+    markerIds: ['plugin-table-agents'],
     expected: 7,
     probes: [/(\d+)-plugin integrated workflow/i],
     note: 'guide label — matches the integrated-workflow curated subset',

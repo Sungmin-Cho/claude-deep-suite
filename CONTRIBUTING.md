@@ -22,7 +22,7 @@ Node 20+ is required (ESM project).
 ```bash
 npm test             # unit + CLI tests
 npm run validate     # validate .claude-plugin/suite-extensions.json (2-phase)
-npm run docs:write   # regenerate auto-generated marker regions in README / CLAUDE / guides
+npm run docs:write   # regenerate the auto-generated marker regions and reference docs
 npm run docs:sync    # run all doc-sync checkers (CI gate)
 npm run preflight    # full local CI mirror (validate + docs + fixtures + test)
 ```
@@ -36,8 +36,11 @@ you push (bypass only in emergencies with `SKIP_PREFLIGHT=1` or `--no-verify`).
 - **Version pins** → `.claude-plugin/marketplace.json` (+ `.agents/plugins/marketplace.json`).
   Prefer `npm run release:bump -- <plugin> <sha40>`, which sets the SHA, runs `docs:write`,
   and gates on `preflight`.
-- **Documentation** → follows `docs/DOCS_RULE.md`. Narrative is hand-curated; marker
-  regions are generated — never hand-edit inside `<!-- deep-suite:auto-generated:* -->`.
+- **Documentation** → narrative is hand-curated; marker regions are generated — never
+  hand-edit inside `<!-- deep-suite:auto-generated:* -->`. A fuller rulebook lives at
+  `docs/DOCS_RULE.md`, but it is **not shipped** — it is gitignored, so your clone does
+  not have it and CI never sees it. Do not try to open it; when it is absent, the rules
+  in this file and in `AGENTS.md` are the whole contract.
 - **Cross-plugin metadata** → `.claude-plugin/suite-extensions.json` only. Never modify
   `marketplace.json` by hand beyond the pinned SHA/description.
 - **Plugin source** → does NOT live here.
