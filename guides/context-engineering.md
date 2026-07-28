@@ -157,3 +157,31 @@ All 16 trigger phrases survived verbatim; 64 inventory rows mapped, none unaccou
 The interesting number is the one that moved backwards. After review round 2 the two surfaces stood at 9,645 B and 13,878 B — a deeper cut than what shipped. Rounds 3 to 5 **added about 1.7 KB back**, all of it corrected contract text replacing claims the code contradicted. Reaching APPROVE took five `/deep-review` rounds; with the two task-level reviews they produced 13 accepted warnings, and all but one (a CHANGELOG style violation) were restated contracts that did not match the code. The round-4 sweep alone checked 27 such claims, corrected 7 and confirmed 20.
 
 That is the pilot's headline, and why §7 exists: the diet was cheap and the verification was the whole cost.
+
+---
+
+## 10. Wave result — nine repos, and what the numbers actually say
+
+| Repo | Always-loaded before | after | Δ |
+|---|---:|---:|---:|
+| deep-suite | 16,243 B | 8,026 B | **−50.6%** |
+| deep-dashboard | 35,206 B | 25,249 B | −28.3% |
+| deep-goal | 26,999 B | 21,728 B | −19.5% |
+| deep-evolve | 13,386 B | 14,581 B | **+8.9%** |
+| deep-memory | 31,618 B | 38,503 B | **+21.8%** |
+
+Five repos measured at their final commit, and the spread is the result. Do not read the negatives as success and the positives as failure — read the ordering.
+
+**What shrank was framing; what grew was contract.** deep-suite fell by half because it carried an annotated directory tree, a duplicated release procedure and a `CLAUDE.md` that had never been split — all DELETE-bucket. deep-memory grew by a fifth because verification found five cross-plugin claims the code contradicted, one integration that had never worked, and a skill description promising to erase data the script does not touch. The buckets found roughly 1.2 KB of framing to remove there; the corrections put roughly 4.5 KB back.
+
+So the honest statement of what this method does: **it is a verification pass with a diet attached, not the other way round.** Budget accordingly. On a young or metadata-heavy repo expect a real cut. On a mature plugin with many sibling contracts, expect growth, and expect the growth to be the valuable part.
+
+**The second-order result is stronger than the byte counts.** Across the wave, verification overturned assertions from every role — the controller's, the implementers', and the reviewers' — repeatedly, and in both directions. A reviewer's Critical was refuted by probe; a controller's adjudication was refuted by opening the one file it had not opened; implementers retracted their own claims mid-round. No role's output was reliable on its own, and the loop's value was never that any participant was right. It was that both directions got checked.
+
+The recurring shapes, each of which cost at least one round to learn:
+
+- A layer that still fires **hides** the layer that stopped. Count failures and you will call a regression "caught"; name the tests that fired and you will see which one went quiet.
+- A test can be **implemented but unproven** — an axis produced and asserted nowhere. Only per-axis mutation finds it, and defence in depth is what conceals it.
+- A **non-vacuity mutation must move in the direction the assertion guards against.** An assertion that nothing is flagged is proven only by making something get flagged.
+- A claim corrected in the repo that **owns** it survives in every repo that **quoted** it. One stale sentence about a release script reached four plugins, three of them already released, in a few hours.
+- **Never trust a single green run.** One guard was 5/20 flaky; a guard that fails a quarter of the time trains you to re-run until green, which is the habit that passes real regressions.
