@@ -13,7 +13,7 @@ Repo and marketplace identifiers stay on the `claude-deep-*` / `claude-deep-suit
 | deep-work | 7.1.1 | Evidence-Driven Development Protocol |
 | deep-wiki | 1.9.2 | LLM-native knowledge wiki |
 | deep-evolve | 3.6.2 | Autonomous Experimentation Protocol |
-| deep-review | 2.1.0 | Independent Evaluator for AI coding agents |
+| deep-review | 2.2.0 | Independent Evaluator for AI coding agents |
 | deep-docs | 1.6.2 | Document gardening + authoring |
 | deep-dashboard | 1.5.1 | Cross-plugin harness diagnostics + suite telemetry |
 | deep-memory | 1.0.6 | Cross-project semantic memory |
