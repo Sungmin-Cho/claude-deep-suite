@@ -174,7 +174,7 @@ That is the pilot's headline, and why §7 exists: the diet was cheap and the ver
 | deep-evolve | 13,386 B | 14,581 B | **+8.9%** |
 | deep-memory | 31,618 B | 38,503 B | **+21.8%** |
 
-Five repos measured at their final commit, and the spread is the result. Do not read the negatives as success and the positives as failure — read the ordering.
+Five repos, each measured with `git cat-file -s` against the merged `main` — deep-suite `6a94191`, deep-dashboard `a065f27`, deep-goal `883f158`, deep-evolve `a5a6dce`, deep-memory `6c665a9`. Read from a working tree the numbers move: a concurrent reviewer planting a probe line shifted one row by 36 B mid-measurement. The spread is the result. Do not read the negatives as success and the positives as failure — read the ordering.
 
 **What shrank was framing; what grew was contract.** deep-suite fell by half because it carried an annotated directory tree, a duplicated release procedure and a `CLAUDE.md` that had never been split — all DELETE-bucket. deep-memory grew by a fifth because verification found five cross-plugin claims the code contradicted, one integration that had never worked, and a skill description promising to erase data the script does not touch. The buckets found roughly 1.2 KB of framing to remove there; the corrections put roughly 4.5 KB back.
 
