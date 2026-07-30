@@ -11,7 +11,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
-        "sha": "dc2c783d446fe7c4ee4adf2b1c383eb1089af153"
+        "sha": "c0a874e2cdcc0951161baef8943553e07f048862"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -68,7 +68,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git",
-        "sha": "3bc742886ce18aa252d3897f497df58a278b93a7"
+        "sha": "1b08033f770b40a68a035654c5f3451abcf47cd5"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -82,7 +82,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git",
-        "sha": "a065f2712742c854a79787bb041689ead933ffd4"
+        "sha": "08123a31ddc65d9d3c6cb3ae0e36cac1e4f461a9"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -96,7 +96,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-memory.git",
-        "sha": "0977101eac89536281da77d390736cab0536ad1c"
+        "sha": "2835c890dbd43cc487e7b571c149637606522410"
       },
       "policy": {
         "installation": "AVAILABLE",
