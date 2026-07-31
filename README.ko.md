@@ -33,7 +33,7 @@ After:   deep-work가 리서치 → 명세 → 계획 → TDD → 리시트 실�
 | 플러그인 | 버전 | 설명 |
 |---|---|---|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 7.1.1 | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.3 | Hard-bounded snapshots fail closed on unreadable transaction journals |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.4 | Safely reclaims completed scan-window journals during wiki lint repair |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.2 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 2.2.0 | Independent Evaluator for AI coding agents |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.6.2 | Document gardening + authoring |
@@ -287,6 +287,7 @@ Raw Sources  →  Wiki (markdown pages)  →  Schema (management rules)
 - **M3 envelope 채택** — `index.json`이 cross-plugin envelope로 wrap; legacy payload는 forward-compat 위해 그대로 보존
 - **네이티브 Windows lock 신뢰성 (v1.8.2)** — atomic write 소유권 seal이 Windows 11 24H2 / Server 2025의 libuv ≥1.49 fstat/lstat `st_dev` 비대칭을 방향성 device-compatibility 술어로 허용하여, wiki lock 획득 영구 실패를 수정
 - **커밋 deadline 스케일링 (v1.9.0)** — 미변경 카탈로그 파일을 full-byte 대신 hash로 seal하여 per-commit journal/staging 비용을 O(catalog)→O(diff)로 낮춤; 대형 vault(~1,400 pages)가 반복 `transaction recover` 없이 deadline 예산 안에 커밋된다. drift는 crash-safe cancel(journal-first 원자 활성화, bounded debris sweep, 플랫폼별 resume 힌트)로 처리
+- **완료된 scan-window 회수 (v1.9.4)** — sealed marker와 reservation 증거로 복구가 더 이상 필요 없음을 입증한 경우 `wiki-lint --fix`가 완료된 ensure journal을 안전하게 정리하며, 모호하거나 잘못된 transaction 상태는 fail-closed로 유지
 
 [전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-wiki)
 

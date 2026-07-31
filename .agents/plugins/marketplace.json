@@ -21,18 +21,18 @@
     },
     {
       "name": "deep-wiki",
-      "description": "Hard-bounded snapshots fail closed on unreadable transaction journals",
+      "description": "Safely reclaims completed scan-window journals during wiki lint repair",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "03b446a438e97efe3a00e020f97be535d120c6b9"
+        "sha": "f61be354e801b36b86192049a73962a1c99d9951"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_USE"
       },
       "category": "Productivity",
-      "sha": "03b446a438e97efe3a00e020f97be535d120c6b9"
+      "sha": "f61be354e801b36b86192049a73962a1c99d9951"
     },
     {
       "name": "deep-evolve",

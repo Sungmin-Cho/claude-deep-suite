@@ -33,7 +33,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | Plugin | Version | Description |
 |---|---|---|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 7.1.1 | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.3 | Hard-bounded snapshots fail closed on unreadable transaction journals |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.4 | Safely reclaims completed scan-window journals during wiki lint repair |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.2 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 2.2.0 | Independent Evaluator for AI coding agents |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.6.2 | Document gardening + authoring |
@@ -283,6 +283,7 @@ Raw Sources  →  Wiki (markdown pages)  →  Schema (management rules)
 - **M3 envelope adoption** — `index.json` is wrapped in the cross-plugin envelope for traceability; legacy payload preserved verbatim for forward-compat
 - **Native Windows lock reliability (v1.8.2)** — the atomic-write ownership seal tolerates the libuv ≥1.49 fstat/lstat `st_dev` asymmetry on Windows 11 24H2 / Server 2025 via a directional device-compatibility predicate, fixing permanent wiki-lock-acquisition failure
 - **Commit deadline scaling (v1.9.0)** — unchanged catalog files are sealed by hash instead of full bytes, dropping per-commit journal/staging cost from O(catalog) to O(diff) so large vaults (~1,400 pages) commit within the deadline budget instead of splitting into repeated `transaction recover`; drift is handled by a crash-safe cancel (journal-first atomic activation, bounded debris sweep, platform-aware resume hints)
+- **Completed scan-window reclamation (v1.9.4)** — `wiki-lint --fix` safely retires completed ensure journals when sealed marker and reservation evidence proves recovery is no longer needed, while ambiguous or malformed transaction state remains fail closed
 
 [Full documentation →](https://github.com/Sungmin-Cho/claude-deep-wiki)
 
