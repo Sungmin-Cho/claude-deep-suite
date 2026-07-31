@@ -21,18 +21,18 @@
     },
     {
       "name": "deep-wiki",
-      "description": "LLM-native knowledge wiki — ingest sources into linked Markdown with provenance; self-linting and self-healing, with O(diff) commits, crash-safe cancellation, and supervised deadline-bounded scan-window lock and journal maintenance for Claude Code and Codex.",
+      "description": "Hard-bounded snapshots fail closed on unreadable transaction journals",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "2edb091b02aa37fcc6093cb96562795816c10ba1"
+        "sha": "03b446a438e97efe3a00e020f97be535d120c6b9"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_USE"
       },
       "category": "Productivity",
-      "sha": "2edb091b02aa37fcc6093cb96562795816c10ba1"
+      "sha": "03b446a438e97efe3a00e020f97be535d120c6b9"
     },
     {
       "name": "deep-evolve",
