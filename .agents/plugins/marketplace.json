@@ -21,18 +21,18 @@
     },
     {
       "name": "deep-wiki",
-      "description": "Safely reclaims completed scan-window journals during wiki lint repair",
+      "description": "Surfaces safe token-redacted lock contention details",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "f61be354e801b36b86192049a73962a1c99d9951"
+        "sha": "05206d3af690c10938bd1d15d585d8c6b052bf09"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_USE"
       },
       "category": "Productivity",
-      "sha": "f61be354e801b36b86192049a73962a1c99d9951"
+      "sha": "05206d3af690c10938bd1d15d585d8c6b052bf09"
     },
     {
       "name": "deep-evolve",

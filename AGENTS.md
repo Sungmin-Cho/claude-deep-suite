@@ -11,7 +11,7 @@ Repo and marketplace identifiers stay on the `claude-deep-*` / `claude-deep-suit
 | Plugin | Version | Description |
 |---|---|---|
 | deep-work | 7.1.1 | Evidence-Driven Development Protocol |
-| deep-wiki | 1.9.4 | Safely reclaims completed scan-window journals during wiki lint repair |
+| deep-wiki | 1.9.5 | Surfaces safe token-redacted lock contention details |
 | deep-evolve | 3.6.2 | Autonomous Experimentation Protocol |
 | deep-review | 2.3.0 | Independent Evaluator for AI coding agents |
 | deep-docs | 1.6.2 | Document gardening + authoring |

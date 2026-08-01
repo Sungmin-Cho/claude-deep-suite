@@ -33,7 +33,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | Plugin | Version | Description |
 |---|---|---|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 7.1.1 | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.4 | Safely reclaims completed scan-window journals during wiki lint repair |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.5 | Surfaces safe token-redacted lock contention details |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.2 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 2.3.0 | Independent Evaluator for AI coding agents |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.6.2 | Document gardening + authoring |
@@ -284,6 +284,7 @@ Raw Sources  →  Wiki (markdown pages)  →  Schema (management rules)
 - **Native Windows lock reliability (v1.8.2)** — the atomic-write ownership seal tolerates the libuv ≥1.49 fstat/lstat `st_dev` asymmetry on Windows 11 24H2 / Server 2025 via a directional device-compatibility predicate, fixing permanent wiki-lock-acquisition failure
 - **Commit deadline scaling (v1.9.0)** — unchanged catalog files are sealed by hash instead of full bytes, dropping per-commit journal/staging cost from O(catalog) to O(diff) so large vaults (~1,400 pages) commit within the deadline budget instead of splitting into repeated `transaction recover`; drift is handled by a crash-safe cancel (journal-first atomic activation, bounded debris sweep, platform-aware resume hints)
 - **Completed scan-window reclamation (v1.9.4)** — `wiki-lint --fix` safely retires completed ensure journals when sealed marker and reservation evidence proves recovery is no longer needed, while ambiguous or malformed transaction state remains fail closed
+- **Lock contention observability (v1.9.5)** — `lock acquire --json` emits one stable exit-3 JSON envelope with a token-free canonical holder, degrades ambiguous owner evidence to `holder: null`, and normalizes active release-transition contention without changing recovery or lock ownership semantics
 
 [Full documentation →](https://github.com/Sungmin-Cho/claude-deep-wiki)
 
