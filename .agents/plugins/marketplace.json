@@ -11,7 +11,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
-        "sha": "924a25ce6ced84cb323ebc50954b3aedcafedb47"
+        "sha": "7a1a50003c47acd330f38a38d3a34449504fcbe4"
       },
       "policy": {
         "installation": "AVAILABLE",
