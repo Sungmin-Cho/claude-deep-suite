@@ -21,18 +21,18 @@
     },
     {
       "name": "deep-wiki",
-      "description": "Surfaces safe token-redacted lock contention details",
+      "description": "Tolerates sync-client metadata in the transaction store",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "05206d3af690c10938bd1d15d585d8c6b052bf09"
+        "sha": "fffe366a1d374bb9133c31fd1485e5202791f0b4"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_USE"
       },
       "category": "Productivity",
-      "sha": "05206d3af690c10938bd1d15d585d8c6b052bf09"
+      "sha": "fffe366a1d374bb9133c31fd1485e5202791f0b4"
     },
     {
       "name": "deep-evolve",
