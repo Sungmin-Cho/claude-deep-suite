@@ -11,7 +11,7 @@ Repo and marketplace identifiers stay on the `claude-deep-*` / `claude-deep-suit
 | Plugin | Version | Description |
 |---|---|---|
 | deep-work | 7.1.3 | Evidence-Driven Development Protocol |
-| deep-wiki | 1.9.6 | Tolerates sync-client metadata in the transaction store |
+| deep-wiki | 1.9.7 | Tolerates content metadata and hardens nested transaction pruning |
 | deep-evolve | 3.6.2 | Autonomous Experimentation Protocol |
 | deep-review | 2.4.0 | Independent Evaluator for AI coding agents |
 | deep-docs | 1.6.2 | Document gardening + authoring |
