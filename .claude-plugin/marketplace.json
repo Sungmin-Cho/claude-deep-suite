@@ -18,13 +18,13 @@
     },
     {
       "name": "deep-wiki",
-      "description": "Tolerates sync-client metadata in the transaction store",
+      "description": "Tolerates content metadata and hardens nested transaction pruning",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "fffe366a1d374bb9133c31fd1485e5202791f0b4"
+        "sha": "21c3ada352426a73f775c927da0bcb20ba1859d8"
       },
-      "sha": "fffe366a1d374bb9133c31fd1485e5202791f0b4"
+      "sha": "21c3ada352426a73f775c927da0bcb20ba1859d8"
     },
     {
       "name": "deep-evolve",

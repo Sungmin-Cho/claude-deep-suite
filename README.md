@@ -33,7 +33,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | Plugin | Version | Description |
 |---|---|---|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 7.1.3 | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.6 | Tolerates sync-client metadata in the transaction store |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.7 | Tolerates content metadata and hardens nested transaction pruning |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.2 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 2.4.0 | Independent Evaluator for AI coding agents |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.6.2 | Document gardening + authoring |
@@ -273,6 +273,7 @@ Raw Sources  →  Wiki (markdown pages)  →  Schema (management rules)
 
 ### Key features
 
+- **Content metadata and nested prune safety (v1.9.7)** — regular AppleDouble and exact OS metadata no longer block content catalogs, while nested terminal/quarantine cleanup remains bounded by owner and full directory-identity proofs; suspicious types stay fail-closed
 - **Flat pages** — tags replace categories; no broken links from moves
 - **Auto-lint** — runs after every ingest and rebuild
 - **Auto-filing** — query results that synthesize 2+ pages are filed back into the wiki

@@ -33,7 +33,7 @@ After:   deep-work가 리서치 → 명세 → 계획 → TDD → 리시트 실�
 | 플러그인 | 버전 | 설명 |
 |---|---|---|
 | [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 7.1.3 | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.6 | Tolerates sync-client metadata in the transaction store |
+| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.7 | Tolerates content metadata and hardens nested transaction pruning |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.2 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 2.4.0 | Independent Evaluator for AI coding agents |
 | [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.6.2 | Document gardening + authoring |
@@ -277,6 +277,7 @@ Raw Sources  →  Wiki (markdown pages)  →  Schema (management rules)
 
 ### 주요 기능
 
+- **콘텐츠 메타데이터 및 중첩 prune 안전성 (v1.9.7)** — regular AppleDouble 및 정확한 OS 메타데이터가 content catalog를 막지 않으며, 중첩 terminal/quarantine 정리는 owner와 전체 directory identity 증명 아래로 제한되고 의심스러운 타입은 fail-closed로 유지
 - **Flat pages** — 카테고리 대신 tag; 이동에 의한 broken link 없음
 - **Auto-lint** — ingest/rebuild 후 자동 실행
 - **Auto-filing** — 2+ 페이지를 synthesize한 query 결과는 wiki로 자동 file
