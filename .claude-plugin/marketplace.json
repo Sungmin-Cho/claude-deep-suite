@@ -18,13 +18,13 @@
     },
     {
       "name": "deep-wiki",
-      "description": "Tolerates content metadata and hardens nested transaction pruning",
+      "description": "Closes scan-window outer observations before reporting completion",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
-        "sha": "21c3ada352426a73f775c927da0bcb20ba1859d8"
+        "sha": "c8600d2ca353952dfa3016600009ace3fa4f1831"
       },
-      "sha": "21c3ada352426a73f775c927da0bcb20ba1859d8"
+      "sha": "c8600d2ca353952dfa3016600009ace3fa4f1831"
     },
     {
       "name": "deep-evolve",
