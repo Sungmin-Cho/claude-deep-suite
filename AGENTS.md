@@ -18,7 +18,7 @@ Repo and marketplace identifiers stay on the `claude-deep-*` / `claude-deep-suit
 | deep-dashboard | 1.5.1 | Cross-plugin harness diagnostics + suite telemetry |
 | deep-memory | 1.0.6 | Cross-project semantic memory |
 | deep-goal | 1.2.1 | Goal condition compiler |
-| deep-loop | 1.13.1 | Loop Engineering control plane over the deep-suite |
+| deep-loop | 1.14.0 | Loop Engineering control plane over the deep-suite |
 
 <!-- deep-suite:auto-generated:plugin-table-agents:end -->
 
