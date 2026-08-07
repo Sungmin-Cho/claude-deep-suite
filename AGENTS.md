@@ -14,7 +14,7 @@ Repo and marketplace identifiers stay on the `claude-deep-*` / `claude-deep-suit
 | deep-wiki | 1.9.7 | Closes scan-window outer observations before reporting completion |
 | deep-evolve | 3.6.2 | Autonomous Experimentation Protocol |
 | deep-review | 2.4.0 | Independent Evaluator for AI coding agents |
-| deep-docs | 1.6.2 | Document gardening + authoring |
+| deep-docs | 1.7.0 | Document gardening + authoring |
 | deep-dashboard | 1.5.1 | Cross-plugin harness diagnostics + suite telemetry |
 | deep-memory | 1.0.6 | Cross-project semantic memory |
 | deep-goal | 1.2.1 | Goal condition compiler |
