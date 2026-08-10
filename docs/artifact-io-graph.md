@@ -64,24 +64,27 @@ flowchart LR
   deep-loop-->|writes|p43[".deep-loop/runs/<run-id>/event-log.jsonl"]
   deep-loop-->|writes|p44[".deep-loop/runs/<run-id>/handoffs/<ts>-next-session.md"]
   deep-loop-->|writes|p45[".deep-loop/runs/<run-id>/checkpoints/<checkpoint-key>-compact.json"]
-  deep-loop-->|writes|p46[".deep-loop/runs/<run-id>/transactions/<operation-id>/prepared.json"]
-  deep-loop-->|writes|p47[".deep-loop/runs/<run-id>/transactions/<operation-id>/committed.json"]
-  deep-loop-->|writes|p48[".deep-loop/runs/<run-id>/recoveries/<child-run-id>-affinity-recovery.json"]
-  deep-loop-->|writes|p49[".deep-loop/runs/<run-id>/recoveries/<child-run-id>-boundary-recovery.json"]
-  deep-loop-->|writes|p50[".deep-loop/runs/<run-id>/recoveries/root/<replacement-session-id>.json"]
-  deep-loop-->|writes|p51[".deep-loop/runs/<run-id>/recoveries/root-operations/<operation-id>.json"]
-  deep-loop-->|writes|p52[".deep-loop/runs/<run-id>/terminal/launch-command.txt"]
-  deep-loop-->|writes|p53[".deep-loop/runs/<run-id>/terminal/launch-command.meta.json"]
-  deep-loop-->|writes|p54[".deep-loop/runs/<run-id>/reviews/<sha256>.json"]
-  deep-loop-->|writes|p55[".deep-loop/runs/<run-id>/preflight/cache/<cache-key>.json"]
-  deep-loop-->|writes|p56[".deep-loop/runs/<run-id>/preflight/accounting/<cache-key>.json"]
-  deep-loop-->|writes|p57[".deep-loop/runs/<run-id>/preflight/process-receipts/<receipt>.json"]
-  deep-loop-->|writes|p58[".deep-loop/runs/<run-id>/final-report.md"]
-  deep-loop-->|writes|p59[".deep-loop/current"]
+  deep-loop-->|writes|p46[".deep-loop/runs/<run-id>/checkpoints/<checkpoint-key>-compact-observation.json"]
+  deep-loop-->|writes|p47[".deep-loop/runs/<run-id>/checkpoints/<checkpoint-key>-compact-prune.json"]
+  deep-loop-->|writes|p48[".deep-loop/runs/<run-id>/compact-restore-intents/<operation-id>.prepared.json"]
+  deep-loop-->|writes|p49[".deep-loop/runs/<run-id>/transactions/<operation-id>/prepared.json"]
+  deep-loop-->|writes|p50[".deep-loop/runs/<run-id>/transactions/<operation-id>/committed.json"]
+  deep-loop-->|writes|p51[".deep-loop/runs/<run-id>/recoveries/<child-run-id>-affinity-recovery.json"]
+  deep-loop-->|writes|p52[".deep-loop/runs/<run-id>/recoveries/<child-run-id>-boundary-recovery.json"]
+  deep-loop-->|writes|p53[".deep-loop/runs/<run-id>/recoveries/root/<replacement-session-id>.json"]
+  deep-loop-->|writes|p54[".deep-loop/runs/<run-id>/recoveries/root-operations/<operation-id>.json"]
+  deep-loop-->|writes|p55[".deep-loop/runs/<run-id>/terminal/launch-command.txt"]
+  deep-loop-->|writes|p56[".deep-loop/runs/<run-id>/terminal/launch-command.meta.json"]
+  deep-loop-->|writes|p57[".deep-loop/runs/<run-id>/reviews/<sha256>.json"]
+  deep-loop-->|writes|p58[".deep-loop/runs/<run-id>/preflight/cache/<cache-key>.json"]
+  deep-loop-->|writes|p59[".deep-loop/runs/<run-id>/preflight/accounting/<cache-key>.json"]
+  deep-loop-->|writes|p60[".deep-loop/runs/<run-id>/preflight/process-receipts/<receipt>.json"]
+  deep-loop-->|writes|p61[".deep-loop/runs/<run-id>/final-report.md"]
+  deep-loop-->|writes|p62[".deep-loop/current"]
   p1[".deep-work/<session>/session-receipt.json"]-->|reads|deep-loop
-  p60[".deep-review/reports/*.md"]-->|reads|deep-loop
+  p63[".deep-review/reports/*.md"]-->|reads|deep-loop
   p20[".deep-docs/last-scan.json"]-->|reads|deep-loop
-  p61[".deep-evolve/evolve-receipt.json"]-->|reads|deep-loop
+  p64[".deep-evolve/evolve-receipt.json"]-->|reads|deep-loop
   p4[".deep-dashboard/harnessability-report.json"]-->|reads|deep-loop
 ```
 
