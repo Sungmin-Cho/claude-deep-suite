@@ -188,6 +188,9 @@
           ".deep-loop/runs/<run-id>/event-log.jsonl",
           ".deep-loop/runs/<run-id>/handoffs/<ts>-next-session.md",
           ".deep-loop/runs/<run-id>/checkpoints/<checkpoint-key>-compact.json",
+          ".deep-loop/runs/<run-id>/checkpoints/<checkpoint-key>-compact-observation.json",
+          ".deep-loop/runs/<run-id>/checkpoints/<checkpoint-key>-compact-prune.json",
+          ".deep-loop/runs/<run-id>/compact-restore-intents/<operation-id>.prepared.json",
           ".deep-loop/runs/<run-id>/transactions/<operation-id>/prepared.json",
           ".deep-loop/runs/<run-id>/transactions/<operation-id>/committed.json",
           ".deep-loop/runs/<run-id>/recoveries/<child-run-id>-affinity-recovery.json",
@@ -211,7 +214,7 @@
           ".deep-dashboard/harnessability-report.json"
         ]
       },
-      "hooks_active": ["PreCompact", "SessionStart"],
+      "hooks_active": ["PreCompact", "PostCompact", "SessionStart"],
       "x-session-start-sources": ["compact"]
     }
   },
