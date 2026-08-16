@@ -6,6 +6,7 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { readFileSync } from 'node:fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '..');
@@ -150,13 +151,19 @@ test('check-plugin-count.js exits 2 with arguments', () => {
   assert.match(res.stderr, /takes no arguments/);
 });
 
+test('check-plugin-count.js recognizes the word ten in TOTAL probes', () => {
+  const src = readFileSync(resolve(repoRoot, 'scripts/check-plugin-count.js'), 'utf8');
+  assert.match(src, /ten:\s*10/);
+  assert.match(src, /WORD_ALT/);
+});
+
 test('check-plugin-count.js exits 1 when marketplace description says "eight"', () => {
   const res = run('check-plugin-count.js', [], {
     M2_TEST_PLUGIN_COUNT_DIR: resolve(repoRoot, 'tests/fixtures/regression/plugin-count'),
   });
   assert.equal(res.status, 1, `expected drift; stderr: ${res.stderr}`);
   assert.match(res.stderr, /marketplace metadata\.description/);
-  assert.match(res.stderr, /count "eight" != expected 9/);
+  assert.match(res.stderr, /count "eight" != expected 10/);
 });
 
 // --- check-fixture-provenance.js ---

@@ -17,6 +17,7 @@ Each plugin is fetched from the SHA below at install time. M2 CI re-checks daily
 | deep-memory | 1.0.6 | [`Sungmin-Cho/claude-deep-memory`](https://github.com/Sungmin-Cho/claude-deep-memory) | [`2835c89`](https://github.com/Sungmin-Cho/claude-deep-memory/commit/2835c890dbd43cc487e7b571c149637606522410) |
 | deep-goal | 1.2.1 | [`Sungmin-Cho/claude-deep-goal`](https://github.com/Sungmin-Cho/claude-deep-goal) | [`d1e9c33`](https://github.com/Sungmin-Cho/claude-deep-goal/commit/d1e9c33aa1979279b093706d1dd8aff0e0a30152) |
 | deep-loop | 1.16.1 | [`Sungmin-Cho/claude-deep-loop`](https://github.com/Sungmin-Cho/claude-deep-loop) | [`974e370`](https://github.com/Sungmin-Cho/claude-deep-loop/commit/974e370607e936cff1304f51b1ff3775c0990fe3) |
+| deep-model-router | 1.0.0 | [`Sungmin-Cho/claude-deep-model-router`](https://github.com/Sungmin-Cho/claude-deep-model-router) | [`0cbb23e`](https://github.com/Sungmin-Cho/claude-deep-model-router/commit/0cbb23ef9de9851f376f97bc7a45fea0cdc87351) |
 
 > Version reflects `plugin.json.version` at the pinned SHA. Click the SHA to see the upstream commit details.
 

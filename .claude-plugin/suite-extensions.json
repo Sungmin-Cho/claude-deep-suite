@@ -4,7 +4,12 @@
   "suite": {
     "name": "claude-deep-suite",
     "harness_taxonomy": "boeckeler-2026",
-    "telemetry_namespace": "suite"
+    "telemetry_namespace": "suite",
+    "x-model-routing": {
+      "decision_plane": "deep-model-router",
+      "request": "RouteRequestV1",
+      "decision": "RouteDecisionV1"
+    }
   },
   "plugins": {
     "deep-work": {
@@ -216,6 +221,21 @@
       },
       "hooks_active": ["PreCompact", "PostCompact", "SessionStart"],
       "x-session-start-sources": ["compact"]
+    },
+    "deep-model-router": {
+      "runtime": ["python"],
+      "capabilities": ["model-routing", "review-policy", "effort-map", "dispatch-receipt"],
+      "artifacts": {
+        "writes": [],
+        "reads": []
+      },
+      "hooks_active": [],
+      "hooks_intentionally_empty_reason": "First route runs a lazy capability preflight. No default hook.",
+      "x-model-routing": {
+        "decision_plane": "deep-model-router",
+        "request": "RouteRequestV1",
+        "decision": "RouteDecisionV1"
+      }
     }
   },
   "data_flow": [

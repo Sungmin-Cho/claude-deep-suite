@@ -2,13 +2,13 @@
 
 # Deep Suite
 
-[![License: MIT](https://img.shields.io/github/license/Sungmin-Cho/claude-deep-suite)](LICENSE) ![Plugins](https://img.shields.io/badge/plugins-9-5b8def) ![Runtimes](https://img.shields.io/badge/runtimes-Claude%20Code%20%2B%20Codex-blue)
+[![License: MIT](https://img.shields.io/github/license/Sungmin-Cho/claude-deep-suite)](LICENSE) ![Plugins](https://img.shields.io/badge/plugins-10-5b8def) ![Runtimes](https://img.shields.io/badge/runtimes-Claude%20Code%20%2B%20Codex-blue)
 
 **AI 코딩 에이전트는 강력하지만, 예측 가능한 방식으로 실패합니다** — 리서치를 건너뛰고, 과도하게 수정하고, 아키텍처에서 벗어나고, 자기 작업을 스스로 승인하고, 세션 사이에 맥락을 잃습니다.
 
 Deep Suite는 Claude Code와 Codex 위에서 AI 코딩을 **구조화·검증 가능·지속 가능**하게 만드는 **하네스 레이어**입니다. 코딩 전에 계획하게 하고, 작성한 코드를 독립 평가자가 리뷰하며, 지식을 잃지 않고 축적하고, 장기 작업을 여러 세션에 걸쳐 이어갑니다.
 
-### 여기서 시작하세요 — 9개 다 말고, 하나만 설치
+### 여기서 시작하세요 — 10개 다 말고, 하나만 설치
 
 | 플러그인 | 무엇을 고치나 |
 |---|---|
@@ -41,6 +41,7 @@ After:   deep-work가 리서치 → 명세 → 계획 → TDD → 리시트 실�
 | [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 1.0.6 | Cross-project semantic memory |
 | [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.2.1 | Goal condition compiler |
 | [deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop) | 1.16.1 | Loop Engineering control plane over the deep-suite |
+| [deep-model-router](https://github.com/Sungmin-Cho/claude-deep-model-router) | 1.0.0 | Deterministic model/effort/review router |
 
 <!-- deep-suite:auto-generated:plugin-table-ko:end -->
 
@@ -71,7 +72,7 @@ After:   deep-work가 리서치 → 명세 → 계획 → TDD → 리시트 실�
 > **name**(`claude-deep-suite`) 기준이다 — 그래서 `deep-work@claude-deep-suite`.
 
 <details>
-<summary>전체 설치 (9개 모두)</summary>
+<summary>전체 설치 (10개 모두)</summary>
 
 ```bash
 /plugin install deep-work@claude-deep-suite

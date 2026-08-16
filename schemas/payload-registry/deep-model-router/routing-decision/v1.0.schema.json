@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/payload-registry/deep-model-router/routing-decision/v1.0.schema.json",
+  "title": "deep-model-router routing-decision payload v1.0",
+  "description": "Canonical RouteDecisionV1 payload. envelope.producer is the writing consumer, not this plugin, until a consumer emits a standalone envelope. P0–P2 embed this object in existing durable state.",
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": {
+    "^x-": { "description": "Forward-compat extension namespace." }
+  },
+  "required": [
+    "route_schema_version",
+    "router_plugin_version",
+    "policy_sha256",
+    "effective_policy"
+  ],
+  "properties": {
+    "route_schema_version": { "type": "integer", "const": 1 },
+    "router_plugin_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:[-+][0-9A-Za-z.-]+)?$"
+    },
+    "policy_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "effective_policy": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "minimum_capability_tier": { "type": ["integer", "null"] },
+        "minimum_effort": { "type": ["string", "null"] },
+        "minimum_reviewers": { "type": ["integer", "null"] },
+        "minimum_provider_families": { "type": ["integer", "null"] },
+        "allowed_families": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "attempt_id": { "type": "string" },
+    "selected_model": { "type": ["string", "null"] },
+    "selected_effort": { "type": ["string", "null"] },
+    "selected_effort_native": { "type": ["string", "null"] },
+    "risk_band": { "type": ["string", "null"] },
+    "terminal": { "type": ["string", "null"] },
+    "dispatch_authorized": { "type": "boolean" },
+    "status": { "type": "string" },
+    "degrade_reason": { "type": ["string", "null"] },
+    "routing_provenance": { "type": "string" }
+  }
+}

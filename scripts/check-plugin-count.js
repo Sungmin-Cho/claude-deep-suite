@@ -37,7 +37,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..');
 const TOTAL = Symbol('marketplace.plugins.length');
 
-const WORD_TO_NUM = { six: 6, seven: 7, eight: 8, nine: 9 };
+const WORD_TO_NUM = { six: 6, seven: 7, eight: 8, nine: 9, ten: 10 };
+const WORD_ALT = `${Object.keys(WORD_TO_NUM).join('|')}|\\d+`;
 function tokenToNum(tok) {
   const t = String(tok).toLowerCase();
   if (t in WORD_TO_NUM) return WORD_TO_NUM[t];
@@ -64,14 +65,14 @@ const TARGETS = [
     id: 'marketplace metadata.description',
     source: 'marketplace',
     expected: TOTAL,
-    probes: [/\b(six|seven|eight|nine|\d+)\s+plugins\b/i],
+    probes: [new RegExp(`\\b(${WORD_ALT})\\s+plugins\\b`, 'i')],
     note: 'marketplace description count must equal marketplace.plugins.length',
   },
   {
     id: 'guides/context-management.md',
     file: 'guides/context-management.md',
     expected: TOTAL,
-    probes: [/\bthe\s+(six|seven|eight|nine|\d+)\s+plugins\s+behave\b/i],
+    probes: [new RegExp(`\\bthe\\s+(${WORD_ALT})\\s+plugins\\s+behave\\b`, 'i')],
     note: 'suite-wide policy → total',
   },
   {
@@ -85,7 +86,7 @@ const TARGETS = [
     id: 'guides/hook-patterns.md',
     file: 'guides/hook-patterns.md',
     expected: TOTAL,
-    probes: [/how\s+the\s+(six|seven|eight|nine|\d+)\s+Deep Suite plugins\b/i],
+    probes: [new RegExp(`how\\s+the\\s+(${WORD_ALT})\\s+Deep Suite plugins\\b`, 'i')],
     note: 'suite-wide policy → total',
   },
   {
@@ -100,8 +101,8 @@ const TARGETS = [
     file: 'guides/integrated-workflow-guide.md',
     expected: 7,
     probes: [
-      /how\s+the\s+(six|seven|eight|nine|\d+)\s+plugins\s+in\s+deep-suite/i,
-      /all\s+(six|seven|eight|nine|\d+)\s+plugins\s+adopt\s+the\s+M3/i,
+      new RegExp(`how\\s+the\\s+(${WORD_ALT})\\s+plugins\\s+in\\s+deep-suite`, 'i'),
+      new RegExp(`all\\s+(${WORD_ALT})\\s+plugins\\s+adopt\\s+the\\s+M3`, 'i'),
     ],
     reflects: /Reflects\b([\s\S]*?)adopt the M3/i,
     note: 'curated M3-adopter subset — count must equal the plugins named in the Reflects preamble',
@@ -131,10 +132,10 @@ const TARGETS = [
     markerIds: ['plugin-table-en'],
     expected: TOTAL,
     probes: [
-      /install one plugin, not\s+(six|seven|eight|nine|\d+)\b/i,
-      /\(all\s+(six|seven|eight|nine|\d+)\)/i,
+      new RegExp(`install one plugin, not\\s+(${WORD_ALT})\\b`, 'i'),
+      new RegExp(`\\(all\\s+(${WORD_ALT})\\)`, 'i'),
     ],
-    allow: [/remaining\s+(six|seven|eight|nine|\d+)\s+plugins/i],
+    allow: [new RegExp(`remaining\\s+(${WORD_ALT})\\s+plugins`, 'i')],
     note: 'total-count phrases → total; "remaining six" is a legitimate subset (allow-listed)',
   },
   {

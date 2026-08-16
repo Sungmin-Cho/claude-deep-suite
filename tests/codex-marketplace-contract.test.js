@@ -28,7 +28,10 @@ test('Codex marketplace mirrors Claude plugin pins with Codex policy fields', ()
     assert.equal(plugin.source.source, 'url');
     assert.match(plugin.source.url, /^https:\/\/github\.com\/Sungmin-Cho\/claude-deep-/);
     assert.match(plugin.source.sha, /^[0-9a-f]{40}$/);
-    assert.equal(plugin.policy.installation, 'AVAILABLE');
+    const installation = plugin.name === 'deep-model-router'
+      ? 'INSTALLED_BY_DEFAULT'
+      : 'AVAILABLE';
+    assert.equal(plugin.policy.installation, installation);
     assert.equal(plugin.policy.authentication, 'ON_USE');
     assert.ok(['Coding', 'Productivity'].includes(plugin.category));
   }

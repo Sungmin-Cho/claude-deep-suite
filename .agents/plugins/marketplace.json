@@ -131,6 +131,20 @@
         "authentication": "ON_USE"
       },
       "category": "Coding"
+    },
+    {
+      "name": "deep-model-router",
+      "description": "Deterministic model/effort/review router — classifies delegated work and returns a RouteDecisionV1 with identity, local-policy merge, and honest independence claims.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Sungmin-Cho/claude-deep-model-router.git",
+        "sha": "0cbb23ef9de9851f376f97bc7a45fea0cdc87351"
+      },
+      "policy": {
+        "installation": "INSTALLED_BY_DEFAULT",
+        "authentication": "ON_USE"
+      },
+      "category": "Productivity"
     }
   ]
 }

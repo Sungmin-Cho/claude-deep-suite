@@ -2,13 +2,13 @@
 
 # Deep Suite
 
-[![License: MIT](https://img.shields.io/github/license/Sungmin-Cho/claude-deep-suite)](LICENSE) ![Plugins](https://img.shields.io/badge/plugins-9-5b8def) ![Runtimes](https://img.shields.io/badge/runtimes-Claude%20Code%20%2B%20Codex-blue)
+[![License: MIT](https://img.shields.io/github/license/Sungmin-Cho/claude-deep-suite)](LICENSE) ![Plugins](https://img.shields.io/badge/plugins-10-5b8def) ![Runtimes](https://img.shields.io/badge/runtimes-Claude%20Code%20%2B%20Codex-blue)
 
 **AI coding agents are powerful, but they fail in predictable ways** — they skip research, over-edit, drift from the architecture, approve their own work, and lose context between sessions.
 
 Deep Suite is a **harness layer for Claude Code and Codex** that makes agentic coding structured, verifiable, and durable: the agent plans before it codes, an independent evaluator reviews what it wrote, knowledge is captured instead of lost, and long-running work carries across sessions.
 
-### Start here — install one plugin, not nine
+### Start here — install one plugin, not ten
 
 | Plugin | What it fixes |
 |---|---|
@@ -41,6 +41,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 | [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 1.0.6 | Cross-project semantic memory |
 | [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.2.1 | Goal condition compiler |
 | [deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop) | 1.16.1 | Loop Engineering control plane over the deep-suite |
+| [deep-model-router](https://github.com/Sungmin-Cho/claude-deep-model-router) | 1.0.0 | Deterministic model/effort/review router |
 
 <!-- deep-suite:auto-generated:plugin-table-en:end -->
 
@@ -67,7 +68,7 @@ Each plugin lives in its own Git repository: `github.com/Sungmin-Cho/claude-deep
 > marketplace **name** (`claude-deep-suite`) — hence `deep-work@claude-deep-suite`.
 
 <details>
-<summary>Install the whole suite (all nine)</summary>
+<summary>Install the whole suite (all ten)</summary>
 
 ```bash
 /plugin install deep-work@claude-deep-suite
