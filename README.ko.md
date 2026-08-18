@@ -32,7 +32,7 @@ After:   deep-work가 리서치 → 명세 → 계획 → TDD → 리시트 실�
 
 | 플러그인 | 버전 | 설명 |
 |---|---|---|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 7.2.0 | Evidence-Driven Development Protocol |
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 7.2.1 | Evidence-Driven Development Protocol |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.7 | Wiki-local auto-ingest with safe legacy migration |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.2 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 2.5.0 | Independent Evaluator for AI coding agents |
@@ -41,7 +41,7 @@ After:   deep-work가 리서치 → 명세 → 계획 → TDD → 리시트 실�
 | [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 1.0.6 | Cross-project semantic memory |
 | [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.2.1 | Goal condition compiler |
 | [deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop) | 1.19.0 | Loop Engineering control plane over the deep-suite |
-| [deep-model-router](https://github.com/Sungmin-Cho/claude-deep-model-router) | 1.0.0 | Deterministic model/effort/review router |
+| [deep-model-router](https://github.com/Sungmin-Cho/claude-deep-model-router) | 1.1.0 | Deterministic model/effort/review router |
 
 <!-- deep-suite:auto-generated:plugin-table-ko:end -->
 
