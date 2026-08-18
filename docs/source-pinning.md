@@ -17,7 +17,7 @@ Each plugin is fetched from the SHA below at install time. M2 CI re-checks daily
 | deep-memory | 1.0.6 | [`Sungmin-Cho/claude-deep-memory`](https://github.com/Sungmin-Cho/claude-deep-memory) | [`2835c89`](https://github.com/Sungmin-Cho/claude-deep-memory/commit/2835c890dbd43cc487e7b571c149637606522410) |
 | deep-goal | 1.2.1 | [`Sungmin-Cho/claude-deep-goal`](https://github.com/Sungmin-Cho/claude-deep-goal) | [`d1e9c33`](https://github.com/Sungmin-Cho/claude-deep-goal/commit/d1e9c33aa1979279b093706d1dd8aff0e0a30152) |
 | deep-loop | 1.19.0 | [`Sungmin-Cho/claude-deep-loop`](https://github.com/Sungmin-Cho/claude-deep-loop) | [`3586e1d`](https://github.com/Sungmin-Cho/claude-deep-loop/commit/3586e1d6361ec7e7df0d4767e98fb4b1b64c510c) |
-| deep-model-router | 1.1.0 | [`Sungmin-Cho/claude-deep-model-router`](https://github.com/Sungmin-Cho/claude-deep-model-router) | [`5653453`](https://github.com/Sungmin-Cho/claude-deep-model-router/commit/565345321256cbcbd1055b4ba8f51c51d3a05810) |
+| deep-model-router | 1.1.1 | [`Sungmin-Cho/claude-deep-model-router`](https://github.com/Sungmin-Cho/claude-deep-model-router) | [`563499b`](https://github.com/Sungmin-Cho/claude-deep-model-router/commit/563499b569e9a4dae5742af6232864ce4f8aec57) |
 
 > Version reflects `plugin.json.version` at the pinned SHA. Click the SHA to see the upstream commit details.
 

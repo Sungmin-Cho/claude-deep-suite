@@ -19,7 +19,7 @@ Repo and marketplace identifiers stay on the `claude-deep-*` / `claude-deep-suit
 | deep-memory | 1.0.6 | Cross-project semantic memory |
 | deep-goal | 1.2.1 | Goal condition compiler |
 | deep-loop | 1.19.0 | Loop Engineering control plane over the deep-suite |
-| deep-model-router | 1.1.0 | Deterministic model/effort/review router |
+| deep-model-router | 1.1.1 | Deterministic model/effort/review router |
 
 <!-- deep-suite:auto-generated:plugin-table-agents:end -->
 
