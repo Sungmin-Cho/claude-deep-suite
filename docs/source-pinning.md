@@ -8,7 +8,7 @@ Each plugin is fetched from the SHA below at install time. M2 CI re-checks daily
 
 | Plugin | Pinned Version | Repo | Pinned SHA |
 |---|---|---|---|
-| deep-work | 7.2.1 | [`Sungmin-Cho/claude-deep-work`](https://github.com/Sungmin-Cho/claude-deep-work) | [`fdb7c3a`](https://github.com/Sungmin-Cho/claude-deep-work/commit/fdb7c3a654086355c5d837fc76cc16429c1e3cdc) |
+| deep-work | 7.2.2 | [`Sungmin-Cho/claude-deep-work`](https://github.com/Sungmin-Cho/claude-deep-work) | [`80a3dc4`](https://github.com/Sungmin-Cho/claude-deep-work/commit/80a3dc4b2304024b439f70ad8cbbbac465a28b83) |
 | deep-wiki | 1.9.7 | [`Sungmin-Cho/claude-deep-wiki`](https://github.com/Sungmin-Cho/claude-deep-wiki) | [`48ae802`](https://github.com/Sungmin-Cho/claude-deep-wiki/commit/48ae802e2b19c7d2f1cf8730e8abed18e31c2952) |
 | deep-evolve | 3.6.2 | [`Sungmin-Cho/claude-deep-evolve`](https://github.com/Sungmin-Cho/claude-deep-evolve) | [`76e0311`](https://github.com/Sungmin-Cho/claude-deep-evolve/commit/76e0311f090c357a6fdb56581711bf21cd045594) |
 | deep-review | 2.5.0 | [`Sungmin-Cho/claude-deep-review`](https://github.com/Sungmin-Cho/claude-deep-review) | [`a94b303`](https://github.com/Sungmin-Cho/claude-deep-review/commit/a94b303ea632624a620ae77d424c60d1a1fee7a5) |
