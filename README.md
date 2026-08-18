@@ -32,7 +32,7 @@ Built on the [Harness Engineering](https://martinfowler.com/articles/harness-eng
 
 | Plugin | Version | Description |
 |---|---|---|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 7.2.1 | Evidence-Driven Development Protocol |
+| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 7.2.2 | Evidence-Driven Development Protocol |
 | [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.7 | Wiki-local auto-ingest with safe legacy migration |
 | [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.2 | Autonomous Experimentation Protocol |
 | [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 2.5.0 | Independent Evaluator for AI coding agents |
