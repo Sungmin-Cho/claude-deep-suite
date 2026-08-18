@@ -10,7 +10,7 @@ Repo and marketplace identifiers stay on the `claude-deep-*` / `claude-deep-suit
 
 | Plugin | Version | Description |
 |---|---|---|
-| deep-work | 7.2.0 | Evidence-Driven Development Protocol |
+| deep-work | 7.2.1 | Evidence-Driven Development Protocol |
 | deep-wiki | 1.9.7 | Wiki-local auto-ingest with safe legacy migration |
 | deep-evolve | 3.6.2 | Autonomous Experimentation Protocol |
 | deep-review | 2.5.0 | Independent Evaluator for AI coding agents |
@@ -19,7 +19,7 @@ Repo and marketplace identifiers stay on the `claude-deep-*` / `claude-deep-suit
 | deep-memory | 1.0.6 | Cross-project semantic memory |
 | deep-goal | 1.2.1 | Goal condition compiler |
 | deep-loop | 1.19.0 | Loop Engineering control plane over the deep-suite |
-| deep-model-router | 1.0.0 | Deterministic model/effort/review router |
+| deep-model-router | 1.1.0 | Deterministic model/effort/review router |
 
 <!-- deep-suite:auto-generated:plugin-table-agents:end -->
 
