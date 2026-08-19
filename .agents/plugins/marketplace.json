@@ -134,11 +134,11 @@
     },
     {
       "name": "deep-model-router",
-      "description": "Deterministic model/effort/review router — classifies delegated work and returns a RouteDecisionV1 with identity, local-policy merge, and honest independence claims.",
+      "description": "Deterministic model/effort/review router — classifies delegated work and returns a RouteDecisionV1 with identity, local-policy merge, and honest independence claims, then carries that decision's fingerprint through supervised dispatch receipts so a completed review can be verified against the route that asked for it.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/deep-model-router.git",
-        "sha": "563499b569e9a4dae5742af6232864ce4f8aec57"
+        "sha": "4af2e4603463ce7d53ed5d80a49254df7b963730"
       },
       "policy": {
         "installation": "INSTALLED_BY_DEFAULT",
