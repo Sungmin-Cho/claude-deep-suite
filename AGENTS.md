@@ -1,8 +1,8 @@
 # Deep Suite — Agent Guide
 
-Registry and integration layer for the Deep Suite plugin family: marketplace manifests, suite-side schemas, integration guides, analysis docs, CI tooling. **No plugin source code** — each plugin lives in its own repo at `github.com/Sungmin-Cho/claude-deep-{name}`. Treat this repo as a registry, not a monorepo.
+Registry and integration layer for the Deep Suite plugin family: marketplace manifests, suite-side schemas, integration guides, analysis docs, CI tooling. **No plugin source code** — each plugin lives in its own repo at `github.com/Sungmin-Cho/deep-{name}`. Treat this repo as a registry, not a monorepo.
 
-Repo and marketplace identifiers stay on the `claude-deep-*` / `claude-deep-suite` namespace so installed users keep their plugin keys; Codex parity comes from the mirror manifest, not a rename.
+The repositories were renamed from `claude-deep-*` to runtime-neutral `deep-*` on 2026-08-19; GitHub serves the old names as permanent redirects, so never re-create a `claude-deep-*` repo — doing so kills the redirect. The marketplace **name** stays `claude-deep-suite`: it is what plugin keys (`deep-work@claude-deep-suite`) and the `~/.claude/plugins/cache/<marketplace>/` path derive from, and renaming it would break every existing install. Codex parity comes from the mirror manifest, not a rename.
 
 ## Plugins
 

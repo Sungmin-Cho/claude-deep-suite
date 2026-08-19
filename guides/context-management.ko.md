@@ -6,7 +6,7 @@
 
 이 정책은 runtime-neutral 하다. Claude Code와 Codex 모두 context pressure를 견디기 위해 durable artifact에 의존한다. 다만 runtime별 trigger는 다르므로, 이 문서에서 Claude Code hook 또는 auto-compaction을 언급하는 부분은 그 메커니즘이 실제 이벤트 소스인 경우로 한정된다.
 
-> Schema: `schemas/compaction-state.schema.json`. Producer 들은 envelope-wrapped compaction-state artifact 를 emit 해 dashboard (`claude-deep-dashboard`) 가 `suite.compaction.frequency` 와 `suite.compaction.preserved_artifact_ratio` (M4-deferred 메트릭) 를 집계할 수 있게 한다.
+> Schema: `schemas/compaction-state.schema.json`. Producer 들은 envelope-wrapped compaction-state artifact 를 emit 해 dashboard (`deep-dashboard`) 가 `suite.compaction.frequency` 와 `suite.compaction.preserved_artifact_ratio` (M4-deferred 메트릭) 를 집계할 수 있게 한다.
 
 ---
 

@@ -1,5 +1,5 @@
 {
-  "name": "claude-deep-suite",
+  "name": "deep-suite",
   "version": "0.1.5",
   "private": true,
   "type": "module",

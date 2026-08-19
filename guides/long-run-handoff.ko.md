@@ -166,7 +166,7 @@ Handoff 자체가 어떤 의미에서는 compaction artifact — producer 의 �
 
 ## 7. Dashboard consumption
 
-Dashboard aggregator (`claude-deep-dashboard`) 가 handoff artifacts 를 consume 해 M4-deferred 메트릭 `suite.handoff.roundtrip_success_rate` 채움:
+Dashboard aggregator (`deep-dashboard`) 가 handoff artifacts 를 consume 해 M4-deferred 메트릭 `suite.handoff.roundtrip_success_rate` 채움:
 
 ```
 roundtrip_success_rate =

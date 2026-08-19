@@ -12,7 +12,7 @@ envelope schema 와 마이그레이션 가이드는 `docs/envelope-migration.md`
 
 ## Runtime 호출 모델
 
-Deep Suite는 기존 사용자 호환성을 위해 `claude-deep-suite` marketplace key와 `claude-deep-*` 플러그인 저장소명을 유지한다. 대신 런타임 노출 표면은 이중화되어 있다:
+Deep Suite는 기존 사용자 호환성을 위해 `claude-deep-suite` marketplace key를 유지하되, 플러그인 저장소명은 런타임 중립적인 `deep-*` 를 쓴다. 런타임 노출 표면은 이중화되어 있다:
 
 | 런타임 | Marketplace surface | 호출 방식 |
 |---|---|---|

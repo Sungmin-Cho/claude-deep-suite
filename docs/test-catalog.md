@@ -77,7 +77,7 @@ npm test                                 # full suite (includes both .test.js ab
 
 **Pattern**: `tests/fixtures/golden/<name>.input.json` + `tests/fixtures/golden/<name>.expected.json` pair. Driver discovers by basename, materializes session state in `fs.mkdtempSync`, spawns hook with host-env scrub, asserts exit + decision + reason regex.
 
-### deep-work side — `claude-deep-work` PR #29 (v6.6.3)
+### deep-work side — `deep-work` PR #29 (v6.6.3)
 
 - `tests/phase-guard-golden.test.js` (driver — 8 fixtures, 8 tests)
 - `tests/fixtures/golden/*.{input,expected}.json` (8 pairs + `README.md`)
@@ -85,7 +85,7 @@ npm test                                 # full suite (includes both .test.js ab
 - **Scope**: PreToolUse `phase-guard.sh` only — SessionStart "fitness-sync" hook does not exist in v6.6.x; handoff §2 #3 reference was speculative.
 - **Bundled §9 rollup**: 9.1 (override-semantics comment) + 9.2 (5 sibling tests migrated to `scrubHostEnv()`) + 9.3 (per-family override loop + composition fall-through + scope-omission docblock). Tests 162 → 177 (+15).
 
-### deep-evolve side — `claude-deep-evolve` PR #14 (v3.3.1)
+### deep-evolve side — `deep-evolve` PR #14 (v3.3.1)
 
 - `tests/protect-readonly-golden.test.js` (driver — 8 fixtures, 8 tests)
 - `tests/fixtures/golden/*.{input,expected}.json` (8 pairs covering: no `.deep-evolve/`, `status: initializing`, active + `prepare.py`/`program.md`/`strategy.yaml` Edit, active + unrelated Edit, meta-mode bypass, seal-prepare Bash read)
@@ -93,7 +93,7 @@ npm test                                 # full suite (includes both .test.js ab
 - **Scope**: PreToolUse `protect-readonly.sh` only — Stop / SessionStart hooks do not exist in v3.3.x.
 - **Template substitution**: fixtures use `{{SESSION_ROOT}}` / `{{PROJECT_ROOT}}` because protect-readonly does exact absolute-path equality. Tests 112 → 120 (+8).
 
-### deep-wiki side — `claude-deep-wiki` PR #15 (v1.5.1)
+### deep-wiki side — `deep-wiki` PR #15 (v1.5.1)
 
 - `tests/auto-ingest-golden.test.js` (driver — 8 fixtures)
 - `tests/fixtures/golden/*.{input,expected}.json` (8 pairs covering: empty vault, 3 new .md, `.obsidian/`+`.trash/` pruning, mtime filtering, `require_tag` filter, `ignore_globs`, missing config, valid `.pending-scan` preservation)
@@ -110,10 +110,10 @@ npm test                                 # full suite (includes both .test.js ab
 **Goal**: macOS bash 3.2 + Linux GNU bash 양쪽에서 plugin test suite green. M5.7 R1 W2 (BSD/GNU `stat`) 가족의 첫 자동 catch 사례.
 
 **Files** (4 plugins, identical pattern):
-- `claude-deep-work/.github/workflows/tests.yml` — `os: [ubuntu-latest, macos-latest]` × `node-version: 20` + `bash --version` 출력 + `npm test` + 3 bash regression scripts
-- `claude-deep-evolve/.github/workflows/tests.yml` — same matrix
-- `claude-deep-wiki/.github/workflows/tests.yml` — same matrix
-- `claude-deep-review/.github/workflows/tests.yml` — complements existing `phase6-protocol.yml`
+- `deep-work/.github/workflows/tests.yml` — `os: [ubuntu-latest, macos-latest]` × `node-version: 20` + `bash --version` 출력 + `npm test` + 3 bash regression scripts
+- `deep-evolve/.github/workflows/tests.yml` — same matrix
+- `deep-wiki/.github/workflows/tests.yml` — same matrix
+- `deep-review/.github/workflows/tests.yml` — complements existing `phase6-protocol.yml`
 
 **Closure record (2026-05-12)**:
 - deep-work PR #27 merge `954a1bc` (v6.6.1 — included BSD/GNU `stat` reverse-order fix in `test-v6.4.2-regression.sh` §2 caught by new ubuntu leg on first run)
@@ -130,7 +130,7 @@ npm test                                 # full suite (includes both .test.js ab
 
 **Goal**: pending-scan 미완료, mutation lock leftover, interrupted session 등 비정상 종료 후 자동 복구 검증. setup에서 lock 파일 / pending state 인공 생성 → plugin entry point 실행 → clean recovery 확인.
 
-### deep-review side — `claude-deep-review` PR #11 (v1.4.1)
+### deep-review side — `deep-review` PR #11 (v1.4.1)
 
 - `hooks/scripts/test/test-mutation-protocol.sh` Tests 26 / 27 / 28 (+3 bash assertions, 51 → 54)
 - **Test 26 (M5.5 #5-A)**: leftover `.deep-review/.mutation.lock` dir + `.pending-mutation.json` + user-staged file from unrelated flow → `auto_recover()` releases orphan lock + removes our i-t-a + **preserves user staging** + cleans state file (all 5 contract properties simultaneously)
@@ -140,7 +140,7 @@ npm test                                 # full suite (includes both .test.js ab
 - **CI deferred**: bash test ubuntu integration uncovered a pre-existing ubuntu-vs-macOS divergence between tests 5 → 6; CHANGELOG documents the follow-up.
 - **Run locally**: `bash hooks/scripts/test/test-mutation-protocol.sh` (54 assertions on macOS bash 3.2)
 
-### deep-evolve side — `claude-deep-evolve` PR #15 (v3.3.2, stacked on PR #14)
+### deep-evolve side — `deep-evolve` PR #15 (v3.3.2, stacked on PR #14)
 
 - `tests/session-recovery.test.js` (+9 node:test cases, 112 → 121)
 - `resolve_current` error paths (Tests A–D) + happy path (E): `current.json` missing / null session_id / orphan pointer / session.yaml missing / valid resolution
@@ -148,7 +148,7 @@ npm test                                 # full suite (includes both .test.js ab
 - **Documents pre-existing contract quirk**: `detect_orphan_experiment` runs `jq -s` without `-r` → stdout JSON-quoted. Test pins both quoted form AND `tr -d '"'`-stripped form so future fix is intentional.
 - **Run**: `npm test`
 
-### deep-wiki side — `claude-deep-wiki` PR #16 (v1.5.2, stacked on PR #15)
+### deep-wiki side — `deep-wiki` PR #16 (v1.5.2, stacked on PR #15)
 
 - `tests/pending-scan-recovery.test.js` (+7 node:test cases, 111 → 118)
 - Tests A–G covering `.pending-scan` contract: invalid content (overwrite) / valid (preserve verbatim) / older than `.last-scan` (both preserved) / no `.last-scan` (pending used) / fresh install / empty truncated / corrupt UTF-8 bytes
@@ -167,7 +167,7 @@ npm test                                 # full suite (includes both .test.js ab
 **Goal**: deep-dashboard harnessability scorer의 `not_applicable` 처리를 pin. **No-redistribution semantic 채택** — wholly-NA dim은 `score = 0` × `weight`로 total에 contribution; weight renormalize는 일부러 안 함 (total 안정성 + ecosystem-mismatch 페널티 보존).
 
 **Files**:
-- `claude-deep-dashboard/lib/harnessability/missing-signal.test.js` — 290 lines, 6 tests:
+- `deep-dashboard/lib/harnessability/missing-signal.test.js` — 290 lines, 6 tests:
   - wholly-NA dim
   - partial-NA dim
   - drift guard (renormalization regression)
@@ -175,7 +175,7 @@ npm test                                 # full suite (includes both .test.js ab
   - multiple-NA defensive
   - Python mirror (Python scorer parity check)
 
-**Run** (in `claude-deep-dashboard` repo):
+**Run** (in `deep-dashboard` repo):
 ```bash
 npm test
 ```
@@ -215,7 +215,7 @@ bash tests/denylist.test.sh          # standalone .sh (54 case assertions)
   - Non-implement phase 18 (research/plan/test × 6 destructive Bash patterns)
   - Negative controls 2 (Phase 5 read-only git status passes; implement+relaxed allows)
 
-**Run** (from `claude-deep-work` root):
+**Run** (from `deep-work` root):
 ```bash
 npm test       # 119 tests (was 87 pre-denylist)
 ```
@@ -229,8 +229,8 @@ npm test       # 119 tests (was 87 pre-denylist)
 **Goal**: M5 `handoff.json` envelope이 producer→consumer round-trip에서 보존되는지. deep-work이 생성한 handoff를 deep-evolve가 수용 → deep-evolve가 새 handoff 생성 → deep-work이 재수용.
 
 **Files**:
-- `claude-deep-work/tests/handoff-roundtrip.test.js` — 25 assertions; dashboard `unwrapStrict` 계약 mirror
-- `claude-deep-evolve/tests/handoff-roundtrip.test.js` — 24 assertions; same contract
+- `deep-work/tests/handoff-roundtrip.test.js` — 25 assertions; dashboard `unwrapStrict` 계약 mirror
+- `deep-evolve/tests/handoff-roundtrip.test.js` — 24 assertions; same contract
 
 **Run** (each repo):
 ```bash
@@ -264,7 +264,7 @@ npm test
 - §8 (plugin-side): "deep-work 가 valid한 handoff envelope 을 emit 하는가" + "deep-evolve 가 reverse emit 하는가" — plugin 내 `unwrapStrict` 계약 mirror
 - §9 (suite-side): "두 plugin emission 의 **결합** 이 dashboard collector 가 기대하는 4-artifact set + chain + metric shape 인가" — single point of regression detection
 
-**Out of scope**: dashboard collector + aggregator 실제 metric 계산 (수학적 reduction). 그건 `claude-deep-dashboard` repo의 e2e 책임. §9 는 fixture provider + structural contract 만 다룬다.
+**Out of scope**: dashboard collector + aggregator 실제 metric 계산 (수학적 reduction). 그건 `deep-dashboard` repo의 e2e 책임. §9 는 fixture provider + structural contract 만 다룬다.
 
 **Run** (from suite root):
 ```bash

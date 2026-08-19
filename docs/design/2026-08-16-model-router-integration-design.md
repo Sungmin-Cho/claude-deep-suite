@@ -12,7 +12,7 @@
 | # | 결정 | 채택 출처 | 한 줄 근거 |
 |---|---|---|---|
 | D1 | model-router를 **suite의 10번째 플러그인**으로 배포한다. 마켓플레이스 수준 "기본 스킬"은 만들지 않는다(플랫폼에 없음) | 3편 만장일치 | 스킬의 배포 단위는 플러그인뿐(공식 문서) |
-| D2 | 저장소는 **`claude-deep-model-router`로 rename**, 플러그인 키 **`deep-model-router`**, 스킬명 **`model-router`** → 호출 `/deep-model-router:model-router`, `$deep-model-router:model-router` | R1+R2 (R3 기각) | Codex 계약 테스트가 `claude-deep-*` URL을 강제(실측 `tests/codex-marketplace-contract.test.js:29`) — 테스트를 약화시키느니 네임스페이스를 따른다 |
+| D2 | 저장소는 **`deep-model-router`로 rename**, 플러그인 키 **`deep-model-router`**, 스킬명 **`model-router`** → 호출 `/deep-model-router:model-router`, `$deep-model-router:model-router` | R1+R2 (R3 기각) | Codex 계약 테스트가 `deep-*` URL을 강제(실측 `tests/codex-marketplace-contract.test.js:29`) — 테스트를 약화시키느니 네임스페이스를 따른다 |
 | D3 | 아키텍처는 **"정책은 공유, 집행은 플러그인"** — decision plane(라우터) / execution plane(플러그인) 분리, `max(router, local floor)` 단조 병합 | 3편 만장일치 | work/review의 검증된 도메인 계약·안전 하한을 보존 |
 | D4 | 소비는 **3-계층**: 스킬 본문은 세션당 1회(분류 규약 학습) / 반복 결정은 **versioned CLI JSON**(~58ms/route 실측) / ID·철자만 필요하면 **레지스트리 파싱** | R3+R2 종합 | SKILL.md 555줄을 위임마다 로드하는 것은 컨텍스트 낭비 |
 | D5 | route JSON에 **프로토콜 identity 3필드**(`route_schema_version`·`router_plugin_version`·`policy_sha256`)를 업스트림 추가 — RouteRequestV1/RouteDecisionV1 계약 | R2 | 현 HEAD의 route JSON에 identity 필드 부재 실측 — 소비자가 호환성·정책 동일성을 판정할 수 없음 |
@@ -46,7 +46,7 @@
 | `dispatch_agent.py` | **존재**(898줄) + `test_dispatch.py`(894줄) + `test_docs.py`(144줄) | "dispatch 미구현" 기각. D7의 deep-loop 트랙 근거 강화 |
 | pytest | **213 passed in 62.44s** 재실측 | 그린 기준선 확정 |
 | route JSON identity | `route_schema_version`/`router_plugin_version`/`policy_sha256` **부재**(top-level 키 전수 확인) | D5 업스트림 작업 확정 |
-| Codex 계약 테스트 | `:29` URL 정규식 `^https://github.com/Sungmin-Cho/claude-deep-`, `:31` 전 엔트리 `installation: 'AVAILABLE'` 단정 | D2 rename 확정, D6 테스트 예외 필요 확정 |
+| Codex 계약 테스트 | `:29` URL 정규식 `^https://github.com/Sungmin-Cho/deep-`, `:31` 전 엔트리 `installation: 'AVAILABLE'` 단정 | D2 rename 확정, D6 테스트 예외 필요 확정 |
 | `check-plugin-count.js` | `:40` `WORD_TO_NUM = { six..nine }`, `:67,74` 정규식 probe | P1 선행 수정 확정 |
 | 사이드카 테스트 | plugin 키가 마켓플레이스와 **순서까지 deepEqual** | P1 사이드카 삽입 위치 제약 확정 |
 | 마켓플레이스 엔트리 dependencies | 공식 문서 확인: "listing them in `plugin.json` **or in its marketplace entry**" + entry-level `dependencies` 예시 + `{plugin}--v{version}` 태그 + `claude plugin tag --push` | D6 확정 |
@@ -102,13 +102,13 @@
 
 | 항목 | 값 |
 |---|---|
-| 저장소 | `Sungmin-Cho/claude-deep-model-router` (**기존 model-router rename** — 히스토리·이슈 보존, GitHub redirect로 구 URL 생존) |
+| 저장소 | `Sungmin-Cho/deep-model-router` (**기존 model-router rename** — 히스토리·이슈 보존, GitHub redirect로 구 URL 생존) |
 | 플러그인 키 | `deep-model-router` |
 | 스킬명 | `model-router` |
 | 호출 | Claude `/deep-model-router:model-router` · Codex `$deep-model-router:model-router` |
 
 ```text
-claude-deep-model-router/
+deep-model-router/
   .claude-plugin/plugin.json        # name=deep-model-router, version=SemVer (캐시 키 1순위)
   .codex-plugin/plugin.json
   AGENTS.md  CLAUDE.md
@@ -206,7 +206,7 @@ policy_sha256: <config 정규화 digest>
 
 ## 6. 이행 로드맵
 
-### P0 — router를 배포 가능한 플러그인으로 (claude-deep-model-router 저장소)
+### P0 — router를 배포 가능한 플러그인으로 (deep-model-router 저장소)
 1. 저장소 rename + `skills/model-router/` 표준 레이아웃 이전(경로는 `$SKILL_DIR` 기준 유지) + 양쪽 plugin manifest.
 2. RouteDecisionV1 identity 3필드 + `allowed_families` 구현(+테스트).
 3. gemini family 레지스트리 등재 — 검증 원장 절차대로 프로브 후 `verified` 기록 (D10).
@@ -244,7 +244,7 @@ router 미설치/disabled/invalid-JSON/미지원 schema·digest에서의 degrade
 
 | 쟁점 | R1 | R2 | R3 | 채택 | 결정 근거 |
 |---|---|---|---|---|---|
-| 네이밍 | claude-deep-model-router | repo claude-deep-model-router + key deep-model-router | model-router 유지 | **R2** | URL 정규식 게이트 실측(:29). R3 권고는 이 게이트 미반영이므로 기각. 기존 저장소 rename으로 히스토리 보존 |
+| 네이밍 | deep-model-router | repo deep-model-router + key deep-model-router | model-router 유지 | **R2** | URL 정규식 게이트 실측(:29). R3 권고는 이 게이트 미반영이므로 기각. 기존 저장소 rename으로 히스토리 보존 |
 | 첫 파일럿 | (단계 1-2 일반론) | deep-work shadow 먼저, loop는 Phase 5 | deep-loop 먼저 | **절충(병렬)** | shadow는 동작 불변이라 loop 라이브와 상호 배타가 아님. loop를 뒤로 미룰 이유였던 연속성 우려는 "신규 에피소드 경계 한정"으로 이미 해소(R2 자신의 §7.3). PR #4가 loop용 dispatch를 선구현한 사실이 R3 순서를 지지 |
 | 의존성 선언 위치 | plugin.json 중심 | 마켓플레이스 엔트리 | plugin.json (soft) | **R2** | 공식 문서로 entry-level 지원 확인. sibling 단독 설치에 결합 없음 |
 | Codex 설치 | INSTALLED_BY_DEFAULT 신뢰 불가 경고 | router만 INSTALLED_BY_DEFAULT | (미러 관례 따름) | **R2+R1** | 채택하되 R1의 codex#28924를 리스크·degrade 필수 근거로 병기 |
@@ -483,7 +483,7 @@ P0는 gemini를 **등재만** 한다. dispatch 후보가 아니다.
 레이아웃 `skill/` → `skills/model-router/` · 양쪽 plugin manifest · §11.1–11.5·11.9 구현+테스트 · `claude plugin validate .` · SemVer `1.0.0`.
 
 **P0→P1 게이트 (원격)**  
-GitHub rename `Sungmin-Cho/model-router` → `Sungmin-Cho/claude-deep-model-router` · origin 갱신 확인 · `deep-model-router--v1.0.0` 태그.
+GitHub rename `Sungmin-Cho/model-router` → `Sungmin-Cho/deep-model-router` · origin 갱신 확인 · `deep-model-router--v1.0.0` 태그.
 
 **P1**  
 10번째 엔트리(동일 SHA) · Codex는 router만 `INSTALLED_BY_DEFAULT` · §11.6 · sidecar 순서 일치 + `x-model-routing` · **Claude `dependencies`는 P2 소비자만** (`deep-work`, `deep-loop`) · §11.10 스키마 선등록 · `docs:write` → `preflight` → isolated Codex 스모크 · 가이드 라우팅 섹션(bilingual).

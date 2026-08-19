@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/Sungmin-Cho/claude-deep-suite/main/schemas/compaction-state.schema.json",
   "title": "Deep Suite Compaction State Payload",
-  "description": "Payload shape for compaction-state artifacts emitted when a long-running session compacts its context window. MUST be wrapped in the M3 artifact-envelope (schemas/artifact-envelope.schema.json) with envelope.schema = { name: 'compaction-state', version: '1.0' } and envelope.artifact_kind = 'compaction-state'. The dashboard aggregator (claude-deep-dashboard) consumes these to populate suite.compaction.frequency and suite.compaction.preserved_artifact_ratio M4-deferred metrics.",
+  "description": "Payload shape for compaction-state artifacts emitted when a long-running session compacts its context window. MUST be wrapped in the M3 artifact-envelope (schemas/artifact-envelope.schema.json) with envelope.schema = { name: 'compaction-state', version: '1.0' } and envelope.artifact_kind = 'compaction-state'. The dashboard aggregator (deep-dashboard) consumes these to populate suite.compaction.frequency and suite.compaction.preserved_artifact_ratio M4-deferred metrics.",
   "type": "object",
   "additionalProperties": false,
   "patternProperties": {

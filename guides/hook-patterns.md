@@ -88,7 +88,7 @@ if [[ $(find "$state" -mtime +1 -print -quit) ]]; then
 fi
 ```
 
-**Why**: long-running projects accumulate dangling `.deep-work/<session>/...` directories. SessionStart is the natural place to detect and rotate them so the new session starts clean. See deep-work's `claude-deep-work/hooks/session-start.sh` for the canonical implementation pattern.
+**Why**: long-running projects accumulate dangling `.deep-work/<session>/...` directories. SessionStart is the natural place to detect and rotate them so the new session starts clean. See deep-work's `deep-work/hooks/session-start.sh` for the canonical implementation pattern.
 
 ### 3.2 PreToolUse — permission gates with `if`
 
@@ -221,7 +221,7 @@ The M3 [common artifact envelope](../docs/envelope-migration.md) is independent 
 - A Stop hook is a great place to emit a `compaction-state.json` artifact when context was compacted mid-session.
 - A SessionStart hook should *read* the prior envelope (via `envelope.run_id` / `parent_run_id`) to reconstruct cross-plugin lineage on resume.
 
-`claude-deep-dashboard/lib/suite-collector.js` aggregates whatever envelopes it finds. If a plugin chooses to emit via a hook, the dashboard picks it up automatically — no per-plugin shim required.
+`deep-dashboard/lib/suite-collector.js` aggregates whatever envelopes it finds. If a plugin chooses to emit via a hook, the dashboard picks it up automatically — no per-plugin shim required.
 
 ---
 

@@ -2,7 +2,7 @@
 
 # Deep Suite
 
-[![License: MIT](https://img.shields.io/github/license/Sungmin-Cho/claude-deep-suite)](LICENSE) ![Plugins](https://img.shields.io/badge/plugins-10-5b8def) ![Runtimes](https://img.shields.io/badge/runtimes-Claude%20Code%20%2B%20Codex-blue)
+[![License: MIT](https://img.shields.io/github/license/Sungmin-Cho/deep-suite)](LICENSE) ![Plugins](https://img.shields.io/badge/plugins-10-5b8def) ![Runtimes](https://img.shields.io/badge/runtimes-Claude%20Code%20%2B%20Codex-blue)
 
 **AI 코딩 에이전트는 강력하지만, 예측 가능한 방식으로 실패합니다** — 리서치를 건너뛰고, 과도하게 수정하고, 아키텍처에서 벗어나고, 자기 작업을 스스로 승인하고, 세션 사이에 맥락을 잃습니다.
 
@@ -12,9 +12,9 @@ Deep Suite는 Claude Code와 Codex 위에서 AI 코딩을 **구조화·검증 �
 
 | 플러그인 | 무엇을 고치나 |
 |---|---|
-| **[deep-work](https://github.com/Sungmin-Cho/claude-deep-work)** | 생각보다 먼저 코딩하는 문제. 명세 우선 · TDD 기반 흐름을 강제: 브레인스토밍 → 리서치 → 명세 → 계획 → 구현 → 테스트. |
-| **[deep-review](https://github.com/Sungmin-Cho/claude-deep-review)** | 자가 승인 편향. 별도 평가자 에이전트가 AI가 작성한 코드를 리뷰 — 작성자가 자기 diff를 스스로 승인하지 못하게. |
-| **[deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop)** | 긴 작업에서 맥락을 잃는 문제. proposal-only 안전성으로 다중 세션 작업을 끊김 없이 진행. |
+| **[deep-work](https://github.com/Sungmin-Cho/deep-work)** | 생각보다 먼저 코딩하는 문제. 명세 우선 · TDD 기반 흐름을 강제: 브레인스토밍 → 리서치 → 명세 → 계획 → 구현 → 테스트. |
+| **[deep-review](https://github.com/Sungmin-Cho/deep-review)** | 자가 승인 편향. 별도 평가자 에이전트가 AI가 작성한 코드를 리뷰 — 작성자가 자기 diff를 스스로 승인하지 못하게. |
+| **[deep-loop](https://github.com/Sungmin-Cho/deep-loop)** | 긴 작업에서 맥락을 잃는 문제. proposal-only 안전성으로 다중 세션 작업을 끊김 없이 진행. |
 
 ```text
 Before:  Claude가 바로 수정  →  테스트 누락  →  자기 diff를 스스로 승인
@@ -32,22 +32,22 @@ After:   deep-work가 리서치 → 명세 → 계획 → TDD → 리시트 실�
 
 | 플러그인 | 버전 | 설명 |
 |---|---|---|
-| [deep-work](https://github.com/Sungmin-Cho/claude-deep-work) | 7.2.2 | Evidence-Driven Development Protocol |
-| [deep-wiki](https://github.com/Sungmin-Cho/claude-deep-wiki) | 1.9.7 | Wiki-local auto-ingest with safe legacy migration |
-| [deep-evolve](https://github.com/Sungmin-Cho/claude-deep-evolve) | 3.6.2 | Autonomous Experimentation Protocol |
-| [deep-review](https://github.com/Sungmin-Cho/claude-deep-review) | 2.5.0 | Independent Evaluator for AI coding agents |
-| [deep-docs](https://github.com/Sungmin-Cho/claude-deep-docs) | 1.7.0 | Document gardening + authoring |
-| [deep-dashboard](https://github.com/Sungmin-Cho/claude-deep-dashboard) | 1.5.1 | Cross-plugin harness diagnostics + suite telemetry |
-| [deep-memory](https://github.com/Sungmin-Cho/claude-deep-memory) | 1.0.6 | Cross-project semantic memory |
-| [deep-goal](https://github.com/Sungmin-Cho/claude-deep-goal) | 1.2.1 | Goal condition compiler |
-| [deep-loop](https://github.com/Sungmin-Cho/claude-deep-loop) | 1.19.0 | Loop Engineering control plane over the deep-suite |
-| [deep-model-router](https://github.com/Sungmin-Cho/claude-deep-model-router) | 1.1.1 | Deterministic model/effort/review router |
+| [deep-work](https://github.com/Sungmin-Cho/deep-work) | 7.2.2 | Evidence-Driven Development Protocol |
+| [deep-wiki](https://github.com/Sungmin-Cho/deep-wiki) | 1.9.7 | Wiki-local auto-ingest with safe legacy migration |
+| [deep-evolve](https://github.com/Sungmin-Cho/deep-evolve) | 3.6.2 | Autonomous Experimentation Protocol |
+| [deep-review](https://github.com/Sungmin-Cho/deep-review) | 2.5.0 | Independent Evaluator for AI coding agents |
+| [deep-docs](https://github.com/Sungmin-Cho/deep-docs) | 1.7.0 | Document gardening + authoring |
+| [deep-dashboard](https://github.com/Sungmin-Cho/deep-dashboard) | 1.5.1 | Cross-plugin harness diagnostics + suite telemetry |
+| [deep-memory](https://github.com/Sungmin-Cho/deep-memory) | 1.0.6 | Cross-project semantic memory |
+| [deep-goal](https://github.com/Sungmin-Cho/deep-goal) | 1.2.1 | Goal condition compiler |
+| [deep-loop](https://github.com/Sungmin-Cho/deep-loop) | 1.19.0 | Loop Engineering control plane over the deep-suite |
+| [deep-model-router](https://github.com/Sungmin-Cho/deep-model-router) | 1.1.1 | Deterministic model/effort/review router |
 
 <!-- deep-suite:auto-generated:plugin-table-ko:end -->
 
 > 위 표는 marketplace manifest와 각 플러그인의 pinned `plugin.json.version` 으로부터 자동 생성됩니다. 직접 편집하지 말고 `.claude-plugin/marketplace.json` / `.agents/plugins/marketplace.json` 를 수정하세요. 갱신은 `node scripts/generate-reference-sections.js --write`.
 
-각 플러그인은 별도 Git 저장소: `github.com/Sungmin-Cho/claude-deep-{name}`. 기존 사용자 호환성을 위해 `claude-deep-*` 저장소명과 marketplace 식별자는 유지하며, Codex 지원은 Codex marketplace mirror와 각 플러그인의 `.codex-plugin/plugin.json` 로 노출한다.
+각 플러그인은 별도 Git 저장소: `github.com/Sungmin-Cho/deep-{name}`. marketplace **이름**은 기존 설치의 플러그인 키를 보존하기 위해 `claude-deep-suite` 를 유지하며, Codex 지원은 Codex marketplace mirror와 각 플러그인의 `.codex-plugin/plugin.json` 로 노출한다.
 
 ---
 
@@ -59,7 +59,7 @@ After:   deep-work가 리서치 → 명세 → 계획 → TDD → 리시트 실�
 
 ```bash
 # 1. 마켓플레이스 추가
-/plugin marketplace add Sungmin-Cho/claude-deep-suite
+/plugin marketplace add Sungmin-Cho/deep-suite
 
 # 2. 하나만 설치해서 시작 — 각 플러그인은 독립적으로 동작
 /plugin install deep-work@claude-deep-suite
@@ -90,7 +90,7 @@ After:   deep-work가 리서치 → 명세 → 계획 → TDD → 리시트 실�
 ### Codex
 
 ```bash
-codex plugin marketplace add Sungmin-Cho/claude-deep-suite
+codex plugin marketplace add Sungmin-Cho/deep-suite
 ```
 
 Codex는 native marketplace mirror인 `.agents/plugins/marketplace.json` 를 읽고, 각 pinned plugin은 `.codex-plugin/plugin.json` 및 `skills/<skill>/SKILL.md` 로 Codex skill을 노출한다.
@@ -250,7 +250,7 @@ Phase 6  Integrate     설치된 플러그인 artifact 읽기 → LLM 다음 액
 - **Team/solo 위임** — Research/Implement는 항상 subagent에 위임; team 모드는 3-way 병렬 Research
 - **Profile schema v4** — methodology policy가 routing, review strength, verification gate의 단일 authority이며 v3에서 atomic migration
 
-[전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-work)
+[전체 문서 →](https://github.com/Sungmin-Cho/deep-work)
 
 ---
 
@@ -292,7 +292,7 @@ Raw Sources  →  Wiki (markdown pages)  →  Schema (management rules)
 - **완료된 scan-window 회수 (v1.9.4)** — sealed marker와 reservation 증거로 복구가 더 이상 필요 없음을 입증한 경우 `wiki-lint --fix`가 완료된 ensure journal을 안전하게 정리하며, 모호하거나 잘못된 transaction 상태는 fail-closed로 유지
 - **Lock 경합 관측성 (v1.9.5)** — `lock acquire --json`이 token을 제외한 canonical holder를 담은 안정적인 exit-3 JSON envelope를 내보내고, 모호한 owner 증거는 `holder: null`로 낮추며, recovery나 lock 소유권 의미론을 바꾸지 않고 활성 release-transition 경합까지 정규화
 
-[전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-wiki)
+[전체 문서 →](https://github.com/Sungmin-Cho/deep-wiki)
 
 ---
 
@@ -318,7 +318,7 @@ cross-plugin 피드백 내장: deep-review의 recurring findings가 실험 방�
 - **AAR 레이어** — entropy tracking, legibility gate, shortcut detector, diagnose-retry
 - **M3 envelope 채택** — evolve-receipt + evolve-insights가 cross-plugin envelope
 
-[전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-evolve)
+[전체 문서 →](https://github.com/Sungmin-Cho/deep-evolve)
 
 ---
 
@@ -356,7 +356,7 @@ Collect → Contract Check → Deep Review → Verdict
 - **Sprint Contract** — 구조화된 성공 기준 검증
 - **환경 적응** — git/non-git, Codex 유/무 모두 지원
 
-[전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-review)
+[전체 문서 →](https://github.com/Sungmin-Cho/deep-review)
 
 ---
 
@@ -383,7 +383,7 @@ OpenAI [Harness Engineering](https://openai.com/index/harness-engineering/)에�
 - **Durable scan artifact** — `.deep-docs/last-scan.json`에 provenance (HEAD SHA, branch) 기록
 - **Scoring** — size, freshness, reference accuracy, duplication
 
-[전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-docs)
+[전체 문서 →](https://github.com/Sungmin-Cho/deep-docs)
 
 ---
 
@@ -420,7 +420,7 @@ Harness Engineering 프레임워크 기반 — dashboard가 전체 deep-suite �
 - **Action routing** — finding별 권장 다음 액션
 - **Markdown export** — 사용자 승인 후 선택적 보고서 파일 생성
 
-[전체 문서 →](https://github.com/Sungmin-Cho/claude-deep-dashboard)
+[전체 문서 →](https://github.com/Sungmin-Cho/deep-dashboard)
 
 ---
 

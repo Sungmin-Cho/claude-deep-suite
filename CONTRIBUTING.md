@@ -5,13 +5,13 @@ integration layer for the Deep Suite plugin family across Claude Code and Codex.
 
 This repository holds **marketplace metadata, suite-side schemas, integration guides,
 and CI tooling only**. Each plugin's source lives in its own repository at
-`github.com/Sungmin-Cho/claude-deep-<name>` — open plugin PRs there, not here.
+`github.com/Sungmin-Cho/deep-<name>` — open plugin PRs there, not here.
 
 ## Getting started
 
 ```bash
-git clone https://github.com/Sungmin-Cho/claude-deep-suite.git
-cd claude-deep-suite
+git clone https://github.com/Sungmin-Cho/deep-suite.git
+cd deep-suite
 npm install          # ajv + ajv-formats (devDependencies only)
 ```
 

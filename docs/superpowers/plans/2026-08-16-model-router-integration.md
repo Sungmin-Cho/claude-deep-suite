@@ -12,7 +12,7 @@
 
 ## Global Constraints
 
-- Plugin key `deep-model-router`, skill name `model-router`, GitHub repo `claude-deep-model-router` (rename is the P0→P1 gate, not a P0 coding prerequisite).
+- Plugin key `deep-model-router`, skill name `model-router`, GitHub repo `deep-model-router` (rename is the P0→P1 gate, not a P0 coding prerequisite).
 - Local checkout is `/Users/sungmin/Dev/claude-plugins/deep-model-router`. Skill tree must become `skills/model-router/` (`$SKILL_DIR` relative paths stay valid).
 - No personal symlink and no `../deep-model-router` import. Locator is `DEEP_MODEL_ROUTER_CLI` → installed plugin cache only.
 - Router exits remain `0/1/2/3/4/5`. Consumer adapters must not treat 3/4 as degrade.
@@ -115,7 +115,7 @@ git mv skill skills/model-router
   "version": "1.0.0",
   "description": "Deterministic model/effort/review router for Claude Code, Codex, and Grok",
   "author": { "name": "Sungmin-Cho" },
-  "repository": "https://github.com/Sungmin-Cho/claude-deep-model-router.git",
+  "repository": "https://github.com/Sungmin-Cho/deep-model-router.git",
   "license": "MIT",
   "category": "Productivity",
   "keywords": ["routing", "model-selection", "review-policy", "harness"]
@@ -359,8 +359,8 @@ P0 complete when: pytest green, `claude plugin validate .` green, identity field
 
 P1 marketplace edits are **forbidden** until every item below succeeds:
 
-- [ ] `gh repo rename claude-deep-model-router`
-- [ ] `git remote -v` shows `https://github.com/Sungmin-Cho/claude-deep-model-router.git`
+- [ ] `gh repo rename deep-model-router`
+- [ ] `git remote -v` shows `https://github.com/Sungmin-Cho/deep-model-router.git`
 - [ ] `git ls-remote https://github.com/Sungmin-Cho/model-router.git HEAD` still resolves (redirect)
 - [ ] `git tag deep-model-router--v1.0.0 && git push origin main --tags`
 - [ ] Record the immutable 40-char SHA of `origin/main` after the push; that SHA is the only pin P1 may write
@@ -386,7 +386,7 @@ const installation = plugin.name === 'deep-model-router'
 assert.equal(plugin.policy.installation, installation);
 ```
 
-- Insert plugin **10th** in both manifests, same SHA, URL `https://github.com/Sungmin-Cho/claude-deep-model-router.git`
+- Insert plugin **10th** in both manifests, same SHA, URL `https://github.com/Sungmin-Cho/deep-model-router.git`
 - Claude marketplace only, on `deep-work` and `deep-loop` entries:
 
 ```json

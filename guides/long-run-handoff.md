@@ -166,7 +166,7 @@ See `guides/context-management.md` for the standalone `compaction-state.json` ar
 
 ## 7. Dashboard consumption
 
-The dashboard aggregator (`claude-deep-dashboard`) consumes handoff artifacts to populate the M4-deferred metric `suite.handoff.roundtrip_success_rate`:
+The dashboard aggregator (`deep-dashboard`) consumes handoff artifacts to populate the M4-deferred metric `suite.handoff.roundtrip_success_rate`:
 
 ```
 roundtrip_success_rate =

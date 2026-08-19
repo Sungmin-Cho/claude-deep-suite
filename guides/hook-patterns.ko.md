@@ -88,7 +88,7 @@ if [[ $(find "$state" -mtime +1 -print -quit) ]]; then
 fi
 ```
 
-**왜**: 장기간 진행되는 프로젝트는 `.deep-work/<session>/...` 같은 경로에 dangling 디렉토리를 쌓는다. SessionStart는 그것을 감지하고 rotation하여 새 세션을 clean하게 시작하는 자연스러운 지점이다. Canonical 구현은 deep-work의 `claude-deep-work/hooks/session-start.sh` 참고.
+**왜**: 장기간 진행되는 프로젝트는 `.deep-work/<session>/...` 같은 경로에 dangling 디렉토리를 쌓는다. SessionStart는 그것을 감지하고 rotation하여 새 세션을 clean하게 시작하는 자연스러운 지점이다. Canonical 구현은 deep-work의 `deep-work/hooks/session-start.sh` 참고.
 
 ### 3.2 PreToolUse — `if`로 permission gate
 
@@ -220,7 +220,7 @@ M3 [공통 artifact envelope](../docs/envelope-migration.md)은 hook과 독립�
 - Stop hook은 세션 중 컨텍스트가 compact 됐을 때 `compaction-state.json`을 발행하기 좋은 자리.
 - SessionStart hook은 resume 시 이전 envelope (`envelope.run_id` / `parent_run_id`) 을 *읽어* cross-plugin lineage를 재구성해야 한다.
 
-`claude-deep-dashboard/lib/suite-collector.js`는 발견되는 envelope을 모두 aggregate한다. 플러그인이 hook을 통해 emit하면 dashboard가 자동으로 픽업 — per-plugin shim 불필요.
+`deep-dashboard/lib/suite-collector.js`는 발견되는 envelope을 모두 aggregate한다. 플러그인이 hook을 통해 emit하면 dashboard가 자동으로 픽업 — per-plugin shim 불필요.
 
 ---
 

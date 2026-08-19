@@ -6,7 +6,7 @@ This guide codifies the suite-level policy for **compaction**, **output offloadi
 
 The policy is runtime-neutral: Claude Code and Codex both rely on durable artifacts to survive context pressure. Runtime-specific triggers still differ, so this guide calls out Claude Code hooks and auto-compaction only where that mechanism is the actual source of the event.
 
-> Schema: `schemas/compaction-state.schema.json`. Producers emit envelope-wrapped compaction-state artifacts so the dashboard (`claude-deep-dashboard`) can aggregate `suite.compaction.frequency` and `suite.compaction.preserved_artifact_ratio` (M4-deferred metrics).
+> Schema: `schemas/compaction-state.schema.json`. Producers emit envelope-wrapped compaction-state artifacts so the dashboard (`deep-dashboard`) can aggregate `suite.compaction.frequency` and `suite.compaction.preserved_artifact_ratio` (M4-deferred metrics).
 
 ---
 

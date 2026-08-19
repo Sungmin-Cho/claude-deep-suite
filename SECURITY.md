@@ -9,7 +9,7 @@ release of the affected plugin and a refreshed pin in this repository.
 ## Reporting a vulnerability
 
 Please report security issues **privately** via
-[GitHub Security Advisories](https://github.com/Sungmin-Cho/claude-deep-suite/security/advisories/new)
+[GitHub Security Advisories](https://github.com/Sungmin-Cho/deep-suite/security/advisories/new)
 rather than opening a public issue.
 
 We aim to acknowledge reports within a few days and will coordinate a fix and a

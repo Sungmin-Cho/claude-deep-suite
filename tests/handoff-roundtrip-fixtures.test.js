@@ -15,7 +15,7 @@
 //      validate-artifact.js identity check fails downstream
 //
 // Scope: schema + structural contract only. The dashboard's metric *math*
-// is tested in claude-deep-dashboard (separate repo); we mirror the math
+// is tested in deep-dashboard (separate repo); we mirror the math
 // inline here just enough to assert the fixture set produces the expected
 // roundtrip_success_rate=1.0 and frequency=2 values.
 import { test, describe } from 'node:test';

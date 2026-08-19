@@ -29,7 +29,7 @@
     "status": {
       "type": "string",
       "enum": ["complete", "blocked", "blocked-upstream"],
-      "description": "Producer-documented slice statuses (per claude-deep-work@6f23e79 implement-slice-worker.md): `complete` = success, `blocked` = 3-consecutive-failure terminal, `blocked-upstream` = placeholder for slices not started due to upstream block."
+      "description": "Producer-documented slice statuses (per deep-work@6f23e79 implement-slice-worker.md): `complete` = success, `blocked` = 3-consecutive-failure terminal, `blocked-upstream` = placeholder for slices not started due to upstream block."
     },
     "tdd": {
       "type": "object",
@@ -96,7 +96,7 @@
     },
     "debug": {
       "type": "object",
-      "description": "Emitted on status=blocked path per claude-deep-work@6f23e79 implement-slice-worker.md.",
+      "description": "Emitted on status=blocked path per deep-work@6f23e79 implement-slice-worker.md.",
       "additionalProperties": true,
       "properties": {
         "root_cause_note": { "type": "string", "minLength": 1 }

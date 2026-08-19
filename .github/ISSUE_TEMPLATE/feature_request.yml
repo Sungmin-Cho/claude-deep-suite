@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         Have an open-ended idea or want to gauge interest first? Consider
-        [Discussions → Ideas](https://github.com/Sungmin-Cho/claude-deep-suite/discussions/categories/ideas).
+        [Discussions → Ideas](https://github.com/Sungmin-Cho/deep-suite/discussions/categories/ideas).
         Use this form when you have a concrete proposal.
   - type: dropdown
     id: scope

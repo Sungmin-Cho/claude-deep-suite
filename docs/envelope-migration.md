@@ -93,7 +93,7 @@ When you (Phase 2 maintainer) replace a placeholder, your PR should:
 git checkout -b feat/m3-envelope-adoption
 
 # Suite repo의 wrap helper로 sample emit 생성 (의존 추가 아님 — 일회성)
-node /path/to/claude-deep-suite/scripts/wrap-artifact.js \
+node /path/to/deep-suite/scripts/wrap-artifact.js \
   --producer deep-docs \
   --artifact-kind last-scan \
   --schema-version 1.0 \
@@ -102,7 +102,7 @@ node /path/to/claude-deep-suite/scripts/wrap-artifact.js \
   --output sample-wrapped.json
 
 # Suite repo의 validator로 contract 통과 확인
-node /path/to/claude-deep-suite/scripts/validate-artifact.js sample-wrapped.json
+node /path/to/deep-suite/scripts/validate-artifact.js sample-wrapped.json
 ```
 
 ### 4.3 Writer 코드 변경
@@ -111,7 +111,7 @@ node /path/to/claude-deep-suite/scripts/validate-artifact.js sample-wrapped.json
 
 ```js
 // Zero-dep ULID generator (suite 정책: 외부 패키지 추가 불필요).
-// 자세한 구현은 claude-deep-suite scripts/wrap-artifact.js 참조.
+// 자세한 구현은 deep-suite scripts/wrap-artifact.js 참조.
 // ulid npm 패키지도 동작함 (`npm install ulid` 후 아래 주석 참고).
 import { randomBytes } from 'node:crypto';
 
@@ -198,14 +198,14 @@ test('review report parent_run_id matches consumed session-receipt run_id', () =
 
 ### 4.6 Plugin 메타데이터
 
-- README / CHANGELOG: "v<next>: artifact emits M3 envelope (cf. claude-deep-suite/docs/envelope-migration.md)"
+- README / CHANGELOG: "v<next>: artifact emits M3 envelope (cf. deep-suite/docs/envelope-migration.md)"
 - `plugin.json.version` patch 또는 minor bump (envelope adoption은 minor 권장 — 새 contract 추가)
 
 ### 4.7 PR merge → suite SHA bump
 
 Plugin PR merge 후 suite repo에서 *별도 PR*:
 ```bash
-# claude-deep-suite repo
+# deep-suite repo
 git checkout -b chore/marketplace-bump-deep-docs
 # .claude-plugin/marketplace.json 의 deep-docs entry sha만 갱신
 npm run docs:write    # marker 표 자동 갱신

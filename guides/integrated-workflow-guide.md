@@ -12,7 +12,7 @@ See `docs/envelope-migration.md` for envelope schema + migration guide.
 
 ## Runtime Invocation Model
 
-Deep Suite keeps the historical `claude-deep-suite` marketplace key and `claude-deep-*` plugin repository names for compatibility. Runtime exposure is now dual-surface:
+Deep Suite keeps the historical `claude-deep-suite` marketplace key for compatibility, while the plugin repositories themselves live under runtime-neutral `deep-*` names. Runtime exposure is dual-surface:
 
 | Runtime | Marketplace surface | Invocation style |
 |---------|---------------------|------------------|

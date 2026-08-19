@@ -10,7 +10,7 @@
       "description": "Evidence-Driven Development Protocol — a single-command Brainstorm → Research → Spec → Plan → Implement → Test → Integrate workflow with TDD enforcement, governed specification and methodology authority, adaptive risk-based review and verification, per-phase model selection (Claude Code / Codex), and a hard separation between planning and coding.",
       "source": {
         "source": "url",
-        "url": "https://github.com/Sungmin-Cho/claude-deep-work.git",
+        "url": "https://github.com/Sungmin-Cho/deep-work.git",
         "sha": "80a3dc4b2304024b439f70ad8cbbbac465a28b83"
       },
       "policy": {
@@ -24,7 +24,7 @@
       "description": "Wiki-local auto-ingest with safe legacy migration",
       "source": {
         "source": "url",
-        "url": "https://github.com/Sungmin-Cho/claude-deep-wiki.git",
+        "url": "https://github.com/Sungmin-Cho/deep-wiki.git",
         "sha": "48ae802e2b19c7d2f1cf8730e8abed18e31c2952"
       },
       "policy": {
@@ -39,7 +39,7 @@
       "description": "Autonomous Experimentation Protocol — a measured outer loop that proposes, runs, and selects code changes against a fitness metric, with lineage and session history, for Claude Code and Codex.",
       "source": {
         "source": "url",
-        "url": "https://github.com/Sungmin-Cho/claude-deep-evolve.git",
+        "url": "https://github.com/Sungmin-Cho/deep-evolve.git",
         "sha": "76e0311f090c357a6fdb56581711bf21cd045594"
       },
       "policy": {
@@ -53,7 +53,7 @@
       "description": "Independent Evaluator for AI coding agents. v2.1.0 routes Claude-hosted Codex reviewers through generic codex exec with explicit model/reasoning controls, and Codex-hosted reviewers through fresh native subagents with fail-closed report admission and mutation-safety checks.",
       "source": {
         "source": "url",
-        "url": "https://github.com/Sungmin-Cho/claude-deep-review.git",
+        "url": "https://github.com/Sungmin-Cho/deep-review.git",
         "sha": "a94b303ea632624a620ae77d424c60d1a1fee7a5"
       },
       "policy": {
@@ -67,7 +67,7 @@
       "description": "Document gardening + authoring — v1.6.1 fixes the native Windows atomic-write identity false-positive (path-lstat dev:0); scan/garden/audit for Claude Code and Codex.",
       "source": {
         "source": "url",
-        "url": "https://github.com/Sungmin-Cho/claude-deep-docs.git",
+        "url": "https://github.com/Sungmin-Cho/deep-docs.git",
         "sha": "bc4cd41483e8c8206eca3634bb67b4216f4a0f73"
       },
       "policy": {
@@ -81,7 +81,7 @@
       "description": "Cross-plugin harness diagnostics + suite telemetry — aggregates receipts, health reports, and harnessability metrics emitted by sibling deep-suite plugins into one dashboard, with optional OTLP export.",
       "source": {
         "source": "url",
-        "url": "https://github.com/Sungmin-Cho/claude-deep-dashboard.git",
+        "url": "https://github.com/Sungmin-Cho/deep-dashboard.git",
         "sha": "08123a31ddc65d9d3c6cb3ae0e36cac1e4f461a9"
       },
       "policy": {
@@ -95,7 +95,7 @@
       "description": "Cross-project semantic memory — harvests sibling-plugin artifacts into reusable memory cards (rule-based plus LLM distillation) and surfaces task-specific briefs, with opt-in cross-runtime hook capture and multi-pass redaction.",
       "source": {
         "source": "url",
-        "url": "https://github.com/Sungmin-Cho/claude-deep-memory.git",
+        "url": "https://github.com/Sungmin-Cho/deep-memory.git",
         "sha": "2835c890dbd43cc487e7b571c149637606522410"
       },
       "policy": {
@@ -109,7 +109,7 @@
       "description": "Goal condition compiler — evaluates a long-running task, reshapes it to fit, scouts prerequisites, and compiles a ready-to-paste native /goal condition for Claude Code and Codex, with multi-plugin synergy recipes.",
       "source": {
         "source": "url",
-        "url": "https://github.com/Sungmin-Cho/claude-deep-goal.git",
+        "url": "https://github.com/Sungmin-Cho/deep-goal.git",
         "sha": "d1e9c33aa1979279b093706d1dd8aff0e0a30152"
       },
       "policy": {
@@ -123,7 +123,7 @@
       "description": "Loop Engineering control plane over the deep-suite — discovers work, routes to sibling deep-* plugins as maker/checker episodes, keeps durable lock-safe loop state, and hands off to fresh sessions autonomously with proof-gated terminal states and proposal-only external actions.",
       "source": {
         "source": "url",
-        "url": "https://github.com/Sungmin-Cho/claude-deep-loop.git",
+        "url": "https://github.com/Sungmin-Cho/deep-loop.git",
         "sha": "3586e1d6361ec7e7df0d4767e98fb4b1b64c510c"
       },
       "policy": {
@@ -137,7 +137,7 @@
       "description": "Deterministic model/effort/review router — classifies delegated work and returns a RouteDecisionV1 with identity, local-policy merge, and honest independence claims.",
       "source": {
         "source": "url",
-        "url": "https://github.com/Sungmin-Cho/claude-deep-model-router.git",
+        "url": "https://github.com/Sungmin-Cho/deep-model-router.git",
         "sha": "563499b569e9a4dae5742af6232864ce4f8aec57"
       },
       "policy": {

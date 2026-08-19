@@ -26,7 +26,7 @@ test('Codex marketplace mirrors Claude plugin pins with Codex policy fields', ()
       `${plugin.name}: Codex mirror description drifted from the Claude manifest`
     );
     assert.equal(plugin.source.source, 'url');
-    assert.match(plugin.source.url, /^https:\/\/github\.com\/Sungmin-Cho\/claude-deep-/);
+    assert.match(plugin.source.url, /^https:\/\/github\.com\/Sungmin-Cho\/deep-/);
     assert.match(plugin.source.sha, /^[0-9a-f]{40}$/);
     const installation = plugin.name === 'deep-model-router'
       ? 'INSTALLED_BY_DEFAULT'
