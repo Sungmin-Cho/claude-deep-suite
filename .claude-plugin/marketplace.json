@@ -103,11 +103,11 @@
     },
     {
       "name": "deep-model-router",
-      "description": "Deterministic model/effort/review router — classifies delegated work and returns a RouteDecisionV1; large_context and latency_sensitive rebind worker_balanced to the Claude balanced seat; dispatch receipts carry the decision fingerprint so a completed review can be verified against the route.",
+      "description": "Deterministic model/effort/review router — classifies delegated work and returns a RouteDecisionV1; large_context and latency_sensitive rebind worker_balanced to the Claude balanced seat; 1.4.0 adds a RouteObservationV1 validator that checks observation records and referenced receipts without copying raw producer output.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/deep-model-router.git",
-        "sha": "fb25e4a0024106f09d30c9191c6bbd6a2721f495"
+        "sha": "b90c5896812aa74b76cea5d0a1df439be397c499"
       }
     }
   ]
