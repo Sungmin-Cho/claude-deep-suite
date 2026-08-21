@@ -34,11 +34,11 @@
     },
     {
       "name": "deep-evolve",
-      "description": "Autonomous Experimentation Protocol — a measured outer loop that proposes, runs, and selects code changes against a fitness metric, with lineage and session history, for Claude Code and Codex.",
+      "description": "Autonomous Experimentation Protocol — a measured outer loop that proposes, runs, and selects code changes against a fitness metric, with lineage and session history, for Claude Code and Codex. v3.6.3 parses Grok PreToolUse envelopes in the readonly guard so Grok file and shell tools are classified instead of denied as malformed.",
       "source": {
         "source": "url",
         "url": "https://github.com/Sungmin-Cho/deep-evolve.git",
-        "sha": "76e0311f090c357a6fdb56581711bf21cd045594"
+        "sha": "51ef996dbb31b53865b5f2ee45a6fc3ea8ce15dd"
       }
     },
     {
